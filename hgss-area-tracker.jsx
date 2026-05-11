@@ -1666,16 +1666,22 @@ const C = {
   gold:"#c8960a", green:"#5fc99a",
   text:"#e6e8f0", muted:"#7c8395", panel:"#1a1f2b",
 };
+function getTimeOfDay() {
+  const h = new Date().getHours();
+  if (h >= 4 && h < 10) return "morning";  // 4:00–9:59
+  if (h >= 10 && h < 20) return "day";      // 10:00–19:59
+  return "night";                            // 20:00–3:59
+}
 const TIME_COLORS = {
-  morning:{ badge:"#e8924a", badgeBg:"rgba(232,146,74,0.15)", icon:"🌅",
-    skyGrad:"linear-gradient(180deg,#0e0c1c 0%,#2a1424 30%,#58281e 58%,#8a4828 100%)",
-    bodyLeft:15, bodyType:"sun", bodyColor:"#c87848", bodyGlow:"rgba(200,118,68,0.55)", bodyGlowOuter:"rgba(200,118,68,0.14)" },
-  day:    { badge:"#8ab8d4", badgeBg:"rgba(138,184,212,0.12)", icon:"☀️",
-    skyGrad:"linear-gradient(180deg,#080e1c 0%,#0e1e3a 25%,#192c50 55%,#223660 100%)",
-    bodyLeft:50, bodyType:"sun", bodyColor:"#a8c4d8", bodyGlow:"rgba(155,193,220,0.45)", bodyGlowOuter:"rgba(155,193,220,0.12)" },
-  night:  { badge:"#7b8fd6", badgeBg:"rgba(123,143,214,0.15)", icon:"🌙",
-    skyGrad:"linear-gradient(180deg,#06080f 0%,#080a1e 35%,#0b0e28 65%,#0e1230 100%)",
-    bodyLeft:82, bodyType:"moon", bodyColor:"#c8d8e8", bodyGlow:"rgba(160,185,218,0.42)", bodyGlowOuter:"rgba(160,185,218,0.11)" },
+  morning:{ badge:"#7ec8c8", badgeBg:"rgba(126,200,200,0.13)", icon:"🌅",
+    skyGrad:"linear-gradient(180deg,#080e14 0%,#0a1c22 25%,#0e2a2e 55%,#123636 100%)",
+    bodyLeft:15, bodyType:"sun", bodyColor:"#a8d4d0", bodyGlow:"rgba(130,200,195,0.45)", bodyGlowOuter:"rgba(130,200,195,0.12)" },
+  day:    { badge:"#7aaed4", badgeBg:"rgba(122,174,212,0.13)", icon:"☀️",
+    skyGrad:"linear-gradient(180deg,#08101a 0%,#0c1c30 25%,#142844 55%,#1a3054 100%)",
+    bodyLeft:50, bodyType:"sun", bodyColor:"#a0bcd8", bodyGlow:"rgba(130,170,215,0.45)", bodyGlowOuter:"rgba(130,170,215,0.12)" },
+  night:  { badge:"#9080c8", badgeBg:"rgba(144,128,200,0.13)", icon:"🌙",
+    skyGrad:"linear-gradient(180deg,#070610 0%,#0d0820 30%,#140e2e 60%,#181436 100%)",
+    bodyLeft:82, bodyType:"moon", bodyColor:"#c0b8d8", bodyGlow:"rgba(155,140,200,0.42)", bodyGlowOuter:"rgba(155,140,200,0.11)" },
 };
 const STARS = Array.from({length:30},(_,i)=>({
   x:((i*37.3+7)%98)+1, y:((i*61.7+11)%70)+5,
@@ -2828,8 +2834,8 @@ function HGSSTracker() {
   const isMobile = useIsMobile();
   const [tab, setTab]           = useState(() => { try { return localStorage.getItem("hgss-active-tab") || "areas"; } catch { return "areas"; } });
   const setTabAndSave = t => { setTab(t); try { localStorage.setItem("hgss-active-tab", t); } catch {} };
-  const [timeFilter, setTimeFilter] = useState(() => { try { return localStorage.getItem("hgss-time-filter") || "all"; } catch { return "all"; } });
-  const setTime = t => { setTimeFilter(t); try { localStorage.setItem("hgss-time-filter", t); } catch {} };
+  const [timeFilter, setTimeFilter] = useState(getTimeOfDay);
+  const setTime = t => setTimeFilter(t);
   const [caught, setCaught]     = useState({});
   const [items, setItems]       = useState({});
   const [trainers, setTrainers] = useState({});
@@ -5266,10 +5272,11 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const areaPokemon  = area ? flattenPokemon(area)  : [];
   const areaItems    = area ? flattenItems(area)    : [];
   const areaTrainers = area ? flattenTrainers(area) : [];
-  const verPokemon      = areaPokemon.filter(p =>
-    !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly) &&
-    (timeFilter === "all" || !p.time || p.time === timeFilter));
-  const relevantPokemon = verPokemon.filter(p => !isPassedPokemon(p));
+  const allVerPokemon   = areaPokemon.filter(p =>           // all times — for completion
+    !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly));
+  const verPokemon      = allVerPokemon.filter(p =>         // time-filtered — for display only
+    timeFilter === "all" || !p.time || p.time === timeFilter);
+  const relevantPokemon = allVerPokemon.filter(p => !isPassedPokemon(p)); // completion: all times
   const pokeDone        = relevantPokemon.filter(p => p.method === "Trade" ? !!trades[`${areaId}|trade|${p.name}`] : !!caught[p.name]).length;
   const nonTradePokemon  = relevantPokemon.filter(p => p.method !== "Trade" && !p.optional);
   const pendingTrades    = relevantPokemon.filter(p => p.method === "Trade" && !trades[`${areaId}|trade|${p.name}`]);
@@ -5433,8 +5440,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   const hasItms = (floor.items    || []).length > 0;
                   const hasTrns = (floor.trainers || []).length > 0;
                   if (!hasPoks && !hasItms && !hasTrns) return null;
-                  const floorVerPoks    = (floor.pokemon || []).filter(p => !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly) && (timeFilter === "all" || !p.time || p.time === timeFilter));
-                  const relevFloorPoks  = floorVerPoks.filter(p => !isPassedPokemon(p));
+                  const allFloorVerPoks = (floor.pokemon || []).filter(p => !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly));
+                  const floorVerPoks    = allFloorVerPoks.filter(p => timeFilter === "all" || !p.time || p.time === timeFilter);
+                  const relevFloorPoks  = allFloorVerPoks.filter(p => !isPassedPokemon(p));
                   const pokDone         = relevFloorPoks.filter(p => p.method === "Trade" ? !!trades[`${areaId}|trade|${p.name}`] : !!caught[p.name]).length;
                   const relevFloorItems        = (floor.items || []).filter(it => !isPassedItem(it));
                   const regularFloorItems      = relevFloorItems.filter(it => !it.recurring && !it.optional);

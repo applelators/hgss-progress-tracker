@@ -17,9 +17,61 @@
       min-height: 100vh;
     }
 
-    #overlay-root { width: 100%; }
+    /* ── Keyframes ────────────────────────────────────────────────── */
 
-    /* ── Area header ── */
+    @keyframes header-in {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes row-in {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes panel-exit {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-6px); }
+    }
+
+    @keyframes border-pulse {
+      0%, 100% { border-color: #4a9a4a; box-shadow: 0 0 6px rgba(74,154,74,0.15); }
+      50%       { border-color: #72c472; box-shadow: 0 0 16px rgba(74,154,74,0.45); }
+    }
+
+    @keyframes pokeball-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes sprite-bob {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-3px); }
+    }
+
+    @keyframes rate-shimmer {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.6; }
+    }
+
+    @keyframes caught-pop {
+      0%   { transform: scale(0.5); opacity: 0; }
+      55%  { transform: scale(1.25); opacity: 1; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    @keyframes check-glow {
+      0%, 100% { text-shadow: none; }
+      50%       { text-shadow: 0 0 8px rgba(74,183,112,0.9); }
+    }
+
+    /* ── Exit transition ─────────────────────────────────────────── */
+    #overlay-root.exiting {
+      animation: panel-exit 0.18s ease-out forwards;
+      pointer-events: none;
+    }
+
+    /* ── Area header ─────────────────────────────────────────────── */
     .area-header {
       display: flex;
       align-items: center;
@@ -33,7 +85,10 @@
       font-weight: 700;
       font-size: 17px;
       letter-spacing: 0.01em;
+      animation: header-in 0.35s cubic-bezier(0.2,0.8,0.3,1) both,
+                 border-pulse 3.2s 0.5s ease-in-out infinite;
     }
+
     .area-header .pokeball {
       width: 18px;
       height: 18px;
@@ -41,9 +96,10 @@
       background: radial-gradient(circle at 40% 38%, #fff 0%, #e0e0e0 40%, #c00 40%, #c00 50%, #222 50%, #222 52%, #c00 52%);
       flex-shrink: 0;
       border: 1.5px solid #888;
+      animation: pokeball-spin 18s linear infinite;
     }
 
-    /* ── Pokémon rows ── */
+    /* ── Pokémon rows ────────────────────────────────────────────── */
     .poke-list { padding: 0 4px 8px; }
 
     .poke-row {
@@ -53,7 +109,8 @@
       padding: 3px 8px 3px 6px;
       border-radius: 4px;
       border-left: 3px solid transparent;
-      transition: background 0.1s;
+      /* entrance — delay driven by --row-i CSS var set inline */
+      animation: row-in 0.32s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i,0) * 48ms) both;
     }
     .poke-row.alt { background: rgba(255,255,255,0.04); }
     .poke-row.caught {
@@ -61,6 +118,7 @@
       background: rgba(74,183,112,0.09) !important;
     }
 
+    /* ── Caught check ────────────────────────────────────────────── */
     .check {
       width: 12px;
       font-size: 9px;
@@ -69,14 +127,22 @@
       font-weight: 700;
       line-height: 1;
     }
+    .check.visible {
+      animation: caught-pop 0.42s cubic-bezier(0.2,0.8,0.3,1) both,
+                 check-glow 2.5s 0.5s ease-in-out infinite;
+    }
 
+    /* ── Sprite ──────────────────────────────────────────────────── */
     .sprite {
       width: 32px;
       height: 32px;
       image-rendering: pixelated;
       flex-shrink: 0;
+      /* bob: each sprite gets a unique phase via --row-i */
+      animation: sprite-bob 2.6s calc(var(--row-i,0) * 0.38s) ease-in-out infinite;
     }
 
+    /* ── Name ────────────────────────────────────────────────────── */
     .poke-name {
       flex: 1;
       font-size: 13px;
@@ -89,7 +155,7 @@
     .poke-name.hg { color: #e8c048; }
     .poke-name.ss { color: #90b8d8; }
 
-    /* ── Rate columns ── */
+    /* ── Rate columns ────────────────────────────────────────────── */
     .rates {
       display: flex;
       gap: 2px;
@@ -106,6 +172,13 @@
     }
     .rate-cell.zero { opacity: 0.28; }
 
+    /* Non-zero rates pulse softly */
+    .rate-cell:not(.zero) .rate-num {
+      animation: rate-shimmer 3.8s ease-in-out infinite;
+      /* stagger shimmer phase so they don't all pulse in sync */
+      animation-delay: calc(var(--row-i,0) * 0.6s);
+    }
+
     .rate-num {
       font-size: 10.5px;
       font-family: 'JetBrains Mono', monospace;
@@ -120,7 +193,7 @@
       flex-shrink: 0;
     }
 
-    /* ── Placeholder / status ── */
+    /* ── Placeholder / status ────────────────────────────────────── */
     .placeholder {
       color: rgba(255,255,255,0.25);
       text-align: center;
@@ -135,6 +208,17 @@
       text-align: center;
       padding: 14px;
     }
+
+    /* ── Reduced motion ──────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .area-header  { animation: none !important; }
+      .area-header .pokeball { animation: none !important; }
+      .poke-row     { animation: none !important; }
+      .sprite       { animation: none !important; }
+      .check.visible { animation: none !important; }
+      .rate-cell:not(.zero) .rate-num { animation: none !important; }
+      #overlay-root.exiting { animation: none !important; opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -148,6 +232,7 @@
 
   <script>
     var currentAreaId = null;
+    var renderTimer   = null;
 
     function getVersion() {
       return localStorage.getItem('hgss-version') || 'hg';
@@ -164,117 +249,73 @@
       return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png';
     }
 
-    // Flatten Pokémon from flat or floored area
     function getRawPokemon(area) {
       if (!area) return [];
       if (area.floors) {
-        return area.floors.reduce(function(acc, f) {
-          return acc.concat(f.pokemon || []);
-        }, []);
+        return area.floors.reduce(function(acc, f) { return acc.concat(f.pokemon || []); }, []);
       }
       return area.pokemon || [];
     }
 
-    // Group entries by name, collecting per-time rates
     function groupPokemon(rawList, version) {
       var map = new Map();
       rawList.forEach(function(p) {
         if (version === 'hg' && p.ssOnly) return;
         if (version === 'ss' && p.hgOnly) return;
         if (p.method && (p.method === 'Gift' || p.method === 'Trade' || p.method === 'Event')) return;
-
         if (!map.has(p.name)) {
-          map.set(p.name, {
-            name: p.name,
-            morning: null, day: null, night: null,
-            hgOnly: p.hgOnly || false,
-            ssOnly: p.ssOnly || false,
-          });
+          map.set(p.name, { name: p.name, morning: null, day: null, night: null,
+                            hgOnly: !!p.hgOnly, ssOnly: !!p.ssOnly });
         }
-        var entry = map.get(p.name);
+        var e = map.get(p.name);
         if (!p.time) {
-          // No time restriction — show same rate for all periods
-          if (!entry.morning) entry.morning = p.rate;
-          if (!entry.day)     entry.day     = p.rate;
-          if (!entry.night)   entry.night   = p.rate;
+          if (!e.morning) e.morning = p.rate;
+          if (!e.day)     e.day     = p.rate;
+          if (!e.night)   e.night   = p.rate;
         } else {
-          entry[p.time] = p.rate;
+          e[p.time] = p.rate;
         }
       });
       return Array.from(map.values());
     }
 
+    var ICON = {
+      morning: 'icons/60px-Morning_Icon_BDSP.png',
+      day:     'icons/60px-Day_Icon_BDSP.png',
+      night:   'icons/60px-Night_Icon_BDSP.png',
+    };
+
     function rateCell(rate, time) {
       var isZero = !rate || rate === '0%';
-      var displayRate = rate || '0%';
-      var iconMap = {
-        morning: 'icons/60px-Morning_Icon_BDSP.png',
-        day:     'icons/60px-Day_Icon_BDSP.png',
-        night:   'icons/60px-Night_Icon_BDSP.png',
-      };
       return '<span class="rate-cell' + (isZero ? ' zero' : '') + '">' +
-        '<span class="rate-num">' + displayRate + '</span>' +
-        '<img class="time-icon" src="' + iconMap[time] + '" alt="' + time + '">' +
+        '<span class="rate-num">' + (rate || '0%') + '</span>' +
+        '<img class="time-icon" src="' + ICON[time] + '" alt="' + time + '">' +
         '</span>';
     }
 
-    function renderArea(areaId) {
-      currentAreaId = areaId;
-      var root = document.getElementById('overlay-root');
-      var areas = window.__HGSS_AREAS;
-
-      if (!areas) {
-        root.innerHTML = '<div class="placeholder">Tracker data not available.<br>Open the tracker first.</div>';
-        return;
-      }
-
-      if (!areaId) {
-        root.innerHTML = '<div class="placeholder">Select an area in the tracker<br>to see encounter rates.</div>';
-        return;
-      }
-
-      var area = null;
-      for (var i = 0; i < areas.length; i++) {
-        if (areas[i].id === areaId) { area = areas[i]; break; }
-      }
-
-      if (!area) {
-        root.innerHTML = '<div class="placeholder">Area not found</div>';
-        return;
-      }
-
-      var version = getVersion();
-      var caught  = getCaught();
+    function buildHTML(area, version, caught) {
       var grouped = groupPokemon(getRawPokemon(area), version);
 
-      var headerHtml =
-        '<div class="area-header">' +
-          '<div class="pokeball"></div>' +
-          '<span>' + area.name + '</span>' +
-        '</div>';
+      var html = '<div class="area-header">' +
+        '<div class="pokeball"></div>' +
+        '<span>' + area.name + '</span>' +
+      '</div><div class="poke-list">';
 
-      var rowsHtml = '';
       if (grouped.length === 0) {
-        rowsHtml = '<div class="no-pokemon">No wild Pokémon</div>';
+        html += '<div class="no-pokemon">No wild Pokémon</div>';
       } else {
         grouped.forEach(function(p, i) {
           var isCaught = !!caught[p.name];
-          var cls = 'poke-row' +
-            (i % 2 === 1 ? ' alt' : '') +
-            (isCaught ? ' caught' : '');
+          var nameCls  = 'poke-name' + (p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
+          var rowCls   = 'poke-row' + (i % 2 === 1 ? ' alt' : '') + (isCaught ? ' caught' : '');
+          var sprite   = spriteUrl(p.name);
 
-          var nameCls = 'poke-name' +
-            (p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
-
-          var sprite = spriteUrl(p.name);
-          var spriteHtml = sprite
-            ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
-            : '<span class="sprite"></span>';
-
-          rowsHtml +=
-            '<div class="' + cls + '">' +
-              '<span class="check">' + (isCaught ? '✓' : '') + '</span>' +
-              spriteHtml +
+          html +=
+            '<div class="' + rowCls + '" style="--row-i:' + i + '">' +
+              '<span class="check' + (isCaught ? ' visible' : '') + '">' + (isCaught ? '✓' : '') + '</span>' +
+              (sprite
+                ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
+                : '<span class="sprite"></span>') +
               '<span class="' + nameCls + '">' + p.name + '</span>' +
               '<div class="rates">' +
                 rateCell(p.morning, 'morning') +
@@ -285,16 +326,61 @@
         });
       }
 
-      root.innerHTML = headerHtml + '<div class="poke-list">' + rowsHtml + '</div>';
+      return html + '</div>';
     }
 
-    // Real-time updates from the tracker (cross-tab storage events)
+    function doRender(areaId) {
+      var root  = document.getElementById('overlay-root');
+      var areas = window.__HGSS_AREAS;
+
+      if (!areas) {
+        root.innerHTML = '<div class="placeholder">Tracker data not available.<br>Open the tracker first.</div>';
+        return;
+      }
+      if (!areaId) {
+        root.innerHTML = '<div class="placeholder">Select an area in the tracker<br>to see encounter rates.</div>';
+        return;
+      }
+
+      var area = null;
+      for (var i = 0; i < areas.length; i++) {
+        if (areas[i].id === areaId) { area = areas[i]; break; }
+      }
+      if (!area) {
+        root.innerHTML = '<div class="placeholder">Area not found</div>';
+        return;
+      }
+
+      root.innerHTML = buildHTML(area, getVersion(), getCaught());
+    }
+
+    function renderArea(areaId) {
+      var isNewArea = areaId !== currentAreaId;
+      currentAreaId = areaId;
+
+      if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
+
+      var root = document.getElementById('overlay-root');
+      var hasContent = !!root.querySelector('.area-header');
+
+      if (isNewArea && hasContent) {
+        // Animate old content out, then swap
+        root.classList.add('exiting');
+        renderTimer = setTimeout(function() {
+          renderTimer = null;
+          root.classList.remove('exiting');
+          doRender(areaId);
+        }, 185);
+      } else {
+        doRender(areaId);
+      }
+    }
+
     window.addEventListener('storage', function(e) {
       if (e.key === 'hgss-active-area') renderArea(e.newValue);
       if (e.key === 'hgss-caught' || e.key === 'hgss-version') renderArea(currentAreaId);
     });
 
-    // Load tracker JSX to access AREAS + DEX_ID data, then render
     fetch('hgss-area-tracker.jsx')
       .then(function(r) { return r.text(); })
       .then(function(jsx) {
@@ -303,7 +389,7 @@
         renderArea(localStorage.getItem('hgss-active-area'));
       })
       .catch(function(err) {
-        console.error('Overlay failed to load tracker data:', err);
+        console.error('Overlay error:', err);
         document.getElementById('overlay-root').innerHTML =
           '<div class="placeholder" style="color:#f88">Failed to load tracker data.<br>' +
           'Make sure the server is running:<br><code>python3 -m http.server 8080</code></div>';

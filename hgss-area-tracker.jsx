@@ -2849,7 +2849,7 @@ function SkyBar({ timeFilter, setTime }) {
       </div>
       {/* Time filter buttons — right side */}
       <div style={{ position:"absolute", bottom:14, right:16, display:"flex", gap:5 }}>
-        {[["all","All",null],["morning","Morn",TIME_COLORS.morning.icon],["day","Day",TIME_COLORS.day.icon],["night","Night",TIME_COLORS.night.icon]].map(([v,label,icon]) => {
+        {[["all","All",null],["morning","Morning",TIME_COLORS.morning.icon],["day","Day",TIME_COLORS.day.icon],["night","Night",TIME_COLORS.night.icon]].map(([v,label,icon]) => {
           const btc = TIME_COLORS[v];
           const isActive = timeFilter === v;
           return (
@@ -5654,6 +5654,9 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, ver
     : (area.items||[]).some((it, i) => it.surf && !items[flatItemKey(area.id, i)]);
   const allTrns = flattenTrainers(area);
   const pd  = allPoks.filter(p => caught[p.name]).length;
+  // Which time periods still have uncaught time-restricted Pokémon?
+  const pendingTimes = ["morning","day","night"].filter(t =>
+    allPoks.some(p => p.time === t && !caught[p.name]));
   // Item done/total excluding passed choice-group entries
   const { id_, itTotal } = (() => {
     let done = 0, total = 0;
@@ -5679,6 +5682,9 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, ver
       onMouseLeave={e => { if (!isSel) e.currentTarget.style.background = allDone ? "rgba(74,175,116,0.08)" : tint.bg; }}>
       <div style={{ display:"flex", alignItems:"center", gap:5 }}>
         <span style={{ fontSize:12, fontWeight: isSel ? "700" : "400", color: allDone ? C.green : isSel ? "var(--hgss-accent)" : "#c4a888", lineHeight:1.4, flex:1 }}>{allDone ? "✓ " : ""}{area.name}</span>
+        {pendingTimes.map(t => (
+          <img key={t} src={TIME_COLORS[t].icon} title={t.charAt(0).toUpperCase()+t.slice(1)} style={{ width:14, height:14, objectFit:"contain", flexShrink:0, display:"block", opacity:0.85 }} />
+        ))}
         {hasPendingTrades && <span style={{ fontSize:9, color:"#c8960a", background:"rgba(200,150,10,0.12)", border:"1px solid rgba(200,150,10,0.35)", padding:"1px 5px", borderRadius:99, fontWeight:"700", flexShrink:0 }}>⇄</span>}
         {hasPendingSurfItems && <span style={{ fontSize:9, color:"#4a8fc4", background:"rgba(74,143,196,0.12)", border:"1px solid rgba(74,143,196,0.35)", padding:"1px 5px", borderRadius:99, fontWeight:"700", flexShrink:0 }}>≈</span>}
         {areaNotes?.[area.id] && <span title="Has notes" style={{ width:7, height:7, borderRadius:"50%", background:"#6ba8d4", flexShrink:0, display:"inline-block" }} />}
@@ -5799,7 +5805,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
         {hasBetter&&<div style={{ fontSize:9, color:"#7ab4d4", marginTop:2 }}>↑ {best.pct}% in {best.areaName}</div>}
       </div>
       <div style={{ textAlign:"right", flexShrink:0, paddingLeft:8, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
-        {p.time && TIME_COLORS[p.time] && (() => { const tc=TIME_COLORS[p.time]; const label=p.time==="morning"?"Morn":p.time==="day"?"Day":"Night"; return (
+        {p.time && TIME_COLORS[p.time] && (() => { const tc=TIME_COLORS[p.time]; const label=p.time==="morning"?"Morning":p.time==="day"?"Day":"Night"; return (
           <span style={{ fontSize:9, fontWeight:"700", color:tc.badge, background:tc.badgeBg, border:`1px solid ${tc.badge}60`, padding:"1px 5px", borderRadius:99, letterSpacing:0.3, whiteSpace:"nowrap", display:"inline-flex", alignItems:"center", gap:3 }}><img src={tc.icon} style={{width:10,height:10,objectFit:"contain",display:"block"}} />{label}</span>
         ); })()}
         <RateDisplay rate={p.rate} isMobile={isMobile} />

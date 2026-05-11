@@ -1734,7 +1734,7 @@ function scoreCandidateInContext(cand, fixedNames, version) {
   const poolRank = DT_CANDIDATES.indexOf(cand);
   const poolScore = poolRank >= 0 ? (DT_CANDIDATES.length - poolRank) * 0.1 : 0;
 
-  return newHMs * 10 + newCov * 3 + newTypes * 2 - sharedWeak * 2 + poolScore;
+  return newHMs * 4 + newCov * 3 + newTypes * 2 - sharedWeak * 2 + poolScore;
 }
 
 // Build a team of 6: slot 0 = favorite, slot 1 = Tyranitar (unless Tyranitar-line),

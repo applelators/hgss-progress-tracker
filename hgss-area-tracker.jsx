@@ -1667,10 +1667,21 @@ const C = {
   text:"#e6e8f0", muted:"#7c8395", panel:"#1a1f2b",
 };
 const TIME_COLORS = {
-  morning:{ bg:"#130e07", card:"#1c1508", border:"#322514", badge:"#e8924a", badgeBg:"rgba(232,146,74,0.15)", icon:"🌅" },
-  day:    { bg:"#08100f", card:"#101c1a", border:"#182e2a", badge:"#d4c14a", badgeBg:"rgba(212,193,74,0.15)", icon:"☀️" },
-  night:  { bg:"#07091a", card:"#0d1028", border:"#141850", badge:"#7b8fd6", badgeBg:"rgba(123,143,214,0.15)", icon:"🌙" },
+  morning:{ badge:"#e8924a", badgeBg:"rgba(232,146,74,0.15)", icon:"🌅",
+    skyGrad:"linear-gradient(180deg,#1a0520 0%,#6b2d5e 20%,#c4582a 50%,#e8894a 75%,#f5c67a 100%)",
+    bodyLeft:15, bodyType:"sun", bodyColor:"#ffdd44", bodyGlow:"rgba(255,210,40,0.85)", bodyGlowOuter:"rgba(255,210,40,0.22)" },
+  day:    { badge:"#d4c14a", badgeBg:"rgba(212,193,74,0.15)", icon:"☀️",
+    skyGrad:"linear-gradient(180deg,#0a1a35 0%,#1565c0 30%,#2196f3 65%,#64b5f6 100%)",
+    bodyLeft:50, bodyType:"sun", bodyColor:"#fff9c4", bodyGlow:"rgba(255,255,200,0.95)", bodyGlowOuter:"rgba(255,255,200,0.28)" },
+  night:  { badge:"#7b8fd6", badgeBg:"rgba(123,143,214,0.15)", icon:"🌙",
+    skyGrad:"linear-gradient(180deg,#020408 0%,#06091a 45%,#0d1230 75%,#131836 100%)",
+    bodyLeft:82, bodyType:"moon", bodyColor:"#dde8f5", bodyGlow:"rgba(180,200,240,0.55)", bodyGlowOuter:"rgba(180,200,240,0.18)" },
 };
+const STARS = Array.from({length:30},(_,i)=>({
+  x:((i*37.3+7)%98)+1, y:((i*61.7+11)%70)+5,
+  r:i%4===0?2.5:i%3===0?2:1.5,
+  dur:2.5+(i%5)*0.6, delay:(i*0.43)%3.5,
+}));
 
 // ─── 100% COMPLETION CHECKLIST DATA ──────────────────────────────────────────
 const COMPLETION_SECTIONS = [
@@ -2755,11 +2766,70 @@ function TMsTab({ tmState }) {
   );
 }
 
+// ─── SKY BAR ─────────────────────────────────────────────────────────────────
+function SkyBar({ timeFilter, setTime }) {
+  const tc = TIME_COLORS[timeFilter];
+  const isNight = timeFilter === "night";
+  const defaultGrad = "linear-gradient(180deg,#0c1008 0%,#1a1608 100%)";
+  return (
+    <div style={{
+      position:"relative", overflow:"hidden", flexShrink:0,
+      background: tc ? tc.skyGrad : defaultGrad,
+      height:72,
+      transition:"background 0.85s ease",
+    }}>
+      {STARS.map((s,i) => (
+        <div key={i} style={{
+          position:"absolute", left:`${s.x}%`, top:`${s.y}%`,
+          width:s.r, height:s.r, borderRadius:"50%", background:"white",
+          opacity: isNight ? 1 : 0,
+          animation: isNight ? `hgss-twinkle ${s.dur}s ${s.delay}s infinite` : "none",
+          transition:"opacity 1.2s ease",
+        }} />
+      ))}
+      {tc && (
+        <div style={{
+          position:"absolute",
+          left:`calc(${tc.bodyLeft}% - ${tc.bodyType==="moon"?11:14}px)`,
+          top:"50%", transform:"translateY(-50%)",
+          width: tc.bodyType==="moon" ? 22 : 28,
+          height: tc.bodyType==="moon" ? 22 : 28,
+          borderRadius:"50%",
+          background: tc.bodyColor,
+          boxShadow:`0 0 18px 6px ${tc.bodyGlow}, 0 0 50px 22px ${tc.bodyGlowOuter}`,
+          transition:"left 0.7s cubic-bezier(0.4,0,0.2,1), background 0.8s ease, box-shadow 0.8s ease",
+        }} />
+      )}
+      <div style={{ position:"absolute", bottom:10, right:16, display:"flex", gap:5 }}>
+        {[["all","All",""],["morning","Morn","🌅"],["day","Day","☀️"],["night","Night","🌙"]].map(([v,label,icon]) => {
+          const btc = TIME_COLORS[v];
+          const isActive = timeFilter === v;
+          return (
+            <button key={v} onClick={() => setTime(v)} style={{
+              padding:"4px 10px", borderRadius:99,
+              border:`1px solid ${isActive?(btc?btc.badge:"rgba(255,255,255,0.6)"):"rgba(255,255,255,0.18)"}`,
+              background: isActive?(btc?btc.badgeBg:"rgba(255,255,255,0.12)"):"rgba(0,0,0,0.3)",
+              backdropFilter:"blur(8px)", WebkitBackdropFilter:"blur(8px)",
+              color: isActive?(btc?btc.badge:"white"):"rgba(255,255,255,0.55)",
+              fontSize:11, fontWeight:"700", fontFamily:"'DM Sans',sans-serif",
+              cursor:"pointer", letterSpacing:0.3,
+              display:"flex", alignItems:"center", gap:3,
+              transition:"color 0.2s, border-color 0.2s, background 0.2s",
+            }}>{icon&&<span style={{fontSize:12}}>{icon}</span>}{label}</button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── ROOT COMPONENT ───────────────────────────────────────────────────────────
 function HGSSTracker() {
   const isMobile = useIsMobile();
   const [tab, setTab]           = useState(() => { try { return localStorage.getItem("hgss-active-tab") || "areas"; } catch { return "areas"; } });
   const setTabAndSave = t => { setTab(t); try { localStorage.setItem("hgss-active-tab", t); } catch {} };
+  const [timeFilter, setTimeFilter] = useState(() => { try { return localStorage.getItem("hgss-time-filter") || "all"; } catch { return "all"; } });
+  const setTime = t => { setTimeFilter(t); try { localStorage.setItem("hgss-time-filter", t); } catch {} };
   const [caught, setCaught]     = useState({});
   const [items, setItems]       = useState({});
   const [trainers, setTrainers] = useState({});
@@ -2980,6 +3050,10 @@ function HGSSTracker() {
       .hgss-fill-bar   { transition: width 0.55s cubic-bezier(.4,.8,.3,1), background 0.3s ease; }
       .hgss-hover-lift { transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease; }
       .hgss-hover-lift:hover { transform: translateY(-1px); filter: brightness(1.06); }
+      @keyframes hgss-twinkle {
+        0%,100% { opacity:0.15; transform:scale(1); }
+        50% { opacity:1; transform:scale(1.5); }
+      }
       @media (prefers-reduced-motion: reduce) {
         .hgss-wobble,.hgss-pop,.hgss-tick-in,.hgss-tab-in,.hgss-spotlight,.hgss-flash,.hgss-pulse-dot,
         .hgss-area-in,.hgss-section-done,.hgss-chip-pop,.hgss-sparkle-ring,.hgss-area-done-pulse { animation: none !important; }
@@ -3267,7 +3341,7 @@ function HGSSTracker() {
   if (!booted) return <div style={{ background:C.bg, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.text, fontFamily:"'DM Sans',system-ui,sans-serif" }}>Loading…</div>;
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh", background:`var(--tc-bg,${C.bg})`, fontFamily:"'DM Sans',system-ui,sans-serif", color:C.text, overflow:"hidden", "--hgss-accent":accent, transition:"background 0.5s" }}>
+    <div style={{ display:"flex", flexDirection:"column", height:"100vh", background:C.bg, fontFamily:"'DM Sans',system-ui,sans-serif", color:C.text, overflow:"hidden", "--hgss-accent":accent }}>
       {/* ── Top bar ── */}
       <div style={{
         background: version === "ss"
@@ -3377,13 +3451,15 @@ function HGSSTracker() {
         </div>
       </div>
 
+      <SkyBar timeFilter={timeFilter} setTime={setTime} />
+
       {/* Tab content — keyed wrapper for cross-tab stagger-in */}
       <div key={tab} className="hgss-tab-in" style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden" }}>
       {/* ── Tab: Pokédex ── */}
       {tab === "dex" && <DexTab caught={caught} toggleCaught={toggleCaught} dexFilter={dexFilter} setDexFilter={setDexFilter} dexSelected={dexSelected} setDexSelected={setDexSelected} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Areas ── */}
-      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} trades={trades} toggleTrade={toggleTrade} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} />}
+      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} trades={trades} toggleTrade={toggleTrade} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} timeFilter={timeFilter} setTime={setTime} />}
 
       {/* ── Tab: Dream Team ── */}
       {tab === "team" && <DreamTeamTab isMobile={isMobile} version={version} />}
@@ -5067,27 +5143,9 @@ function countItemsDone(area, areaId, itemsState) {
 }
 
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
-function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, trades, toggleTrade, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups }) {
+function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, trades, toggleTrade, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups, timeFilter, setTime }) {
   const isPassedPokemon = p  => !!(p.choiceGroup  && choiceGroups?.[p.choiceGroup]  && choiceGroups[p.choiceGroup]  !== p.choiceId);
   const isPassedItem    = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
-  const [timeFilter, setTimeFilter] = useState(() => {
-    try { return localStorage.getItem("hgss-time-filter") || "all"; } catch { return "all"; }
-  });
-  const setTime = t => { setTimeFilter(t); try { localStorage.setItem("hgss-time-filter", t); } catch {}; };
-  useEffect(() => {
-    const tc = TIME_COLORS[timeFilter];
-    const root = document.documentElement;
-    if (tc) {
-      root.style.setProperty("--tc-bg",     tc.bg);
-      root.style.setProperty("--tc-card",   tc.card);
-      root.style.setProperty("--tc-border", tc.border);
-    } else {
-      root.style.removeProperty("--tc-bg");
-      root.style.removeProperty("--tc-card");
-      root.style.removeProperty("--tc-border");
-    }
-    return () => { root.style.removeProperty("--tc-bg"); root.style.removeProperty("--tc-card"); root.style.removeProperty("--tc-border"); };
-  }, [timeFilter]);
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
   const groups = useMemo(() => groupByPart(visibleAreas), [visibleAreas]);
   const filtered = useMemo(() => search.trim() ? visibleAreas.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search, visibleAreas]);
@@ -5254,26 +5312,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
         <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, background:C.card, zIndex:1 }}>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
-            style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none", marginBottom:8 }} />
-          {/* Time-of-day filter */}
-          <div style={{ display:"flex", gap:4 }}>
-            {[["all","All",""],["morning","Morn","🌅"],["day","Day","☀️"],["night","Night","🌙"]].map(([v,label,icon]) => {
-              const tc = TIME_COLORS[v];
-              const isActive = timeFilter === v;
-              const activeColor  = tc ? tc.badge   : "var(--hgss-accent)";
-              const activeBg     = tc ? tc.badgeBg : "rgba(200,150,10,0.15)";
-              return (
-                <button key={v} onClick={() => setTime(v)} style={{
-                  flex:1, padding:"3px 0", fontSize:9, fontWeight:"700", letterSpacing:0.4,
-                  border:`1px solid ${isActive ? activeColor : C.border}`,
-                  borderRadius:4, cursor:"pointer", fontFamily:"'DM Sans',sans-serif",
-                  background: isActive ? activeBg : "transparent",
-                  color: isActive ? activeColor : C.muted,
-                  display:"flex", alignItems:"center", justifyContent:"center", gap:2,
-                }}>{icon && <span style={{ fontSize:10 }}>{icon}</span>}{label}</button>
-              );
-            })}
-          </div>
+            style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
         {filtered
           ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)

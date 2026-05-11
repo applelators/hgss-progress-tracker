@@ -7221,4 +7221,5 @@ if (typeof window !== 'undefined') {
   window.__HGSS_DEX_ID        = DEX_ID;
   window.__HGSS_NATIONAL_DEX_ID = NATIONAL_DEX_ID;
   window.__HGSS_ITEM_SPRITE   = ITEM_SPRITE;
+  window.__HGSS_TIME_COLORS   = TIME_COLORS;
 }

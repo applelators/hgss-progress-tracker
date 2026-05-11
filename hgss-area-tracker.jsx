@@ -164,7 +164,6 @@ const AREAS = [
     items:[
       {name:"Potion ×6",   hidden:false, note:"5 from Elm's aide + 1 on the spot Silver stood"},
       {name:"Pokégear",    hidden:false, note:"From Mom after receiving first partner Pokémon"},
-      {name:"Everstone",   hidden:false, note:"From Prof. Elm, after returning Mystery Egg (Togepi)"},
     ],
     trainers:[] },
 
@@ -228,8 +227,6 @@ const AREAS = [
       {name:"Pink Apricorn",   hidden:false, note:"E branch tree by Mr. Pokémon's house, daily"},
       {name:"Mystery Egg",     hidden:false, note:"From Mr. Pokémon"},
       {name:"Pokédex",         hidden:false, note:"From Prof. Oak at Mr. Pokémon's house"},
-      {name:"HP Up",           hidden:false, note:"From Youngster Joey after a rematch"},
-      {name:"Exp. Share",      hidden:false, note:"From Mr. Pokémon, exchange for Red Scale (post-game)"},
     ],
     trainers:[
       {class:"Youngster",  name:"Joey",  team:[{name:"Rattata",level:4}],
@@ -1007,6 +1004,15 @@ const AREAS = [
       {class:"Pokéfan",name:"Ruth",    team:[{name:"Pikachu",level:17}]},
     ] },
 
+  // ─── PART 2 RETURNS ────────────────────────────────────────────────────────
+  { part:"Part 2", id:"new-bark-town-return", name:"New Bark Town (Return)",
+    note:"Return after delivering the Mystery Egg to Professor Elm.",
+    pokemon:[],
+    items:[
+      {name:"Everstone", hidden:false, note:"From Prof. Elm after returning the Mystery Egg (Togepi)"},
+    ],
+    trainers:[] },
+
   // ─── PART 3 RETURNS ────────────────────────────────────────────────────────
   { part:"Part 3", id:"route-29-return", name:"Route 29 (Return)",
     note:"Return on any Thursday after earning the Zephyr Badge.",
@@ -1152,6 +1158,15 @@ const AREAS = [
     trainers:[] },
 
   // ─── RETURN VISITS (UNAUDITED) ─────────────────────────────────────────────
+  { part:"(Return Visits)", id:"route-30-return", name:"Route 30 (Return)",
+    note:"HP Up from Youngster Joey after a phone rematch. Exp. Share from Mr. Pokémon in exchange for the Red Scale (obtained at Lake of Rage).",
+    pokemon:[],
+    items:[
+      {name:"HP Up",      hidden:false, note:"From Youngster Joey after a phone rematch"},
+      {name:"Exp. Share", hidden:false, note:"From Mr. Pokémon, exchange for Red Scale (Lake of Rage)"},
+    ],
+    trainers:[] },
+
   { part:"(Return Visits)", id:"new-bark-town-return", name:"New Bark Town (Return)",
     note:"Return to Professor Elm at key late-game milestones.",
     pokemon:[],

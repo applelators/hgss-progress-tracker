@@ -1499,7 +1499,6 @@ const DT_CANDIDATES = [
   { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"] },
   { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
   { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Waterfall","Whirlpool"] },
-  { name:"Dragonite",   types:["Dragon","Flying"],  hms:["Fly","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Cut"] },
   { name:"Togekiss",    types:["Normal","Flying"],  hms:["Fly","Strength"] },
   { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly","Strength","Cut"] },
   { name:"Blissey",     types:["Normal"],           hms:["Strength"] },

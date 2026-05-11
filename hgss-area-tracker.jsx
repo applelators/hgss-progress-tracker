@@ -1730,11 +1730,12 @@ function scoreCandidateInContext(cand, fixedNames, version) {
     return c ? c.types : [];
   }));
   const newTypes = cand.types.filter(t => !fixedTypes.has(t)).length;
+  const dupTypes = cand.types.filter(t => fixedTypes.has(t)).length;
 
   const poolRank = DT_CANDIDATES.indexOf(cand);
   const poolScore = poolRank >= 0 ? (DT_CANDIDATES.length - poolRank) * 0.1 : 0;
 
-  return newHMs * 4 + newCov * 3 + newTypes * 2 - sharedWeak * 2 + poolScore;
+  return newHMs * 4 + newCov * 3 + newTypes * 2 - sharedWeak * 2 - dupTypes * 3 + poolScore;
 }
 
 // Build a team of 6: slot 0 = favorite, slot 1 = Tyranitar (unless Tyranitar-line),

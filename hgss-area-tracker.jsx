@@ -262,7 +262,6 @@ const AREAS = [
       {name:"Blk Apricorn", hidden:false, note:"SW side of pond tree, daily"},
       {name:"Poké Ball",    hidden:false, note:"S of pond and ledge"},
       {name:"Vs. Recorder", hidden:false, note:"From Lyra/Ethan in the gate"},
-      {name:"TM44 Rest",    hidden:false, note:"From man near the pond, after delivering Kenya the Spearow (from Route 35)"},
     ],
     trainers:[
       {class:"Bug Catcher", name:"Wade",
@@ -477,7 +476,6 @@ const AREAS = [
       {name:"Wht Apricorn", hidden:false, note:"Behind Kurt's house NW tree (daily)"},
       {name:"Fast Ball",    hidden:false, note:"From Kurt after chasing Team Rocket away"},
       {name:"TM89 U-turn",  hidden:false, note:"From Gym Leader Bugsy after defeating him"},
-      {name:"Charcoal",     hidden:false, note:"From Charcoal Kiln apprentice after returning Farfetch'd (Ilex Forest)"},
     ],
     trainers:[
       {class:"Rival", name:"Silver",
@@ -588,7 +586,6 @@ const AREAS = [
       {name:"TM12 Taunt",   hidden:false, note:"From woman in the gate"},
       {name:"Super Potion", hidden:true,  note:"SE of Day Care, N of grass patch in tree"},
       {name:"TM63 Embargo", hidden:false, note:"Northernmost grass patch"},
-      {name:"Leaf Stone",   hidden:false, note:"Sometimes from Picnicker Gina after phone registration"},
     ],
     trainers:[
       {class:"Youngster",  name:"Samuel",  team:[{name:"Rattata",level:7},{name:"Sandshrew",level:10},{name:"Spearow",level:8},{name:"Spearow",level:8}]},
@@ -743,7 +740,6 @@ const AREAS = [
       {name:"TM28 Dig",     hidden:false, note:"Outside fence, SW tree-lined path end"},
       {name:"Full Heal",    hidden:true,  note:"Two steps N of smaller S fountain"},
       {name:"Full Heal",    hidden:true,  note:"Outside fence, N of S gate narrow path"},
-      {name:"Nugget",       hidden:false, note:"Sometimes from Pokéfan Beverly after phone registration"},
       {name:"Sport Ball ×20",hidden:false,note:"Loaned for Bug-Catching Contest (unused balls returned)"},
       {name:"Sun Stone",    hidden:false, note:"1st place Bug Contest prize (pre-National Dex)"},
     ],
@@ -793,7 +789,6 @@ const AREAS = [
       {name:"HM06 Rock Smash",hidden:false, note:"From man E of Sudowoodo's location"},
       {name:"Hard Stone",     hidden:false, note:"From Arthur (Thu)"},
       {name:"Hyper Potion",   hidden:false, note:"NW of Sudowoodo's location, SW of grove"},
-      {name:"Fire Stone",     hidden:false, note:"Sometimes from School Kid Alan after phone registration"},
     ],
     trainers:[
       {class:"Psychic",    name:"Mark", team:[{name:"Abra",level:14},{name:"Abra",level:14},{name:"Kadabra",level:16}]},
@@ -947,7 +942,6 @@ const AREAS = [
     items:[
       {name:"Wht Apricorn",  hidden:false, note:"W of fenced section on lower middle path, tree (daily)"},
       {name:"Max Potion",    hidden:false, note:"SW of gate, between central and S paths"},
-      {name:"Thunder Stone", hidden:false, note:"Sometimes from Lass Dana after phone registration"},
     ],
     trainers:[
       {class:"Sailor",    name:"Harry",  team:[{name:"Wooper",level:20}]},
@@ -993,7 +987,6 @@ const AREAS = [
       {name:"PP Up",           hidden:true,  note:"N pasture clump of grass near W fence"},
       {name:"X Attack",        hidden:true,  note:"N pasture, NE of two trees"},
       {name:"Nugget",          hidden:true,  note:"S pasture southernmost clump of grass"},
-      {name:"Nugget",          hidden:false, note:"Sometimes from Pokéfan Derek after phone registration"},
       {name:"TM60 Drain Punch",hidden:false, note:"S pasture, corner next to silo"},
     ],
     trainers:[
@@ -1252,6 +1245,65 @@ const AREAS = [
     items:[
       {name:"Lax Incense", hidden:false, note:"SW area behind fence via Route 39"},
       {name:"HP Up",       hidden:true,  note:"SW area behind fence via Route 39"},
+    ],
+    trainers:[] },
+
+  // ─── PART 5 (AZALEA RETURN) ────────────────────────────────────────────────
+  { part:"Part 5", id:"azalea-town-return", name:"Azalea Town (Return)",
+    note:"Return to the Charcoal Kiln after rescuing both Farfetch'd in Ilex Forest.",
+    pokemon:[],
+    items:[
+      {name:"Charcoal", hidden:false, note:"From Charcoal Kiln apprentice after returning both Farfetch'd"},
+    ],
+    trainers:[] },
+
+  // ─── PART 7 (ROUTE 31 RETURN) ──────────────────────────────────────────────
+  { part:"Part 7", id:"route-31-return", name:"Route 31 (Return — Kenya)",
+    note:"Return after obtaining Kenya the Spearow from the gate guard on Route 35 and delivering it here.",
+    pokemon:[],
+    items:[
+      {name:"TM44 Rest", hidden:false, note:"From the man near the pond after receiving Kenya"},
+    ],
+    trainers:[] },
+
+  // ─── RETURN VISITS — PHONE REGISTRATION PRIZES ─────────────────────────────
+  { part:"(Return Visits)", id:"national-park-phone-return", name:"National Park (Return — Phone)",
+    note:"Register Pokéfan Beverly's number; she occasionally offers a Nugget when you visit.",
+    pokemon:[],
+    items:[
+      {name:"Nugget", hidden:false, note:"Sometimes from Pokéfan Beverly after phone registration"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"route-34-phone-return", name:"Route 34 (Return — Phone)",
+    note:"Register Picnicker Gina's number; she occasionally gives a Leaf Stone when you visit.",
+    pokemon:[],
+    items:[
+      {name:"Leaf Stone", hidden:false, note:"Sometimes from Picnicker Gina after phone registration"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"route-36-phone-return", name:"Route 36 (Return — Phone)",
+    note:"Register School Kid Alan's number; he occasionally gives a Fire Stone when you visit.",
+    pokemon:[],
+    items:[
+      {name:"Fire Stone", hidden:false, note:"Sometimes from School Kid Alan after phone registration"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"route-38-phone-return", name:"Route 38 (Return — Phone)",
+    note:"Register Lass Dana's number; she occasionally gives a Thunder Stone when you visit.",
+    pokemon:[],
+    items:[
+      {name:"Thunder Stone", hidden:false, note:"Sometimes from Lass Dana after phone registration"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"route-39-phone-return", name:"Route 39 (Return — Phone)",
+    note:"Register Pokéfan Derek's number; he occasionally gives a Nugget when you visit.",
+    pokemon:[],
+    items:[
+      {name:"Nugget", hidden:false, note:"Sometimes from Pokéfan Derek after phone registration"},
     ],
     trainers:[] },
 ];

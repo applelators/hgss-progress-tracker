@@ -1107,7 +1107,7 @@ function _locPct(loc, ver) {
   if (m) return parseRatePct(ver === "hg" ? m[1] : m[2]);
   return parseRatePct(loc.rate);
 }
-const BEST_AREA_MAP = { fr:{}, lg:{} };
+const BEST_AREA_MAP = { hg:{}, ss:{} };
 for (const [name, locs] of Object.entries(LOCATION_MAP)) {
   for (const ver of ["hg","ss"]) {
     let best = null;

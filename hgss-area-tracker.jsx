@@ -10,135 +10,135 @@ function useIsMobile() {
   return mobile;
 }
 
-// ─── JOHTO DEX (251) ─────────────────────────────────────────────────────────
+// ─── JOHTO DEX (256) ─────────────────────────────────────────────────────────
+// id = National Pokédex number (used for sprites)
+// johtoId = Johto regional number (used for display)
 const DEX = [
-  // Gen I — Kanto (obtainable in HGSS via Kanto post-game, trade, or Safari Zone)
-  {id:1,  name:"Bulbasaur"},  {id:2,  name:"Ivysaur"},    {id:3,  name:"Venusaur"},
-  {id:4,  name:"Charmander"}, {id:5,  name:"Charmeleon"}, {id:6,  name:"Charizard"},
-  {id:7,  name:"Squirtle"},   {id:8,  name:"Wartortle"},  {id:9,  name:"Blastoise"},
-  {id:10, name:"Caterpie"},   {id:11, name:"Metapod"},    {id:12, name:"Butterfree"},
-  {id:13, name:"Weedle"},     {id:14, name:"Kakuna"},     {id:15, name:"Beedrill"},
-  {id:16, name:"Pidgey"},     {id:17, name:"Pidgeotto"},  {id:18, name:"Pidgeot"},
-  {id:19, name:"Rattata"},    {id:20, name:"Raticate"},
-  {id:21, name:"Spearow"},    {id:22, name:"Fearow"},
-  {id:23, name:"Ekans",    hgOnly:true}, {id:24, name:"Arbok",    hgOnly:true},
-  {id:25, name:"Pikachu"},    {id:26, name:"Raichu"},
-  {id:27, name:"Sandshrew", ssOnly:true}, {id:28, name:"Sandslash", ssOnly:true},
-  {id:29, name:"Nidoran\u2640"},  {id:30, name:"Nidorina"},   {id:31, name:"Nidoqueen"},
-  {id:32, name:"Nidoran\u2642"},  {id:33, name:"Nidorino"},   {id:34, name:"Nidoking"},
-  {id:35, name:"Clefairy"},   {id:36, name:"Clefable"},
-  {id:37, name:"Vulpix",  ssOnly:true}, {id:38, name:"Ninetales", ssOnly:true},
-  {id:39, name:"Jigglypuff"}, {id:40, name:"Wigglytuff"},
-  {id:41, name:"Zubat"},      {id:42, name:"Golbat"},
-  {id:43, name:"Oddish",  ssOnly:true}, {id:44, name:"Gloom",   ssOnly:true}, {id:45, name:"Vileplume", ssOnly:true},
-  {id:46, name:"Paras"},      {id:47, name:"Parasect"},
-  {id:48, name:"Venonat"},    {id:49, name:"Venomoth"},
-  {id:50, name:"Diglett"},    {id:51, name:"Dugtrio"},
-  {id:52, name:"Meowth", ssOnly:true},  {id:53, name:"Persian", ssOnly:true},
-  {id:54, name:"Psyduck"},    {id:55, name:"Golduck"},
-  {id:56, name:"Mankey",  hgOnly:true}, {id:57, name:"Primeape", hgOnly:true},
-  {id:58, name:"Growlithe", hgOnly:true}, {id:59, name:"Arcanine", hgOnly:true},
-  {id:60, name:"Poliwag"},    {id:61, name:"Poliwhirl"},  {id:62, name:"Poliwrath"},
-  {id:63, name:"Abra"},       {id:64, name:"Kadabra"},    {id:65, name:"Alakazam"},
-  {id:66, name:"Machop"},     {id:67, name:"Machoke"},    {id:68, name:"Machamp"},
-  {id:69, name:"Bellsprout", hgOnly:true}, {id:70, name:"Weepinbell", hgOnly:true}, {id:71, name:"Victreebel", hgOnly:true},
-  {id:72, name:"Tentacool"},  {id:73, name:"Tentacruel"},
-  {id:74, name:"Geodude"},    {id:75, name:"Graveler"},   {id:76, name:"Golem"},
-  {id:77, name:"Ponyta"},     {id:78, name:"Rapidash"},
-  {id:79, name:"Slowpoke"},   {id:80, name:"Slowbro"},
-  {id:81, name:"Magnemite"},  {id:82, name:"Magneton"},
-  {id:83, name:"Farfetch\u2019d"},
-  {id:84, name:"Doduo"},      {id:85, name:"Dodrio"},
-  {id:86, name:"Seel"},       {id:87, name:"Dewgong"},
-  {id:88, name:"Grimer"},     {id:89, name:"Muk"},
-  {id:90, name:"Shellder"},   {id:91, name:"Cloyster"},
-  {id:92, name:"Gastly"},     {id:93, name:"Haunter"},    {id:94, name:"Gengar"},
-  {id:95, name:"Onix"},
-  {id:96, name:"Drowzee"},    {id:97, name:"Hypno"},
-  {id:98, name:"Krabby"},     {id:99, name:"Kingler"},
-  {id:100,name:"Voltorb"},    {id:101,name:"Electrode"},
-  {id:102,name:"Exeggcute"},  {id:103,name:"Exeggutor"},
-  {id:104,name:"Cubone"},     {id:105,name:"Marowak"},
-  {id:106,name:"Hitmonlee"},  {id:107,name:"Hitmonchan"},
-  {id:108,name:"Lickitung"},
-  {id:109,name:"Koffing"},    {id:110,name:"Weezing"},
-  {id:111,name:"Rhyhorn"},    {id:112,name:"Rhydon"},
-  {id:113,name:"Chansey"},    {id:114,name:"Tangela"},    {id:115,name:"Kangaskhan"},
-  {id:116,name:"Horsea"},     {id:117,name:"Seadra"},
-  {id:118,name:"Goldeen"},    {id:119,name:"Seaking"},
-  {id:120,name:"Staryu"},     {id:121,name:"Starmie"},
-  {id:122,name:"Mr. Mime"},   {id:123,name:"Scyther", hgOnly:true},
-  {id:124,name:"Jynx"},
-  {id:125,name:"Electabuzz", hgOnly:true}, {id:126,name:"Magmar", ssOnly:true},
-  {id:127,name:"Pinsir",  ssOnly:true},
-  {id:128,name:"Tauros"},
-  {id:129,name:"Magikarp"},   {id:130,name:"Gyarados"},
-  {id:131,name:"Lapras"},     {id:132,name:"Ditto"},
-  {id:133,name:"Eevee"},      {id:134,name:"Vaporeon"},   {id:135,name:"Jolteon"},  {id:136,name:"Flareon"},
-  {id:137,name:"Porygon"},
-  {id:138,name:"Omanyte"},    {id:139,name:"Omastar"},
-  {id:140,name:"Kabuto"},     {id:141,name:"Kabutops"},
-  {id:142,name:"Aerodactyl"}, {id:143,name:"Snorlax"},
-  {id:144,name:"Articuno"},   {id:145,name:"Zapdos"},     {id:146,name:"Moltres"},
-  {id:147,name:"Dratini"},    {id:148,name:"Dragonair"},  {id:149,name:"Dragonite"},
-  {id:150,name:"Mewtwo"},     {id:151,name:"Mew",event:true},
-  // Gen II — Johto (the main game region)
-  {id:152,name:"Chikorita"},  {id:153,name:"Bayleef"},    {id:154,name:"Meganium"},
-  {id:155,name:"Cyndaquil"},  {id:156,name:"Quilava"},    {id:157,name:"Typhlosion"},
-  {id:158,name:"Totodile"},   {id:159,name:"Croconaw"},   {id:160,name:"Feraligatr"},
-  {id:161,name:"Sentret"},    {id:162,name:"Furret"},
-  {id:163,name:"Hoothoot"},   {id:164,name:"Noctowl"},
-  {id:165,name:"Ledyba",  ssOnly:true}, {id:166,name:"Ledian",  ssOnly:true},
-  {id:167,name:"Spinarak", hgOnly:true}, {id:168,name:"Ariados", hgOnly:true},
-  {id:169,name:"Crobat"},
-  {id:170,name:"Chinchou"},   {id:171,name:"Lanturn"},
-  {id:172,name:"Pichu"},
-  {id:173,name:"Cleffa"},     {id:174,name:"Igglybuff"},
-  {id:175,name:"Togepi"},     {id:176,name:"Togetic"},
-  {id:177,name:"Natu"},       {id:178,name:"Xatu"},
-  {id:179,name:"Mareep"},     {id:180,name:"Flaaffy"},    {id:181,name:"Ampharos"},
-  {id:182,name:"Bellossom"},
-  {id:183,name:"Marill",  ssOnly:true}, {id:184,name:"Azumarill", ssOnly:true},
-  {id:185,name:"Sudowoodo"},  {id:186,name:"Politoed"},
-  {id:187,name:"Hoppip"},     {id:188,name:"Skiploom"},   {id:189,name:"Jumpluff"},
-  {id:190,name:"Aipom"},
-  {id:191,name:"Sunkern"},    {id:192,name:"Sunflora"},
-  {id:193,name:"Yanma"},
-  {id:194,name:"Wooper"},     {id:195,name:"Quagsire"},
-  {id:196,name:"Espeon"},     {id:197,name:"Umbreon"},
-  {id:198,name:"Murkrow", hgOnly:true},
-  {id:199,name:"Slowking"},
-  {id:200,name:"Misdreavus", ssOnly:true},
-  {id:201,name:"Unown"},
-  {id:202,name:"Wobbuffet"},  {id:203,name:"Girafarig"},
-  {id:204,name:"Pineco"},     {id:205,name:"Forretress"},
-  {id:206,name:"Dunsparce"},
-  {id:207,name:"Gligar",  hgOnly:true},
-  {id:208,name:"Steelix"},
-  {id:209,name:"Snubbull"},   {id:210,name:"Granbull"},
-  {id:211,name:"Qwilfish"},   {id:212,name:"Scizor"},
-  {id:213,name:"Shuckle"},    {id:214,name:"Heracross"},
-  {id:215,name:"Sneasel"},
-  {id:216,name:"Teddiursa", hgOnly:true}, {id:217,name:"Ursaring", hgOnly:true},
-  {id:218,name:"Slugma"},     {id:219,name:"Magcargo"},
-  {id:220,name:"Swinub"},     {id:221,name:"Piloswine"},
-  {id:222,name:"Corsola"},
-  {id:223,name:"Remoraid"},   {id:224,name:"Octillery"},
-  {id:225,name:"Delibird", ssOnly:true},
-  {id:226,name:"Mantine",  hgOnly:true},
-  {id:227,name:"Skarmory", ssOnly:true},
-  {id:228,name:"Houndour", ssOnly:true}, {id:229,name:"Houndoom", ssOnly:true},
-  {id:230,name:"Kingdra"},
-  {id:231,name:"Phanpy",  hgOnly:true}, {id:232,name:"Donphan", hgOnly:true},
-  {id:233,name:"Porygon2"},   {id:234,name:"Stantler"},
-  {id:235,name:"Smeargle"},   {id:236,name:"Tyrogue"},
-  {id:237,name:"Hitmontop"},  {id:238,name:"Smoochum"},
-  {id:239,name:"Elekid"},     {id:240,name:"Magby"},
-  {id:241,name:"Miltank"},    {id:242,name:"Blissey"},
-  {id:243,name:"Raikou",  warn:true}, {id:244,name:"Entei",  warn:true}, {id:245,name:"Suicune", warn:true},
-  {id:246,name:"Larvitar"},   {id:247,name:"Pupitar"},    {id:248,name:"Tyranitar"},
-  {id:249,name:"Lugia",   warn:true}, {id:250,name:"Ho-Oh",  warn:true},
-  {id:251,name:"Celebi",  warn:true, event:true},
+  // ── Johto starters ──────────────────────────────────────────────────────
+  {johtoId:1,  id:152,name:"Chikorita"},  {johtoId:2,  id:153,name:"Bayleef"},    {johtoId:3,  id:154,name:"Meganium"},
+  {johtoId:4,  id:155,name:"Cyndaquil"}, {johtoId:5,  id:156,name:"Quilava"},    {johtoId:6,  id:157,name:"Typhlosion"},
+  {johtoId:7,  id:158,name:"Totodile"},  {johtoId:8,  id:159,name:"Croconaw"},   {johtoId:9,  id:160,name:"Feraligatr"},
+  // ── Early routes ─────────────────────────────────────────────────────────
+  {johtoId:10, id:16, name:"Pidgey"},    {johtoId:11, id:17, name:"Pidgeotto"},  {johtoId:12, id:18, name:"Pidgeot"},
+  {johtoId:13, id:21, name:"Spearow"},   {johtoId:14, id:22, name:"Fearow"},
+  {johtoId:15, id:163,name:"Hoothoot"},  {johtoId:16, id:164,name:"Noctowl"},
+  {johtoId:17, id:19, name:"Rattata"},   {johtoId:18, id:20, name:"Raticate"},
+  {johtoId:19, id:161,name:"Sentret"},   {johtoId:20, id:162,name:"Furret"},
+  {johtoId:21, id:172,name:"Pichu"},     {johtoId:22, id:25, name:"Pikachu"},    {johtoId:23, id:26, name:"Raichu"},
+  {johtoId:24, id:10, name:"Caterpie"},  {johtoId:25, id:11, name:"Metapod"},    {johtoId:26, id:12, name:"Butterfree"},
+  {johtoId:27, id:13, name:"Weedle"},    {johtoId:28, id:14, name:"Kakuna"},     {johtoId:29, id:15, name:"Beedrill"},
+  {johtoId:30, id:165,name:"Ledyba",   ssOnly:true}, {johtoId:31, id:166,name:"Ledian",   ssOnly:true},
+  {johtoId:32, id:167,name:"Spinarak", hgOnly:true}, {johtoId:33, id:168,name:"Ariados",  hgOnly:true},
+  {johtoId:34, id:74, name:"Geodude"},   {johtoId:35, id:75, name:"Graveler"},   {johtoId:36, id:76, name:"Golem"},
+  {johtoId:37, id:41, name:"Zubat"},     {johtoId:38, id:42, name:"Golbat"},     {johtoId:39, id:169,name:"Crobat"},
+  {johtoId:40, id:173,name:"Cleffa"},    {johtoId:41, id:35, name:"Clefairy"},   {johtoId:42, id:36, name:"Clefable"},
+  {johtoId:43, id:174,name:"Igglybuff"}, {johtoId:44, id:39, name:"Jigglypuff"},{johtoId:45, id:40, name:"Wigglytuff"},
+  {johtoId:46, id:175,name:"Togepi"},    {johtoId:47, id:176,name:"Togetic"},
+  {johtoId:48, id:27, name:"Sandshrew", ssOnly:true}, {johtoId:49, id:28, name:"Sandslash", ssOnly:true},
+  {johtoId:50, id:23, name:"Ekans",    hgOnly:true},  {johtoId:51, id:24, name:"Arbok",    hgOnly:true},
+  // ── Johto mid-game ────────────────────────────────────────────────────────
+  {johtoId:52, id:206,name:"Dunsparce"},
+  {johtoId:53, id:179,name:"Mareep"},    {johtoId:54, id:180,name:"Flaaffy"},    {johtoId:55, id:181,name:"Ampharos"},
+  {johtoId:56, id:194,name:"Wooper"},    {johtoId:57, id:195,name:"Quagsire"},
+  {johtoId:58, id:92, name:"Gastly"},    {johtoId:59, id:93, name:"Haunter"},    {johtoId:60, id:94, name:"Gengar"},
+  {johtoId:61, id:201,name:"Unown"},
+  {johtoId:62, id:95, name:"Onix"},      {johtoId:63, id:208,name:"Steelix"},
+  {johtoId:64, id:69, name:"Bellsprout",hgOnly:true}, {johtoId:65, id:70, name:"Weepinbell",hgOnly:true}, {johtoId:66, id:71, name:"Victreebel",hgOnly:true},
+  {johtoId:67, id:187,name:"Hoppip"},    {johtoId:68, id:188,name:"Skiploom"},   {johtoId:69, id:189,name:"Jumpluff"},
+  {johtoId:70, id:46, name:"Paras"},     {johtoId:71, id:47, name:"Parasect"},
+  {johtoId:72, id:60, name:"Poliwag"},   {johtoId:73, id:61, name:"Poliwhirl"},  {johtoId:74, id:62, name:"Poliwrath"},
+  {johtoId:75, id:186,name:"Politoed"},
+  {johtoId:76, id:129,name:"Magikarp"},  {johtoId:77, id:130,name:"Gyarados"},
+  {johtoId:78, id:118,name:"Goldeen"},   {johtoId:79, id:119,name:"Seaking"},
+  {johtoId:80, id:79, name:"Slowpoke"},  {johtoId:81, id:80, name:"Slowbro"},    {johtoId:82, id:199,name:"Slowking"},
+  {johtoId:83, id:43, name:"Oddish",   ssOnly:true}, {johtoId:84, id:44, name:"Gloom",    ssOnly:true}, {johtoId:85, id:45, name:"Vileplume", ssOnly:true},
+  {johtoId:86, id:182,name:"Bellossom"},
+  {johtoId:87, id:96, name:"Drowzee"},   {johtoId:88, id:97, name:"Hypno"},
+  {johtoId:89, id:63, name:"Abra"},      {johtoId:90, id:64, name:"Kadabra"},    {johtoId:91, id:65, name:"Alakazam"},
+  {johtoId:92, id:132,name:"Ditto"},
+  {johtoId:93, id:204,name:"Pineco"},    {johtoId:94, id:205,name:"Forretress"},
+  {johtoId:95, id:29, name:"Nidoran♀"}, {johtoId:96, id:30, name:"Nidorina"},    {johtoId:97, id:31, name:"Nidoqueen"},
+  {johtoId:98, id:32, name:"Nidoran♂"}, {johtoId:99, id:33, name:"Nidorino"},    {johtoId:100,id:34, name:"Nidoking"},
+  {johtoId:101,id:193,name:"Yanma"},     {johtoId:102,id:469,name:"Yanmega"},
+  {johtoId:103,id:191,name:"Sunkern"},   {johtoId:104,id:192,name:"Sunflora"},
+  {johtoId:105,id:102,name:"Exeggcute"},{johtoId:106,id:103,name:"Exeggutor"},
+  {johtoId:107,id:185,name:"Sudowoodo"},{johtoId:108,id:202,name:"Wobbuffet"},
+  {johtoId:109,id:48, name:"Venonat"},   {johtoId:110,id:49, name:"Venomoth"},
+  {johtoId:111,id:123,name:"Scyther",  hgOnly:true}, {johtoId:112,id:212,name:"Scizor"},
+  {johtoId:113,id:127,name:"Pinsir",   ssOnly:true}, {johtoId:114,id:214,name:"Heracross"},
+  {johtoId:115,id:109,name:"Koffing"},   {johtoId:116,id:110,name:"Weezing"},
+  {johtoId:117,id:88, name:"Grimer"},    {johtoId:118,id:89, name:"Muk"},
+  {johtoId:119,id:81, name:"Magnemite"}, {johtoId:120,id:82, name:"Magneton"},
+  {johtoId:121,id:100,name:"Voltorb"},   {johtoId:122,id:101,name:"Electrode"},
+  {johtoId:123,id:190,name:"Aipom"},     {johtoId:124,id:424,name:"Ambipom"},
+  {johtoId:125,id:209,name:"Snubbull"},  {johtoId:126,id:210,name:"Granbull"},
+  {johtoId:127,id:37, name:"Vulpix",   ssOnly:true}, {johtoId:128,id:38, name:"Ninetales", ssOnly:true},
+  {johtoId:129,id:58, name:"Growlithe", hgOnly:true},{johtoId:130,id:59, name:"Arcanine",  hgOnly:true},
+  {johtoId:131,id:234,name:"Stantler"},
+  {johtoId:132,id:183,name:"Marill",   ssOnly:true}, {johtoId:133,id:184,name:"Azumarill", ssOnly:true},
+  {johtoId:134,id:50, name:"Diglett"},   {johtoId:135,id:51, name:"Dugtrio"},
+  {johtoId:136,id:56, name:"Mankey",   hgOnly:true}, {johtoId:137,id:57, name:"Primeape", hgOnly:true},
+  {johtoId:138,id:52, name:"Meowth",   ssOnly:true}, {johtoId:139,id:53, name:"Persian",  ssOnly:true},
+  {johtoId:140,id:54, name:"Psyduck"},   {johtoId:141,id:55, name:"Golduck"},
+  {johtoId:142,id:66, name:"Machop"},    {johtoId:143,id:67, name:"Machoke"},    {johtoId:144,id:68, name:"Machamp"},
+  {johtoId:145,id:236,name:"Tyrogue"},   {johtoId:146,id:106,name:"Hitmonlee"},  {johtoId:147,id:107,name:"Hitmonchan"}, {johtoId:148,id:237,name:"Hitmontop"},
+  {johtoId:149,id:203,name:"Girafarig"}, {johtoId:150,id:128,name:"Tauros"},
+  {johtoId:151,id:241,name:"Miltank"},
+  {johtoId:152,id:240,name:"Magby"},     {johtoId:153,id:126,name:"Magmar"},
+  {johtoId:154,id:238,name:"Smoochum"},  {johtoId:155,id:124,name:"Jynx"},
+  {johtoId:156,id:239,name:"Elekid"},    {johtoId:157,id:125,name:"Electabuzz"},
+  {johtoId:158,id:122,name:"Mr. Mime"},  {johtoId:159,id:235,name:"Smeargle"},
+  {johtoId:160,id:83, name:"Farfetch’d"},
+  {johtoId:161,id:177,name:"Natu"},      {johtoId:162,id:178,name:"Xatu"},
+  {johtoId:163,id:211,name:"Qwilfish"},
+  {johtoId:164,id:72, name:"Tentacool"}, {johtoId:165,id:73, name:"Tentacruel"},
+  {johtoId:166,id:98, name:"Krabby"},    {johtoId:167,id:99, name:"Kingler"},
+  {johtoId:168,id:213,name:"Shuckle"},
+  {johtoId:169,id:120,name:"Staryu"},    {johtoId:170,id:121,name:"Starmie"},
+  {johtoId:171,id:90, name:"Shellder"},  {johtoId:172,id:91, name:"Cloyster"},
+  {johtoId:173,id:222,name:"Corsola"},   {johtoId:174,id:223,name:"Remoraid"},   {johtoId:175,id:224,name:"Octillery"},
+  {johtoId:176,id:170,name:"Chinchou"},  {johtoId:177,id:171,name:"Lanturn"},
+  {johtoId:178,id:86, name:"Seel"},      {johtoId:179,id:87, name:"Dewgong"},
+  {johtoId:180,id:108,name:"Lickitung"}, {johtoId:181,id:463,name:"Lickilicky"},
+  {johtoId:182,id:114,name:"Tangela"},   {johtoId:183,id:465,name:"Tangrowth"},
+  {johtoId:184,id:133,name:"Eevee"},
+  {johtoId:185,id:134,name:"Vaporeon"},  {johtoId:186,id:135,name:"Jolteon"},    {johtoId:187,id:136,name:"Flareon"},
+  {johtoId:188,id:196,name:"Espeon"},    {johtoId:189,id:197,name:"Umbreon"},
+  {johtoId:190,id:116,name:"Horsea"},    {johtoId:191,id:117,name:"Seadra"},     {johtoId:192,id:230,name:"Kingdra"},
+  {johtoId:193,id:207,name:"Gligar",   hgOnly:true},
+  {johtoId:194,id:225,name:"Delibird", ssOnly:true},
+  {johtoId:195,id:220,name:"Swinub"},    {johtoId:196,id:221,name:"Piloswine"},  {johtoId:197,id:473,name:"Mamoswine"},
+  {johtoId:198,id:216,name:"Teddiursa", hgOnly:true},{johtoId:199,id:217,name:"Ursaring",  hgOnly:true},
+  {johtoId:200,id:231,name:"Phanpy",   hgOnly:true}, {johtoId:201,id:232,name:"Donphan",  hgOnly:true},
+  {johtoId:202,id:226,name:"Mantine",  hgOnly:true}, {johtoId:203,id:227,name:"Skarmory", ssOnly:true},
+  {johtoId:204,id:84, name:"Doduo"},     {johtoId:205,id:85, name:"Dodrio"},
+  {johtoId:206,id:77, name:"Ponyta"},    {johtoId:207,id:78, name:"Rapidash"},
+  {johtoId:208,id:104,name:"Cubone"},    {johtoId:209,id:105,name:"Marowak"},    {johtoId:210,id:115,name:"Kangaskhan"},
+  {johtoId:211,id:111,name:"Rhyhorn"},   {johtoId:212,id:112,name:"Rhydon"},
+  {johtoId:213,id:198,name:"Murkrow",  hgOnly:true},
+  {johtoId:214,id:228,name:"Houndour", ssOnly:true}, {johtoId:215,id:229,name:"Houndoom", ssOnly:true},
+  {johtoId:216,id:218,name:"Slugma"},    {johtoId:217,id:219,name:"Magcargo"},
+  {johtoId:218,id:215,name:"Sneasel"},   {johtoId:219,id:200,name:"Misdreavus", ssOnly:true},
+  {johtoId:220,id:137,name:"Porygon"},   {johtoId:221,id:233,name:"Porygon2"},
+  {johtoId:222,id:113,name:"Chansey"},   {johtoId:223,id:242,name:"Blissey"},
+  {johtoId:224,id:131,name:"Lapras"},
+  {johtoId:225,id:138,name:"Omanyte"},   {johtoId:226,id:139,name:"Omastar"},
+  {johtoId:227,id:140,name:"Kabuto"},    {johtoId:228,id:141,name:"Kabutops"},
+  {johtoId:229,id:142,name:"Aerodactyl"},{johtoId:230,id:143,name:"Snorlax"},
+  // ── Kanto starters (post-game via Prof. Oak) ─────────────────────────────
+  {johtoId:231,id:1,  name:"Bulbasaur"}, {johtoId:232,id:2,  name:"Ivysaur"},    {johtoId:233,id:3,  name:"Venusaur"},
+  {johtoId:234,id:4,  name:"Charmander"},{johtoId:235,id:5,  name:"Charmeleon"}, {johtoId:236,id:6,  name:"Charizard"},
+  {johtoId:237,id:7,  name:"Squirtle"},  {johtoId:238,id:8,  name:"Wartortle"},  {johtoId:239,id:9,  name:"Blastoise"},
+  // ── Legendaries ───────────────────────────────────────────────────────────
+  {johtoId:240,id:144,name:"Articuno"},  {johtoId:241,id:145,name:"Zapdos"},     {johtoId:242,id:146,name:"Moltres"},
+  {johtoId:243,id:243,name:"Raikou",  warn:true},{johtoId:244,id:244,name:"Entei",   warn:true},{johtoId:245,id:245,name:"Suicune", warn:true},
+  {johtoId:246,id:147,name:"Dratini"},   {johtoId:247,id:148,name:"Dragonair"},  {johtoId:248,id:149,name:"Dragonite"},
+  {johtoId:249,id:246,name:"Larvitar"},  {johtoId:250,id:247,name:"Pupitar"},    {johtoId:251,id:248,name:"Tyranitar"},
+  {johtoId:252,id:249,name:"Lugia",   warn:true},{johtoId:253,id:250,name:"Ho-Oh",   warn:true},
+  {johtoId:254,id:150,name:"Mewtwo"},
+  {johtoId:255,id:151,name:"Mew",     warn:true,event:true},
+  {johtoId:256,id:251,name:"Celebi",  warn:true,event:true},
+];
 ];
 
 // ─── NATIONAL DEX (Gen II/III/IV obtainable in HGSS) — Phase 2: update ──────
@@ -2574,6 +2574,7 @@ const AUDITED_PARTS = new Set(["Part 1","Part 2","Part 3","Part 4","Part 5","Par
 const CATCH_RATE_DATA = []; // TODO: Add HGSS base catch rates
 // ─── SPRITES ─────────────────────────────────────────────────────────────────
 const DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.id]));
+const JOHTO_DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.johtoId]));
 const NATIONAL_DEX_ID = Object.fromEntries(NATIONAL_DEX.map(p => [p.name, p.id]));
 const allDexId = name => DEX_ID[name] || NATIONAL_DEX_ID[name] || null;
 const pokeSpriteUrl = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
@@ -4658,7 +4659,7 @@ function HuntTab({ version, isMobile }) {
 
   // All Pokémon that appear in any area, ordered by dex number
   const allNames = useMemo(() =>
-    Object.keys(LOCATION_MAP).sort((a, b) => (DEX_ID[a] || 999) - (DEX_ID[b] || 999)),
+    Object.keys(LOCATION_MAP).sort((a, b) => (JOHTO_DEX_ID[a] || 999) - (JOHTO_DEX_ID[b] || 999)),
     []
   );
   const filteredNames = search.trim()
@@ -5007,7 +5008,7 @@ function NationalDexPanel({ caught, setDexSelected, version }) {
                   <img src={pokeSpriteUrl(p.id)} alt={p.name}
                     style={{ width:36, height:36, imageRendering:"pixelated", display:"block", margin:"0 auto",
                              opacity:isCaught?1:0.7, filter:isCaught?"none":"brightness(0)" }} />
-                  <div style={{ fontSize:8, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(p.id).padStart(3,"0")}</div>
+                  <div style={{ fontSize:8, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(p.johtoId).padStart(3,"0")}</div>
                   <div style={{ fontSize:9, color:isCaught?C.green:C.text, fontWeight:isCaught?"600":"400", lineHeight:1.2, wordBreak:"break-word" }}>{p.name}</div>
                 </div>
               );
@@ -5107,7 +5108,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                   {p.ssOnly && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:C.ssSilver, fontWeight:"600" }}>SS</div>}
                   {p.event  && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:"#a87acc", fontWeight:"600" }}>✦</div>}
                   <img src={pokeSpriteUrl(p.id)} alt={p.name} style={{ width:48, height:48, imageRendering:"pixelated", display:"block", margin:"0 auto", filter: isCaught ? "none" : "grayscale(1)" }} />
-                  <div style={{ fontSize:9, color:C.muted, marginBottom:1, fontFamily:"'Courier New',monospace" }}>#{String(p.id).padStart(3,"0")}</div>
+                  <div style={{ fontSize:9, color:C.muted, marginBottom:1, fontFamily:"'Courier New',monospace" }}>#{String(p.johtoId).padStart(3,"0")}</div>
                   <div style={{ fontSize:10, color: isCaught ? C.green : C.text, fontWeight:isCaught?"600":"400", lineHeight:1.3, wordBreak:"break-word" }}>{p.name}</div>
                   {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[p.name]]; return cs ? <div style={{ fontSize:8, fontWeight:"700", color:cs.color, marginTop:1, letterSpacing:"0.02em" }}>{cs.label.toUpperCase()}</div> : null; })()}
                   {TRADE_EVO_SET.has(p.name) && <div style={{ fontSize:8, fontWeight:"700", color:"#c89832", marginTop:1, letterSpacing:"0.02em" }}>TRADE EVO</div>}
@@ -5151,7 +5152,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                 style={{ width:40, height:40, imageRendering:"pixelated", flexShrink:0,
                          filter: isCaught ? "none" : "grayscale(1)", opacity: isCaught ? 1 : 0.6 }} />
               <div style={{ flex:1, minWidth:0 }}>
-                <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace", lineHeight:1 }}>#{String(selected.id).padStart(3,"0")}</div>
+                <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace", lineHeight:1 }}>#{String(selected.johtoId).padStart(3,"0")}</div>
                 <div style={{ fontSize:15, fontWeight:"700", color: isCaught ? C.green : C.text, lineHeight:1.2, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{selected.name}</div>
                 {types && (
                   <div style={{ display:"flex", gap:4, marginTop:3, flexWrap:"wrap" }}>
@@ -5329,7 +5330,7 @@ function DexDetail({ selected, caught, locs, toggleCaught, compact }) {
       {!compact && (
         <div style={{ marginBottom:14 }}>
           <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:80, height:80, imageRendering:"pixelated", display:"block", margin:"0 auto 8px" }} />
-          <div style={{ fontSize:10, color:C.muted, marginBottom:2, fontFamily:"'Courier New',monospace" }}>#{String(selected.id).padStart(3,"0")}</div>
+          <div style={{ fontSize:10, color:C.muted, marginBottom:2, fontFamily:"'Courier New',monospace" }}>#{String(selected.johtoId).padStart(3,"0")}</div>
           <div style={{ fontSize:17, fontWeight:"700", color: isCaught ? C.green : C.text }}>{selected.name}</div>
           {selected.hgOnly && <div style={{ fontSize:10, color:C.hgGold, marginTop:4, fontWeight:"500" }}>HeartGold exclusive</div>}
           {selected.ssOnly && <div style={{ fontSize:10, color:C.ssSilver, marginTop:4, fontWeight:"500" }}>SoulSilver exclusive</div>}

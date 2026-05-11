@@ -1673,13 +1673,13 @@ function getTimeOfDay() {
   return "night";                            // 20:00–3:59
 }
 const TIME_COLORS = {
-  morning:{ badge:"#7ec8c8", badgeBg:"rgba(126,200,200,0.13)", icon:"🌅",
+  morning:{ badge:"#7ec8c8", badgeBg:"rgba(126,200,200,0.13)", icon:"icons/60px-Morning_Icon_BDSP.png",
     skyGrad:"linear-gradient(180deg,#080e14 0%,#0a1c22 25%,#0e2a2e 55%,#123636 100%)",
     bodyLeft:15, bodyType:"sun", bodyColor:"#a8d4d0", bodyGlow:"rgba(130,200,195,0.45)", bodyGlowOuter:"rgba(130,200,195,0.12)" },
-  day:    { badge:"#7aaed4", badgeBg:"rgba(122,174,212,0.13)", icon:"☀️",
+  day:    { badge:"#7aaed4", badgeBg:"rgba(122,174,212,0.13)", icon:"icons/60px-Day_Icon_BDSP.png",
     skyGrad:"linear-gradient(180deg,#08101a 0%,#0c1c30 25%,#142844 55%,#1a3054 100%)",
     bodyLeft:50, bodyType:"sun", bodyColor:"#a0bcd8", bodyGlow:"rgba(130,170,215,0.45)", bodyGlowOuter:"rgba(130,170,215,0.12)" },
-  night:  { badge:"#9080c8", badgeBg:"rgba(144,128,200,0.13)", icon:"🌙",
+  night:  { badge:"#9080c8", badgeBg:"rgba(144,128,200,0.13)", icon:"icons/60px-Night_Icon_BDSP.png",
     skyGrad:"linear-gradient(180deg,#070610 0%,#0d0820 30%,#140e2e 60%,#181436 100%)",
     bodyLeft:82, bodyType:"moon", bodyColor:"#c0b8d8", bodyGlow:"rgba(155,140,200,0.42)", bodyGlowOuter:"rgba(155,140,200,0.11)" },
 };
@@ -2849,7 +2849,7 @@ function SkyBar({ timeFilter, setTime }) {
       </div>
       {/* Time filter buttons — right side */}
       <div style={{ position:"absolute", bottom:14, right:16, display:"flex", gap:5 }}>
-        {[["all","All",""],["morning","Morn","🌅"],["day","Day","☀️"],["night","Night","🌙"]].map(([v,label,icon]) => {
+        {[["all","All",null],["morning","Morn",TIME_COLORS.morning.icon],["day","Day",TIME_COLORS.day.icon],["night","Night",TIME_COLORS.night.icon]].map(([v,label,icon]) => {
           const btc = TIME_COLORS[v];
           const isActive = timeFilter === v;
           return (
@@ -2861,9 +2861,9 @@ function SkyBar({ timeFilter, setTime }) {
               color: isActive?(btc?btc.badge:"white"):"rgba(255,255,255,0.55)",
               fontSize:11, fontWeight:"700", fontFamily:"'DM Sans',sans-serif",
               cursor:"pointer", letterSpacing:0.3,
-              display:"flex", alignItems:"center", gap:3,
+              display:"flex", alignItems:"center", gap:4,
               transition:"color 0.2s, border-color 0.2s, background 0.2s",
-            }}>{icon&&<span style={{fontSize:12}}>{icon}</span>}{label}</button>
+            }}>{icon&&<img src={icon} style={{width:14,height:14,objectFit:"contain",display:"block"}} />}{label}</button>
           );
         })}
       </div>
@@ -5800,7 +5800,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
       </div>
       <div style={{ textAlign:"right", flexShrink:0, paddingLeft:8, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
         {p.time && TIME_COLORS[p.time] && (() => { const tc=TIME_COLORS[p.time]; const label=p.time==="morning"?"Morn":p.time==="day"?"Day":"Night"; return (
-          <span style={{ fontSize:9, fontWeight:"700", color:tc.badge, background:tc.badgeBg, border:`1px solid ${tc.badge}60`, padding:"1px 5px", borderRadius:99, letterSpacing:0.3, whiteSpace:"nowrap" }}>{tc.icon} {label}</span>
+          <span style={{ fontSize:9, fontWeight:"700", color:tc.badge, background:tc.badgeBg, border:`1px solid ${tc.badge}60`, padding:"1px 5px", borderRadius:99, letterSpacing:0.3, whiteSpace:"nowrap", display:"inline-flex", alignItems:"center", gap:3 }}><img src={tc.icon} style={{width:10,height:10,objectFit:"contain",display:"block"}} />{label}</span>
         ); })()}
         <RateDisplay rate={p.rate} isMobile={isMobile} />
         {p.levels&&<div style={{ fontSize:10, color:C.muted }}>Lv.{p.levels}</div>}

@@ -1668,14 +1668,14 @@ const C = {
 };
 const TIME_COLORS = {
   morning:{ badge:"#e8924a", badgeBg:"rgba(232,146,74,0.15)", icon:"🌅",
-    skyGrad:"linear-gradient(180deg,#1a0520 0%,#6b2d5e 20%,#c4582a 50%,#e8894a 75%,#f5c67a 100%)",
-    bodyLeft:15, bodyType:"sun", bodyColor:"#ffdd44", bodyGlow:"rgba(255,210,40,0.85)", bodyGlowOuter:"rgba(255,210,40,0.22)" },
-  day:    { badge:"#d4c14a", badgeBg:"rgba(212,193,74,0.15)", icon:"☀️",
-    skyGrad:"linear-gradient(180deg,#0a1a35 0%,#1565c0 30%,#2196f3 65%,#64b5f6 100%)",
-    bodyLeft:50, bodyType:"sun", bodyColor:"#fff9c4", bodyGlow:"rgba(255,255,200,0.95)", bodyGlowOuter:"rgba(255,255,200,0.28)" },
+    skyGrad:"linear-gradient(180deg,#0e0c1c 0%,#2a1424 30%,#58281e 58%,#8a4828 100%)",
+    bodyLeft:15, bodyType:"sun", bodyColor:"#c87848", bodyGlow:"rgba(200,118,68,0.55)", bodyGlowOuter:"rgba(200,118,68,0.14)" },
+  day:    { badge:"#8ab8d4", badgeBg:"rgba(138,184,212,0.12)", icon:"☀️",
+    skyGrad:"linear-gradient(180deg,#080e1c 0%,#0e1e3a 25%,#192c50 55%,#223660 100%)",
+    bodyLeft:50, bodyType:"sun", bodyColor:"#a8c4d8", bodyGlow:"rgba(155,193,220,0.45)", bodyGlowOuter:"rgba(155,193,220,0.12)" },
   night:  { badge:"#7b8fd6", badgeBg:"rgba(123,143,214,0.15)", icon:"🌙",
-    skyGrad:"linear-gradient(180deg,#020408 0%,#06091a 45%,#0d1230 75%,#131836 100%)",
-    bodyLeft:82, bodyType:"moon", bodyColor:"#dde8f5", bodyGlow:"rgba(180,200,240,0.55)", bodyGlowOuter:"rgba(180,200,240,0.18)" },
+    skyGrad:"linear-gradient(180deg,#06080f 0%,#080a1e 35%,#0b0e28 65%,#0e1230 100%)",
+    bodyLeft:82, bodyType:"moon", bodyColor:"#c8d8e8", bodyGlow:"rgba(160,185,218,0.42)", bodyGlowOuter:"rgba(160,185,218,0.11)" },
 };
 const STARS = Array.from({length:30},(_,i)=>({
   x:((i*37.3+7)%98)+1, y:((i*61.7+11)%70)+5,

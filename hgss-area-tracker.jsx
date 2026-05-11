@@ -1247,7 +1247,6 @@ const EVO_DELAY = {}; // TODO: Add Johto evolution delay notes
 // ─── DREAM TEAM BUILDER DATA ──────────────────────────────────────────────────
 const DT_CANDIDATES = []; // TODO: Add Johto Dream Team candidates
 const DT_GROUPS = {};
-function buildDreamTeamV2(favorite, pins, version) { return []; }
 const DT_LEGENDARY = new Set(["Raikou","Entei","Suicune","Lugia","Ho-Oh","Celebi","Mewtwo","Mew","Articuno","Zapdos","Moltres"]);
 
 const DT_HM_COMPAT = {

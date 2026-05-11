@@ -11,222 +11,229 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #0a0d14;
+      background: transparent;
       font-family: 'DM Sans', system-ui, sans-serif;
       color: #fff;
-      min-height: 100vh;
+      padding: 6px;
     }
 
-    /* ── Keyframes ────────────────────────────────────────────────── */
+    /* ── Keyframes ─────────────────────────────────────────────── */
 
     @keyframes header-in {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-8px) scaleY(0.95); }
+      to   { opacity: 1; transform: translateY(0)    scaleY(1); }
     }
 
     @keyframes row-in {
-      from { opacity: 0; transform: translateX(-10px); }
+      from { opacity: 0; transform: translateX(-12px); }
       to   { opacity: 1; transform: translateX(0); }
     }
 
     @keyframes panel-exit {
       from { opacity: 1; transform: translateY(0); }
-      to   { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 0; transform: translateY(-5px); }
     }
 
-    @keyframes border-pulse {
-      0%, 100% { border-color: #4a9a4a; box-shadow: 0 0 6px rgba(74,154,74,0.15); }
-      50%       { border-color: #72c472; box-shadow: 0 0 16px rgba(74,154,74,0.45); }
-    }
-
-    @keyframes pokeball-spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
+    @keyframes border-shimmer {
+      0%,100% { box-shadow: 0 0 0 0 rgba(94,200,94,0);  border-color: #50b850; }
+      50%      { box-shadow: 0 0 12px 2px rgba(94,200,94,0.35); border-color: #72d072; }
     }
 
     @keyframes sprite-bob {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-3px); }
+      0%,100% { transform: translateY(0px); }
+      50%      { transform: translateY(-3px); }
     }
 
-    @keyframes rate-shimmer {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.6; }
+    @keyframes rate-glow {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.65; }
     }
 
     @keyframes caught-pop {
-      0%   { transform: scale(0.5); opacity: 0; }
-      55%  { transform: scale(1.25); opacity: 1; }
-      100% { transform: scale(1);    opacity: 1; }
+      0%  { transform: scale(0.4); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100%{ transform: scale(1);   opacity: 1; }
     }
 
-    @keyframes check-glow {
-      0%, 100% { text-shadow: none; }
-      50%       { text-shadow: 0 0 8px rgba(74,183,112,0.9); }
+    @keyframes deco-pulse {
+      0%,100% { opacity: 0.7; }
+      50%      { opacity: 1; }
     }
 
-    /* ── Exit transition ─────────────────────────────────────────── */
-    #overlay-root.exiting {
+    /* ── Exit ──────────────────────────────────────────────────── */
+    #panel.exiting {
       animation: panel-exit 0.18s ease-out forwards;
       pointer-events: none;
     }
 
-    /* ── Area header ─────────────────────────────────────────────── */
+    /* ── Outer panel ───────────────────────────────────────────── */
+    #panel {
+      border: 2.5px solid #50b850;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #0e1210;
+      animation: border-shimmer 3.5s ease-in-out infinite;
+    }
+
+    /* ── Header ────────────────────────────────────────────────── */
     .area-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 8px 8px 4px;
-      padding: 9px 14px;
-      background: rgba(74,154,74,0.12);
-      border: 2px solid #4a9a4a;
-      border-radius: 8px;
+      justify-content: center;
+      gap: 8px;
+      padding: 7px 14px;
+      background: linear-gradient(180deg, #3d8a3d 0%, #2e6e2e 100%);
+      border-bottom: 2px solid #50b850;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 17px;
-      letter-spacing: 0.01em;
-      animation: header-in 0.35s cubic-bezier(0.2,0.8,0.3,1) both,
-                 border-pulse 3.2s 0.5s ease-in-out infinite;
+      font-size: 19px;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      letter-spacing: 0.02em;
+      animation: header-in 0.38s cubic-bezier(0.2,0.8,0.3,1) both;
     }
 
-    .area-header .pokeball {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 38%, #fff 0%, #e0e0e0 40%, #c00 40%, #c00 50%, #222 50%, #222 52%, #c00 52%);
+    .header-deco {
+      font-size: 11px;
+      color: #9edb9e;
       flex-shrink: 0;
-      border: 1.5px solid #888;
-      animation: pokeball-spin 18s linear infinite;
+      animation: deco-pulse 2.8s ease-in-out infinite;
     }
+    .header-deco:last-child { animation-delay: 1.4s; }
 
-    /* ── Pokémon rows ────────────────────────────────────────────── */
-    .poke-list { padding: 0 4px 8px; }
+    /* ── Pokémon list ──────────────────────────────────────────── */
+    .poke-list { padding: 2px 0 3px; }
 
     .poke-row {
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 3px 8px 3px 6px;
-      border-radius: 4px;
-      border-left: 3px solid transparent;
-      /* entrance — delay driven by --row-i CSS var set inline */
-      animation: row-in 0.32s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i,0) * 48ms) both;
+      gap: 0;
+      padding: 0 10px 0 8px;
+      height: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      animation: row-in 0.3s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i,0) * 46ms) both;
     }
-    .poke-row.alt { background: rgba(255,255,255,0.04); }
-    .poke-row.caught {
-      border-left-color: #4ab770;
-      background: rgba(74,183,112,0.09) !important;
-    }
+    .poke-row:last-child { border-bottom: none; }
+    .poke-row.alt { background: rgba(255,255,255,0.035); }
+    .poke-row.caught { background: rgba(74,183,112,0.1) !important; }
 
-    /* ── Caught check ────────────────────────────────────────────── */
-    .check {
-      width: 12px;
-      font-size: 9px;
-      color: #4ab770;
+    /* ── Sprite ────────────────────────────────────────────────── */
+    .sprite-wrap {
+      position: relative;
+      width: 36px;
+      height: 36px;
       flex-shrink: 0;
-      font-weight: 700;
-      line-height: 1;
+      margin-right: 7px;
     }
-    .check.visible {
-      animation: caught-pop 0.42s cubic-bezier(0.2,0.8,0.3,1) both,
-                 check-glow 2.5s 0.5s ease-in-out infinite;
+    .sprite-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
     }
-
-    /* ── Sprite ──────────────────────────────────────────────────── */
     .sprite {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       image-rendering: pixelated;
-      flex-shrink: 0;
-      /* bob: each sprite gets a unique phase via --row-i */
-      animation: sprite-bob 2.6s calc(var(--row-i,0) * 0.38s) ease-in-out infinite;
+      display: block;
+      position: relative;
+      animation: sprite-bob 2.6s calc(var(--row-i,0) * 0.37s) ease-in-out infinite;
     }
 
-    /* ── Name ────────────────────────────────────────────────────── */
+    /* ── Name ──────────────────────────────────────────────────── */
     .poke-name {
       flex: 1;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.2;
+      letter-spacing: 0.01em;
     }
-    .poke-name.hg { color: #e8c048; }
-    .poke-name.ss { color: #90b8d8; }
+    .poke-name.hg   { color: #f0c84a; }
+    .poke-name.ss   { color: #90c8e8; }
+    .poke-name.caught-name { color: #6ae68a; }
 
-    /* ── Rate columns ────────────────────────────────────────────── */
+    /* ── Rates ─────────────────────────────────────────────────── */
     .rates {
       display: flex;
-      gap: 2px;
       align-items: center;
+      gap: 6px;
       flex-shrink: 0;
     }
 
     .rate-cell {
       display: flex;
       align-items: center;
-      gap: 1px;
-      min-width: 38px;
+      gap: 2px;
+      min-width: 44px;
       justify-content: flex-end;
-    }
-    .rate-cell.zero { opacity: 0.28; }
-
-    /* Non-zero rates pulse softly */
-    .rate-cell:not(.zero) .rate-num {
-      animation: rate-shimmer 3.8s ease-in-out infinite;
-      /* stagger shimmer phase so they don't all pulse in sync */
-      animation-delay: calc(var(--row-i,0) * 0.6s);
     }
 
     .rate-num {
-      font-size: 10.5px;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 500;
-      letter-spacing: -0.03em;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
     }
+    .rate-num.nonzero {
+      color: #f0c840;
+      animation: rate-glow 3.6s calc(var(--row-i,0) * 0.55s) ease-in-out infinite;
+    }
+    .rate-num.zero { color: rgba(255,255,255,0.32); }
 
     .time-icon {
-      width: 11px;
-      height: 11px;
+      width: 12px;
+      height: 12px;
       object-fit: contain;
       flex-shrink: 0;
     }
 
-    /* ── Placeholder / status ────────────────────────────────────── */
-    .placeholder {
-      color: rgba(255,255,255,0.25);
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 12px;
-      line-height: 1.6;
+    /* ── Caught check ──────────────────────────────────────────── */
+    .caught-check {
+      font-size: 9px;
+      color: #6ae68a;
+      font-weight: 700;
+      margin-left: 4px;
+      animation: caught-pop 0.4s cubic-bezier(0.2,0.8,0.3,1) both;
+      flex-shrink: 0;
     }
 
+    /* ── Placeholder ───────────────────────────────────────────── */
+    .placeholder {
+      color: rgba(255,255,255,0.22);
+      text-align: center;
+      padding: 36px 20px;
+      font-size: 12px;
+      line-height: 1.7;
+    }
     .no-pokemon {
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.18);
       font-size: 11px;
       text-align: center;
-      padding: 14px;
+      padding: 12px;
     }
 
-    /* ── Reduced motion ──────────────────────────────────────────── */
+    /* ── Reduced motion ────────────────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
-      .area-header  { animation: none !important; }
-      .area-header .pokeball { animation: none !important; }
-      .poke-row     { animation: none !important; }
-      .sprite       { animation: none !important; }
-      .check.visible { animation: none !important; }
-      .rate-cell:not(.zero) .rate-num { animation: none !important; }
-      #overlay-root.exiting { animation: none !important; opacity: 0; }
+      #panel          { animation: none !important; }
+      .area-header    { animation: none !important; }
+      .header-deco    { animation: none !important; }
+      .poke-row       { animation: none !important; }
+      .sprite         { animation: none !important; }
+      .rate-num.nonzero { animation: none !important; }
+      .caught-check   { animation: none !important; }
+      #panel.exiting  { animation: none !important; opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div id="overlay-root">
-    <div class="placeholder">Loading tracker data…</div>
+  <div id="panel">
+    <div class="placeholder">Loading…</div>
   </div>
 
-  <!-- React needed so JSX components compile without errors when eval'd -->
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
@@ -234,141 +241,135 @@
     var currentAreaId = null;
     var renderTimer   = null;
 
-    function getVersion() {
-      return localStorage.getItem('hgss-version') || 'hg';
-    }
-
-    function getCaught() {
-      try { return JSON.parse(localStorage.getItem('hgss-caught') || '{}'); }
-      catch (e) { return {}; }
-    }
-
-    function spriteUrl(name) {
-      var id = window.__HGSS_DEX_ID && window.__HGSS_DEX_ID[name];
-      if (!id) return '';
-      return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png';
-    }
-
-    function getRawPokemon(area) {
-      if (!area) return [];
-      if (area.floors) {
-        return area.floors.reduce(function(acc, f) { return acc.concat(f.pokemon || []); }, []);
-      }
-      return area.pokemon || [];
-    }
-
-    function groupPokemon(rawList, version) {
-      var map = new Map();
-      rawList.forEach(function(p) {
-        if (version === 'hg' && p.ssOnly) return;
-        if (version === 'ss' && p.hgOnly) return;
-        if (p.method && (p.method === 'Gift' || p.method === 'Trade' || p.method === 'Event')) return;
-        if (!map.has(p.name)) {
-          map.set(p.name, { name: p.name, morning: null, day: null, night: null,
-                            hgOnly: !!p.hgOnly, ssOnly: !!p.ssOnly });
-        }
-        var e = map.get(p.name);
-        if (!p.time) {
-          if (!e.morning) e.morning = p.rate;
-          if (!e.day)     e.day     = p.rate;
-          if (!e.night)   e.night   = p.rate;
-        } else {
-          e[p.time] = p.rate;
-        }
-      });
-      return Array.from(map.values());
-    }
-
     var ICON = {
       morning: 'icons/60px-Morning_Icon_BDSP.png',
       day:     'icons/60px-Day_Icon_BDSP.png',
       night:   'icons/60px-Night_Icon_BDSP.png',
     };
 
-    function rateCell(rate, time) {
+    function getVersion() { return localStorage.getItem('hgss-version') || 'hg'; }
+    function getCaught()  {
+      try { return JSON.parse(localStorage.getItem('hgss-caught') || '{}'); }
+      catch(e) { return {}; }
+    }
+
+    function spriteUrl(name) {
+      var id = window.__HGSS_DEX_ID && window.__HGSS_DEX_ID[name];
+      return id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png' : '';
+    }
+
+    function getRaw(area) {
+      if (!area) return [];
+      if (area.floors) return area.floors.reduce(function(a,f){ return a.concat(f.pokemon||[]); }, []);
+      return area.pokemon || [];
+    }
+
+    function groupPokemon(raw, version) {
+      var map = new Map();
+      raw.forEach(function(p) {
+        if (version === 'hg' && p.ssOnly) return;
+        if (version === 'ss' && p.hgOnly) return;
+        var m = p.method;
+        if (m === 'Gift' || m === 'Trade' || m === 'Event') return;
+        if (!map.has(p.name)) {
+          map.set(p.name, { name:p.name, morning:null, day:null, night:null,
+                            hgOnly:!!p.hgOnly, ssOnly:!!p.ssOnly });
+        }
+        var e = map.get(p.name);
+        if (!p.time) { e.morning = e.morning||p.rate; e.day = e.day||p.rate; e.night = e.night||p.rate; }
+        else e[p.time] = p.rate;
+      });
+      return Array.from(map.values());
+    }
+
+    // Collapse morning+day into one daytime column for compact 2-column layout
+    function daytimeRate(p) {
+      if (p.day) return { rate: p.day, icon: ICON.day };
+      if (p.morning) return { rate: p.morning, icon: ICON.morning };
+      return { rate: null, icon: ICON.day };
+    }
+
+    function rateCell(rate, icon) {
       var isZero = !rate || rate === '0%';
-      return '<span class="rate-cell' + (isZero ? ' zero' : '') + '">' +
-        '<span class="rate-num">' + (rate || '0%') + '</span>' +
-        '<img class="time-icon" src="' + ICON[time] + '" alt="' + time + '">' +
+      var display = rate || '0%';
+      return '<span class="rate-cell">' +
+        '<span class="rate-num ' + (isZero ? 'zero' : 'nonzero') + '">' + display + '</span>' +
+        '<img class="time-icon" src="' + icon + '" alt="">' +
         '</span>';
     }
 
     function buildHTML(area, version, caught) {
-      var grouped = groupPokemon(getRawPokemon(area), version);
+      var grouped = groupPokemon(getRaw(area), version);
 
-      var html = '<div class="area-header">' +
-        '<div class="pokeball"></div>' +
-        '<span>' + area.name + '</span>' +
-      '</div><div class="poke-list">';
+      var headerHtml =
+        '<div class="area-header">' +
+          '<span class="header-deco">✦</span>' +
+          '<span>' + area.name + '</span>' +
+          '<span class="header-deco">✦</span>' +
+        '</div>';
 
       if (grouped.length === 0) {
-        html += '<div class="no-pokemon">No wild Pokémon</div>';
-      } else {
-        grouped.forEach(function(p, i) {
-          var isCaught = !!caught[p.name];
-          var nameCls  = 'poke-name' + (p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
-          var rowCls   = 'poke-row' + (i % 2 === 1 ? ' alt' : '') + (isCaught ? ' caught' : '');
-          var sprite   = spriteUrl(p.name);
-
-          html +=
-            '<div class="' + rowCls + '" style="--row-i:' + i + '">' +
-              '<span class="check' + (isCaught ? ' visible' : '') + '">' + (isCaught ? '✓' : '') + '</span>' +
-              (sprite
-                ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
-                : '<span class="sprite"></span>') +
-              '<span class="' + nameCls + '">' + p.name + '</span>' +
-              '<div class="rates">' +
-                rateCell(p.morning, 'morning') +
-                rateCell(p.day,     'day') +
-                rateCell(p.night,   'night') +
-              '</div>' +
-            '</div>';
-        });
+        return headerHtml + '<div class="poke-list"><div class="no-pokemon">No wild Pokémon</div></div>';
       }
 
-      return html + '</div>';
+      var rows = grouped.map(function(p, i) {
+        var isCaught  = !!caught[p.name];
+        var dt        = daytimeRate(p);
+        var rowCls    = 'poke-row' + (i%2===1?' alt':'') + (isCaught?' caught':'');
+        var nameCls   = 'poke-name' +
+          (isCaught ? ' caught-name' : p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
+        var spr       = spriteUrl(p.name);
+
+        return '<div class="' + rowCls + '" style="--row-i:' + i + '">' +
+          '<div class="sprite-wrap">' +
+            (spr
+              ? '<img class="sprite" src="' + spr + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
+              : '<span class="sprite"></span>') +
+          '</div>' +
+          '<span class="' + nameCls + '">' + p.name + '</span>' +
+          '<div class="rates">' +
+            rateCell(dt.rate, dt.icon) +
+            rateCell(p.night, ICON.night) +
+          '</div>' +
+          (isCaught ? '<span class="caught-check">✓</span>' : '') +
+        '</div>';
+      }).join('');
+
+      return headerHtml + '<div class="poke-list">' + rows + '</div>';
     }
 
     function doRender(areaId) {
-      var root  = document.getElementById('overlay-root');
+      var panel = document.getElementById('panel');
       var areas = window.__HGSS_AREAS;
 
       if (!areas) {
-        root.innerHTML = '<div class="placeholder">Tracker data not available.<br>Open the tracker first.</div>';
+        panel.innerHTML = '<div class="placeholder">Tracker data not available.<br>Open the tracker first.</div>';
         return;
       }
       if (!areaId) {
-        root.innerHTML = '<div class="placeholder">Select an area in the tracker<br>to see encounter rates.</div>';
+        panel.innerHTML = '<div class="placeholder">Select an area in the tracker.</div>';
         return;
       }
-
       var area = null;
-      for (var i = 0; i < areas.length; i++) {
-        if (areas[i].id === areaId) { area = areas[i]; break; }
-      }
-      if (!area) {
-        root.innerHTML = '<div class="placeholder">Area not found</div>';
-        return;
-      }
+      for (var i=0; i<areas.length; i++) { if (areas[i].id===areaId){area=areas[i];break;} }
+      if (!area) { panel.innerHTML = '<div class="placeholder">Area not found.</div>'; return; }
 
-      root.innerHTML = buildHTML(area, getVersion(), getCaught());
+      panel.innerHTML = buildHTML(area, getVersion(), getCaught());
     }
 
     function renderArea(areaId) {
-      var isNewArea = areaId !== currentAreaId;
+      var isNew = areaId !== currentAreaId;
       currentAreaId = areaId;
-
       if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
 
-      var root = document.getElementById('overlay-root');
-      var hasContent = !!root.querySelector('.area-header');
+      var panel = document.getElementById('panel');
+      var hasContent = !!panel.querySelector('.area-header');
 
-      if (isNewArea && hasContent) {
-        // Animate old content out, then swap
-        root.classList.add('exiting');
+      if (isNew && hasContent) {
+        panel.classList.add('exiting');
         renderTimer = setTimeout(function() {
           renderTimer = null;
-          root.classList.remove('exiting');
+          panel.classList.remove('exiting');
           doRender(areaId);
         }, 185);
       } else {
@@ -382,17 +383,17 @@
     });
 
     fetch('hgss-area-tracker.jsx')
-      .then(function(r) { return r.text(); })
-      .then(function(jsx) {
-        var code = Babel.transform(jsx, { presets: ['react'] }).code;
-        (0, eval)(code);
+      .then(function(r){ return r.text(); })
+      .then(function(jsx){
+        var code = Babel.transform(jsx, { presets:['react'] }).code;
+        (0,eval)(code);
         renderArea(localStorage.getItem('hgss-active-area'));
       })
-      .catch(function(err) {
+      .catch(function(err){
         console.error('Overlay error:', err);
-        document.getElementById('overlay-root').innerHTML =
+        document.getElementById('panel').innerHTML =
           '<div class="placeholder" style="color:#f88">Failed to load tracker data.<br>' +
-          'Make sure the server is running:<br><code>python3 -m http.server 8080</code></div>';
+          'Run: <code>python3 -m http.server 8080</code></div>';
       });
   </script>
 </body>

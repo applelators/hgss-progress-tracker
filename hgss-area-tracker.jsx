@@ -5394,7 +5394,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   const hasItms = (floor.items    || []).length > 0;
                   const hasTrns = (floor.trainers || []).length > 0;
                   if (!hasPoks && !hasItms && !hasTrns) return null;
-                  const floorVerPoks    = (floor.pokemon || []).filter(p => !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly));
+                  const floorVerPoks    = (floor.pokemon || []).filter(p => !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly) && (timeFilter === "all" || !p.time || p.time === timeFilter));
                   const relevFloorPoks  = floorVerPoks.filter(p => !isPassedPokemon(p));
                   const pokDone         = relevFloorPoks.filter(p => p.method === "Trade" ? !!trades[`${areaId}|trade|${p.name}`] : !!caught[p.name]).length;
                   const relevFloorItems        = (floor.items || []).filter(it => !isPassedItem(it));
@@ -5425,7 +5425,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                               allDone={pokDone===relevFloorPoks.length && relevFloorPoks.length>0}
                               onMarkAll={() => pokDone===relevFloorPoks.length ? clearAllPokemon(floorVerPoks) : markAllPokemon(floorVerPoks)}
                               collapsible>
-                              {!hasPoks ? <Empty text="No wild Pokémon here" /> : renderPokemonList(floor.pokemon, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade)}
+                              {!hasPoks ? <Empty text="No wild Pokémon here" /> : renderPokemonList(floorVerPoks, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade)}
                             </Section>
                             <Section title="Items" count={`${regularFloorItemDone}/${regularFloorItems.length}`} color={C.gold}
                               allDone={regularFloorItemDone===regularFloorItems.length && regularFloorItems.length>0}
@@ -5479,7 +5479,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                       onMarkAll={() => pokeDone===relevantPokemon.length ? clearAllPokemon(verPokemon) : markAllPokemon(verPokemon)}
                       collapsible>
                       {areaPokemon.length === 0 ? <Empty text="No wild Pokémon here" /> :
-                        renderPokemonList(areaPokemon, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade)
+                        renderPokemonList(verPokemon, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade)
                       }
                     </Section>
                     <Section title="Items" count={`${nonOptionalItemDone}/${nonOptionalItems.length}`} color={C.gold}

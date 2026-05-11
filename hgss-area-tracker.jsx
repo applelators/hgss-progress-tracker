@@ -165,8 +165,6 @@ const AREAS = [
       {name:"Potion ×6",   hidden:false, note:"5 from Elm's aide + 1 on the spot Silver stood"},
       {name:"Pokégear",    hidden:false, note:"From Mom after receiving first partner Pokémon"},
       {name:"Everstone",   hidden:false, note:"From Prof. Elm, after returning Mystery Egg (Togepi)"},
-      {name:"Master Ball", hidden:false, note:"From Prof. Elm, after earning all 8 Johto badges"},
-      {name:"S.S. Ticket", hidden:false, note:"From Prof. Elm, after entering the Hall of Fame"},
     ],
     trainers:[] },
 
@@ -183,9 +181,8 @@ const AREAS = [
     ],
     items:[
       {name:"Potion",         hidden:false, note:"E of the NE grass patch"},
-      {name:"Poké Ball ×5",   hidden:false, note:"From Lyra/Ethan after catching tutorial (later visit)"},
+      {name:"Poké Ball ×5",   hidden:false, note:"From Lyra/Ethan after catching tutorial"},
       {name:"Green Apricorn", hidden:false, note:"NW hill tree, daily (requires Apricorn Box)"},
-      {name:"Twisted Spoon",  hidden:false, note:"From Tuscany (Thu) after earning Zephyr Badge"},
     ],
     trainers:[] },
 
@@ -195,8 +192,6 @@ const AREAS = [
     items:[
       {name:"Running Shoes", hidden:false, note:"From Guide Gent after city tour"},
       {name:"Map Card",      hidden:false, note:"From Guide Gent at Route 30 exit"},
-      {name:"Mystic Water",  hidden:false, note:"From man on the island (requires Surf)"},
-      {name:"Nugget ×2",     hidden:true,  note:"SE of Pokémon Center pond (Surf) and NW cliff (Surf + Rock Climb)"},
     ],
     trainers:[
       {class:"Rival", name:"Silver",
@@ -292,9 +287,6 @@ const AREAS = [
       {name:"Ylw Apricorn",hidden:false, note:"S exit clearing tree, daily"},
       {name:"Poké Ball",   hidden:true,  note:"W side of island in front of Sprout Tower"},
       {name:"TM51 Roost",  hidden:false, note:"From Gym Leader Falkner after defeating him"},
-      {name:"Hyper Potion",hidden:true,  note:"Path behind Pokémon Center (requires Rock Smash)"},
-      {name:"Rare Candy",  hidden:false, note:"E lake clearing (requires Surf)"},
-      {name:"PP Up",       hidden:false, note:"W lake clearing (requires Surf)"},
     ],
     trainers:[] },
 
@@ -372,10 +364,6 @@ const AREAS = [
       {name:"Poison Barb",      hidden:false, note:"From Frieda (Fri) behind Pokémon Center"},
       {name:"Old Rod",          hidden:false, note:"From the Fishing Guru at the Pokémon Center"},
       {name:"Lure Ball ×2",     hidden:false, note:"From Apricorn enthusiast at Pokémon Center"},
-      {name:"TM05 Roar",        hidden:false, note:"From man on N hill (requires Cut)"},
-      {name:"Super Potion",     hidden:true,  note:"N hill W of TM05 man (requires Cut)"},
-      {name:"Heart Scale",      hidden:true,  note:"E of pier near train bridge pillar (requires Surf)"},
-      {name:"Shell Bell",       hidden:false, note:"SE of Union Cave entrance, past breakable rock (Rock Smash)"},
     ],
     trainers:[
       {class:"Youngster",  name:"Albert", team:[{name:"Rattata",level:6},{name:"Zubat",level:8}]},
@@ -391,7 +379,7 @@ const AREAS = [
     ] },
 
   { part:"Part 4", id:"ruins-of-alph", name:"Ruins of Alph",
-    note:"4 tile puzzles unlock all 28 Unown forms. North chamber accessible early; others need Surf/Strength.",
+    note:"4 tile puzzles unlock all 28 Unown forms. North chamber accessible on first visit; other chambers require HMs.",
     pokemon:[
       {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%"},
       {name:"Smeargle",method:"Grass",   levels:"20,22", rate:"10%"},
@@ -404,30 +392,14 @@ const AREAS = [
       {name:"Great Ball",      hidden:true,  note:"Near E gate, lone rock S of path"},
       {name:"TinyMushroom",    hidden:true,  note:"Two steps E of W pond"},
       {name:"Unown Report",    hidden:false, note:"From Scientist after solving first puzzle"},
-      {name:"Rare Candy",      hidden:true,  note:"NW area (requires Rock Smash)"},
-      {name:"Hyper Potion",    hidden:false, note:"N side of W pond (requires Rock Smash)"},
       {name:"Nugget",          hidden:true,  note:"SW hill via Union Cave"},
       {name:"Big Mushroom",    hidden:true,  note:"SW hill via Union Cave"},
       {name:"Oran Berry",      hidden:false, note:"North chamber hidden room"},
       {name:"Pecha Berry",     hidden:false, note:"North chamber hidden room"},
       {name:"Heal Powder",     hidden:false, note:"North chamber hidden room"},
       {name:"EnergyPowder",    hidden:false, note:"North chamber hidden room"},
-      {name:"Sitrus Berry",    hidden:false, note:"SE chamber (requires Surf)"},
-      {name:"Moon Stone",      hidden:false, note:"SE chamber (requires Surf)"},
-      {name:"Heal Powder",     hidden:false, note:"SE chamber (requires Surf)"},
-      {name:"Energy Root",     hidden:false, note:"SE chamber (requires Surf)"},
-      {name:"Life Orb",        hidden:false, note:"W chamber via Union Cave (requires Surf)"},
-      {name:"Leppa Berry",     hidden:false, note:"W chamber via Union Cave (requires Surf)"},
-      {name:"Revival Herb",    hidden:false, note:"W chamber via Union Cave (requires Surf)"},
-      {name:"Charcoal",        hidden:false, note:"W chamber via Union Cave (requires Surf)"},
-      {name:"Leppa Berry",     hidden:false, note:"SW chamber via Union Cave (requires Surf + Strength)"},
-      {name:"Mystic Water",    hidden:false, note:"SW chamber via Union Cave (requires Surf + Strength)"},
-      {name:"Stardust",        hidden:false, note:"SW chamber via Union Cave (requires Surf + Strength)"},
-      {name:"Star Piece",      hidden:false, note:"SW chamber via Union Cave (requires Surf + Strength)"},
     ],
-    trainers:[
-      {class:"Psychic", name:"Nathan", note:"Accessed from Union Cave via Surf", team:[{name:"Girafarig",level:26}]},
-    ] },
+    trainers:[] },
 
   { part:"Part 4", id:"union-cave", name:"Union Cave",
     floors:[
@@ -447,7 +419,6 @@ const AREAS = [
           {name:"Potion",      hidden:false, note:"W-central, N side of largest pool"},
           {name:"Parlyz Heal", hidden:true,  note:"E of largest pool on a stalagmite"},
           {name:"Awakening",   hidden:false, note:"SE near Route 33 exit"},
-          {name:"Big Pearl",   hidden:true,  note:"W of largest pool on dry land (requires Surf)"},
         ], trainers:[
           {class:"Firebreather", name:"Ray",    team:[{name:"Vulpix",level:9}]},
           {class:"Hiker",        name:"Daniel", team:[{name:"Onix",level:11}]},
@@ -464,26 +435,13 @@ const AREAS = [
           {name:"Onix",      method:"Cave", levels:"8",   rate:"10%"},
           {name:"Magikarp",  method:"Old Rod", levels:"10", rate:"85%"},
           {name:"Goldeen",   method:"Old Rod", levels:"10", rate:"15%"},
-          {name:"Lapras",    method:"Cave",    levels:"20", rate:"One", warn:true, note:"Appears in southernmost pool on Fridays only (requires Surf)"},
         ], items:[
           {name:"X Defend",         hidden:false, note:"N, N of stairs from 1F"},
           {name:"X Speed",          hidden:true,  note:"N, lone rock near S wall"},
           {name:"TM39 Rock Tomb",   hidden:false, note:"N, SW corner"},
-          {name:"Revive",           hidden:true,  note:"NE on small stalagmite (requires Surf)"},
-          {name:"Elixir",           hidden:false, note:"B2F NE corner (requires Surf)"},
-          {name:"Hyper Potion",     hidden:false, note:"B2F E-central ridge (requires Surf)"},
-          {name:"Calcium",          hidden:true,  note:"B2F W-central ridge (requires Surf)"},
-          {name:"Ultra Ball",       hidden:true,  note:"B2F SW area (requires Surf)"},
-          {name:"TM18 Rain Dance",  hidden:false, note:"B2F E ridge (requires Surf + Strength)"},
-          {name:"King's Rock",      hidden:false, note:"B2F from man on W ridge (requires Surf + Strength)"},
         ], trainers:[
           {class:"Hiker",       name:"Leonard", note:"N section", team:[{name:"Geodude",level:23},{name:"Machop",level:25}]},
           {class:"Hiker",       name:"Phillip", note:"N section", team:[{name:"Geodude",level:23},{name:"Graveler",level:25}]},
-          {class:"Poké Maniac", name:"Andrew",  note:"S section (requires Surf)", team:[{name:"Marowak",level:24},{name:"Marowak",level:24}]},
-          {class:"Poké Maniac", name:"Calvin",  note:"S section (requires Surf)", team:[{name:"Kangaskhan",level:26}]},
-          {class:"Ace Trainer", name:"Nick",    note:"B2F (requires Surf)", team:[{name:"Charmander",level:26},{name:"Squirtle",level:26},{name:"Bulbasaur",level:26}]},
-          {class:"Ace Trainer", name:"Gwen",    note:"B2F (requires Surf)", team:[{name:"Eevee",level:26},{name:"Vaporeon",level:22},{name:"Flareon",level:22},{name:"Jolteon",level:22}]},
-          {class:"Ace Trainer", name:"Emma",    note:"B2F (requires Surf)", team:[{name:"Poliwhirl",level:28}]},
         ] },
     ] },
 
@@ -533,9 +491,7 @@ const AREAS = [
   { part:"Part 5", id:"slowpoke-well", name:"Slowpoke Well",
     note:"Team Rocket has been cutting Slowpoke Tails for profit. Defeat them all including Executive Proton.",
     floors:[
-      { label:"Entrance", pokemon:[], items:[
-          {name:"Great Ball", hidden:true, note:"Where Kurt stood (return visit)"},
-        ], trainers:[] },
+      { label:"Entrance", pokemon:[], items:[], trainers:[] },
       { label:"B1F", pokemon:[
           {name:"Zubat",    method:"Cave",    levels:"5–8", rate:"85%"},
           {name:"Slowpoke", method:"Cave",    levels:"6,8", rate:"15%"},
@@ -544,9 +500,6 @@ const AREAS = [
         ], items:[
           {name:"Super Potion",    hidden:false, note:"NE ridge"},
           {name:"Super Potion",    hidden:true,  note:"Lower central area, lone rock"},
-          {name:"Full Heal",       hidden:true,  note:"E side of central ridge (requires Surf + Strength)"},
-          {name:"TM18 Rain Dance", hidden:false, note:"E ridge (requires Surf + Strength)"},
-          {name:"King's Rock",     hidden:false, note:"From man on W ridge (requires Surf + Strength)"},
         ], trainers:[
           {class:"Team Rocket Grunt",name:"", team:[{name:"Rattata",level:9},{name:"Rattata",level:9}]},
           {class:"Team Rocket Grunt",name:"", team:[{name:"Zubat",level:9},{name:"Ekans",level:11}]},
@@ -614,7 +567,6 @@ const AREAS = [
       {name:"Ether",        hidden:false, note:"NE area, E of isolated trees (requires Cut)"},
       {name:"Ether",        hidden:true,  note:"NE area, W side of N isolated tree (requires Cut)"},
       {name:"Full Heal",    hidden:true,  note:"NE area, W of N flowerbed (requires Cut)"},
-      {name:"Big Mushroom", hidden:false, note:"N area, W of pond (requires Surf)"},
     ],
     trainers:[] },
 
@@ -640,9 +592,6 @@ const AREAS = [
       {name:"Super Potion", hidden:true,  note:"SE of Day Care, N of grass patch in tree"},
       {name:"TM63 Embargo", hidden:false, note:"Northernmost grass patch"},
       {name:"Leaf Stone",   hidden:false, note:"Sometimes from Picnicker Gina after phone registration"},
-      {name:"Rare Candy",   hidden:true,  note:"W fenced area (requires Surf)"},
-      {name:"Nugget",       hidden:false, note:"W fenced area SE corner (requires Surf)"},
-      {name:"Power Herb",   hidden:false, note:"From Ace Trainer Kate after defeating her (requires Surf)"},
     ],
     trainers:[
       {class:"Youngster",  name:"Samuel",  team:[{name:"Rattata",level:7},{name:"Sandshrew",level:10},{name:"Spearow",level:8},{name:"Spearow",level:8}]},
@@ -654,9 +603,6 @@ const AREAS = [
       {class:"Policeman",  name:"Keith",   note:"Night only", team:[{name:"Growlithe",level:17}]},
       {class:"Camper",     name:"Todd",    team:[{name:"Psyduck",level:14}],
        rematch:[{team:[{name:"Psyduck",level:18}]},{team:[{name:"Golduck",level:25}]}]},
-      {class:"Ace Trainer",name:"Irene",   note:"Double Battle with Jenn (requires Surf)", team:[{name:"Goldeen",level:22},{name:"Seaking",level:24}]},
-      {class:"Ace Trainer",name:"Jenn",    note:"Double Battle with Irene (requires Surf)", team:[{name:"Staryu",level:24},{name:"Starmie",level:26}]},
-      {class:"Ace Trainer",name:"Kate",    note:"Requires Surf", team:[{name:"Shellder",level:26},{name:"Cloyster",level:28}]},
     ] },
 
   // ─── PART 6 ────────────────────────────────────────────────────────────────
@@ -664,7 +610,6 @@ const AREAS = [
     note:"Largest city in Johto. Dept Store, Radio Tower, Game Corner, Goldenrod Tunnel.",
     pokemon:[
       {name:"Machop", method:"Trade", levels:"Varies", rate:"One", note:"Trade a Drowzee at Dept Store 5F"},
-      {name:"Eevee",  method:"Gift",  levels:"5",      rate:"One", note:"From Bill after meeting him in Ecruteak City (return visit)"},
     ],
     items:[
       {name:"Ultra Ball",     hidden:false, note:"Dept Store B1F SE room (from Black Belt)"},
@@ -683,10 +628,6 @@ const AREAS = [
       {name:"TM45 Attract",   hidden:false, note:"From Gym Leader Whitney after defeating her"},
       {name:"SquirtBottle",   hidden:false, note:"From Flower Shop after earning Plain Badge"},
       {name:"Fashion Case",   hidden:false, note:"From Lyra/Ethan upon entering Goldenrod Tunnel"},
-      {name:"Amulet Coin",    hidden:false, note:"Dept Store B1F NE room via Goldenrod Tunnel (return visit)"},
-      {name:"TM11 Sunny Day", hidden:false, note:"Radio Tower 3F, after defeating Team Rocket (return visit)"},
-      {name:"Rainbow Wing",   hidden:false, note:"From Radio Tower Director after defeating Team Rocket (HG only)", hgOnly:true},
-      {name:"Silver Wing",    hidden:false, note:"From Radio Tower Director after defeating Team Rocket (SS only)", ssOnly:true},
     ],
     trainers:[
       {class:"Poké Maniac",name:"Donald", note:"Goldenrod Tunnel (N)", team:[{name:"Slowpoke",level:11},{name:"Slowpoke",level:11}]},
@@ -736,8 +677,6 @@ const AREAS = [
       {name:"Parlyz Heal",   hidden:false, note:"W of tall grass in tree grove corner"},
       {name:"TM66 Payback",  hidden:false, note:"SE corner clearing"},
       {name:"HP Up",         hidden:false, note:"From Webster (S gate guard) after delivering Kenya to Route 31"},
-      {name:"Green Apricorn",hidden:false, note:"NW of pond tree (daily; requires Surf)"},
-      {name:"Nugget",        hidden:true,  note:"NW of Apricorn tree (requires Surf)"},
     ],
     trainers:[
       {class:"Picnicker",   name:"Kim",    team:[{name:"Vulpix",level:15}]},
@@ -810,7 +749,6 @@ const AREAS = [
       {name:"Nugget",       hidden:false, note:"Sometimes from Pokéfan Beverly after phone registration"},
       {name:"Sport Ball ×20",hidden:false,note:"Loaned for Bug-Catching Contest (unused balls returned)"},
       {name:"Sun Stone",    hidden:false, note:"1st place Bug Contest prize (pre-National Dex)"},
-      {name:"Shiny Stone",  hidden:false, note:"NE cliff (requires Rock Climb)"},
     ],
     trainers:[
       {class:"Pokéfan",   name:"Beverly", team:[{name:"Snubbull",level:16}],
@@ -970,8 +908,6 @@ const AREAS = [
           {name:"Suicune",  method:"Event",levels:"40",    rate:"One", warn:true, note:"Encountered at multiple story points; fixed battle at Bell Tower"},
         ], items:[
           {name:"Antidote",    hidden:true,  note:"NW area on lone rock E of pillar"},
-          {name:"TM12 Taunt",  hidden:false, note:"NW corner (requires Strength)"},
-          {name:"Revive",      hidden:true,  note:"S-central area on rock (requires Strength)"},
         ], trainers:[] },
     ] },
 
@@ -1010,15 +946,11 @@ const AREAS = [
       {name:"Spinarak",  method:"Headbutt",levels:"15–16", rate:"30%", note:"Group B trees", hgOnly:true},
       {name:"Ledyba",    method:"Headbutt",levels:"15–16", rate:"30%", note:"Group B trees", ssOnly:true},
       {name:"Exeggcute", method:"Headbutt",levels:"15–16", rate:"20%", note:"Group B trees"},
-      {name:"Exeggcute", method:"Headbutt",levels:"18–20", rate:"65%", note:"Easternmost hilltop tree (requires Rock Climb)"},
-      {name:"Burmy",     method:"Headbutt",levels:"18–25", rate:"35%", note:"Easternmost hilltop tree (requires Rock Climb)"},
     ],
     items:[
       {name:"Wht Apricorn",  hidden:false, note:"W of fenced section on lower middle path, tree (daily)"},
       {name:"Max Potion",    hidden:false, note:"SW of gate, between central and S paths"},
       {name:"Thunder Stone", hidden:false, note:"Sometimes from Lass Dana after phone registration"},
-      {name:"Lax Incense",   hidden:false, note:"SW area behind fence via Route 39 (requires Rock Climb)"},
-      {name:"HP Up",         hidden:true,  note:"SW area behind fence via Route 39 (requires Rock Climb)"},
     ],
     trainers:[
       {class:"Sailor",    name:"Harry",  team:[{name:"Wooper",level:20}]},
@@ -1074,6 +1006,239 @@ const AREAS = [
        rematch:[{team:[{name:"Pikachu",level:22}]},{team:[{name:"Raichu",level:28}]}]},
       {class:"Pokéfan",name:"Ruth",    team:[{name:"Pikachu",level:17}]},
     ] },
+
+  // ─── PART 3 RETURNS ────────────────────────────────────────────────────────
+  { part:"Part 3", id:"route-29-return", name:"Route 29 (Return)",
+    note:"Return on any Thursday after earning the Zephyr Badge.",
+    pokemon:[],
+    items:[
+      {name:"Twisted Spoon", hidden:false, note:"From Tuscany (Thu) — requires Zephyr Badge"},
+    ],
+    trainers:[] },
+
+  // ─── PART 5 RETURNS ────────────────────────────────────────────────────────
+  { part:"Part 5", id:"slowpoke-well-return", name:"Slowpoke Well (Return)",
+    note:"Return to the entrance after defeating Team Rocket — Kurt has gone home.",
+    pokemon:[],
+    items:[
+      {name:"Great Ball", hidden:true, note:"Where Kurt stood at the Slowpoke Well entrance"},
+    ],
+    trainers:[] },
+
+  // ─── PART 7 RETURNS ────────────────────────────────────────────────────────
+  { part:"Part 7", id:"violet-city-return", name:"Violet City (Return — Rock Smash)",
+    note:"Return with Rock Smash (requires Hive Badge) to reach the path behind the Pokémon Center.",
+    pokemon:[],
+    items:[
+      {name:"Hyper Potion", hidden:true, note:"Path behind Pokémon Center"},
+    ],
+    trainers:[] },
+
+  { part:"Part 7", id:"route-32-return", name:"Route 32 (Return — Cut & Rock Smash)",
+    note:"Return with Cut (requires Zephyr Badge) and Rock Smash (requires Hive Badge) to collect blocked items.",
+    pokemon:[],
+    items:[
+      {name:"TM05 Roar",    hidden:false, note:"From man on N hill (requires Cut)"},
+      {name:"Super Potion", hidden:true,  note:"N hill W of TM05 man (requires Cut)"},
+      {name:"Shell Bell",   hidden:false, note:"SE of Union Cave entrance, past breakable rock (requires Rock Smash)"},
+    ],
+    trainers:[] },
+
+  { part:"Part 7", id:"ruins-of-alph-return", name:"Ruins of Alph (Return — Rock Smash)",
+    note:"Return with Rock Smash to reach the NW area and W pond.",
+    pokemon:[],
+    items:[
+      {name:"Rare Candy",   hidden:true,  note:"NW area"},
+      {name:"Hyper Potion", hidden:false, note:"N side of W pond"},
+    ],
+    trainers:[] },
+
+  // ─── PART 8 RETURNS ────────────────────────────────────────────────────────
+  { part:"Part 8", id:"cherrygrove-city-return", name:"Cherrygrove City (Return — Surf)",
+    note:"Return with Surf to reach the island and offshore cliffs. One Nugget also requires Rock Climb.",
+    pokemon:[],
+    items:[
+      {name:"Mystic Water", hidden:false, note:"From man on the island"},
+      {name:"Nugget ×2",    hidden:true,  note:"SE of Pokémon Center pond (Surf) and NW cliff (Surf + Rock Climb)"},
+    ],
+    trainers:[] },
+
+  { part:"Part 8", id:"violet-city-surf-return", name:"Violet City (Return — Surf)",
+    note:"Return with Surf to reach the lake clearings east and west of the city.",
+    pokemon:[],
+    items:[
+      {name:"Rare Candy", hidden:false, note:"E lake clearing"},
+      {name:"PP Up",      hidden:false, note:"W lake clearing"},
+    ],
+    trainers:[] },
+
+  { part:"Part 8", id:"route-32-surf-return", name:"Route 32 (Return — Surf)",
+    note:"Return with Surf to reach the island near the train bridge.",
+    pokemon:[],
+    items:[
+      {name:"Heart Scale", hidden:true, note:"E of pier near train bridge pillar"},
+    ],
+    trainers:[] },
+
+  { part:"Part 8", id:"ruins-of-alph-surf-return", name:"Ruins of Alph (Return — Surf)",
+    note:"Return with Surf to reach the SE and W chambers. Trainer Nathan is also accessible via Union Cave.",
+    pokemon:[],
+    items:[
+      {name:"Sitrus Berry", hidden:false, note:"SE chamber"},
+      {name:"Moon Stone",   hidden:false, note:"SE chamber"},
+      {name:"Heal Powder",  hidden:false, note:"SE chamber"},
+      {name:"Energy Root",  hidden:false, note:"SE chamber"},
+      {name:"Life Orb",     hidden:false, note:"W chamber via Union Cave"},
+      {name:"Leppa Berry",  hidden:false, note:"W chamber via Union Cave"},
+      {name:"Revival Herb", hidden:false, note:"W chamber via Union Cave"},
+      {name:"Charcoal",     hidden:false, note:"W chamber via Union Cave"},
+    ],
+    trainers:[
+      {class:"Psychic", name:"Nathan", note:"Accessed from Union Cave via Surf", team:[{name:"Girafarig",level:26}]},
+    ] },
+
+  { part:"Part 8", id:"union-cave-surf-return", name:"Union Cave (Return — Surf)",
+    note:"Return with Surf to reach the southern B1F section, Lapras (Fridays only), and deep items.",
+    floors:[
+      { label:"1F", pokemon:[], items:[
+          {name:"Big Pearl", hidden:true, note:"W of largest pool on dry land"},
+        ], trainers:[] },
+      { label:"B1F", pokemon:[
+          {name:"Lapras", method:"Cave", levels:"20", rate:"One", warn:true, note:"Southernmost pool, Fridays only"},
+        ], items:[
+          {name:"Revive",       hidden:true,  note:"NE on small stalagmite"},
+          {name:"Elixir",       hidden:false, note:"B2F NE corner"},
+          {name:"Hyper Potion", hidden:false, note:"B2F E-central ridge"},
+          {name:"Calcium",      hidden:true,  note:"B2F W-central ridge"},
+          {name:"Ultra Ball",   hidden:true,  note:"B2F SW area"},
+        ], trainers:[
+          {class:"Poké Maniac", name:"Andrew", note:"S section", team:[{name:"Marowak",level:24},{name:"Marowak",level:24}]},
+          {class:"Poké Maniac", name:"Calvin", note:"S section", team:[{name:"Kangaskhan",level:26}]},
+          {class:"Ace Trainer", name:"Nick",   note:"B2F",       team:[{name:"Charmander",level:26},{name:"Squirtle",level:26},{name:"Bulbasaur",level:26}]},
+          {class:"Ace Trainer", name:"Gwen",   note:"B2F",       team:[{name:"Eevee",level:26},{name:"Vaporeon",level:22},{name:"Flareon",level:22},{name:"Jolteon",level:22}]},
+          {class:"Ace Trainer", name:"Emma",   note:"B2F",       team:[{name:"Poliwhirl",level:28}]},
+        ] },
+    ] },
+
+  { part:"Part 8", id:"ilex-forest-surf-return", name:"Ilex Forest (Return — Surf)",
+    note:"Return with Surf to reach the item west of the northern pond.",
+    pokemon:[],
+    items:[
+      {name:"Big Mushroom", hidden:false, note:"N area, W of pond"},
+    ],
+    trainers:[] },
+
+  { part:"Part 8", id:"route-34-surf-return", name:"Route 34 (Return — Surf)",
+    note:"Return with Surf to reach the western fenced area and its trainers.",
+    pokemon:[],
+    items:[
+      {name:"Rare Candy",  hidden:true,  note:"W fenced area"},
+      {name:"Nugget",      hidden:false, note:"W fenced area SE corner"},
+      {name:"Power Herb",  hidden:false, note:"From Ace Trainer Kate after defeating her"},
+    ],
+    trainers:[
+      {class:"Ace Trainer", name:"Irene", note:"Double Battle with Jenn", team:[{name:"Goldeen",level:22},{name:"Seaking",level:24}]},
+      {class:"Ace Trainer", name:"Jenn",  note:"Double Battle with Irene", team:[{name:"Staryu",level:24},{name:"Starmie",level:26}]},
+      {class:"Ace Trainer", name:"Kate",  team:[{name:"Shellder",level:26},{name:"Cloyster",level:28}]},
+    ] },
+
+  { part:"Part 8", id:"route-35-surf-return", name:"Route 35 (Return — Surf)",
+    note:"Return with Surf to reach the NW Apricorn tree and nearby Nugget.",
+    pokemon:[],
+    items:[
+      {name:"Green Apricorn", hidden:false, note:"NW of pond tree (daily)"},
+      {name:"Nugget",         hidden:true,  note:"NW of Apricorn tree"},
+    ],
+    trainers:[] },
+
+  // ─── RETURN VISITS (UNAUDITED) ─────────────────────────────────────────────
+  { part:"(Return Visits)", id:"new-bark-town-return", name:"New Bark Town (Return)",
+    note:"Return to Professor Elm at key late-game milestones.",
+    pokemon:[],
+    items:[
+      {name:"Master Ball", hidden:false, note:"From Prof. Elm after earning all 8 Johto badges"},
+      {name:"S.S. Ticket", hidden:false, note:"From Prof. Elm after entering the Hall of Fame"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"ruins-of-alph-strength-return", name:"Ruins of Alph (Return — Strength)",
+    note:"Requires Surf + Strength to reach the SW chamber via Union Cave.",
+    pokemon:[],
+    items:[
+      {name:"Leppa Berry",  hidden:false, note:"SW chamber via Union Cave"},
+      {name:"Mystic Water", hidden:false, note:"SW chamber via Union Cave"},
+      {name:"Stardust",     hidden:false, note:"SW chamber via Union Cave"},
+      {name:"Star Piece",   hidden:false, note:"SW chamber via Union Cave"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"union-cave-strength-return", name:"Union Cave (Return — Strength)",
+    note:"Requires Surf + Strength to reach the deepest B2F section.",
+    pokemon:[],
+    items:[
+      {name:"TM18 Rain Dance", hidden:false, note:"B2F E ridge"},
+      {name:"King's Rock",     hidden:false, note:"B2F — from man on W ridge"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"slowpoke-well-strength-return", name:"Slowpoke Well (Return — Strength)",
+    note:"Requires Surf + Strength to reach the eastern section of B1F.",
+    pokemon:[],
+    items:[
+      {name:"Full Heal",       hidden:true,  note:"E side of central ridge"},
+      {name:"TM18 Rain Dance", hidden:false, note:"E ridge"},
+      {name:"King's Rock",     hidden:false, note:"From man on W ridge"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"goldenrod-city-return", name:"Goldenrod City (Return — Bill)",
+    note:"Return after meeting Bill in Ecruteak City. He'll be at his house in Goldenrod.",
+    pokemon:[
+      {name:"Eevee", method:"Gift", levels:"5", rate:"One", note:"From Bill's house after meeting him in Ecruteak City"},
+    ],
+    items:[
+      {name:"Amulet Coin", hidden:false, note:"Dept Store B1F NE room via Goldenrod Tunnel"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"goldenrod-city-rocket-return", name:"Goldenrod City (Return — Team Rocket)",
+    note:"Return after defeating Team Rocket at the Radio Tower.",
+    pokemon:[],
+    items:[
+      {name:"TM11 Sunny Day", hidden:false, note:"Radio Tower 3F"},
+      {name:"Rainbow Wing",   hidden:false, note:"From Radio Tower Director (HG only)", hgOnly:true},
+      {name:"Silver Wing",    hidden:false, note:"From Radio Tower Director (SS only)", ssOnly:true},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"burned-tower-strength-return", name:"Burned Tower (Return — Strength)",
+    note:"Return with Strength to reach the NW corner and S-central rock in B1F.",
+    floors:[
+      { label:"B1F", pokemon:[], items:[
+          {name:"TM12 Taunt", hidden:false, note:"NW corner"},
+          {name:"Revive",     hidden:true,  note:"S-central area on rock"},
+        ], trainers:[] },
+    ] },
+
+  { part:"(Return Visits)", id:"national-park-rock-climb-return", name:"National Park (Return — Rock Climb)",
+    note:"Return with Rock Climb to reach the NE cliff.",
+    pokemon:[],
+    items:[
+      {name:"Shiny Stone", hidden:false, note:"NE cliff"},
+    ],
+    trainers:[] },
+
+  { part:"(Return Visits)", id:"route-38-rock-climb-return", name:"Route 38 (Return — Rock Climb)",
+    note:"Return with Rock Climb to reach the SW fenced area and the easternmost hilltop Headbutt tree.",
+    pokemon:[
+      {name:"Exeggcute", method:"Headbutt", levels:"18–20", rate:"65%", note:"Easternmost hilltop tree"},
+      {name:"Burmy",     method:"Headbutt", levels:"18–25", rate:"35%", note:"Easternmost hilltop tree"},
+    ],
+    items:[
+      {name:"Lax Incense", hidden:false, note:"SW area behind fence via Route 39"},
+      {name:"HP Up",       hidden:true,  note:"SW area behind fence via Route 39"},
+    ],
+    trainers:[] },
 ];
 
 // ─── BUILD LOCATION MAP ── (which areas each Pokémon appears in)
@@ -2336,7 +2501,7 @@ function getMoveSuper(moveName) {
 }
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
-const AUDITED_PARTS = new Set(["Part 1","Part 2","Part 3","Part 4","Part 5","Part 6","Part 7","Part 8"]);
+const AUDITED_PARTS = new Set(["Part 1","Part 2","Part 3","Part 4","Part 5","Part 6","Part 7","Part 8","(Return Visits)"]);
 // ─── CATCH RATE DATA ──────────────────────────────────────────────────────────
 // Gen III base catch rates for all 151 Kanto Pokémon (FRLG)
 const CATCH_RATE_DATA = []; // TODO: Add HGSS base catch rates

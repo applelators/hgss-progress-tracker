@@ -2774,15 +2774,48 @@ function TMsTab({ tmState }) {
 
 // ─── SKY BAR ─────────────────────────────────────────────────────────────────
 function SkyBar({ timeFilter, setTime }) {
-  const tc = TIME_COLORS[timeFilter];
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60000);
+    return () => clearInterval(id);
+  }, []);
+
+  const h = now.getHours(), m = now.getMinutes();
+  const realPeriod = h >= 4 && h < 10 ? "morning" : h >= 10 && h < 20 ? "day" : "night";
+
+  // Celestial body: position tracks real local time across full 24h (5%–93%)
+  const bodyLeftPct = 5 + (h + m / 60) / 24 * 88;
+  const bodyIsMoon  = h >= 20 || h < 4;
+  const bodySize    = bodyIsMoon ? 22 : 28;
+  const realTc      = TIME_COLORS[realPeriod];
+
+  // Sky gradient from selected filter
+  const tc      = TIME_COLORS[timeFilter];
   const isNight = timeFilter === "night";
-  const defaultGrad = "linear-gradient(180deg,#0c1008 0%,#1a1608 100%)";
+  const skyBg   = tc ? tc.skyGrad : "linear-gradient(180deg,#0c1008 0%,#1a1608 100%)";
+
+  // Time remaining until next period
+  const totalMins = h * 60 + m;
+  let minsLeft, nextLabel, progress;
+  if (realPeriod === "morning") {
+    const into = totalMins - 240;
+    minsLeft = 360 - into; nextLabel = "Day"; progress = into / 360;
+  } else if (realPeriod === "day") {
+    const into = totalMins - 600;
+    minsLeft = 600 - into; nextLabel = "Night"; progress = into / 600;
+  } else {
+    const into = h >= 20 ? totalMins - 1200 : totalMins + 240;
+    minsLeft = 480 - into; nextLabel = "Morning"; progress = into / 480;
+  }
+  const fmt = mins => {
+    const hh = Math.floor(mins / 60), mm = mins % 60;
+    return hh > 0 ? (mm > 0 ? `${hh}h ${mm}m` : `${hh}h`) : `${mm}m`;
+  };
+
   return (
     <div style={{
       position:"relative", overflow:"hidden", flexShrink:0,
-      background: tc ? tc.skyGrad : defaultGrad,
-      height:72,
-      transition:"background 0.85s ease",
+      background: skyBg, height:80, transition:"background 0.85s ease",
     }}>
       {STARS.map((s,i) => (
         <div key={i} style={{
@@ -2793,20 +2826,29 @@ function SkyBar({ timeFilter, setTime }) {
           transition:"opacity 1.2s ease",
         }} />
       ))}
-      {tc && (
-        <div style={{
-          position:"absolute",
-          left:`calc(${tc.bodyLeft}% - ${tc.bodyType==="moon"?11:14}px)`,
-          top:"50%", transform:"translateY(-50%)",
-          width: tc.bodyType==="moon" ? 22 : 28,
-          height: tc.bodyType==="moon" ? 22 : 28,
-          borderRadius:"50%",
-          background: tc.bodyColor,
-          boxShadow:`0 0 18px 6px ${tc.bodyGlow}, 0 0 50px 22px ${tc.bodyGlowOuter}`,
-          transition:"left 0.7s cubic-bezier(0.4,0,0.2,1), background 0.8s ease, box-shadow 0.8s ease",
-        }} />
-      )}
-      <div style={{ position:"absolute", bottom:10, right:16, display:"flex", gap:5 }}>
+      {/* Celestial body — position reflects real local time */}
+      <div style={{
+        position:"absolute",
+        left:`calc(${bodyLeftPct}% - ${bodySize/2}px)`,
+        top:"42%", transform:"translateY(-50%)",
+        width:bodySize, height:bodySize, borderRadius:"50%",
+        background: realTc.bodyColor,
+        boxShadow:`0 0 18px 6px ${realTc.bodyGlow}, 0 0 50px 22px ${realTc.bodyGlowOuter}`,
+        transition:"left 1s ease, background 0.8s ease, box-shadow 0.8s ease",
+      }} />
+      {/* Period label + countdown — left side */}
+      <div style={{ position:"absolute", left:14, bottom:14, fontFamily:"'DM Sans',sans-serif" }}>
+        <div style={{ fontSize:9, fontWeight:"700", letterSpacing:1.2, textTransform:"uppercase", color:"rgba(255,255,255,0.5)", marginBottom:3 }}>
+          {realPeriod.charAt(0).toUpperCase()+realPeriod.slice(1)}
+        </div>
+        <div style={{ fontSize:11, color:"rgba(255,255,255,0.75)", fontFamily:"'JetBrains Mono',monospace", display:"flex", alignItems:"center", gap:5 }}>
+          <span>{fmt(minsLeft)}</span>
+          <span style={{ color:"rgba(255,255,255,0.3)", fontSize:9 }}>until</span>
+          <span style={{ color: TIME_COLORS[nextLabel.toLowerCase()]?.badge || "rgba(255,255,255,0.55)" }}>{nextLabel}</span>
+        </div>
+      </div>
+      {/* Time filter buttons — right side */}
+      <div style={{ position:"absolute", bottom:14, right:16, display:"flex", gap:5 }}>
         {[["all","All",""],["morning","Morn","🌅"],["day","Day","☀️"],["night","Night","🌙"]].map(([v,label,icon]) => {
           const btc = TIME_COLORS[v];
           const isActive = timeFilter === v;
@@ -2824,6 +2866,10 @@ function SkyBar({ timeFilter, setTime }) {
             }}>{icon&&<span style={{fontSize:12}}>{icon}</span>}{label}</button>
           );
         })}
+      </div>
+      {/* Period progress bar — bottom edge */}
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:3, background:"rgba(255,255,255,0.07)" }}>
+        <div style={{ height:"100%", width:`${Math.min(progress,1)*100}%`, background:realTc.badge, opacity:0.5, borderRadius:"0 2px 2px 0" }} />
       </div>
     </div>
   );

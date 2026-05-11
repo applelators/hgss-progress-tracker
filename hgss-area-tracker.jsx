@@ -139,7 +139,6 @@ const DEX = [
   {johtoId:255,id:151,name:"Mew",     warn:true,event:true},
   {johtoId:256,id:251,name:"Celebi",  warn:true,event:true},
 ];
-];
 
 // ─── NATIONAL DEX (Gen II/III/IV obtainable in HGSS) — Phase 2: update ──────
 // ─── NATIONAL DEX (Gen III/IV obtainable post-game) — Phase 5: expand ────────

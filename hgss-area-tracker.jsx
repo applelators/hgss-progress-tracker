@@ -4501,8 +4501,8 @@ function HuntTab({ version, isMobile }) {
                         <span style={{ fontSize:11, color:C.muted }}>
                           {loc.method}{loc.levels ? ` · Lv.${loc.levels}` : ""}
                         </span>
-                        {loc.hgOnly && <Tag color="#c85252">FR</Tag>}
-                        {loc.ssOnly && <Tag color={C.ssSilver}>LG</Tag>}
+                        {loc.hgOnly && <Tag color={C.hgGold}>HG</Tag>}
+                        {loc.ssOnly && <Tag color={C.ssSilver}>SS</Tag>}
                       </div>
                       {loc.math && (
                         <div style={{ fontSize:11, color:C.muted, textAlign:"right" }}>
@@ -4713,13 +4713,13 @@ function NationalDexPanel({ caught, setDexSelected, version }) {
                   onClick={() => { if (!isDimmed) setDexSelected(p.name); }}
                   style={{
                     background: isCaught ? "rgba(74,175,116,0.10)" : C.card,
-                    border:`1px solid ${isCaught ? C.green : p.ssOnly ? C.ssSilver : p.hgOnly ? "#c85252" : C.border}`,
+                    border:`1px solid ${isCaught ? C.green : p.ssOnly ? C.ssSilver : p.hgOnly ? C.hgGold : C.border}`,
                     borderRadius:7, padding:"6px 4px 5px", cursor:isDimmed?"default":"pointer",
                     textAlign:"center", opacity:isDimmed?0.3:1, position:"relative", transition:"all 0.1s",
                   }}>
                   {isCaught && <div style={{ position:"absolute", top:3, left:4, fontSize:8, color:C.green, fontWeight:"700" }}>✓</div>}
-                  {p.hgOnly && <div style={{ position:"absolute", top:3, right:3, fontSize:7, color:"#c85252", fontWeight:"600" }}>FR</div>}
-                  {p.ssOnly && <div style={{ position:"absolute", top:3, right:3, fontSize:7, color:C.ssSilver, fontWeight:"600" }}>LG</div>}
+                  {p.hgOnly && <div style={{ position:"absolute", top:3, right:3, fontSize:7, color:C.hgGold, fontWeight:"600" }}>HG</div>}
+                  {p.ssOnly && <div style={{ position:"absolute", top:3, right:3, fontSize:7, color:C.ssSilver, fontWeight:"600" }}>SS</div>}
                   <img src={pokeSpriteUrl(p.id)} alt={p.name}
                     style={{ width:36, height:36, imageRendering:"pixelated", display:"block", margin:"0 auto",
                              opacity:isCaught?1:0.7, filter:isCaught?"none":"brightness(0)" }} />
@@ -4810,17 +4810,17 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                 <div key={p.id} onClick={() => { if (!isDimmed) setDexSelected(p.name); }}
                   style={{
                     background: isCaught ? "rgba(74,175,116,0.18)" : isSel ? "rgba(0,0,0,0.15)" : C.card,
-                    border:`1px solid ${isSel ? "var(--hgss-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.ssOnly ? C.ssSilver : p.hgOnly ? "#c85252" : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border}`,
+                    border:`1px solid ${isSel ? "var(--hgss-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.ssOnly ? C.ssSilver : p.hgOnly ? C.hgGold : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border}`,
                     borderRadius:8, padding:"8px 5px 6px", cursor: isDimmed ? "default" : "pointer", textAlign:"center",
                     transition:"all 0.12s", position:"relative", opacity: isDimmed ? 0.3 : isCaught ? 1 : 0.55,
                     boxShadow: isSel ? "0 0 0 2px rgba(var(--hgss-accent-rgb,212,98,26),0.2)" : "none",
                   }}
                   onMouseEnter={e => { if (isDimmed) return; e.currentTarget.style.borderColor = isCaught ? C.green : "var(--hgss-accent)"; e.currentTarget.style.background = isCaught ? "rgba(74,175,116,0.25)" : "rgba(0,0,0,0.2)"; e.currentTarget.style.opacity = "1"; }}
-                  onMouseLeave={e => { if (isDimmed) return; e.currentTarget.style.borderColor = isSel ? "var(--hgss-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.ssOnly ? C.ssSilver : p.hgOnly ? "#c85252" : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border; e.currentTarget.style.background = isCaught ? "rgba(74,175,116,0.18)" : isSel ? "rgba(0,0,0,0.15)" : C.card; e.currentTarget.style.opacity = isDimmed ? "0.3" : isCaught ? "1" : "0.55"; }}
+                  onMouseLeave={e => { if (isDimmed) return; e.currentTarget.style.borderColor = isSel ? "var(--hgss-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.ssOnly ? C.ssSilver : p.hgOnly ? C.hgGold : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border; e.currentTarget.style.background = isCaught ? "rgba(74,175,116,0.18)" : isSel ? "rgba(0,0,0,0.15)" : C.card; e.currentTarget.style.opacity = isDimmed ? "0.3" : isCaught ? "1" : "0.55"; }}
                 >
                   {isCaught && <div style={{ position:"absolute", top:4, left:5, fontSize:9, color:C.green, fontWeight:"700" }}>✓</div>}
-                  {p.hgOnly && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:"#c85252", fontWeight:"600" }}>FR</div>}
-                  {p.ssOnly && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:C.ssSilver, fontWeight:"600" }}>LG</div>}
+                  {p.hgOnly && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:C.hgGold, fontWeight:"600" }}>HG</div>}
+                  {p.ssOnly && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:C.ssSilver, fontWeight:"600" }}>SS</div>}
                   {p.event  && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:"#a87acc", fontWeight:"600" }}>✦</div>}
                   <img src={pokeSpriteUrl(p.id)} alt={p.name} style={{ width:48, height:48, imageRendering:"pixelated", display:"block", margin:"0 auto", filter: isCaught ? "none" : "grayscale(1)" }} />
                   <div style={{ fontSize:9, color:C.muted, marginBottom:1, fontFamily:"'Courier New',monospace" }}>#{String(p.id).padStart(3,"0")}</div>
@@ -5047,7 +5047,7 @@ function DexDetail({ selected, caught, locs, toggleCaught, compact }) {
           <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:80, height:80, imageRendering:"pixelated", display:"block", margin:"0 auto 8px" }} />
           <div style={{ fontSize:10, color:C.muted, marginBottom:2, fontFamily:"'Courier New',monospace" }}>#{String(selected.id).padStart(3,"0")}</div>
           <div style={{ fontSize:17, fontWeight:"700", color: isCaught ? C.green : C.text }}>{selected.name}</div>
-          {selected.hgOnly && <div style={{ fontSize:10, color:"#c85252", marginTop:4, fontWeight:"500" }}>HeartGold exclusive</div>}
+          {selected.hgOnly && <div style={{ fontSize:10, color:C.hgGold, marginTop:4, fontWeight:"500" }}>HeartGold exclusive</div>}
           {selected.ssOnly && <div style={{ fontSize:10, color:C.ssSilver, marginTop:4, fontWeight:"500" }}>SoulSilver exclusive</div>}
           {selected.event  && <div style={{ fontSize:10, color:"#a87acc", marginTop:4, fontWeight:"500" }}>Event — not in-game obtainable</div>}
           {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, marginTop:4, fontWeight:"500" }}>⚠ {cs.desc}</div> : null; })()}
@@ -5421,8 +5421,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               )}
 
               <div style={{ fontSize:11, color:C.muted, marginBottom:12, display:"flex", gap:16, flexWrap:"wrap" }}>
-                <span><span style={{ color:"#c85252", fontWeight:"600" }}>FR</span> = HeartGold exclusive</span>
-                <span><span style={{ color:C.ssSilver, fontWeight:"600" }}>LG</span> = SoulSilver exclusive</span>
+                <span><span style={{ color:C.hgGold, fontWeight:"600" }}>HG</span> = HeartGold exclusive</span>
+                <span><span style={{ color:C.ssSilver, fontWeight:"600" }}>SS</span> = SoulSilver exclusive</span>
                 <span><span style={{ color:C.gold }}>★</span> = Hidden (Itemfinder)</span>
               </div>
 
@@ -5731,8 +5731,8 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
     <Row done={isCaught} passed={isPassed} onClick={handleClick}>
       {allDexId(p.name) && <img key={wobbleNonce} src={pokeSpriteUrl(allDexId(p.name))} alt={p.name} className={wobbleNonce && isCaught ? "hgss-wobble" : ""} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.65, filter:isCaught?"none":"brightness(0)", transition:"opacity 0.25s, filter 0.25s" }} />}
       <div style={{ flex:1 }}>
-        <span style={{ color:isCaught?C.green:p.ssOnly?C.ssSilver:p.hgOnly?"#c85252":C.text, fontWeight:"600", fontSize:12 }}>
-          {p.name}{p.hgOnly&&<Tag color="#c85252">FR</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>LG</Tag>}
+        <span style={{ color:isCaught?C.green:p.ssOnly?C.ssSilver:p.hgOnly?C.hgGold:C.text, fontWeight:"600", fontSize:12 }}>
+          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}
         </span>
         {METHOD_SPRITE_URL[p.method]
           ? <span style={{ display:"inline-flex", alignItems:"center", gap:3, marginLeft:6 }}>
@@ -5994,7 +5994,7 @@ function RateDisplay({ rate, isMobile }) {
 
   const badge = splitMatch ? (
     <div style={{ display:"flex", flexDirection:"column", gap:3, alignItems:"flex-end" }}>
-      <span style={{ fontSize:11, fontWeight:"700", color:"#c85252", background:"rgba(200,82,82,0.12)", border:"1px solid rgba(200,82,82,0.3)", padding:"1px 6px", borderRadius:4, whiteSpace:"nowrap" }}>FR {splitMatch[1]}</span>
+      <span style={{ fontSize:11, fontWeight:"700", color:C.hgGold, background:"rgba(200,82,82,0.12)", border:"1px solid rgba(200,82,82,0.3)", padding:"1px 6px", borderRadius:4, whiteSpace:"nowrap" }}>FR {splitMatch[1]}</span>
       <span style={{ fontSize:11, fontWeight:"700", color:C.ssSilver, background:"rgba(63,168,74,0.12)", border:"1px solid rgba(63,168,74,0.3)", padding:"1px 6px", borderRadius:4, whiteSpace:"nowrap" }}>LG {splitMatch[2]}</span>
     </div>
   ) : isOneTime ? (
@@ -6041,7 +6041,7 @@ function RateDisplay({ rate, isMobile }) {
                       pointerEvents:"none", minWidth:170 }}>
           {splitMatch ? (
             <>
-              {frMath && <div style={{ fontSize:11, color:"#c85252", marginBottom:3 }}>
+              {frMath && <div style={{ fontSize:11, color:C.hgGold, marginBottom:3 }}>
                 <b>FR</b> — ~{frMath.avg} avg · ≤{frMath.conf95} for 95%
               </div>}
               {lgMath && <div style={{ fontSize:11, color:C.ssSilver }}>

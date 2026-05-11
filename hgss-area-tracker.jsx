@@ -1476,120 +1476,250 @@ const MOVE_TIERS = {
 const EVO_DELAY = {}; // TODO: Add Johto evolution delay notes
 
 // ─── DREAM TEAM BUILDER DATA ──────────────────────────────────────────────────
-const DT_CANDIDATES = []; // TODO: Add Johto Dream Team candidates
+// Johto regional candidates — final forms only, ordered best→decent.
+// Tyranitar (pseudo-legendary) is always locked into slot 1 unless it's the favorite.
+const DT_CANDIDATES = [
+  // ── Starters ─────────────────────────────────────────────────────────────────
+  { name:"Typhlosion",  types:["Fire"],            hms:["Strength","Rock Smash"] },
+  { name:"Feraligatr",  types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash","Cut"] },
+  { name:"Meganium",    types:["Grass"],            hms:["Cut","Strength","Rock Smash"] },
+  // ── Top picks ────────────────────────────────────────────────────────────────
+  { name:"Ampharos",    types:["Electric"],         hms:["Strength","Rock Smash"] },
+  { name:"Heracross",   types:["Bug","Fighting"],   hms:["Strength","Rock Smash","Cut"] },
+  { name:"Espeon",      types:["Psychic"],          hms:["Strength"] },
+  { name:"Umbreon",     types:["Dark"],             hms:["Strength"] },
+  { name:"Steelix",     types:["Steel","Ground"],   hms:["Strength","Rock Climb","Rock Smash"] },
+  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength"], hgOnly:true },
+  { name:"Donphan",     types:["Ground"],           hms:["Strength","Rock Smash","Rock Climb"], hgOnly:true },
+  { name:"Arcanine",    types:["Fire"],             hms:["Strength"], hgOnly:true },
+  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength"], ssOnly:true },
+  { name:"Ninetales",   types:["Fire"],             hms:["Strength"], ssOnly:true },
+  { name:"Skarmory",    types:["Steel","Flying"],   hms:["Fly","Strength","Cut"], ssOnly:true },
+  { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Strength","Rock Smash","Rock Climb"] },
+  { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
+  { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Dragonite",   types:["Dragon","Flying"],  hms:["Fly","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Cut"] },
+  { name:"Togekiss",    types:["Normal","Flying"],  hms:["Fly","Strength"] },
+  { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly","Strength","Cut"] },
+  { name:"Blissey",     types:["Normal"],           hms:["Strength"] },
+  { name:"Ursaring",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], hgOnly:true },
+  { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Fly","Waterfall","Whirlpool"], hgOnly:true },
+  // ── Good picks ───────────────────────────────────────────────────────────────
+  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"] },
+  { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool"], ssOnly:true },
+  { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
+  { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"] },
+  { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly","Strength"] },
+  { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash"] },
+  { name:"Miltank",     types:["Normal"],           hms:["Strength","Rock Smash"] },
+  { name:"Nidoking",    types:["Poison","Ground"],  hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash","Cut"] },
+  { name:"Nidoqueen",   types:["Poison","Ground"],  hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash","Cut"] },
+  { name:"Machamp",     types:["Fighting"],         hms:["Strength","Rock Smash","Rock Climb"] },
+  { name:"Gyarados",    types:["Water","Flying"],   hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Lapras",      types:["Water","Ice"],      hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Starmie",     types:["Water","Psychic"],  hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Alakazam",    types:["Psychic"],          hms:["Strength"] },
+  { name:"Bellossom",   types:["Grass"],            hms:["Cut","Strength"], ssOnly:true },
+  { name:"Jumpluff",    types:["Grass","Flying"],   hms:["Fly","Cut"] },
+  { name:"Sudowoodo",   types:["Rock"],             hms:["Strength","Rock Smash","Rock Climb"] },
+  { name:"Girafarig",   types:["Normal","Psychic"], hms:["Strength"] },
+  { name:"Magcargo",    types:["Fire","Rock"],      hms:["Strength","Rock Smash"] },
+  { name:"Mamoswine",   types:["Ice","Ground"],     hms:["Strength","Rock Smash","Rock Climb"] },
+  { name:"Piloswine",   types:["Ice","Ground"],     hms:["Strength","Rock Smash"] },
+  { name:"Octillery",   types:["Water"],            hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Corsola",     types:["Water","Rock"],     hms:["Surf","Waterfall","Whirlpool","Rock Smash"] },
+  { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"] },
+  { name:"Hitmonlee",   types:["Fighting"],         hms:["Strength","Rock Smash"] },
+  { name:"Hitmonchan",  types:["Fighting"],         hms:["Strength","Rock Smash"] },
+  { name:"Porygon2",    types:["Normal"],           hms:[] },
+  { name:"Golduck",     types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash","Cut"] },
+  { name:"Exeggutor",   types:["Grass","Psychic"],  hms:["Strength"] },
+  { name:"Hypno",       types:["Psychic"],          hms:["Strength"] },
+  { name:"Dewgong",     types:["Water","Ice"],      hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Cloyster",    types:["Water","Ice"],      hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Tentacruel",  types:["Water","Poison"],   hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Jynx",        types:["Ice","Psychic"],    hms:["Surf"] },
+  { name:"Electabuzz",  types:["Electric"],         hms:["Strength"] },
+  { name:"Magmar",      types:["Fire"],             hms:["Strength"] },
+  { name:"Kingler",     types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Cut"] },
+  { name:"Furret",      types:["Normal"],           hms:["Cut","Strength"] },
+  { name:"Tangrowth",   types:["Grass"],            hms:["Cut","Strength"] },
+  { name:"Lickilicky",  types:["Normal"],           hms:["Strength","Rock Smash"] },
+  { name:"Ambipom",     types:["Normal"],           hms:["Cut","Strength"] },
+  { name:"Venomoth",    types:["Bug","Poison"],     hms:["Cut"] },
+  { name:"Yanmega",     types:["Bug","Flying"],     hms:["Fly","Cut"] },
+  { name:"Sunflora",    types:["Grass"],            hms:["Cut"] },
+  { name:"Aerodactyl",  types:["Rock","Flying"],    hms:["Fly","Strength","Rock Smash","Rock Climb"] },
+  { name:"Snorlax",     types:["Normal"],           hms:["Surf","Strength","Rock Smash"] },
+  // ── Niche picks ──────────────────────────────────────────────────────────────
+  { name:"Ariados",     types:["Bug","Poison"],     hms:["Cut"] },
+  { name:"Ledian",      types:["Bug","Flying"],     hms:["Cut","Fly"] },
+  { name:"Sneasel",     types:["Dark","Ice"],       hms:["Cut","Strength","Rock Climb"] },
+  { name:"Misdreavus",  types:["Ghost"],            hms:[], ssOnly:true },
+  { name:"Murkrow",     types:["Dark","Flying"],    hms:["Fly"], hgOnly:true },
+  { name:"Shuckle",     types:["Bug","Rock"],       hms:["Strength","Rock Smash"] },
+  { name:"Qwilfish",    types:["Water","Poison"],   hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Dunsparce",   types:["Normal"],           hms:["Strength"] },
+  { name:"Gligar",      types:["Ground","Flying"],  hms:["Fly","Strength"], hgOnly:true },
+  { name:"Smeargle",    types:["Normal"],           hms:["Cut","Fly","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Rock Climb"] },
+  { name:"Wobbuffet",   types:["Psychic"],          hms:[] },
+  { name:"Dodrio",      types:["Normal","Flying"],  hms:["Fly","Cut"] },
+  { name:"Stantler",    types:["Normal"],           hms:["Strength"] },
+  { name:"Seaking",     types:["Water"],            hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Vaporeon",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool"] },
+  { name:"Jolteon",     types:["Electric"],         hms:["Strength"] },
+  { name:"Flareon",     types:["Fire"],             hms:["Strength"] },
+  { name:"Vileplume",   types:["Grass","Poison"],   hms:["Cut","Strength"], ssOnly:true },
+  { name:"Primeape",    types:["Fighting"],         hms:["Strength","Rock Smash","Rock Climb"], hgOnly:true },
+  { name:"Persian",     types:["Normal"],           hms:["Cut","Strength"], ssOnly:true },
+  { name:"Dugtrio",     types:["Ground"],           hms:["Strength","Rock Smash","Rock Climb","Cut"] },
+  { name:"Mr. Mime",    types:["Psychic"],          hms:["Strength"] },
+  { name:"Rapidash",    types:["Fire"],             hms:["Strength"] },
+  { name:"Marowak",     types:["Ground"],           hms:["Strength","Rock Smash"] },
+  { name:"Weezing",     types:["Poison"],           hms:[] },
+  { name:"Muk",         types:["Poison"],           hms:[] },
+  { name:"Magneton",    types:["Electric","Steel"],  hms:[] },
+  { name:"Electrode",   types:["Electric"],         hms:[] },
+  { name:"Rhydon",      types:["Ground","Rock"],    hms:["Surf","Strength","Waterfall","Rock Smash","Rock Climb","Cut"] },
+  { name:"Kangaskhan",  types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb","Cut"] },
+  { name:"Pinsir",      types:["Bug"],              hms:["Strength","Rock Smash","Cut"], ssOnly:true },
+  { name:"Omastar",     types:["Rock","Water"],     hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
+  { name:"Kabutops",    types:["Rock","Water"],     hms:["Surf","Strength","Waterfall","Whirlpool","Cut"] },
+  { name:"Tauros",      types:["Normal"],           hms:["Strength","Rock Smash","Surf"] },
+];
 const DT_GROUPS = {};
 const DT_LEGENDARY = new Set(["Raikou","Entei","Suicune","Lugia","Ho-Oh","Celebi","Mewtwo","Mew","Articuno","Zapdos","Moltres"]);
 
 const DT_HM_COMPAT = {
-  "Cut":        new Set(["Bulbasaur","Ivysaur","Venusaur","Rattata","Raticate","Sandshrew","Sandslash","Nidoran♀","Nidorina","Nidoqueen","Nidoran♂","Nidorino","Nidoking","Oddish","Gloom","Vileplume","Paras","Parasect","Psyduck","Golduck","Farfetch'd","Seel","Krabby","Kingler","Rhyhorn","Rhydon","Kangaskhan","Scyther","Pinsir","Kabuto","Kabutops","Charizard","Bellsprout","Weepinbell","Victreebel","Dratini","Dragonair","Dragonite"]),
-  "Fly":        new Set(["Charizard","Pidgey","Pidgeotto","Pidgeot","Spearow","Fearow","Doduo","Dodrio","Aerodactyl","Dragonite"]),
-  "Surf":       new Set(["Squirtle","Wartortle","Blastoise","Psyduck","Golduck","Poliwag","Poliwhirl","Poliwrath","Tentacool","Tentacruel","Slowpoke","Slowbro","Seel","Dewgong","Shellder","Cloyster","Krabby","Kingler","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Lapras","Vaporeon","Dratini","Dragonair","Dragonite","Jynx","Omanyte","Omastar","Kabuto","Kabutops","Gyarados","Snorlax","Tauros","Kangaskhan","Nidoran♀","Nidorina","Nidoqueen","Nidoran♂","Nidorino","Nidoking","Rhydon"]),
-  "Strength":   new Set(["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Sandshrew","Sandslash","Nidorina","Nidoqueen","Nidorino","Nidoking","Mankey","Primeape","Pikachu","Raichu","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Slowpoke","Slowbro","Drowzee","Krabby","Kingler","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Chansey","Kangaskhan","Tauros","Gyarados","Lapras","Snorlax","Dratini","Dragonair","Dragonite","Arcanine","Aerodactyl","Electabuzz","Exeggcute","Exeggutor","Psyduck","Golduck","Onix","Lickitung"]),
-  "Flash":      new Set(["Butterfree","Pikachu","Raichu","Clefairy","Clefable","Jigglypuff","Wigglytuff","Abra","Kadabra","Slowpoke","Slowbro","Gastly","Haunter","Gengar","Drowzee","Hypno","Magnemite","Magneton","Doduo","Dodrio","Electrode","Starmie","Jynx","Electabuzz","Porygon","Vaporeon","Jolteon","Flareon"]),
-  "Rock Smash": new Set(["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Nidoran♀","Nidorina","Nidoqueen","Nidoran♂","Nidorino","Nidoking","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Primeape","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Krabby","Kingler","Kabutops","Aerodactyl","Growlithe","Arcanine","Pikachu","Raichu","Psyduck","Golduck","Gyarados","Kangaskhan","Lapras","Omanyte","Omastar","Sandshrew","Sandslash","Scyther","Slowpoke","Slowbro","Tauros","Dratini","Dragonair","Dragonite","Electabuzz","Onix"]),
-  "Waterfall":  new Set(["Squirtle","Wartortle","Blastoise","Psyduck","Golduck","Poliwag","Poliwhirl","Poliwrath","Tentacool","Tentacruel","Seel","Dewgong","Shellder","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Lapras","Vaporeon","Dratini","Dragonair","Dragonite","Jynx","Omanyte","Omastar","Kabuto","Kabutops","Gyarados"]),
+  "Cut":        new Set(["Meganium","Bayleef","Chikorita","Heracross","Ariados","Spinarak","Ledian","Ledyba","Furret","Sentret","Scyther","Scizor","Yanmega","Yanma","Shuckle","Pinsir","Sneasel","Aipom","Ambipom","Smeargle","Farfetch'd","Nidoking","Nidorino","Nidoran♂","Nidoqueen","Nidorina","Nidoran♀","Golduck","Psyduck","Kingler","Krabby","Kabutops","Kabuto","Kangaskhan","Rhydon","Rhyhorn","Dodrio","Doduo","Venomoth","Venonat","Jumpluff","Skiploom","Hoppip","Bellossom","Gloom","Oddish","Tangrowth","Tangela","Vileplume","Skarmory","Crobat","Golbat","Zubat","Dugtrio","Diglett","Persian","Meowth","Sunflora","Sunkern","Seaking","Goldeen","Feraligatr","Croconaw","Totodile","Dragonite","Dragonair","Dratini"]),
+  "Fly":        new Set(["Noctowl","Hoothoot","Crobat","Golbat","Xatu","Natu","Togekiss","Togetic","Togepi","Skarmory","Mantine","Delibird","Dragonite","Dragonair","Yanmega","Yanma","Aerodactyl","Ledian","Ledyba","Jumpluff","Skiploom","Hoppip","Dodrio","Doduo","Murkrow","Gligar"]),
+  "Surf":       new Set(["Feraligatr","Croconaw","Totodile","Lanturn","Chinchou","Azumarill","Marill","Politoed","Poliwrath","Poliwhirl","Poliwag","Quagsire","Wooper","Corsola","Remoraid","Octillery","Mantine","Kingdra","Seadra","Horsea","Slowking","Slowbro","Slowpoke","Gyarados","Magikarp","Lapras","Starmie","Staryu","Psyduck","Golduck","Tentacruel","Tentacool","Dewgong","Seel","Cloyster","Shellder","Vaporeon","Snorlax","Dragonite","Dragonair","Dratini","Nidoking","Nidorino","Nidoran♂","Nidoqueen","Nidorina","Nidoran♀","Gyarados","Kingler","Krabby","Omastar","Omanyte","Kabutops","Kabuto","Seaking","Goldeen","Qwilfish","Rhydon","Rhyhorn","Tauros"]),
+  "Strength":   new Set(["Meganium","Bayleef","Typhlosion","Quilava","Feraligatr","Croconaw","Ampharos","Flaaffy","Heracross","Steelix","Onix","Tyranitar","Pupitar","Larvitar","Donphan","Phanpy","Ursaring","Teddiursa","Blissey","Chansey","Miltank","Togekiss","Togetic","Granbull","Snubbull","Quagsire","Wooper","Sudowoodo","Azumarill","Marill","Mamoswine","Piloswine","Swinub","Girafarig","Stantler","Porygon2","Porygon","Forretress","Pineco","Scizor","Scyther","Skarmory","Houndoom","Houndour","Ninetales","Vulpix","Arcanine","Growlithe","Espeon","Umbreon","Vaporeon","Jolteon","Flareon","Eevee","Dragonite","Dragonair","Dratini","Machamp","Machoke","Machop","Nidoking","Nidorino","Nidoqueen","Nidorina","Gyarados","Lapras","Snorlax","Kangaskhan","Aerodactyl","Tauros","Mantine","Primeape","Mankey","Magcargo","Slugma","Lanturn","Chinchou","Slowbro","Slowpoke","Slowking","Smeargle","Ambipom","Aipom","Tangrowth","Tangela","Lickilicky","Lickitung","Hitmonlee","Hitmonchan","Hitmontop","Tyrogue","Electabuzz","Elekid","Magmar","Magby","Rapidash","Ponyta","Marowak","Cubone","Mr. Mime","Dugtrio","Diglett","Omastar","Omanyte","Kabutops","Kabuto","Rhydon","Rhyhorn","Pinsir","Exeggutor","Exeggcute","Dewgong","Seel","Cloyster","Shellder","Murkrow","Alakazam","Kadabra","Abra","Hypno","Drowzee","Kingler","Krabby","Dodrio","Doduo","Seaking","Goldeen","Weezing","Koffing","Starmie","Staryu","Golduck","Psyduck","Furret","Sentret","Sneasel","Muk","Grimer","Politoed","Poliwrath","Poliwhirl","Poliwag","Xatu","Natu","Crobat","Golbat","Zubat","Blissey","Wigglytuff","Jigglypuff","Clefable","Clefairy","Raichu","Pikachu","Pichu"]),
+  "Whirlpool":  new Set(["Feraligatr","Croconaw","Totodile","Lanturn","Chinchou","Azumarill","Marill","Politoed","Poliwrath","Poliwhirl","Poliwag","Quagsire","Wooper","Corsola","Remoraid","Octillery","Mantine","Kingdra","Seadra","Horsea","Slowking","Slowbro","Slowpoke","Gyarados","Lapras","Starmie","Staryu","Psyduck","Golduck","Tentacruel","Tentacool","Dewgong","Seel","Cloyster","Shellder","Vaporeon","Dragonite","Dragonair","Dratini","Qwilfish","Seaking","Goldeen","Omastar","Omanyte","Kabutops","Kabuto"]),
+  "Rock Smash": new Set(["Heracross","Tyranitar","Pupitar","Larvitar","Sudowoodo","Donphan","Phanpy","Ursaring","Teddiursa","Steelix","Onix","Hitmontop","Hitmonlee","Hitmonchan","Tyrogue","Machamp","Machoke","Machop","Politoed","Poliwrath","Poliwhirl","Quagsire","Wooper","Forretress","Pineco","Corsola","Nidoking","Nidorino","Nidoran♂","Nidoqueen","Nidorina","Nidoran♀","Smeargle","Shuckle","Granbull","Snubbull","Marowak","Cubone","Feraligatr","Croconaw","Totodile","Ampharos","Flaaffy","Lickilicky","Lickitung","Omastar","Omanyte","Aerodactyl","Rhydon","Rhyhorn","Kangaskhan","Snorlax","Tauros","Primeape","Mankey","Magcargo","Slugma","Miltank","Pinsir","Blissey","Chansey"]),
+  "Waterfall":  new Set(["Feraligatr","Croconaw","Totodile","Lanturn","Chinchou","Azumarill","Marill","Politoed","Poliwrath","Poliwhirl","Poliwag","Quagsire","Wooper","Corsola","Remoraid","Octillery","Mantine","Kingdra","Seadra","Horsea","Slowking","Slowbro","Slowpoke","Gyarados","Lapras","Starmie","Staryu","Psyduck","Golduck","Dewgong","Seel","Cloyster","Vaporeon","Dragonite","Dragonair","Dratini","Rhydon","Qwilfish","Seaking","Goldeen"]),
+  "Rock Climb": new Set(["Tyranitar","Pupitar","Larvitar","Steelix","Onix","Donphan","Phanpy","Ursaring","Teddiursa","Heracross","Sudowoodo","Snorlax","Machamp","Machoke","Nidoking","Nidoqueen","Dragonite","Kangaskhan","Mamoswine","Piloswine","Swinub","Aerodactyl","Sneasel","Primeape","Mankey","Rhydon","Rhyhorn"]),
 };
 
 // Neutral Pokémon are listed first so they always outrank version-exclusive picks
 // by pool-position score, even if the version check is somehow skipped.
 // FR-exclusive follow neutral, LG-exclusive come last.
 
+// HGSS TM tips — Game Corner (Goldenrod, Voltorb Flip) is the main repeatable source.
 const DT_TM_TIPS = {
-  "Charizard":  [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Dragon Claw",src:"TM02 — Victory Road",oneTime:true}],
-  "Blastoise":  [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Venusaur":   [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true},{move:"SolarBeam",src:"TM22 — Pokémon Mansion B1F",oneTime:true}],
-  "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Nidoqueen":  [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
-  "Raichu":     [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"}],
-  "Starmie":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
-  "Lapras":     [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
-  "Gyarados":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Snorlax":    [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Shadow Ball",src:"TM30 — Game Corner, 4,500 coins"}],
-  "Vaporeon":   [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Jolteon":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"}],
-  "Flareon":    [{move:"Fire Blast",src:"TM38 — Prize from Blaine, Cinnabar Gym",oneTime:true}],
-  "Arcanine":   [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"ExtremeSpeed",src:"Lv. 49 as Arcanine — use Fire Stone before Lv. 50 or permanently missed"}],
-  "Slowbro":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
-  "Exeggutor":  [{move:"Psychic",src:"TM29 — Saffron City",oneTime:true},{move:"SolarBeam",src:"TM22 — Pokémon Mansion B1F",oneTime:true}],
-  "Hypno":      [{move:"Psychic",src:"TM29 — Saffron City",oneTime:true},{move:"Shadow Ball",src:"TM30 — Game Corner, 4,500 coins"}],
-  "Electabuzz": [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
-  "Magneton":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Kanto Power Plant",oneTime:true}],
-  "Electrode":  [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Kanto Power Plant",oneTime:true}],
-  "Sandslash":  [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Aerodactyl": [{move:"Iron Tail",src:"TM23 — Game Corner, 3,500 coins"},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Pidgeot":    [{move:"Hyper Beam",src:"TM15 — Celadon Dept. Store (₽7,500)"}],
-  "Poliwrath":  [{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
-  "Cloyster":   [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Blizzard",src:"TM14 — Pokémon Mansion",oneTime:true}],
-  "Omastar":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Rhydon":     [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Golduck":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"}],
-  "Ninetales":  [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"}],
-  "Vileplume":  [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true},{move:"SolarBeam",src:"TM22 — Pokémon Mansion B1F",oneTime:true}],
-  "Victreebel": [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true},{move:"SolarBeam",src:"TM22 — Pokémon Mansion B1F",oneTime:true}],
-  "Tauros":     [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Body Slam",src:"Move Tutor — Four Island",oneTime:true}],
-  "Dewgong":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Blizzard",src:"TM14 — Pokémon Mansion",oneTime:true}],
-  "Tentacruel": [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Hitmonchan": [{move:"Ice Punch",src:"Lv. 26 — also learns Fire Punch & ThunderPunch at Lv. 26"},{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"}],
-  "Hitmonlee":  [{move:"Hi Jump Kick",src:"Lv. 26 (level-up)"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
-  "Dragonite":  [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Dragon Claw",src:"TM02 — Victory Road",oneTime:true}],
-  "Weezing":    [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true},{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"}],
-  "Kingler":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Dodrio":     [{move:"Aerial Ace",src:"TM40 — Route 9"}],
-  "Kangaskhan": [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"}],
-  "Kabutops":   [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Fearow":     [{move:"Aerial Ace",src:"TM40 — Route 9"}],
-  "Scyther":    [{move:"Aerial Ace",src:"TM40 — Route 9"}],
-  "Kadabra":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"}],
-  "Machoke":    [{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Graveler":   [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Haunter":    [{move:"Shadow Ball",src:"TM30 — Game Corner, 4,500 coins"},{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true}],
-  "Onix":       [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Rapidash":   [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"Fire Blast",src:"TM38 — Prize from Blaine, Cinnabar Gym",oneTime:true}],
-  "Dugtrio":    [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
-  "Marowak":    [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Jynx":       [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
-  "Mr. Mime":   [{move:"Psychic",src:"TM29 — Saffron City",oneTime:true},{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"}],
-  "Porygon":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Clefable":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Venomoth":   [{move:"Psychic",src:"TM29 — Saffron City",oneTime:true},{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true}],
-  "Tangela":    [{move:"SolarBeam",src:"TM22 — Pokémon Mansion B1F",oneTime:true}],
-  "Muk":        [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true}],
-  "Seadra":     [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Lickitung":  [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
-  "Arbok":      [{move:"Sludge Bomb",src:"TM36 — Rocket Warehouse, Five Island",oneTime:true}],
-  "Primeape":   [{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"},{move:"Rock Slide",src:"Move Tutor — Rock Tunnel B1F"}],
-  "Pinsir":     [{move:"Brick Break",src:"TM31 — S.S. Anne or Celadon Dept. Store (₽3,000)"}],
-  "Magmar":     [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Saffron City",oneTime:true}],
+  // Electric
+  "Ampharos":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  "Lanturn":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Jolteon":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  "Electabuzz": [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  "Magneton":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  "Electrode":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  "Raichu":     [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  // Ice
+  "Feraligatr": [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Lapras":     [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Dewgong":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Cloyster":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Jynx":       [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Piloswine":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Mamoswine":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Slowbro":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Slowking":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Gyarados":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Starmie":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Kingdra":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Vaporeon":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Tyranitar":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Golduck":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Dragonite":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Fire
+  "Typhlosion": [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Arcanine":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Ninetales":  [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Houndoom":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Magmar":     [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Flareon":    [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Magcargo":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Rapidash":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  // Psychic
+  "Espeon":     [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  "Alakazam":   [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  "Hypno":      [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  "Xatu":       [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  "Mr. Mime":   [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  "Exeggutor":  [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  "Girafarig":  [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
+  // Nidoran lines
+  "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Nidoqueen":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
 };
 
 const DT_FINAL_FORM = {
-  "Bulbasaur":"Venusaur","Ivysaur":"Venusaur",
-  "Charmander":"Charizard","Charmeleon":"Charizard",
-  "Squirtle":"Blastoise","Wartortle":"Blastoise",
-  "Caterpie":"Butterfree","Metapod":"Butterfree",
-  "Weedle":"Beedrill","Kakuna":"Beedrill",
-  "Pidgey":"Pidgeot","Pidgeotto":"Pidgeot",
-  "Rattata":"Raticate","Spearow":"Fearow","Ekans":"Arbok",
-  "Pikachu":"Raichu","Sandshrew":"Sandslash",
+  // Johto starters
+  "Chikorita":"Meganium","Bayleef":"Meganium",
+  "Cyndaquil":"Typhlosion","Quilava":"Typhlosion",
+  "Totodile":"Feraligatr","Croconaw":"Feraligatr",
+  // Birds / bugs
+  "Hoothoot":"Noctowl",
+  "Ledyba":"Ledian",
+  "Spinarak":"Ariados",
+  "Yanma":"Yanmega",
+  "Hoppip":"Jumpluff","Skiploom":"Jumpluff",
+  // Zubat line
+  "Zubat":"Crobat","Golbat":"Crobat",
+  // Electric
+  "Pichu":"Raichu","Pikachu":"Raichu",
+  "Mareep":"Ampharos","Flaaffy":"Ampharos",
+  "Voltorb":"Electrode","Magnemite":"Magneton",
+  // Fairy-adjacent
+  "Cleffa":"Clefable","Clefairy":"Clefable",
+  "Igglybuff":"Wigglytuff","Jigglypuff":"Wigglytuff",
+  "Togepi":"Togekiss","Togetic":"Togekiss",
+  "Snubbull":"Granbull",
+  // Psychic
+  "Natu":"Xatu","Drowzee":"Hypno","Abra":"Alakazam","Kadabra":"Alakazam",
+  "Smoochum":"Jynx",
+  // Grass
+  "Sunkern":"Sunflora","Oddish":"Vileplume","Gloom":"Vileplume",
+  "Venonat":"Venomoth","Exeggcute":"Exeggutor",
+  "Tangela":"Tangrowth",
+  // Water
+  "Marill":"Azumarill","Wooper":"Quagsire",
+  "Poliwag":"Politoed","Poliwhirl":"Politoed",
+  "Slowpoke":"Slowbro",
+  "Horsea":"Kingdra","Seadra":"Kingdra",
+  "Remoraid":"Octillery","Tentacool":"Tentacruel",
+  "Seel":"Dewgong","Shellder":"Cloyster",
+  "Krabby":"Kingler","Staryu":"Starmie","Goldeen":"Seaking",
+  "Chinchou":"Lanturn","Magikarp":"Gyarados",
+  "Eevee":"Espeon",
+  // Ground / Rock / Steel
+  "Larvitar":"Tyranitar","Pupitar":"Tyranitar",
+  "Onix":"Steelix",
+  "Rhyhorn":"Rhydon","Cubone":"Marowak",
+  "Pineco":"Forretress","Geodude":"Graveler","Graveler":"Golem",
+  // Normal
+  "Sentret":"Furret","Aipom":"Ambipom","Teddiursa":"Ursaring",
+  "Lickitung":"Lickilicky","Chansey":"Blissey","Tyrogue":"Hitmontop",
+  "Elekid":"Electabuzz","Magby":"Magmar",
+  "Porygon":"Porygon2",
+  // Dark / Ghost
+  "Houndour":"Houndoom","Slugma":"Magcargo",
+  "Swinub":"Mamoswine","Piloswine":"Mamoswine",
+  // Misc Gen I in Johto dex
   "Nidoran♀":"Nidoqueen","Nidorina":"Nidoqueen",
   "Nidoran♂":"Nidoking","Nidorino":"Nidoking",
-  "Clefairy":"Clefable","Vulpix":"Ninetales","Jigglypuff":"Wigglytuff",
-  "Oddish":"Vileplume","Gloom":"Vileplume",
-  "Paras":"Parasect","Venonat":"Venomoth",
-  "Diglett":"Dugtrio","Meowth":"Persian","Psyduck":"Golduck","Mankey":"Primeape",
-  "Growlithe":"Arcanine",
-  "Poliwag":"Poliwhirl","Poliwhirl":"Poliwrath",
-  "Bellsprout":"Weepinbell","Weepinbell":"Victreebel",
-  "Tentacool":"Tentacruel","Ponyta":"Rapidash","Slowpoke":"Slowbro",
-  "Magnemite":"Magneton","Doduo":"Dodrio","Seel":"Dewgong","Grimer":"Muk",
-  "Shellder":"Cloyster","Drowzee":"Hypno","Krabby":"Kingler","Voltorb":"Electrode",
-  "Exeggcute":"Exeggutor","Cubone":"Marowak",
-  "Horsea":"Seadra","Goldeen":"Seaking","Staryu":"Starmie",
-  "Magikarp":"Gyarados","Eevee":"Vaporeon",
+  "Diglett":"Dugtrio","Meowth":"Persian","Psyduck":"Golduck",
+  "Mankey":"Primeape","Growlithe":"Arcanine",
+  "Machop":"Machoke","Machoke":"Machamp",
+  "Doduo":"Dodrio","Ponyta":"Rapidash",
+  "Grimer":"Muk","Koffing":"Weezing",
+  "Vulpix":"Ninetales","Scyther":"Scizor",
+  "Phanpy":"Donphan",
   "Omanyte":"Omastar","Kabuto":"Kabutops",
   "Dratini":"Dragonite","Dragonair":"Dragonite",
-  "Zubat":"Golbat","Abra":"Kadabra","Machop":"Machoke","Geodude":"Graveler",
-  "Gastly":"Haunter","Rhyhorn":"Rhydon","Koffing":"Weezing",
 };
 
 // ── Offensive type coverage helpers ──────────────────────────────────────────
@@ -1654,17 +1784,17 @@ function scoreCandidateInContext(cand, fixedNames, version) {
   return newHMs * 10 + newCov * 3 + newTypes * 2 - sharedWeak * 2 + poolScore;
 }
 
-// Build a team of 6: slot 0 = favorite, slot 1 = Dragonite (unless Dragonite-line),
+// Build a team of 6: slot 0 = favorite, slot 1 = Tyranitar (unless Tyranitar-line),
 // slots 2–5 filled by pins first then by greedy scoring.
 function buildDreamTeamV2(favorite, pins, version) {
   if (!favorite) return null;
-  const isDragoniteLine = ["Dratini","Dragonair","Dragonite"].includes(favorite);
+  const isTyranitarLine = ["Larvitar","Pupitar","Tyranitar"].includes(favorite);
   const team = new Array(6).fill(null);
   team[0] = favorite;
-  if (!isDragoniteLine) team[1] = "Dragonite";
+  if (!isTyranitarLine) team[1] = "Tyranitar";
   for (let i = 2; i <= 5; i++) { if (pins[i]) team[i] = pins[i]; }
 
-  const startSlot = isDragoniteLine ? 1 : 2;
+  const startSlot = isTyranitarLine ? 1 : 2;
   for (let i = startSlot; i <= 5; i++) {
     if (team[i] !== null) continue;
     const fixed = team.filter(Boolean);
@@ -1792,7 +1922,7 @@ function getDreamHMs(name) {
 // is already the HM carrier, tiebroken by total HM capability then team order.
 function assignHMs(team, maxPerPokemon) {
   const max = maxPerPokemon || 3;
-  const ALL_HMs = ["Fly","Surf","Waterfall","Strength","Cut","Rock Smash"];
+  const ALL_HMs = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash"];
   const canLearn = {};
   team.forEach(name => { canLearn[name] = new Set(getDreamHMs(name)); });
 
@@ -3824,13 +3954,14 @@ function DreamTeamTab({ isMobile, version }) {
     });
   }, [version]);
 
-  const eligible = React.useMemo(() => DEX.filter(p => p.id <= 151 && !DT_LEGENDARY.has(p.name)), []);
+  // Johto regional dex only — exclude legendaries and post-game Kanto starters (johtoId 231–239)
+  const eligible = React.useMemo(() => DEX.filter(p => !DT_LEGENDARY.has(p.name) && !(p.johtoId >= 231 && p.johtoId <= 239)), []);
   const team = React.useMemo(() => buildDreamTeamV2(favorite, pins, version), [favorite, pins, version]);
-  const isDragoniteLine = ["Dratini","Dragonair","Dragonite"].includes(favorite);
+  const isTyranitarLine = ["Larvitar","Pupitar","Tyranitar"].includes(favorite);
   const tmWinners     = React.useMemo(() => team ? assignOneTimeTMs(team) : {}, [team]);
   const hmAssignments = React.useMemo(() => team ? assignHMs(team, hmPerPokemon) : {}, [team, hmPerPokemon]);
 
-  const isHardLocked = idx => idx === 0 || (idx === 1 && !isDragoniteLine);
+  const isHardLocked = idx => idx === 0 || (idx === 1 && !isTyranitarLine);
 
   const togglePin = (idx) => {
     setPins(prev => {
@@ -3855,7 +3986,7 @@ function DreamTeamTab({ isMobile, version }) {
         const vl = cand ? versionLabel(cand) : null;
         const trade = cand ? needsTrade(cand) : false;
         const suffix = trade ? ` (${vl} — needs trade)` : vl ? ` (${vl})` : "";
-        return <option key={p.id} value={p.name}>#{String(p.id).padStart(3,"0")} {p.name}{suffix}</option>;
+        return <option key={p.johtoId} value={p.name}>#{String(p.johtoId).padStart(3,"0")} {p.name}{suffix}</option>;
       })}
     </select>
   );
@@ -3866,7 +3997,7 @@ function DreamTeamTab({ isMobile, version }) {
       <div style={{ flex:1, overflowY:"auto", padding:"16px 20px" }}>
         <div style={{ marginBottom:12 }}>
           <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:4, textTransform:"uppercase" }}>Dream Team Builder</div>
-          <div style={{ fontSize:12, color:C.muted, lineHeight:1.7 }}>Pick your favourite — the builder scores and fills the remaining 5 slots around it. Dragonite (pseudo-legendary) is always included. You can pin any suggested slot and browse ranked alternatives.</div>
+          <div style={{ fontSize:12, color:C.muted, lineHeight:1.7 }}>Pick your favourite — the builder scores and fills the remaining 5 slots around it. Tyranitar (pseudo-legendary) is always included. You can pin any suggested slot and browse ranked alternatives.</div>
         </div>
         <FavSelect />
       </div>
@@ -3877,7 +4008,7 @@ function DreamTeamTab({ isMobile, version }) {
   const teamCoverage = getTeamCoverage(team);
   const missingTypes = TYPES_17.filter(t => !teamCoverage.has(t));
   const hmsCovered   = new Set(team.flatMap(n => { const f = DT_FINAL_FORM[n]||n; return Object.entries(DT_HM_COMPAT).filter(([,s])=>s.has(f)).map(([h])=>h); }));
-  const hmsMissing   = ["Fly","Surf","Waterfall","Strength","Cut","Rock Smash"].filter(h => !hmsCovered.has(h));
+  const hmsMissing   = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash"].filter(h => !hmsCovered.has(h));
 
   const TypePill = ({type, bg}) => (
     <span style={{ fontSize:8, color:"#fff", background: bg||TYPE_COLORS[type]||"#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3 }}>{type}</span>
@@ -3966,7 +4097,7 @@ function DreamTeamTab({ isMobile, version }) {
           const hardLocked  = isHardLocked(idx);
           const userPinned  = !hardLocked && !!pins[idx];
           const isFav       = idx === 0;
-          const isPseudo    = idx === 1 && !isDragoniteLine;
+          const isPseudo    = idx === 1 && !isTyranitarLine;
           const finalForm   = DT_FINAL_FORM[name] || name;
           const dexEntry    = DEX.find(p => p.name === name);
           const candInfo    = DT_CANDIDATES.find(c => c.name === finalForm);
@@ -4002,7 +4133,7 @@ function DreamTeamTab({ isMobile, version }) {
                     {trade      && <span style={{ fontSize:8, color:"#e07b3a", background:"rgba(224,123,58,0.12)", border:"1px solid rgba(224,123,58,0.4)", padding:"1px 5px", borderRadius:99, fontWeight:"700" }}>⇄ TRADE ({vl})</span>}
                   </div>
                   <div style={{ fontSize:9, color:C.muted }}>
-                    {dexEntry ? `#${String(dexEntry.id).padStart(3,"0")}` : ""}
+                    {dexEntry ? `#${String(dexEntry.johtoId).padStart(3,"0")}` : ""}
                     {candInfo ? ` · ${candInfo.types.join("/")}` : (finalForm !== name ? ` · → ${finalForm}` : "")}
                   </div>
                 </div>

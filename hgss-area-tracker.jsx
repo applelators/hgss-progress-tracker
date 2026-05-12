@@ -9222,8 +9222,8 @@ function NationalDexPanel({ caught, setDexSelected, version }) {
 
 // ─── POKÉDEX TAB ──────────────────────────────────────────────────────────────
 function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, setDexSelected, version, isMobile }) {
-  const caughtCount = Object.keys(caught).length;
-  const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["hg","HG Only"],["ss","SS Only"],["event","Event"],["noball","No Poké Ball"]];
+  const caughtCount = DEX.filter(p => caught[p.name]).length;
+  const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["hg","HG Only"],["ss","SS Only"],["walker","PW Only"],["event","Event"],["noball","No Poké Ball"]];
   const isOtherVersionDex = (p) => (version === "hg" && p.ssOnly) || (version === "ss" && p.hgOnly);
   const [dexSearch, setDexSearch] = React.useState("");
 
@@ -9232,6 +9232,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
     if (dexFilter === "missing") return !caught[p.name] && !isOtherVersionDex(p);
     if (dexFilter === "hg")      return p.hgOnly;
     if (dexFilter === "ss")      return p.ssOnly;
+    if (dexFilter === "walker")  return WALKER_ONLY_POKEMON.has(p.name);
     if (dexFilter === "event")   return p.event;
     if (dexFilter === "noball")  return !!CATCH_CONSTRAINT_MAP[p.name];
     return true;
@@ -9261,11 +9262,11 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
             ))}
           </div>
           <div style={{ marginLeft:"auto", fontSize:12, color:C.muted, display:"flex", alignItems:"center", gap:8 }}>
-            <TickNumber value={caughtCount} color={C.green} style={{ fontWeight:"600" }} /><span>/ 151</span>
+            <TickNumber value={caughtCount} color={C.green} style={{ fontWeight:"600" }} /><span>/ {DEX.length}</span>
             <div style={{ width:80, height:5, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
-              <div className="hgss-fill-bar" style={{ height:"100%", width:`${pct(caughtCount,151)}%`, background:C.green, borderRadius:99 }} />
+              <div className="hgss-fill-bar" style={{ height:"100%", width:`${pct(caughtCount,DEX.length)}%`, background:C.green, borderRadius:99 }} />
             </div>
-            <TickNumber value={`${pct(caughtCount,151)}%`} color={C.text} style={{ fontWeight:"600" }} />
+            <TickNumber value={`${pct(caughtCount,DEX.length)}%`} color={C.text} style={{ fontWeight:"600" }} />
           </div>
         </div>
         {/* Search input */}

@@ -6466,6 +6466,18 @@ const ROAMING_POKEMON = [
   {name:"Latias",  id:380, region:"Kanto", minTotalBadges:16, hgOnly:true},
   {name:"Latios",  id:381, region:"Kanto", minTotalBadges:16, ssOnly:true},
 ];
+
+// Pokémon obtainable ONLY via Pokéwalker in HGSS (no wild encounter, trade, or trivial gift elsewhere).
+// Excludes: Wurmple (headbutt), Combee (headbutt), Torchic (Steven gift),
+//           Kricketot/Buneary (swarm), Beldum (Saffron trade), Mime Jr./Budew (breeding).
+const WALKER_EXCLUSIVE = new Set([
+  // Hoenn Pokémon — no wild encounter in HGSS base game
+  "Zigzagoon","Linoone","Volbeat","Illumise","Skitty",
+  "Carvanha","Wailmer","Castform","Kecleon","Tropius","Snorunt","Pelipper",
+  // Sinnoh Pokémon — no wild encounter in HGSS base game
+  "Bidoof","Bibarel","Shinx","Bronzor","Snover",
+  "Shellos","Finneon","Pachirisu","Chingling","Spiritomb","Croagunk","Chatot",
+]);
 // ─── CATCH RATE DATA ──────────────────────────────────────────────────────────
 // Gen III base catch rates for all 151 Kanto Pokémon (FRLG)
 const CATCH_RATE_DATA = []; // TODO: Add HGSS base catch rates
@@ -9488,13 +9500,17 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
             const total = uniqueNames.length;
             const allDone = done === total && total > 0;
             const isActive = walkerAreaId === a.id;
+            const hasExclusive = a.pokemon.some(p => WALKER_EXCLUSIVE.has(p.name));
             return (
               <div key={a.id} onClick={() => setWalkerAreaId(a.id)}
                 style={{ padding:"7px 12px", cursor:"pointer", borderLeft: isActive ? `3px solid var(--hgss-accent)` : "3px solid transparent", background: isActive ? "rgba(255,255,255,0.04)" : "transparent", display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, borderBottom:`1px solid ${C.border}22` }}>
                 <span style={{ fontSize:12, color: allDone ? C.green : isActive ? C.text : C.muted, fontWeight: isActive ? "600" : "400", flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                   {allDone ? "✓ " : ""}{a.name}
                 </span>
-                <span style={{ fontSize:10, color:C.muted, flexShrink:0 }}>{done}/{total}</span>
+                <span style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
+                  {hasExclusive && <span style={{ fontSize:9, color:"#9060d0", fontWeight:"700" }}>★</span>}
+                  <span style={{ fontSize:10, color:C.muted }}>{done}/{total}</span>
+                </span>
               </div>
             );
           })}
@@ -9507,6 +9523,7 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
               <div style={{ fontSize:32, opacity:0.4 }}>👟</div>
               <div style={{ fontSize:14, fontWeight:"600", color:C.text, opacity:0.5 }}>Select a course</div>
               <div style={{ fontSize:12, maxWidth:280, lineHeight:1.8, color:C.muted }}>27 courses — walk to earn watts and encounter Pokémon. Rarer Pokémon require more watts.</div>
+              <div style={{ fontSize:11, color:"#9060d0" }}><span style={{ fontWeight:"700" }}>★</span> courses have Pokéwalker-exclusive Pokémon (not catchable elsewhere in HGSS)</div>
             </div>
           ) : (
             <>
@@ -10134,7 +10151,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
       {allDexId(p.name) && <img key={wobbleNonce} src={pokeSpriteUrl(allDexId(p.name))} alt={p.name} className={wobbleNonce && isCaught ? "hgss-wobble" : ""} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.65, filter:isCaught?"none":"brightness(0)", transition:"opacity 0.25s, filter 0.25s" }} />}
       <div style={{ flex:1 }}>
         <span style={{ color:isCaught?C.green:p.ssOnly?C.ssSilver:p.hgOnly?C.hgGold:C.text, fontWeight:"600", fontSize:12 }}>
-          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}
+          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}{WALKER_EXCLUSIVE.has(p.name)&&<Tag color="#9060d0">PW ★</Tag>}
         </span>
         {METHOD_SPRITE_URL[p.method]
           ? <span style={{ display:"inline-flex", alignItems:"center", gap:3, marginLeft:6 }}>

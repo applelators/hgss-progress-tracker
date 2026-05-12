@@ -11643,15 +11643,24 @@ function BoxTab() {
     setEditingBox(null);
   }, []);
 
-  const allPokemon = useM(() => [...DEX, ...NATIONAL_DEX], []);
-
   const boxes = useM(() => {
     const result = [];
-    for (let i = 0; i < allPokemon.length; i += BOX_SIZE) {
-      result.push(allPokemon.slice(i, i + BOX_SIZE));
-    }
+    for (let i = 0; i < DEX.length; i += BOX_SIZE) result.push(DEX.slice(i, i + BOX_SIZE));
+    for (let i = 0; i < NATIONAL_DEX.length; i += BOX_SIZE) result.push(NATIONAL_DEX.slice(i, i + BOX_SIZE));
     return result;
-  }, [allPokemon]);
+  }, []);
+
+  const dexBoxCount = Math.ceil(DEX.length / BOX_SIZE);
+  const dexCaught      = useM(() => DEX.filter(p => boxCaught[p.name]).length,         [boxCaught]);
+  const nationalCaught = useM(() => NATIONAL_DEX.filter(p => boxCaught[p.name]).length, [boxCaught]);
+
+  const SectionHeader = ({ label, caught, total }) => (
+    <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14, marginTop:8 }}>
+      <div style={{ fontSize:11, fontWeight:"700", color:C.muted, letterSpacing:2, textTransform:"uppercase", whiteSpace:"nowrap" }}>{label}</div>
+      <div style={{ flex:1, height:1, background:C.border }} />
+      <span style={{ fontSize:11, color: caught === total ? C.green : C.muted, whiteSpace:"nowrap" }}>{caught} / {total}</span>
+    </div>
+  );
 
   return (
     <div style={{ flex:1, overflowY:"auto" }}>
@@ -11664,63 +11673,67 @@ function BoxTab() {
         const defaultName = `Box ${boxIdx + 1}`;
         const boxName = boxNames[boxIdx] || defaultName;
         return (
-          <div key={boxIdx} style={{ marginBottom:24 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
-              {editingBox === boxIdx ? (
-                <input
-                  autoFocus
-                  value={editVal}
-                  onChange={e => setEditVal(e.target.value)}
-                  onBlur={() => saveBoxName(boxIdx, editVal)}
-                  onKeyDown={e => { if (e.key === "Enter") saveBoxName(boxIdx, editVal); if (e.key === "Escape") setEditingBox(null); }}
-                  style={{
-                    background:"rgba(0,0,0,0.3)", border:`1px solid ${C.accent}`, borderRadius:5,
-                    color:C.text, padding:"3px 8px", fontSize:13, fontWeight:600, width:160, outline:"none"
-                  }}
-                />
-              ) : (
-                <span
-                  onClick={() => { setEditingBox(boxIdx); setEditVal(boxNames[boxIdx] || ""); }}
-                  style={{ fontSize:13, color:C.text, fontWeight:600, cursor:"pointer", borderBottom:`1px dashed ${C.border}` }}
-                  title="Click to rename"
-                >{boxName}</span>
-              )}
-              <span style={{ fontSize:11, color:C.muted }}>
-                {caughtInBox}/{box.length} caught
-              </span>
-              <div style={{ flex:1, height:4, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
-                <div style={{ height:"100%", width:`${Math.round(caughtInBox/box.length*100)}%`, background:C.green, borderRadius:99, transition:"width 0.3s" }} />
+          <React.Fragment key={boxIdx}>
+            {boxIdx === 0          && <SectionHeader label="Johto Pokédex"    caught={dexCaught}      total={DEX.length} />}
+            {boxIdx === dexBoxCount && <SectionHeader label="National Pokédex" caught={nationalCaught} total={NATIONAL_DEX.length} />}
+            <div style={{ marginBottom:24 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+                {editingBox === boxIdx ? (
+                  <input
+                    autoFocus
+                    value={editVal}
+                    onChange={e => setEditVal(e.target.value)}
+                    onBlur={() => saveBoxName(boxIdx, editVal)}
+                    onKeyDown={e => { if (e.key === "Enter") saveBoxName(boxIdx, editVal); if (e.key === "Escape") setEditingBox(null); }}
+                    style={{
+                      background:"rgba(0,0,0,0.3)", border:`1px solid ${C.accent}`, borderRadius:5,
+                      color:C.text, padding:"3px 8px", fontSize:13, fontWeight:600, width:160, outline:"none"
+                    }}
+                  />
+                ) : (
+                  <span
+                    onClick={() => { setEditingBox(boxIdx); setEditVal(boxNames[boxIdx] || ""); }}
+                    style={{ fontSize:13, color:C.text, fontWeight:600, cursor:"pointer", borderBottom:`1px dashed ${C.border}` }}
+                    title="Click to rename"
+                  >{boxName}</span>
+                )}
+                <span style={{ fontSize:11, color:C.muted }}>
+                  {caughtInBox}/{box.length} caught
+                </span>
+                <div style={{ flex:1, height:4, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
+                  <div style={{ height:"100%", width:`${Math.round(caughtInBox/box.length*100)}%`, background:C.green, borderRadius:99, transition:"width 0.3s" }} />
+                </div>
+              </div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(10, 1fr)", gap:3 }}>
+                {box.map(p => {
+                  const isCaught = !!boxCaught[p.name];
+                  return (
+                    <div
+                      key={p.name}
+                      title={p.name}
+                      onClick={() => toggleBox(p.name)}
+                      style={{
+                        aspectRatio:"1", background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(0,0,0,0.25)",
+                        border:`1px solid ${isCaught ? C.green : C.border}`,
+                        borderRadius:6, display:"flex", flexDirection:"column",
+                        alignItems:"center", justifyContent:"center", cursor:"pointer",
+                        gap:1, padding:2, transition:"all 0.15s"
+                      }}
+                    >
+                      <img
+                        src={pokeSpriteUrl(p.id)}
+                        alt={p.name}
+                        style={{ width:32, height:32, imageRendering:"pixelated", filter: isCaught ? "none" : "brightness(0) opacity(0.35)" }}
+                      />
+                      <span style={{ fontSize:7, color: isCaught ? C.green : C.muted, lineHeight:1, textAlign:"center", overflow:"hidden", maxWidth:"100%" }}>
+                        {p.name}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(10, 1fr)", gap:3 }}>
-              {box.map(p => {
-                const isCaught = !!boxCaught[p.name];
-                return (
-                  <div
-                    key={p.name}
-                    title={p.name}
-                    onClick={() => toggleBox(p.name)}
-                    style={{
-                      aspectRatio:"1", background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(0,0,0,0.25)",
-                      border:`1px solid ${isCaught ? C.green : C.border}`,
-                      borderRadius:6, display:"flex", flexDirection:"column",
-                      alignItems:"center", justifyContent:"center", cursor:"pointer",
-                      gap:1, padding:2, transition:"all 0.15s"
-                    }}
-                  >
-                    <img
-                      src={pokeSpriteUrl(p.id)}
-                      alt={p.name}
-                      style={{ width:32, height:32, imageRendering:"pixelated", filter: isCaught ? "none" : "brightness(0) opacity(0.35)" }}
-                    />
-                    <span style={{ fontSize:7, color: isCaught ? C.green : C.muted, lineHeight:1, textAlign:"center", overflow:"hidden", maxWidth:"100%" }}>
-                      {p.name}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          </React.Fragment>
         );
       })}
     </div>

@@ -1560,9 +1560,9 @@ const MOVE_TIERS = {
     "Dragon Dance","Ice Punch","ThunderPunch","Fire Punch","Waterfall","Outrage",
     "Hi Jump Kick","AncientPower","Brick Break","Sky Uppercut","Belly Drum",
     // Gen IV additions
-    "Stone Edge","Close Combat","Discharge","Signal Beam","Dark Pulse",
-    "Lava Plume","Power Gem","Zen Headbutt","Night Slash","Aqua Tail",
-    "Leaf Blade","Poison Jab","Iron Head","Rock Slide","Future Sight",
+    "Stone Edge","Close Combat","Focus Blast","Discharge","Signal Beam","Dark Pulse",
+    "Eruption","Lava Plume","Power Gem","Zen Headbutt","Night Slash","Aqua Tail",
+    "Leaf Blade","Poison Jab","Iron Head","Rock Slide","Thunder Wave",
   ]),
   skip: new Set([
     "Bide","Rage","Constrict","Splash","Bind","Wrap","String Shot",
@@ -1667,9 +1667,9 @@ const DT_HM_COMPAT = {
 // Entries are ordered by priority — getDreamMoves fills HM slots first, then TM tips in order shown.
 const DT_TM_TIPS = {
   // Electric — Thunderbolt is the main repeatable Electric TM (Game Corner)
-  "Ampharos":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
-                 {move:"Signal Beam", src:"Level 42"},
-                 {move:"Fire Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
+  "Ampharos":   [{move:"Thunderbolt",  src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Signal Beam",  src:"Level 42"},
+                 {move:"Thunder Wave", src:"Level 14 — natural level-up (Fire Punch avoided: Ampharos has 45 base Atk)"}],
   "Lanturn":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Jolteon":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
@@ -1712,7 +1712,8 @@ const DT_TM_TIPS = {
   "Alakazam":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Hypno":      [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Xatu":       [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
-                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
+                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"},
+                 {move:"Confuse Ray", src:"Level 29 — natural level-up (Future Sight avoided: 2-turn delay rarely lands in-game)"}],
   "Mr. Mime":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Exeggutor":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Girafarig":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
@@ -2606,7 +2607,7 @@ const MOVE_TYPES = {
   // Electric
   Thunderbolt:"Electric",Thunder:"Electric",ThunderPunch:"Electric","Thunder Wave":"Electric",
   // Fire
-  Flamethrower:"Fire","Fire Blast":"Fire","Fire Punch":"Fire","Will-O-Wisp":"Fire","Lava Plume":"Fire","Heat Wave":"Fire",
+  Flamethrower:"Fire","Fire Blast":"Fire",Eruption:"Fire","Fire Punch":"Fire","Will-O-Wisp":"Fire","Lava Plume":"Fire","Heat Wave":"Fire",
   // Water
   "Ice Beam":"Ice",Blizzard:"Ice","Ice Punch":"Ice","Sheer Cold":"Ice",
   // Ground
@@ -2634,7 +2635,7 @@ const MOVE_TYPES = {
   // Fighting
   "Brick Break":"Fighting","High Jump Kick":"Fighting","Hi Jump Kick":"Fighting",
   "Sky Uppercut":"Fighting",Submission:"Fighting",Superpower:"Fighting",
-  "Close Combat":"Fighting","Cross Chop":"Fighting",
+  "Close Combat":"Fighting","Focus Blast":"Fighting","Cross Chop":"Fighting",
   "Rock Smash":"Fighting","Karate Chop":"Fighting","Low Kick":"Fighting",
   // Normal (damaging)
   "Hyper Beam":"Normal","Body Slam":"Normal",Thrash:"Normal","Hyper Voice":"Normal",
@@ -2670,6 +2671,7 @@ const MOVE_STATS = {
   // Fire
   Flamethrower:     { bp:95,  acc:100, pp:15 },
   "Fire Blast":     { bp:120, acc:85,  pp:5  },
+  Eruption:         { bp:150, acc:100, pp:5  },
   "Fire Punch":     { bp:75,  acc:100, pp:15 },
   "Lava Plume":     { bp:80,  acc:100, pp:15 },
   "Heat Wave":      { bp:100, acc:90,  pp:10 },
@@ -2742,6 +2744,7 @@ const MOVE_STATS = {
   "Hi Jump Kick":   { bp:85,  acc:90,  pp:20 },
   "Sky Uppercut":   { bp:85,  acc:90,  pp:15 },
   "Close Combat":   { bp:120, acc:100, pp:5  },
+  "Focus Blast":    { bp:120, acc:70,  pp:5  },
   "Cross Chop":     { bp:100, acc:80,  pp:5  },
   Submission:       { bp:80,  acc:80,  pp:25 },
   Superpower:       { bp:120, acc:100, pp:5  },

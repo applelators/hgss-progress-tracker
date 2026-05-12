@@ -1705,8 +1705,8 @@ function getCandWeaknesses(cand) {
 // Weights: HM gap coverage (10 each) > new offensive type coverage (3 each) >
 //          new team types (2 each) > shared weakness penalty (−2 each) > pool rank (tiebreak).
 function scoreCandidateInContext(cand, fixedNames, version) {
-  if (version === "HG" && cand.ssOnly) return -Infinity;
-  if (version === "SS" && cand.hgOnly) return -Infinity;
+  if (version === "hg" && cand.ssOnly) return -Infinity;
+  if (version === "ss" && cand.hgOnly) return -Infinity;
 
   const teamCov = getTeamCoverage(fixedNames);
   const newCov  = [...getCandCoverage(cand)].filter(t => !teamCov.has(t)).length;
@@ -3901,7 +3901,7 @@ function DreamTeamTab({ isMobile, version }) {
       for (const [k, name] of Object.entries(prev)) {
         const form = DT_FINAL_FORM[name] || name;
         const cand = DT_CANDIDATES.find(c => c.name === form);
-        if (cand && ((version === "HG" && cand.ssOnly) || (version === "SS" && cand.hgOnly))) continue;
+        if (cand && ((version === "hg" && cand.ssOnly) || (version === "ss" && cand.hgOnly))) continue;
         next[k] = name;
       }
       return next;
@@ -3929,7 +3929,7 @@ function DreamTeamTab({ isMobile, version }) {
   const resetPins = () => { setPins({}); setExpandedAltSlot(null); };
 
   const versionLabel = cand => cand.hgOnly ? "HG" : cand.ssOnly ? "SS" : null;
-  const needsTrade   = cand => cand && ((version === "HG" && cand.ssOnly) || (version === "SS" && cand.hgOnly));
+  const needsTrade   = cand => cand && ((version === "hg" && cand.ssOnly) || (version === "ss" && cand.hgOnly));
 
   const FavSelect = () => (
     <select value={favorite} onChange={e => { setFavorite(e.target.value); setPins({}); setExpandedAltSlot(null); }}
@@ -4015,8 +4015,8 @@ function DreamTeamTab({ isMobile, version }) {
         const suggestions = DT_CANDIDATES
           .filter(cand => {
             if (usedFinal.has(cand.name)) return false;
-            if (version === "HG" && cand.ssOnly) return false;
-            if (version === "SS" && cand.hgOnly) return false;
+            if (version === "hg" && cand.ssOnly) return false;
+            if (version === "ss" && cand.hgOnly) return false;
             return cand.hms.some(h => hmsMissing.includes(h));
           })
           .map(cand => ({ cand, covers: cand.hms.filter(h => hmsMissing.includes(h)), score: scoreCandidateInContext(cand, team, version) }))

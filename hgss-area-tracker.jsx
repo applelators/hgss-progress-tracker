@@ -1435,7 +1435,42 @@ const EVO_METHODS = [
   // TODO: Add Johto evolution chains in Phase 2
 ];
 // ─── LEARNSETS ────────────────────────────────────────────────────────────────
-const LEARNSETS = {}; // TODO: Add Johto move learnsets
+// Level-up moves for Dream Team candidates — used by getDreamMoves to fill battle slots.
+// Data sourced from HGSS (Gen IV) learnset pages. Only moves worth suggesting are included.
+const LEARNSETS = {
+  "Typhlosion": [
+    {move:"Flame Wheel",   lv:20},
+    {move:"Lava Plume",    lv:35},
+    {move:"Flamethrower",  lv:42},
+    {move:"Eruption",      lv:57},
+  ],
+  "Tyranitar": [
+    {move:"Rock Slide",    lv:14},
+    {move:"Dark Pulse",    lv:28},
+    {move:"Crunch",        lv:41},
+    {move:"Earthquake",    lv:47},
+    {move:"Stone Edge",    lv:54},
+  ],
+  "Heracross": [
+    {move:"Brick Break",   lv:19},
+    {move:"Close Combat",  lv:37},
+    {move:"Megahorn",      lv:55},
+  ],
+  "Ampharos": [
+    {move:"ThunderPunch",  lv:30},
+    {move:"Discharge",     lv:34},
+    {move:"Signal Beam",   lv:42},
+    {move:"Power Gem",     lv:59},
+  ],
+  "Xatu": [
+    {move:"Future Sight",  lv:42},
+    {move:"Psychic",       lv:59},
+  ],
+  "Lanturn": [
+    {move:"Discharge",     lv:40},
+    {move:"Hydro Pump",    lv:52},
+  ],
+};
 
 // ─── MOVE TIERS ──────────────────────────────────────────────────────────────
 // Advisory color-coding for the learnset display in DexDetail.
@@ -1458,6 +1493,10 @@ const MOVE_TIERS = {
     "Slash","Hyper Voice","Mirror Move","Aerial Ace","Pursuit","Focus Energy",
     "Dragon Dance","Ice Punch","ThunderPunch","Fire Punch","Waterfall","Outrage",
     "Hi Jump Kick","AncientPower","Brick Break","Sky Uppercut","Belly Drum",
+    // Gen IV additions
+    "Stone Edge","Close Combat","Discharge","Signal Beam","Dark Pulse",
+    "Lava Plume","Power Gem","Zen Headbutt","Night Slash","Aqua Tail",
+    "Leaf Blade","Poison Jab","Iron Head","Rock Slide","Future Sight",
   ]),
   skip: new Set([
     "Bide","Rage","Constrict","Splash","Bind","Wrap","String Shot",
@@ -1556,53 +1595,67 @@ const DT_HM_COMPAT = {
 // by pool-position score, even if the version check is somehow skipped.
 // FR-exclusive follow neutral, LG-exclusive come last.
 
-// HGSS TM tips — Game Corner (Goldenrod, Voltorb Flip) is the main repeatable source.
+// HGSS TM / Move Tutor tips — Game Corner (Goldenrod, Voltorb Flip) is the main repeatable TM source.
+// Move Tutor: ThunderPunch / Ice Punch / Fire Punch sold at Goldenrod Dept. Store B1F (₽4,000 each).
+// Gym TMs: Morty gives TM30 Shadow Ball; Jasmine gives TM23 Iron Tail; Clair gives TM59 Dragon Pulse.
+// Entries are ordered by priority — getDreamMoves fills HM slots first, then TM tips in order shown.
 const DT_TM_TIPS = {
-  // Electric
-  "Ampharos":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
-  "Lanturn":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Electric — Thunderbolt is the main repeatable Electric TM (Game Corner)
+  "Ampharos":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Signal Beam", src:"Level 42"},
+                 {move:"Fire Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
+  "Lanturn":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Jolteon":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
-  "Electabuzz": [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
+  "Electabuzz": [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   "Magneton":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
   "Electrode":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
-  "Raichu":     [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
-  // Ice
-  "Feraligatr": [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Lapras":     [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Dewgong":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Cloyster":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Jynx":       [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Piloswine":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Mamoswine":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Slowbro":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Slowking":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Gyarados":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Starmie":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Kingdra":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Vaporeon":   [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Tyranitar":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Golduck":    [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Dragonite":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  // Fire
-  "Typhlosion": [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Raichu":     [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
+  // Ice — Ice Beam via Game Corner; physical Ice types prefer Ice Punch via Move Tutor
+  "Feraligatr": [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Lapras":     [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Dewgong":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Cloyster":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Jynx":       [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Piloswine":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Ice Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
+  "Slowbro":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Slowking":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Gyarados":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Starmie":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Kingdra":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Vaporeon":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Golduck":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Dragonite":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Fire — Flamethrower via Game Corner
+  "Typhlosion": [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   "Arcanine":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Ninetales":  [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Houndoom":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
-  "Magmar":     [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Magmar":     [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   "Flareon":    [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Magcargo":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Rapidash":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
-  // Psychic
-  "Espeon":     [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  "Alakazam":   [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  "Hypno":      [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  "Xatu":       [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  "Mr. Mime":   [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  "Exeggutor":  [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  "Girafarig":  [{move:"Psychic",src:"TM29 — Goldenrod Dept. Store (₽3,500)"}],
-  // Nidoran lines
-  "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Nidoqueen":  [{move:"Ice Beam",src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Psychic — TM29 from Goldenrod Dept. Store; Morty's TM30 gives Shadow Ball
+  "Espeon":     [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Alakazam":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Hypno":      [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Xatu":       [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
+  "Mr. Mime":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Exeggutor":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Girafarig":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  // Fighting — Close Combat and Megahorn come from level-up (see LEARNSETS); Stone Edge is a one-time TM
+  "Heracross":  [{move:"Stone Edge",  src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  // Nidoran lines — coverage via Thunderbolt + Ice Beam (both special-stat Pokémon)
+  "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Nidoqueen":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
 };
 
 const DT_FINAL_FORM = {
@@ -1868,11 +1921,19 @@ function getDreamHMs(name) {
 }
 
 // For each HM required by the team, assign it to exactly one Pokémon.
-// Strategy: process rarest coverage first; consolidate onto whichever team member
-// is already the HM carrier, tiebroken by total HM capability then team order.
+//
+// Strategy — two phases:
+// 1. Water HM bundling: Surf + Whirlpool + Waterfall are bundled onto the best
+//    Water-type on the team (STAB preferred, capacity permitting). This avoids
+//    splitting water HMs across Pokémon and wasting battle slots on non-Water types.
+// 2. Remaining HMs: process rarest coverage first. Tiebreak by:
+//    (a) STAB match (keeps type-thematic assignments)
+//    (b) Fewer HMs already assigned (protect battle slots of high-value Pokémon)
+//    (c) Fewer total HM options (more specialized = better fit for this particular HM)
+//    (d) Team order (later = considered more utility-oriented)
 function assignHMs(team, maxPerPokemon) {
   const max = maxPerPokemon || 3;
-  const ALL_HMs = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash"];
+  const ALL_HMs = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash","Rock Climb"];
   const canLearn = {};
   team.forEach(name => { canLearn[name] = new Set(getDreamHMs(name)); });
 
@@ -1883,32 +1944,44 @@ function assignHMs(team, maxPerPokemon) {
   const load = {};
   team.forEach(n => { load[n] = 0; });
 
-  // Priority override: Lapras always carries both water HMs when present (respects cap)
-  for (const waterHM of ["Surf", "Waterfall"]) {
-    if (team.includes("Lapras") && (candidates[waterHM] || []).includes("Lapras") && load["Lapras"] < max) {
-      assignments[waterHM] = "Lapras";
-      load["Lapras"]++;
+  // Phase 1: Water HM bundling — give Surf + Whirlpool + Waterfall to one Water-type carrier.
+  // A Water-type carrier absorbs all three, leaving only 1 battle slot — but that's the right
+  // trade-off since non-Water Pokémon (e.g. Tyranitar 134 Atk / 95 SpA) waste the Surf slot.
+  const waterHMs = ["Surf", "Whirlpool", "Waterfall"];
+  const isWaterType = n => {
+    const form = DT_FINAL_FORM[n] || n;
+    const c = DT_CANDIDATES.find(x => x.name === form);
+    return c ? c.types.includes("Water") : false;
+  };
+  const surfLearners = team.filter(n => canLearn[n].has("Surf"));
+  const waterCarrier = surfLearners.find(isWaterType) || surfLearners[0];
+  if (waterCarrier) {
+    for (const hm of waterHMs) {
+      if (canLearn[waterCarrier].has(hm) && load[waterCarrier] < max) {
+        assignments[hm] = waterCarrier;
+        load[waterCarrier]++;
+      }
     }
   }
 
-  // Process remaining HMs — fewest carriers first so forced assignments win
-  const sorted = ALL_HMs.filter(hm => !assignments[hm] && candidates[hm] && candidates[hm].length > 0)
+  // Phase 2: Remaining HMs — fewest carriers first so rarest HMs are assigned first.
+  const sorted = ALL_HMs
+    .filter(hm => !assignments[hm] && candidates[hm] && candidates[hm].length > 0)
     .sort((a, b) => candidates[a].length - candidates[b].length);
 
   for (const hm of sorted) {
     const avail = candidates[hm].filter(n => load[n] < max);
     if (!avail.length) continue;
     const winner = avail.reduce((best, cur) => {
+      // (a) STAB match — keeps moves on Pokémon that can use them offensively
       const curSTAB = hasSTAB(cur, hm), bestSTAB = hasSTAB(best, hm);
       if (curSTAB !== bestSTAB) return curSTAB ? cur : best;
-      // Prefer the weaker Pokémon (higher pool index = listed later = less battle value)
-      const curForm = DT_FINAL_FORM[cur] || cur, bestForm = DT_FINAL_FORM[best] || best;
-      const curRank = DT_CANDIDATES.findIndex(c => c.name === curForm);
-      const bestRank = DT_CANDIDATES.findIndex(c => c.name === bestForm);
-      if (curRank !== bestRank) return curRank > bestRank ? cur : best;
-      if (load[cur] !== load[best]) return load[cur] > load[best] ? cur : best;
+      // (b) Prefer the less-loaded Pokémon — protect battle slots
+      if (load[cur] !== load[best]) return load[cur] < load[best] ? cur : best;
+      // (c) Prefer fewer total HM options — more specialized = natural fit for this HM
       const curCap = canLearn[cur].size, bestCap = canLearn[best].size;
-      if (curCap !== bestCap) return curCap > bestCap ? cur : best;
+      if (curCap !== bestCap) return curCap < bestCap ? cur : best;
+      // (d) Tiebreak by team order (later = more utility-oriented slot)
       return team.indexOf(cur) > team.indexOf(best) ? cur : best;
     });
     assignments[hm] = winner;
@@ -2459,7 +2532,7 @@ const MOVE_TYPES = {
   // Electric
   Thunderbolt:"Electric",Thunder:"Electric",ThunderPunch:"Electric","Thunder Wave":"Electric",
   // Fire
-  Flamethrower:"Fire","Fire Blast":"Fire","Fire Punch":"Fire","Will-O-Wisp":"Fire",
+  Flamethrower:"Fire","Fire Blast":"Fire","Fire Punch":"Fire","Will-O-Wisp":"Fire","Lava Plume":"Fire","Heat Wave":"Fire",
   // Water
   "Ice Beam":"Ice",Blizzard:"Ice","Ice Punch":"Ice","Sheer Cold":"Ice",
   // Ground
@@ -2470,30 +2543,33 @@ const MOVE_TYPES = {
   // Poison
   "Sludge Bomb":"Poison",Toxic:"Poison","Poison Fang":"Poison",
   // Psychic
-  Psychic:"Psychic",Psybeam:"Psychic","Future Sight":"Psychic",
+  Psychic:"Psychic",Psybeam:"Psychic","Future Sight":"Psychic","Zen Headbutt":"Psychic",
   Amnesia:"Psychic",Agility:"Psychic",Hypnosis:"Psychic",
   // Bug
-  Megahorn:"Bug","Silver Wind":"Bug",Twineedle:"Bug","Pin Missile":"Bug","Leech Life":"Bug",
+  Megahorn:"Bug","Silver Wind":"Bug",Twineedle:"Bug","Pin Missile":"Bug","Leech Life":"Bug","Signal Beam":"Bug",
   // Rock
-  "Rock Slide":"Rock",AncientPower:"Rock",
+  "Rock Slide":"Rock",AncientPower:"Rock","Stone Edge":"Rock","Power Gem":"Rock",
   // Ghost
   "Shadow Ball":"Ghost","Confuse Ray":"Ghost",Lick:"Ghost",
   // Dragon
   Outrage:"Dragon","Dragon Rage":"Dragon",Twister:"Dragon","Dragon Dance":"Dragon","Dragon Claw":"Dragon",
   // Dark
-  Crunch:"Dark",Pursuit:"Dark",Bite:"Dark",
+  Crunch:"Dark",Pursuit:"Dark",Bite:"Dark","Dark Pulse":"Dark","Night Slash":"Dark",Payback:"Dark",
   // Steel
-  "Iron Tail":"Steel","Metal Claw":"Steel","Meteor Mash":"Steel",
+  "Iron Tail":"Steel","Metal Claw":"Steel","Meteor Mash":"Steel","Iron Head":"Steel",
   // Fighting
   "Brick Break":"Fighting","High Jump Kick":"Fighting","Hi Jump Kick":"Fighting",
   "Sky Uppercut":"Fighting",Submission:"Fighting",Superpower:"Fighting",
+  "Close Combat":"Fighting","Cross Chop":"Fighting",
   "Rock Smash":"Fighting","Karate Chop":"Fighting","Low Kick":"Fighting",
   // Normal (damaging)
   "Hyper Beam":"Normal","Body Slam":"Normal",Thrash:"Normal","Hyper Voice":"Normal",
   "Skull Bash":"Normal",ExtremeSpeed:"Normal","Hyper Fang":"Normal","Super Fang":"Normal",
   Slash:"Normal","Tri Attack":"Normal","Rapid Spin":"Normal",Swift:"Normal",
   "Wing Attack":"Flying","Drill Peck":"Flying","Air Cutter":"Flying","Aerial Ace":"Flying",
-  "Water Gun":"Water","Hydro Pump":"Water",
+  "Water Gun":"Water","Hydro Pump":"Water",Whirlpool:"Water","Aqua Tail":"Water",
+  // Normal — HMs
+  "Rock Climb":"Normal",
   Slam:"Normal","Wrap":"Normal","Horn Drill":"Normal","Guillotine":"Normal",
   Endeavor:"Normal","Spit Up":"Normal","Mirror Move":"Flying",
   // Normal (status — no damage, so super-effective display is skipped)
@@ -2521,6 +2597,8 @@ const MOVE_STATS = {
   Flamethrower:     { bp:95,  acc:100, pp:15 },
   "Fire Blast":     { bp:120, acc:85,  pp:5  },
   "Fire Punch":     { bp:75,  acc:100, pp:15 },
+  "Lava Plume":     { bp:80,  acc:100, pp:15 },
+  "Heat Wave":      { bp:100, acc:90,  pp:10 },
   "Will-O-Wisp":    { bp:null,acc:75,  pp:15 },
   // Ice
   "Ice Beam":       { bp:95,  acc:100, pp:10 },
@@ -2553,11 +2631,14 @@ const MOVE_STATS = {
   // Bug
   Megahorn:         { bp:120, acc:85,  pp:10 },
   "Silver Wind":    { bp:60,  acc:100, pp:5  },
+  "Signal Beam":    { bp:75,  acc:100, pp:15 },
   Twineedle:        { bp:25,  acc:100, pp:20 },
   "Pin Missile":    { bp:14,  acc:85,  pp:20 },
   "Leech Life":     { bp:20,  acc:100, pp:15 },
   // Rock
   "Rock Slide":     { bp:75,  acc:90,  pp:10 },
+  "Stone Edge":     { bp:100, acc:80,  pp:5  },
+  "Power Gem":      { bp:70,  acc:100, pp:20 },
   AncientPower:     { bp:60,  acc:100, pp:5  },
   // Ghost
   "Shadow Ball":    { bp:80,  acc:100, pp:15 },
@@ -2573,15 +2654,21 @@ const MOVE_STATS = {
   Crunch:           { bp:80,  acc:100, pp:15 },
   Pursuit:          { bp:40,  acc:100, pp:20 },
   Bite:             { bp:60,  acc:100, pp:25 },
+  "Dark Pulse":     { bp:80,  acc:100, pp:15 },
+  "Night Slash":    { bp:70,  acc:100, pp:15 },
+  Payback:          { bp:50,  acc:100, pp:10 },
   // Steel
   "Iron Tail":      { bp:100, acc:75,  pp:15 },
   "Metal Claw":     { bp:50,  acc:95,  pp:35 },
   "Meteor Mash":    { bp:100, acc:85,  pp:10 },
+  "Iron Head":      { bp:80,  acc:100, pp:15 },
   // Fighting
   "Brick Break":    { bp:75,  acc:100, pp:15 },
   "High Jump Kick": { bp:85,  acc:90,  pp:20 },
   "Hi Jump Kick":   { bp:85,  acc:90,  pp:20 },
   "Sky Uppercut":   { bp:85,  acc:90,  pp:15 },
+  "Close Combat":   { bp:120, acc:100, pp:5  },
+  "Cross Chop":     { bp:100, acc:80,  pp:5  },
   Submission:       { bp:80,  acc:80,  pp:25 },
   Superpower:       { bp:120, acc:100, pp:5  },
   "Karate Chop":    { bp:50,  acc:100, pp:25 },
@@ -2610,9 +2697,14 @@ const MOVE_STATS = {
   "Drill Peck":     { bp:80,  acc:100, pp:20 },
   "Air Cutter":     { bp:55,  acc:95,  pp:25 },
   "Aerial Ace":     { bp:60,  acc:null, pp:20 },
-  // Water
+  // Water / HM
   "Water Gun":      { bp:40,  acc:100, pp:25 },
   "Hydro Pump":     { bp:120, acc:80,  pp:5  },
+  Whirlpool:        { bp:35,  acc:85,  pp:15 },
+  "Aqua Tail":      { bp:90,  acc:90,  pp:10 },
+  "Rock Climb":     { bp:90,  acc:85,  pp:20 },
+  // Psychic extras
+  "Zen Headbutt":   { bp:80,  acc:90,  pp:15 },
   // Status
   "Swords Dance":   { bp:null,acc:null, pp:30 },
   "Belly Drum":     { bp:null,acc:null, pp:10 },
@@ -3958,7 +4050,7 @@ function DreamTeamTab({ isMobile, version }) {
   const teamCoverage = getTeamCoverage(team);
   const missingTypes = TYPES_17.filter(t => !teamCoverage.has(t));
   const hmsCovered   = new Set(team.flatMap(n => { const f = DT_FINAL_FORM[n]||n; return Object.entries(DT_HM_COMPAT).filter(([,s])=>s.has(f)).map(([h])=>h); }));
-  const hmsMissing   = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash"].filter(h => !hmsCovered.has(h));
+  const hmsMissing   = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash","Rock Climb"].filter(h => !hmsCovered.has(h));
 
   const TypePill = ({type, bg}) => (
     <span style={{ fontSize:8, color:"#fff", background: bg||TYPE_COLORS[type]||"#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3 }}>{type}</span>

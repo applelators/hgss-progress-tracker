@@ -6557,6 +6557,62 @@ const ITEM_SPRITE = {
   "Yellow Apricorn":"yellow-apricorn","Black Apricorn":"black-apricorn","White Apricorn":"white-apricorn","Pink Apricorn":"pink-apricorn",
   "Blu Apricorn":"blue-apricorn","Grn Apricorn":"green-apricorn",
   "Ylw Apricorn":"yellow-apricorn","Blk Apricorn":"black-apricorn","Wht Apricorn":"white-apricorn","Pnk Apricorn":"pink-apricorn",
+  // Hold items / type-boosters
+  "Big Root":"big-root","Black Belt":"black-belt","Black Sludge":"black-sludge","BrightPowder":"bright-powder",
+  "Charcoal":"charcoal","Choice Specs":"choice-specs","Destiny Knot":"destiny-knot","Dragon Fang":"dragon-fang",
+  "Dubious Disc":"dubious-disc","Grip Claw":"grip-claw","Hard Stone":"hard-stone","King's Rock":"kings-rock",
+  "Lagging Tail":"lagging-tail","Lax Incense":"lax-incense","Life Orb":"life-orb","Light Clay":"light-clay",
+  "Luck Incense":"luck-incense","Lucky Punch":"lucky-punch","Magnet":"magnet","Mental Herb":"mental-herb",
+  "Metal Coat":"metal-coat","Miracle Seed":"miracle-seed","Mystic Water":"mystic-water","NeverMeltIce":"never-melt-ice",
+  "Odd Incense":"odd-incense","Oval Stone":"oval-stone","Poison Barb":"poison-barb","Power Herb":"power-herb",
+  "Reaper Cloth":"reaper-cloth","Rock Incense":"rock-incense","Rose Incense":"rose-incense","Sea Incense":"sea-incense",
+  "Sharp Beak":"sharp-beak","Shell Bell":"shell-bell","Smoke Ball":"smoke-ball","Soft Sand":"soft-sand",
+  "Spell Tag":"spell-tag","Sticky Barb":"sticky-barb","Twisted Spoon":"twisted-spoon","Up-Grade":"up-grade",
+  "Wave Incense":"wave-incense","Wise Glasses":"wise-glasses",
+  // Evolution items / stones
+  "Dawn Stone":"dawn-stone","Dusk Stone":"dusk-stone","Shiny Stone":"shiny-stone","Sun Stone":"sun-stone",
+  "Electirizer":"electirizer","Magmarizer":"magmarizer","DeepSeaScale":"deep-sea-scale","DeepSeaTooth":"deep-sea-tooth",
+  // HMs not yet covered
+  "HM05 Whirlpool":"hm05","HM07 Waterfall":"hm07",
+  // Balls
+  "Fast Ball":"fast-ball","Sport Ball ×20":"sport-ball","Lure Ball ×2":"lure-ball",
+  // Berries
+  "Wacan Berry":"wacan-berry","Passho Berry":"passho-berry",
+  // Healing / consumables
+  "Moomoo Milk":"moomoo-milk","Revival Herb":"revival-herb","Energy Root":"energy-root",
+  "EnergyPowder":"energy-powder","Heal Powder":"heal-powder","Parlyz Heal":"paralyze-heal",
+  "Super Repel":"super-repel",
+  // Key / quest items
+  "Sacred Ash":"sacred-ash","Red Orb":"red-orb","Blue Orb":"blue-orb","Jade Orb":"jade-orb",
+  "Red Scale":"red-scale","Rainbow Wing":"rainbow-wing","Silver Wing":"silver-wing",
+  "Clear Bell":"clear-bell","Tidal Bell":"tidal-bell","Vs. Recorder":"vs-recorder",
+  "Rage Candy Bar":"rage-candy-bar","Heart Scale":"heart-scale","Yellow Shard":"yellow-shard",
+  "Black Flute":"black-flute","White Flute":"white-flute","Red Flute":"red-flute",
+  "Blue Flute":"blue-flute","Yellow Flute":"yellow-flute",
+  "SquirtBottle":"squirt-bottle","Machine Part":"machine-part","Apricorn Box":"apricorn-box",
+  "Lost Item":"lost-item","SecretPotion":"secret-potion","Unown Report":"unown-report",
+  "GB Sounds":"gb-sounds","Seal Case":"seal-case","Fashion Case":"fashion-case",
+  "Grass Mail":"grass-mail","Basement Key":"basement-key","Berry Pots":"berry-pots",
+  "Mystery Egg":"mystery-egg","Exp. Share":"exp-share","Dowsing MCHN":"dowsing-machine",
+  "Blue Card":"blue-card","Pass":"pass",
+  // X items / battle items
+  "X Special":"x-sp-atk","Poké Doll":"poke-doll",
+  // Plural / variant name aliases
+  "Nugget ×2":"nugget","Oran Berry ×3":"oran-berry","Pecha Berry ×3":"pecha-berry",
+  "Potion ×6":"potion","TinyMushroom":"tiny-mushroom",
+  // HGSS TMs not yet covered
+  "TM10 Hidden Power":"tm-normal","TM13 Ice Beam":"tm-ice","TM23 Iron Tail":"tm-steel",
+  "TM26 Earthquake":"tm-ground","TM30 Shadow Ball":"tm-ghost","TM36 Sludge Bomb":"tm-poison",
+  "TM51 Roost":"tm-flying","TM54 False Swipe":"tm-normal","TM55 Brine":"tm-water",
+  "TM56 Fling":"tm-dark","TM57 Charge Beam":"tm-electric","TM59 Dragon Pulse":"tm-dragon",
+  "TM60 Drain Punch":"tm-fighting","TM62 Silver Wind":"tm-bug","TM63 Embargo":"tm-dark",
+  "TM64 Explosion":"tm-normal","TM65 Shadow Claw":"tm-ghost","TM66 Payback":"tm-dark",
+  "TM67 Recycle":"tm-normal","TM69 Rock Polish":"tm-rock","TM70 Flash":"tm-normal",
+  "TM72 Avalanche":"tm-ice","TM77 Psych Up":"tm-normal","TM79 Dark Pulse":"tm-dark",
+  "TM80 Rock Slide":"tm-rock","TM82 Sleep Talk":"tm-normal","TM83 Natural Gift":"tm-normal",
+  "TM84 Poison Jab":"tm-poison","TM85 Dream Eater":"tm-psychic","TM86 Grass Knot":"tm-grass",
+  "TM87 Swagger":"tm-normal","TM88 Pluck":"tm-flying","TM89 U-turn":"tm-bug",
+  "TM91 Flash Cannon":"tm-steel","TM92 Trick Room":"tm-psychic",
 };
 const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
 const METHOD_SPRITE_URL = {
@@ -11226,6 +11282,8 @@ function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
+const APRICORN_COLOR_ORDER = ["Red","Blu","Grn","Ylw","Blk","Wht","Pnk"];
+
 function ApricornSection() {
   const { useState: useS, useCallback: useCB, useMemo: useM } = React;
 
@@ -11239,6 +11297,7 @@ function ApricornSection() {
     });
     return out;
   });
+  const [sortBy, setSortBy] = useS("route");
 
   const toggle = useCB(id => {
     setCollected(prev => {
@@ -11250,34 +11309,51 @@ function ApricornSection() {
 
   const countToday = useM(() => APRICORN_TREES.filter(t => collected[t.id]).length, [collected]);
 
-  // Group by route
   const groups = useM(() => {
+    if (sortBy === "type") {
+      return APRICORN_COLOR_ORDER.map(color => {
+        const trees = APRICORN_TREES.filter(t => t.color === color);
+        const style = APRICORN_STYLES[color];
+        return [style.ball.replace(" Ball","") + " (" + style.label + ")", trees, color];
+      }).filter(([, trees]) => trees.length > 0);
+    }
     const map = new Map();
     APRICORN_TREES.forEach(t => {
       if (!map.has(t.route)) map.set(t.route, []);
       map.get(t.route).push(t);
     });
-    return [...map.entries()];
-  }, []);
+    return [...map.entries()].map(([k,v]) => [k,v,null]);
+  }, [sortBy]);
 
   return (
     <div style={{ marginBottom:32 }}>
-      <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:12 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12, flexWrap:"wrap" }}>
         <div style={{ fontSize:11, color:C.muted, letterSpacing:2, textTransform:"uppercase" }}>
           Apricorn Trees
         </div>
         <div style={{ fontSize:11, color: countToday === APRICORN_TREES.length ? C.green : C.muted }}>
           {countToday}/{APRICORN_TREES.length} today
         </div>
+        <div style={{ marginLeft:"auto", display:"flex", gap:4 }}>
+          {["route","type"].map(mode => (
+            <button key={mode} onClick={() => setSortBy(mode)} style={{
+              fontSize:10, fontWeight:600, padding:"2px 8px", borderRadius:4, cursor:"pointer",
+              background: sortBy === mode ? "var(--hgss-accent)" : C.card,
+              color: sortBy === mode ? "#fff" : C.muted,
+              border:`1px solid ${sortBy === mode ? "var(--hgss-accent)" : C.border}`,
+            }}>{mode === "route" ? "By Route" : "By Type"}</button>
+          ))}
+        </div>
       </div>
       <div style={{ fontSize:11, color:C.muted, marginBottom:14, lineHeight:1.6 }}>
         Apricorns respawn daily. Checks auto-reset each calendar day.
       </div>
 
-      {groups.map(([route, trees]) => (
-        <div key={route} style={{ marginBottom:10 }}>
-          <div style={{ fontSize:11, color:C.muted, fontWeight:600, marginBottom:4, paddingLeft:2 }}>
-            {route}
+      {groups.map(([label, trees, colorKey]) => (
+        <div key={label} style={{ marginBottom:10 }}>
+          <div style={{ fontSize:11, fontWeight:600, marginBottom:4, paddingLeft:2,
+            color: colorKey ? APRICORN_STYLES[colorKey].fg : C.muted }}>
+            {label}
           </div>
           {trees.map(tree => {
             const style = APRICORN_STYLES[tree.color];
@@ -11296,6 +11372,7 @@ function ApricornSection() {
                   style={{ width:20, height:20, imageRendering:"pixelated", flexShrink:0 }} />
                 <div style={{ flex:1, fontSize:12, color: done ? C.muted : C.text }}>
                   {tree.note}
+                  {sortBy === "type" && <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>{tree.route}</div>}
                 </div>
                 <div style={{ fontSize:10, color:C.muted, flexShrink:0 }}>
                   {style.ball}

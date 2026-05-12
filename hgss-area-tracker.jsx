@@ -1542,12 +1542,12 @@ const DT_CANDIDATES = [
   { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true },
   { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true },
   // ── Good picks ───────────────────────────────────────────────────────────────
-  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"] },
-  { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"] },
+  { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3 },
+  { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4 },
   { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], ssOnly:true },
   { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
   { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"] },
-  { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"] },
+  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"] },
   { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"] },
   { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"] },
   { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"] },
@@ -1785,7 +1785,7 @@ function scoreCandidateInContext(cand, fixedNames, version) {
   const poolRank = DT_CANDIDATES.indexOf(cand);
   const poolScore = poolRank >= 0 ? (DT_CANDIDATES.length - poolRank) * 0.1 : 0;
 
-  return newHMs * 4 + newCov * 3 + newTypes * 2 - sharedWeak * 2 - dupTypes * 3 + poolScore;
+  return newHMs * 4 + newCov * 3 + newTypes * 2 - sharedWeak * 2 - dupTypes * 3 + poolScore + (cand.bonus || 0);
 }
 
 // Build a team of 6: slot 0 = favorite, slot 1 = Tyranitar (unless Tyranitar-line),
@@ -1970,12 +1970,17 @@ function assignHMs(team, maxPerPokemon) {
     .filter(hm => !assignments[hm] && candidates[hm] && candidates[hm].length > 0)
     .sort((a, b) => candidates[a].length - candidates[b].length);
 
+  // HMs with BP < 50 aren't worth using offensively — skip STAB preference for them
+  // so low-power HMs (Rock Smash 20 BP) don't land on wrong Pokémon via STAB shortcut.
+  const HM_BP = { Fly:90, Surf:95, Strength:80, Cut:50, Waterfall:80, Whirlpool:35, "Rock Smash":20, "Rock Climb":90 };
+
   for (const hm of sorted) {
     const avail = candidates[hm].filter(n => load[n] < max);
     if (!avail.length) continue;
+    const hmWorthy = (HM_BP[hm] || 99) >= 50;
     const winner = avail.reduce((best, cur) => {
-      // (a) STAB match — keeps moves on Pokémon that can use them offensively
-      const curSTAB = hasSTAB(cur, hm), bestSTAB = hasSTAB(best, hm);
+      // (a) STAB match — only for HMs worth using offensively (BP ≥ 50)
+      const curSTAB = hmWorthy && hasSTAB(cur, hm), bestSTAB = hmWorthy && hasSTAB(best, hm);
       if (curSTAB !== bestSTAB) return curSTAB ? cur : best;
       // (b) Prefer the less-loaded Pokémon — protect battle slots
       if (load[cur] !== load[best]) return load[cur] < load[best] ? cur : best;

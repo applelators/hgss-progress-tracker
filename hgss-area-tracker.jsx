@@ -1476,6 +1476,68 @@ const LEARNSETS = {
   ],
 };
 
+// ─── DREAM TEAM ABILITIES ────────────────────────────────────────────────────
+// Best in-game ability for each DT_CANDIDATES entry (Gen IV / HGSS).
+// Key = final-form name. Both abilities listed where choice is meaningful.
+const DT_ABILITIES = {
+  // ── Starters ────────────────────────────────────────────────────────────────
+  "Typhlosion": { name:"Blaze",         desc:"Boosts Fire moves to 1.5× when HP ≤ ⅓ (only ability)" },
+  "Feraligatr": { name:"Torrent",       desc:"Boosts Water moves to 1.5× when HP ≤ ⅓ (only ability)" },
+  "Meganium":   { name:"Overgrow",      desc:"Boosts Grass moves to 1.5× when HP ≤ ⅓ (only ability)" },
+  // ── Top picks ───────────────────────────────────────────────────────────────
+  "Ampharos":   { name:"Static",        desc:"30% chance to paralyze opponents on contact (only ability)" },
+  "Heracross":  { name:"Guts",          desc:"Attack × 1.5 while afflicted by any status condition" },
+  "Espeon":     { name:"Synchronize",   desc:"Reflects Burn / Paralysis / Poison back to the inflicter" },
+  "Umbreon":    { name:"Synchronize",   desc:"Reflects Burn / Paralysis / Poison back to the inflicter" },
+  "Steelix":    { name:"Sturdy",        desc:"Cannot be OHKOed by one-hit KO moves (Gen IV effect)" },
+  "Scizor":     { name:"Technician",    desc:"Moves with base power ≤ 60 deal 1.5× damage — Bullet Punch, U-turn, etc." },
+  "Donphan":    { name:"Sand Veil",     desc:"Evasion +25% in sandstorm — pairs with Tyranitar's Sand Stream" },
+  "Houndoom":   { name:"Flash Fire",    desc:"Immune to Fire; boosts own Fire moves by 1.5× when hit by one" },
+  "Skarmory":   { name:"Sturdy",        desc:"Cannot be OHKOed by one-hit KO moves (Gen IV effect)" },
+  "Tyranitar":  { name:"Sand Stream",   desc:"Summons permanent sandstorm on switch-in — damages 4 types each turn" },
+  "Kingdra":    { name:"Swift Swim",    desc:"Doubles Speed in rain — pair with Rain Dance for sweeping" },
+  "Politoed":   { name:"Water Absorb",  desc:"Immune to Water moves; restores ¼ max HP instead" },
+  "Slowking":   { name:"Own Tempo",     desc:"Cannot be confused (more reliable than Oblivious in-game)" },
+  "Crobat":     { name:"Inner Focus",   desc:"Cannot be made to flinch (only ability in Gen IV)" },
+  "Blissey":    { name:"Natural Cure",  desc:"Any status condition is healed on switching out" },
+  "Ursaring":   { name:"Guts",          desc:"Attack × 1.5 while afflicted by any status condition" },
+  "Mantine":    { name:"Water Absorb",  desc:"Immune to Water moves; restores ¼ max HP instead" },
+  // ── Good picks ──────────────────────────────────────────────────────────────
+  "Noctowl":    { name:"Insomnia",      desc:"Cannot be put to sleep — blocks Sleep Powder, Spore, Hypnosis" },
+  "Lanturn":    { name:"Volt Absorb",   desc:"Immune to Electric moves; restores ¼ max HP — removes Electric weakness" },
+  "Azumarill":  { name:"Huge Power",    desc:"Doubles Attack stat — makes base 50 Atk effectively 100" },
+  "Quagsire":   { name:"Water Absorb",  desc:"Immune to Water moves; restores ¼ max HP — only ×4 Grass weakness remains" },
+  "Forretress": { name:"Sturdy",        desc:"Cannot be OHKOed by one-hit KO moves (only ability in Gen IV)" },
+  "Xatu":       { name:"Synchronize",   desc:"Reflects Burn / Paralysis / Poison back to the inflicter" },
+  "Granbull":   { name:"Intimidate",    desc:"Lowers opponent's Attack by one stage on switch-in" },
+  "Miltank":    { name:"Thick Fat",     desc:"Halves damage received from Fire and Ice moves" },
+  "Hitmontop":  { name:"Technician",    desc:"Moves with base power ≤ 60 deal 1.5× damage — Mach Punch, Quick Attack, etc." },
+  "Bellossom":  { name:"Chlorophyll",   desc:"Doubles Speed in sunlight" },
+  "Jumpluff":   { name:"Chlorophyll",   desc:"Doubles Speed in sunlight" },
+  "Sudowoodo":  { name:"Rock Head",     desc:"No recoil from recoil moves — enables Wood Hammer at full power" },
+  "Girafarig":  { name:"Early Bird",    desc:"Wakes from sleep in half the turns — counters Hypnosis / Spore" },
+  "Magcargo":   { name:"Flame Body",    desc:"30% chance to burn opponents on contact" },
+  "Piloswine":  { name:"Oblivious",     desc:"Cannot be infatuated or have Attract/Captivate work on it" },
+  "Octillery":  { name:"Sniper",        desc:"Critical hits deal 3× damage instead of 2×" },
+  "Corsola":    { name:"Natural Cure",  desc:"Any status condition is healed on switching out" },
+  "Furret":     { name:"Keen Eye",      desc:"Accuracy cannot be lowered by any means" },
+  "Sunflora":   { name:"Chlorophyll",   desc:"Doubles Speed in sunlight" },
+  // ── Niche picks ─────────────────────────────────────────────────────────────
+  "Ariados":    { name:"Insomnia",      desc:"Cannot be put to sleep" },
+  "Ledian":     { name:"Early Bird",    desc:"Wakes from sleep in half the turns" },
+  "Sneasel":    { name:"Inner Focus",   desc:"Cannot be made to flinch" },
+  "Misdreavus": { name:"Levitate",      desc:"Immune to Ground-type moves (only ability)" },
+  "Murkrow":    { name:"Insomnia",      desc:"Cannot be put to sleep" },
+  "Shuckle":    { name:"Sturdy",        desc:"Cannot be OHKOed by one-hit KO moves" },
+  "Qwilfish":   { name:"Poison Point",  desc:"30% chance to poison opponents on contact" },
+  "Dunsparce":  { name:"Serene Grace",  desc:"Doubles secondary effect chances — Body Slam paralysis becomes 60%" },
+  "Gligar":     { name:"Sand Veil",     desc:"Evasion +25% in sandstorm — pairs with Tyranitar's Sand Stream" },
+  "Smeargle":   { name:"Own Tempo",     desc:"Cannot be confused" },
+  "Wobbuffet":  { name:"Shadow Tag",    desc:"Opponent cannot switch out — forces them to fight or use Struggle" },
+  "Stantler":   { name:"Intimidate",    desc:"Lowers opponent's Attack by one stage on switch-in" },
+  "Delibird":   { name:"Vital Spirit",  desc:"Cannot be put to sleep" },
+};
+
 // ─── MOVE TIERS ──────────────────────────────────────────────────────────────
 // Advisory color-coding for the learnset display in DexDetail.
 // "good"  → worth keeping / strong in a playthrough context (shown in green)
@@ -4207,6 +4269,20 @@ function DreamTeamTab({ isMobile, version }) {
               )}
 
               <div style={{ padding:"0 14px 14px", display:"flex", flexDirection:"column", gap:12, flex:1 }}>
+
+                {/* Ability */}
+                {DT_ABILITIES[finalForm] && (() => {
+                  const ab = DT_ABILITIES[finalForm];
+                  return (
+                    <div>
+                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Ability</div>
+                      <div style={{ fontSize:10, lineHeight:1.5 }}>
+                        <span style={{ fontWeight:"700", color:C.text }}>{ab.name}</span>
+                        <span style={{ color:C.muted }}> — {ab.desc}</span>
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Moveset */}
                 <div>

@@ -6486,8 +6486,58 @@ const WALKER_EXCLUSIVE = new Set([
   "Shellos","Finneon","Pachirisu","Chingling","Spiritomb","Croagunk","Chatot",
 ]);
 // ─── CATCH RATE DATA ──────────────────────────────────────────────────────────
-// Gen III base catch rates for all 151 Kanto Pokémon (FRLG)
-const CATCH_RATE_DATA = []; // TODO: Add HGSS base catch rates
+// Base catch rates by national dex ID (Gen I–IV, all HGSS-obtainable Pokémon)
+const CATCH_RATE_BY_NATID = {
+  // Gen I
+  1:45,2:45,3:45,4:45,5:45,6:45,7:45,8:45,9:45,
+  10:255,11:120,12:45,13:255,14:120,15:45,
+  16:255,17:120,18:45,19:255,20:127,21:255,22:90,
+  23:255,24:90,25:190,26:75,27:255,28:90,
+  29:235,30:120,31:45,32:235,33:120,34:45,
+  35:150,36:25,37:190,38:75,39:170,40:50,
+  41:255,42:90,43:255,44:120,45:45,46:190,47:75,
+  48:190,49:75,50:255,51:50,52:255,53:90,
+  54:190,55:75,56:190,57:75,58:190,59:75,
+  60:255,61:120,62:45,63:200,64:100,65:50,
+  66:180,67:90,68:45,69:255,70:120,71:45,
+  72:190,73:60,74:255,75:120,76:45,77:190,78:60,
+  79:190,80:75,81:190,82:60,83:45,84:190,85:45,
+  86:190,87:75,88:190,89:75,90:190,91:60,
+  92:190,93:90,94:45,95:45,96:190,97:75,
+  98:225,99:60,100:190,101:60,102:90,103:45,
+  104:190,105:75,106:45,107:45,108:45,
+  109:190,110:60,111:120,112:60,113:30,114:45,115:45,
+  116:225,117:75,118:225,119:60,120:225,121:60,
+  122:45,123:45,124:45,125:45,126:45,127:45,128:45,
+  129:255,130:45,131:45,132:35,
+  133:45,134:45,135:45,136:45,137:45,
+  138:45,139:45,140:45,141:45,142:45,
+  143:25,144:3,145:3,146:3,147:45,148:45,149:45,150:3,151:45,
+  // Gen II
+  152:45,153:45,154:45,155:45,156:45,157:45,158:45,159:45,160:45,
+  161:255,162:90,163:255,164:90,165:255,166:90,167:255,168:90,169:90,
+  170:190,171:75,172:190,173:150,174:170,175:190,176:75,
+  177:190,178:75,179:235,180:120,181:45,182:45,183:190,184:75,
+  185:65,186:45,187:255,188:120,189:45,190:45,191:235,192:120,193:75,
+  194:255,195:90,196:45,197:45,198:30,199:70,200:45,201:225,202:45,
+  203:60,204:190,205:75,206:190,207:60,208:25,209:190,210:75,
+  211:190,212:25,213:190,214:45,215:60,216:120,217:60,
+  218:190,219:75,220:225,221:75,222:60,223:190,224:75,
+  225:45,226:25,227:25,228:120,229:45,230:45,231:120,232:60,
+  233:45,234:45,235:45,236:75,237:45,238:45,239:45,240:45,
+  241:45,242:30,243:3,244:3,245:3,246:45,247:45,248:45,249:3,250:3,251:45,
+  // Gen III (Pokéwalker / events)
+  255:45,263:255,264:90,265:255,279:45,298:150,300:255,302:35,
+  307:180,313:150,314:150,318:225,320:125,349:255,351:45,352:200,
+  355:190,357:200,361:190,374:3,
+  // Gen IV (Pokéwalker)
+  399:255,400:127,401:255,403:235,406:255,415:120,417:200,418:190,
+  422:190,427:190,433:120,436:190,438:255,439:145,440:130,441:30,
+  442:100,446:50,453:140,456:190,459:120,
+};
+const CATCH_RATE_DATA = [...DEX, ...NATIONAL_DEX].map(p => ({
+  id: p.id, name: p.name, rate: CATCH_RATE_BY_NATID[p.id] ?? 45,
+}));
 // ─── SPRITES ─────────────────────────────────────────────────────────────────
 const DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.id]));
 const JOHTO_DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.johtoId]));
@@ -7758,10 +7808,10 @@ function HGSSTracker() {
       {tab === "types" && <TypeChartTab isMobile={isMobile} />}
 
       {/* ── Tab: Catch Calc ── */}
-      {tab === "calc" && <CatchCalcTab isMobile={isMobile} />}
+      {tab === "calc" && <CatchCalcTab caught={caught} isMobile={isMobile} />}
 
       {/* ── Tab: Hunt ── */}
-      {tab === "hunt" && <HuntTab version={version} isMobile={isMobile} />}
+      {tab === "hunt" && <HuntTab caught={caught} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: TMs & HMs ── */}
       {tab === "tms" && <TMsTab tmState={tmState} />}
@@ -8435,265 +8485,342 @@ function TypeChartTab({ isMobile }) {
 
 // ─── CATCH CALC TAB ───────────────────────────────────────────────────────────
 function CatchCalcTab({ isMobile }) {
-  const [selected, setSelected] = useState(CATCH_RATE_DATA[0]);
-  const [hpPct, setHpPct]       = useState(100);
-  const [status, setStatus]     = useState("none");
-  const [ballKey, setBallKey]   = useState("poke");
-  const [search, setSearch]     = useState("");
+  const [selected,     setSelected]     = useState(() => CATCH_RATE_DATA[0] || null);
+  const [hpPct,        setHpPct]        = useState(100);
+  const [status,       setStatus]       = useState("none");
+  const [ballKey,      setBallKey]      = useState("poke");
+  const [search,       setSearch]       = useState("");
+  const [wildLevel,    setWildLevel]    = useState(20);
+  const [trainerLevel, setTrainerLevel] = useState(50);
+  const [turns,        setTurns]        = useState(1);
+  const [cond,         setCond]         = useState({ waterBug:false, cave:false, first:false,
+                                                      registered:false, fishing:false,
+                                                      moonStone:false, oppositeGender:false,
+                                                      speed100:false, heavyKg:"light" });
+  const toggleCond = k => setCond(p => ({...p, [k]: !p[k]}));
 
-  const BALLS = [
-    {key:"poke",  label:"Poké Ball",  bonus:1},
-    {key:"great", label:"Great Ball", bonus:1.5},
-    {key:"ultra", label:"Ultra Ball", bonus:2},
-  ];
   const STATUS_OPTS = [
-    {key:"none", label:"None",       mult:1},
+    {key:"none", label:"None",            mult:1},
     {key:"par",  label:"PAR / BRN / PSN", mult:1.5},
-    {key:"slp",  label:"SLP / FRZ",  mult:2},
+    {key:"slp",  label:"SLP / FRZ",       mult:2},
   ];
 
-  const ball   = BALLS.find(b => b.key === ballKey);
-  const stOpt  = STATUS_OPTS.find(s => s.key === status);
+  // All HGSS balls with bonus formulae
+  const HGSS_BALLS = [
+    {key:"poke",   label:"Poké Ball",   group:"Standard", icon:"poke-ball",   getBonus:()=>1},
+    {key:"great",  label:"Great Ball",  group:"Standard", icon:"great-ball",  getBonus:()=>1.5},
+    {key:"ultra",  label:"Ultra Ball",  group:"Standard", icon:"ultra-ball",  getBonus:()=>2},
+    {key:"master", label:"Master Ball", group:"Standard", icon:"master-ball", getBonus:()=>"catch"},
+    {key:"net",    label:"Net Ball",    group:"Special",  icon:"net-ball",    getBonus:c=>c.waterBug?3:1,        condKey:"waterBug",       condLabel:"Water or Bug type"},
+    {key:"nest",   label:"Nest Ball",   group:"Special",  icon:"nest-ball",   getBonus:()=>Math.max(1,Math.floor((41-wildLevel)/10))},
+    {key:"repeat", label:"Repeat Ball", group:"Special",  icon:"repeat-ball", getBonus:c=>c.registered?3:1,     condKey:"registered",     condLabel:"Already in Pokédex"},
+    {key:"timer",  label:"Timer Ball",  group:"Special",  icon:"timer-ball",  getBonus:()=>Math.min(4,Math.floor(1+(turns+1)/10))},
+    {key:"dusk",   label:"Dusk Ball",   group:"Special",  icon:"dusk-ball",   getBonus:c=>c.cave?3.5:1,         condKey:"cave",           condLabel:"Cave or nighttime"},
+    {key:"quick",  label:"Quick Ball",  group:"Special",  icon:"quick-ball",  getBonus:c=>c.first?4:1,          condKey:"first",          condLabel:"First turn of battle"},
+    {key:"sport",  label:"Sport Ball",  group:"Special",  icon:"sport-ball",  getBonus:()=>1.5, note:"Bug-Catching Contest only"},
+    {key:"heavy",  label:"Heavy Ball",  group:"Apricorn", icon:"heavy-ball",  heavy:true, getBonus:()=>1},
+    {key:"level",  label:"Level Ball",  group:"Apricorn", icon:"level-ball",  levelBall:true, getBonus:()=>{
+      const r=trainerLevel/wildLevel; return r>4?8:r>2?4:r>1?2:1;
+    }},
+    {key:"lure",   label:"Lure Ball",   group:"Apricorn", icon:"lure-ball",   getBonus:c=>c.fishing?3:1,        condKey:"fishing",        condLabel:"Fishing (rod encounter)"},
+    {key:"moon",   label:"Moon Ball",   group:"Apricorn", icon:"moon-ball",   getBonus:c=>c.moonStone?4:1,      condKey:"moonStone",      condLabel:"Evolves via Moon Stone"},
+    {key:"love",   label:"Love Ball",   group:"Apricorn", icon:"love-ball",   getBonus:c=>c.oppositeGender?8:1, condKey:"oppositeGender", condLabel:"Same species, opposite gender"},
+    {key:"fast",   label:"Fast Ball",   group:"Apricorn", icon:"fast-ball",   getBonus:c=>c.speed100?4:1,       condKey:"speed100",       condLabel:"Base Speed ≥ 100"},
+    {key:"friend", label:"Friend Ball", group:"Apricorn", icon:"friend-ball", getBonus:()=>1},
+  ];
+  const BALL_GROUPS = ["Standard","Special","Apricorn"];
+  const HEAVY_MOD = {light:-20, medium:20, heavy:30, vheavy:40};
 
-  const calcA = (catchRate, hpFraction, statusMult, ballBonus) => {
-    // Gen III formula: a = floor(((3×HP_max − 2×HP_current) / (3×HP_max)) × catchRate × ballBonus × statusMult)
-    // Expressed in terms of hpFraction (0..1 = current/max):
-    return Math.min(255, Math.floor(((3 - 2 * hpFraction) / 3) * catchRate * ballBonus * statusMult));
-  };
+  const ball   = HGSS_BALLS.find(b=>b.key===ballKey);
+  const stOpt  = STATUS_OPTS.find(s=>s.key===status);
+  const rate   = selected?.rate ?? 45;
+  const effectiveRate = ball?.heavy ? Math.max(1, rate + HEAVY_MOD[cond.heavyKg]) : rate;
+  const ballBonus     = ball ? ball.getBonus(cond) : 1;
+  const hpFraction    = hpPct / 100;
 
-  const hpFraction = hpPct / 100;
-  const a = calcA(selected.rate, hpFraction, stOpt.mult, ball.bonus);
+  const a = ballBonus === "catch" ? 255
+          : Math.min(255, Math.floor(((3 - 2*hpFraction) / 3) * effectiveRate * ballBonus * stOpt.mult));
   const p = a / 255;
+  const throwsFor = t => (p>=1?1:p<=0?Infinity:Math.ceil(Math.log(1-t)/Math.log(1-p)));
+  const milestones = [{label:"50%",n:throwsFor(0.50)},{label:"75%",n:throwsFor(0.75)},
+                      {label:"90%",n:throwsFor(0.90)},{label:"95%",n:throwsFor(0.95)},{label:"99%",n:throwsFor(0.99)}];
+  const expected = p > 0 ? 1/p : Infinity;
 
-  // Cumulative probability: P(catch within n throws) = 1 − (1−p)^n
-  // Solve for n: n = ceil(log(1 − target) / log(1 − p))
-  const throwsFor = (target) => {
-    if (p >= 1) return 1;
-    if (p <= 0) return Infinity;
-    return Math.ceil(Math.log(1 - target) / Math.log(1 - p));
-  };
+  const filteredPokemon = CATCH_RATE_DATA.filter(pk=>pk.name.toLowerCase().includes(search.toLowerCase()));
 
-  const milestones = [
-    {label:"50%",  n:throwsFor(0.50)},
-    {label:"75%",  n:throwsFor(0.75)},
-    {label:"90%",  n:throwsFor(0.90)},
-    {label:"95%",  n:throwsFor(0.95)},
-    {label:"99%",  n:throwsFor(0.99)},
-  ];
-
-  const expected = p > 0 ? (1 / p) : Infinity;
-
-  const filteredPokemon = CATCH_RATE_DATA.filter(pk =>
-    pk.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const pill = (active, label, onClick) => (
+  const pill = (active, label, onClick, icon) => (
     <button key={label} onClick={onClick} style={{
-      padding:"5px 12px", border:`1px solid ${active ? "var(--hgss-accent)" : C.border}`,
-      borderRadius:20, cursor:"pointer", fontSize:12, fontWeight:"600",
-      background: active ? "var(--hgss-accent)" : "rgba(0,0,0,0.3)",
-      color: active ? "#fff" : C.muted, transition:"all 0.15s",
+      display:"flex", alignItems:"center", gap:icon?4:0,
+      padding:"4px 10px", border:`1px solid ${active?"var(--hgss-accent)":C.border}`,
+      borderRadius:20, cursor:"pointer", fontSize:11, fontWeight:"600",
+      background: active?"var(--hgss-accent)":"rgba(0,0,0,0.3)",
+      color: active?"#fff":C.muted, transition:"all 0.15s",
       fontFamily:"'DM Sans',sans-serif",
-    }}>{label}</button>
+    }}>
+      {icon && <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${icon}.png`}
+                    alt="" style={{width:14,height:14,imageRendering:"pixelated",flexShrink:0}} />}
+      {label}
+    </button>
   );
 
-  const sectionLabel = (text) => (
-    <div style={{ fontSize:10, fontWeight:"700", letterSpacing:"0.08em", color:C.muted,
-                  textTransform:"uppercase", marginBottom:6 }}>{text}</div>
+  const tog = (active, label, onClick) => (
+    <button key={label} onClick={onClick} style={{
+      padding:"4px 10px", border:`1px solid ${active?"#4ab770":C.border}`,
+      borderRadius:20, cursor:"pointer", fontSize:11, fontWeight:"600",
+      background: active?"rgba(74,183,112,0.2)":"rgba(0,0,0,0.3)",
+      color: active?"#4ab770":C.muted, transition:"all 0.15s",
+    }}>{active?"✓ ":""}{label}</button>
+  );
+
+  const sectionLabel = text => (
+    <div style={{fontSize:10,fontWeight:"700",letterSpacing:"0.08em",color:C.muted,textTransform:"uppercase",marginBottom:6}}>{text}</div>
   );
 
   return (
-    <div style={{ flex:1, overflowY:"auto" }}>
-    <div style={{ display:"flex", flexDirection:isMobile?"column":"row", gap:16,
-                  padding:"16px", maxWidth:960, margin:"0 auto" }}>
+    <div style={{flex:1, overflowY:"auto"}}>
+    <div style={{display:"flex",flexDirection:isMobile?"column":"row",gap:16,padding:"16px",maxWidth:960,margin:"0 auto"}}>
 
       {/* ── Left: Pokémon picker ── */}
-      <div style={{ flex:"0 0 auto", width:isMobile?"100%":280 }}>
-        <div style={{ background:C.card, borderRadius:10, border:`1px solid ${C.border}`,
-                      overflow:"hidden" }}>
-          <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}` }}>
-            <input
-              value={search}
-              onChange={e => setSearch(e.target.value)}
+      <div style={{flex:"0 0 auto",width:isMobile?"100%":280}}>
+        <div style={{background:C.card,borderRadius:10,border:`1px solid ${C.border}`,overflow:"hidden"}}>
+          <div style={{padding:"10px 12px",borderBottom:`1px solid ${C.border}`}}>
+            <input value={search} onChange={e=>setSearch(e.target.value)}
               placeholder="Search Pokémon…"
-              style={{
-                width:"100%", boxSizing:"border-box",
-                padding:"6px 10px", borderRadius:6,
-                border:`1px solid ${C.border}`, background:"rgba(0,0,0,0.3)",
-                color:C.text, fontSize:16, fontFamily:"'DM Sans',sans-serif", outline:"none",
-              }}
-            />
+              style={{width:"100%",boxSizing:"border-box",padding:"6px 10px",borderRadius:6,
+                      border:`1px solid ${C.border}`,background:"rgba(0,0,0,0.3)",
+                      color:C.text,fontSize:16,fontFamily:"'DM Sans',sans-serif",outline:"none"}} />
           </div>
-          <div style={{ overflowY:"auto", maxHeight:isMobile?200:480 }}>
-            {filteredPokemon.map(pk => {
-              const isSelected = pk.id === selected.id;
+          <div style={{overflowY:"auto",maxHeight:isMobile?200:480}}>
+            {filteredPokemon.map(pk=>{
+              const isSel = pk.id===selected?.id;
               return (
-                <div key={pk.id} onClick={() => setSelected(pk)}
-                  style={{
-                    display:"flex", alignItems:"center", gap:8,
-                    padding:"6px 12px", cursor:"pointer",
-                    background: isSelected ? "rgba(var(--hgss-accent-rgb,212,98,26),0.18)" : "transparent",
-                    borderLeft: isSelected ? "3px solid var(--hgss-accent)" : "3px solid transparent",
-                    transition:"background 0.1s",
-                  }}
-                  onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background="rgba(255,255,255,0.04)"; }}
-                  onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background="transparent"; }}
-                >
-                  <img src={pokeSpriteUrl(pk.id)} alt={pk.name} width={32} height={32}
-                    style={{ imageRendering:"pixelated" }} />
-                  <div style={{ flex:1, minWidth:0 }}>
-                    <div style={{ fontSize:12, fontWeight:"600", color:C.text,
-                                  whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{pk.name}</div>
-                    <div style={{ fontSize:10, color:C.muted }}>Catch rate: {pk.rate}</div>
+                <div key={pk.id} onClick={()=>setSelected(pk)}
+                  style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",cursor:"pointer",
+                          background:isSel?"rgba(var(--hgss-accent-rgb,212,98,26),0.18)":"transparent",
+                          borderLeft:isSel?"3px solid var(--hgss-accent)":"3px solid transparent",transition:"background 0.1s"}}
+                  onMouseEnter={e=>{if(!isSel)e.currentTarget.style.background="rgba(255,255,255,0.04)";}}
+                  onMouseLeave={e=>{if(!isSel)e.currentTarget.style.background="transparent";}}>
+                  <img src={pokeSpriteUrl(pk.id)} alt={pk.name} width={32} height={32} style={{imageRendering:"pixelated"}}/>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:12,fontWeight:"600",color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{pk.name}</div>
+                    <div style={{fontSize:10,color:C.muted}}>Catch rate: {pk.rate}</div>
                   </div>
                 </div>
               );
             })}
-            {filteredPokemon.length === 0 && (
-              <div style={{ padding:16, textAlign:"center", color:C.muted, fontSize:12 }}>No Pokémon found</div>
-            )}
+            {filteredPokemon.length===0&&<div style={{padding:16,textAlign:"center",color:C.muted,fontSize:12}}>No Pokémon found</div>}
           </div>
         </div>
       </div>
 
       {/* ── Right: Calculator ── */}
-      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:12 }}>
+      {selected && (
+      <div style={{flex:1,display:"flex",flexDirection:"column",gap:12}}>
 
-        {/* Selected Pokémon header */}
-        <div style={{ background:C.card, borderRadius:10, border:`1px solid ${C.border}`,
-                      padding:"16px 20px", display:"flex", alignItems:"center", gap:16 }}>
-          <img src={pokeSpriteUrl(selected.id)} alt={selected.name} width={64} height={64}
-            style={{ imageRendering:"pixelated" }} />
+        {/* Header */}
+        <div style={{background:C.card,borderRadius:10,border:`1px solid ${C.border}`,padding:"16px 20px",display:"flex",alignItems:"center",gap:16}}>
+          <img src={pokeSpriteUrl(selected.id)} alt={selected.name} width={64} height={64} style={{imageRendering:"pixelated"}}/>
           <div>
-            <div style={{ fontSize:18, fontWeight:"700", color:C.text }}>{selected.name}</div>
-            <div style={{ fontSize:13, color:C.muted, marginTop:2 }}>
-              Base catch rate: <span style={{ color:C.text, fontWeight:"600" }}>{selected.rate}</span>
-              <span style={{ color:C.muted }}> / 255</span>
+            <div style={{fontSize:18,fontWeight:"700",color:C.text}}>{selected.name}</div>
+            <div style={{fontSize:13,color:C.muted,marginTop:2}}>
+              Base catch rate: <span style={{color:C.text,fontWeight:"600"}}>{rate}</span><span style={{color:C.muted}}>/255</span>
+              {ball?.heavy && <span style={{marginLeft:8,color:HEAVY_MOD[cond.heavyKg]>0?C.green:"#ef5350"}}>
+                ({HEAVY_MOD[cond.heavyKg]>0?"+":""}{HEAVY_MOD[cond.heavyKg]} → effective {effectiveRate})
+              </span>}
             </div>
-            <div style={{ fontSize:11, color:C.muted, marginTop:2 }}>
-              {selected.rate <= 3 ? "Legendary — extremely hard to catch" :
-               selected.rate <= 45 ? "Uncommon catch rate" :
-               selected.rate <= 100 ? "Moderate catch rate" : "Common catch rate"}
+            <div style={{fontSize:11,color:C.muted,marginTop:2}}>
+              {rate<=3?"Legendary — extremely hard to catch":rate<=45?"Uncommon catch rate":rate<=100?"Moderate catch rate":"Common catch rate"}
             </div>
           </div>
         </div>
 
         {/* Controls */}
-        <div style={{ background:C.card, borderRadius:10, border:`1px solid ${C.border}`,
-                      padding:"16px 20px", display:"flex", flexDirection:"column", gap:16 }}>
+        <div style={{background:C.card,borderRadius:10,border:`1px solid ${C.border}`,padding:"16px 20px",display:"flex",flexDirection:"column",gap:16}}>
 
-          {/* HP % slider */}
+          {/* HP */}
           <div>
             {sectionLabel("Current HP")}
-            <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-              <input type="range" min={1} max={100} value={hpPct}
-                onChange={e => setHpPct(Number(e.target.value))}
-                style={{ flex:1, accentColor:"var(--hgss-accent)" }} />
-              <div style={{
-                width:52, textAlign:"center", padding:"3px 6px",
-                background:"rgba(0,0,0,0.3)", border:`1px solid ${C.border}`,
-                borderRadius:6, fontSize:13, fontWeight:"700", color:C.text,
-              }}>{hpPct}%</div>
+            <div style={{display:"flex",alignItems:"center",gap:12}}>
+              <input type="range" min={1} max={100} value={hpPct} onChange={e=>setHpPct(Number(e.target.value))}
+                style={{flex:1,accentColor:"var(--hgss-accent)"}}/>
+              <div style={{width:52,textAlign:"center",padding:"3px 6px",background:"rgba(0,0,0,0.3)",
+                          border:`1px solid ${C.border}`,borderRadius:6,fontSize:13,fontWeight:"700",color:C.text}}>{hpPct}%</div>
             </div>
-            <div style={{ display:"flex", gap:6, marginTop:8 }}>
-              {[100,75,50,25,12,1].map(v => pill(hpPct===v, `${v}%`, () => setHpPct(v)))}
+            <div style={{display:"flex",gap:5,marginTop:8,flexWrap:"wrap"}}>
+              {[100,75,50,25,12,1].map(v=>pill(hpPct===v,`${v}%`,()=>setHpPct(v)))}
+            </div>
+          </div>
+
+          {/* Wild level */}
+          <div>
+            {sectionLabel("Wild Pokémon Level")}
+            <div style={{display:"flex",alignItems:"center",gap:12}}>
+              <input type="range" min={1} max={100} value={wildLevel} onChange={e=>setWildLevel(Number(e.target.value))}
+                style={{flex:1,accentColor:"var(--hgss-accent)"}}/>
+              <div style={{width:52,textAlign:"center",padding:"3px 6px",background:"rgba(0,0,0,0.3)",
+                          border:`1px solid ${C.border}`,borderRadius:6,fontSize:13,fontWeight:"700",color:C.text}}>{wildLevel}</div>
+            </div>
+            <div style={{display:"flex",gap:5,marginTop:8,flexWrap:"wrap"}}>
+              {[5,10,20,30,40,50,60].map(v=>pill(wildLevel===v,`${v}`,()=>setWildLevel(v)))}
             </div>
           </div>
 
           {/* Status */}
           <div>
             {sectionLabel("Status Condition")}
-            <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-              {STATUS_OPTS.map(s => pill(status===s.key, s.label, () => setStatus(s.key)))}
+            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+              {STATUS_OPTS.map(s=>pill(status===s.key,s.label,()=>setStatus(s.key)))}
             </div>
           </div>
 
-          {/* Ball type */}
+          {/* Ball selection — grouped */}
           <div>
             {sectionLabel("Poké Ball")}
-            <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-              {BALLS.map(b => pill(ballKey===b.key, b.label, () => setBallKey(b.key)))}
-            </div>
-          </div>
-        </div>
-
-        {/* Results */}
-        <div style={{ background:C.card, borderRadius:10, border:`1px solid ${C.border}`,
-                      padding:"16px 20px" }}>
-          {sectionLabel("Results")}
-
-          {/* Formula line */}
-          <div style={{ fontSize:11, color:C.muted, fontFamily:"'Courier New',monospace",
-                        marginBottom:12, padding:"6px 10px",
-                        background:"rgba(0,0,0,0.3)", borderRadius:6, border:`1px solid ${C.border}` }}>
-            a = floor(((3×HP_max − 2×HP_current) / (3×HP_max)) × {selected.rate} × {ball.bonus} × {stOpt.mult}) = <strong style={{color:C.text}}>{a}</strong>
-          </div>
-
-          {/* Catch probability */}
-          <div style={{ display:"flex", gap:12, marginBottom:16, flexWrap:"wrap" }}>
-            {[
-              ["Catch chance / ball", `${(p * 100).toFixed(2)}%`, p >= 0.5 ? "#4caf50" : p >= 0.2 ? "#ff9800" : "#ef5350"],
-              ["Expected balls", p > 0 ? (expected < 1000 ? expected.toFixed(1) : ">1000") : "∞", C.text],
-            ].map(([label, value, color]) => (
-              <div key={label} style={{
-                flex:1, minWidth:120, padding:"12px 16px",
-                background:"rgba(0,0,0,0.3)", borderRadius:8, border:`1px solid ${C.border}`,
-                textAlign:"center",
-              }}>
-                <div style={{ fontSize:10, color:C.muted, marginBottom:4, textTransform:"uppercase",
-                               letterSpacing:"0.06em", fontWeight:"700" }}>{label}</div>
-                <div style={{ fontSize:22, fontWeight:"700", color }}>{value}</div>
+            {BALL_GROUPS.map(grp=>(
+              <div key={grp} style={{marginBottom:10}}>
+                <div style={{fontSize:9,color:C.muted,fontWeight:"700",letterSpacing:1,textTransform:"uppercase",marginBottom:5}}>{grp}</div>
+                <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                  {HGSS_BALLS.filter(b=>b.group===grp).map(b=>pill(ballKey===b.key,b.label,()=>setBallKey(b.key),b.icon))}
+                </div>
               </div>
             ))}
           </div>
 
-          {/* Milestone table */}
-          <div>
-            {sectionLabel("Cumulative catch probability")}
-            <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-              {milestones.map(({label, n}) => (
-                <div key={label} style={{
-                  flex:1, minWidth:80, padding:"8px 10px",
-                  background:"rgba(0,0,0,0.3)", borderRadius:8, border:`1px solid ${C.border}`,
-                  textAlign:"center",
-                }}>
-                  <div style={{ fontSize:11, fontWeight:"700", color:"var(--hgss-accent)" }}>{label}</div>
-                  <div style={{ fontSize:16, fontWeight:"700", color:C.text, marginTop:2 }}>
-                    {n === Infinity ? "∞" : `${n}`}
-                  </div>
-                  <div style={{ fontSize:9, color:C.muted, marginTop:1 }}>
-                    {n === 1 ? "ball" : "balls"}
-                  </div>
-                </div>
-              ))}
+          {/* Ball-specific context inputs */}
+          {ball?.condKey && (
+            <div>
+              {sectionLabel("Ball Condition")}
+              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                {tog(!!cond[ball.condKey], ball.condLabel, ()=>toggleCond(ball.condKey))}
+                {ball.note&&<span style={{fontSize:10,color:C.muted,alignSelf:"center"}}>{ball.note}</span>}
+              </div>
             </div>
-            <div style={{ fontSize:10, color:C.muted, marginTop:10 }}>
-              Number of Poké Balls needed to have at least that cumulative chance of catching.
-              {selected.rate <= 3 && (
-                <span style={{ color:"#ef5350" }}> Tip: use Ultra Ball + Sleep/Freeze for legendaries.</span>
-              )}
+          )}
+          {ball?.heavy && (
+            <div>
+              {sectionLabel("Pokémon Weight")}
+              <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                {[["light","< 100 kg (−20)"],["medium","100–200 kg (+20)"],["heavy","200–300 kg (+30)"],["vheavy","≥ 300 kg (+40)"]].map(([k,l])=>
+                  pill(cond.heavyKg===k,l,()=>setCond(p=>({...p,heavyKg:k})))
+                )}
+              </div>
             </div>
-          </div>
+          )}
+          {ball?.levelBall && (
+            <div>
+              {sectionLabel(`Your Active Pokémon's Level — Level Ball: ×${ball.getBonus()}`)}
+              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                <input type="range" min={1} max={100} value={trainerLevel} onChange={e=>setTrainerLevel(Number(e.target.value))}
+                  style={{flex:1,accentColor:"var(--hgss-accent)"}}/>
+                <div style={{width:52,textAlign:"center",padding:"3px 6px",background:"rgba(0,0,0,0.3)",
+                            border:`1px solid ${C.border}`,borderRadius:6,fontSize:13,fontWeight:"700",color:C.text}}>{trainerLevel}</div>
+              </div>
+              <div style={{fontSize:10,color:C.muted,marginTop:4}}>
+                Wild Lv.{wildLevel} · Ratio {(trainerLevel/wildLevel).toFixed(1)}× → <strong style={{color:C.text}}>×{ball.getBonus()} bonus</strong>
+              </div>
+            </div>
+          )}
+          {ball?.key==="timer" && (
+            <div>
+              {sectionLabel(`Battle Turns Elapsed — Timer Ball: ×${ball.getBonus().toFixed(1)}`)}
+              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                <input type="range" min={1} max={40} value={turns} onChange={e=>setTurns(Number(e.target.value))}
+                  style={{flex:1,accentColor:"var(--hgss-accent)"}}/>
+                <div style={{width:52,textAlign:"center",padding:"3px 6px",background:"rgba(0,0,0,0.3)",
+                            border:`1px solid ${C.border}`,borderRadius:6,fontSize:13,fontWeight:"700",color:C.text}}>{turns}</div>
+              </div>
+              <div style={{display:"flex",gap:5,marginTop:8,flexWrap:"wrap"}}>
+                {[1,10,20,30,40].map(v=>pill(turns===v,`T${v}`,()=>setTurns(v)))}
+              </div>
+            </div>
+          )}
+          {ball?.key==="nest" && (
+            <div style={{fontSize:10,color:C.muted,fontStyle:"italic"}}>
+              Nest Ball bonus uses the Wild Pokémon Level above. Current: ×{ball.getBonus()}
+              {wildLevel>=40?<span> (capped at ×1 for Lv.40+)</span>:null}
+            </div>
+          )}
+        </div>
+
+        {/* Results */}
+        <div style={{background:C.card,borderRadius:10,border:`1px solid ${C.border}`,padding:"16px 20px"}}>
+          {sectionLabel("Results")}
+          {ballBonus==="catch" ? (
+            <div style={{padding:"16px",textAlign:"center",background:"rgba(74,183,112,0.15)",
+                        border:`1px solid ${C.green}`,borderRadius:8,fontSize:16,fontWeight:"700",color:C.green}}>
+              ✓ Master Ball — guaranteed catch
+            </div>
+          ) : (
+            <>
+              <div style={{fontSize:11,color:C.muted,fontFamily:"'Courier New',monospace",marginBottom:12,
+                          padding:"6px 10px",background:"rgba(0,0,0,0.3)",borderRadius:6,border:`1px solid ${C.border}`}}>
+                a = ⌊((3 − 2×{hpPct}%) ÷ 3 × {effectiveRate} × {ballBonus} × {stOpt.mult})⌋ = <strong style={{color:C.text}}>{a}</strong>
+              </div>
+              <div style={{display:"flex",gap:12,marginBottom:16,flexWrap:"wrap"}}>
+                {[
+                  ["Catch chance / ball",`${(p*100).toFixed(2)}%`,p>=0.5?"#4caf50":p>=0.2?"#ff9800":"#ef5350"],
+                  ["Expected balls",p>0?(expected<1000?expected.toFixed(1):">1000"):"∞",C.text],
+                ].map(([label,value,color])=>(
+                  <div key={label} style={{flex:1,minWidth:120,padding:"12px 16px",background:"rgba(0,0,0,0.3)",
+                                          borderRadius:8,border:`1px solid ${C.border}`,textAlign:"center"}}>
+                    <div style={{fontSize:10,color:C.muted,marginBottom:4,textTransform:"uppercase",letterSpacing:"0.06em",fontWeight:"700"}}>{label}</div>
+                    <div style={{fontSize:22,fontWeight:"700",color}}>{value}</div>
+                  </div>
+                ))}
+              </div>
+              {sectionLabel("Cumulative catch probability")}
+              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                {milestones.map(({label,n})=>(
+                  <div key={label} style={{flex:1,minWidth:80,padding:"8px 10px",background:"rgba(0,0,0,0.3)",
+                                          borderRadius:8,border:`1px solid ${C.border}`,textAlign:"center"}}>
+                    <div style={{fontSize:11,fontWeight:"700",color:"var(--hgss-accent)"}}>{label}</div>
+                    <div style={{fontSize:16,fontWeight:"700",color:C.text,marginTop:2}}>{n===Infinity?"∞":`${n}`}</div>
+                    <div style={{fontSize:9,color:C.muted,marginTop:1}}>{n===1?"ball":"balls"}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{fontSize:10,color:C.muted,marginTop:10}}>
+                Balls needed for at least that cumulative catch chance.
+                {rate<=3&&<span style={{color:"#ef5350"}}> Tip: Ultra Ball + Sleep/Freeze is best for legendaries.</span>}
+              </div>
+            </>
+          )}
         </div>
       </div>
+      )}
     </div>
     </div>
   );
 }
 
 // ─── HUNT TAB ─────────────────────────────────────────────────────────────────
-function HuntTab({ version, isMobile }) {
-  const [search,   setSearch]   = useState("");
-  const [selected, setSelected] = useState(null);
+function HuntTab({ caught, version, isMobile }) {
+  const [search,       setSearch]       = useState("");
+  const [selected,     setSelected]     = useState(null);
+  const [uncaughtOnly, setUncaughtOnly] = useState(false);
+  const [wildOnly,     setWildOnly]     = useState(false);
+
+  const ONE_TIME_METHODS = new Set(["Gift","Trade","Fossil","Event","Game Corner"]);
 
   // All Pokémon that appear in any area, ordered by dex number
   const allNames = useMemo(() =>
-    Object.keys(LOCATION_MAP).sort((a, b) => (JOHTO_DEX_ID[a] || 999) - (JOHTO_DEX_ID[b] || 999)),
-    []
+    Object.keys(LOCATION_MAP).sort((a, b) => {
+      const ja = JOHTO_DEX_ID[a] || 9000 + (NATIONAL_DEX_ID[a] || 9999);
+      const jb = JOHTO_DEX_ID[b] || 9000 + (NATIONAL_DEX_ID[b] || 9999);
+      return ja - jb;
+    }), []
   );
-  const filteredNames = search.trim()
-    ? allNames.filter(n => n.toLowerCase().includes(search.toLowerCase().trim()))
-    : allNames;
+
+  const filteredNames = useMemo(() => {
+    let names = search.trim()
+      ? allNames.filter(n => n.toLowerCase().includes(search.toLowerCase().trim()))
+      : allNames;
+    if (uncaughtOnly) names = names.filter(n => !caught[n]);
+    if (wildOnly) names = names.filter(n =>
+      (LOCATION_MAP[n] || []).some(loc => !ONE_TIME_METHODS.has(loc.method) && loc.part !== "Pokéwalker")
+    );
+    return names;
+  }, [allNames, search, uncaughtOnly, wildOnly, caught]);
 
   // Enriched & sorted locations for the selected Pokémon
   const locs = useMemo(() => {
@@ -8720,11 +8847,14 @@ function HuntTab({ version, isMobile }) {
   const dexId = selected ? allDexId(selected) : null;
   const noMathMethods = new Set(["Gift","Trade","Fossil","Event","Game Corner"]);
 
+  const caughtCount  = filteredNames.filter(n => caught[n]).length;
+
   const listPanel = (
     <div style={{ display:"flex", flexDirection:"column", gap:0,
                   background:C.card, borderRadius:8, border:`1px solid ${C.border}`,
                   overflow:"hidden", flexShrink:0,
-                  width: isMobile ? "100%" : 200 }}>
+                  width: isMobile ? "100%" : 210 }}>
+      {/* Search */}
       <div style={{ padding:"8px 10px", borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
         <input value={search} onChange={e => { setSearch(e.target.value); setSelected(null); }}
           placeholder="Search Pokémon…"
@@ -8733,24 +8863,52 @@ function HuntTab({ version, isMobile }) {
                    fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16,
                    padding:"5px 8px", outline:"none" }} />
       </div>
-      <div style={{ overflowY:"auto", maxHeight: isMobile ? 180 : "calc(100vh - 220px)" }}>
+      {/* Filters */}
+      <div style={{ padding:"6px 10px", borderBottom:`1px solid ${C.border}`, flexShrink:0,
+                    display:"flex", gap:5, flexWrap:"wrap" }}>
+        {[
+          [uncaughtOnly, "Uncaught only", () => { setUncaughtOnly(p=>!p); setSelected(null); }],
+          [wildOnly,     "Wild only",     () => { setWildOnly(p=>!p);     setSelected(null); }],
+        ].map(([active,label,onClick]) => (
+          <button key={label} onClick={onClick} style={{
+            padding:"2px 8px", fontSize:10, fontWeight:"600", borderRadius:12, cursor:"pointer",
+            border:`1px solid ${active?"var(--hgss-accent)":C.border}`,
+            background: active?"var(--hgss-accent)":"rgba(0,0,0,0.3)",
+            color: active?"#fff":C.muted,
+          }}>{label}</button>
+        ))}
+        <span style={{ fontSize:10, color:C.muted, alignSelf:"center", marginLeft:"auto" }}>
+          {caughtCount}/{filteredNames.length} ✓
+        </span>
+      </div>
+      {/* List */}
+      <div style={{ overflowY:"auto", maxHeight: isMobile ? 180 : "calc(100vh - 260px)" }}>
         {filteredNames.length === 0 && (
           <div style={{ padding:16, fontSize:12, color:C.muted, textAlign:"center" }}>No results</div>
         )}
         {filteredNames.map(name => {
           const id = allDexId(name);
-          const isSel = name === selected;
+          const isSel   = name === selected;
+          const isCaught = !!caught[name];
           return (
             <button key={name} onClick={() => setSelected(name)}
               style={{ width:"100%", display:"flex", alignItems:"center", gap:8,
-                       padding:"6px 10px", background: isSel ? "rgba(var(--hgss-accent-rgb,212,98,26),0.15)" : "transparent",
-                       border:"none", borderBottom:`1px solid ${C.border}30`, cursor:"pointer",
-                       borderLeft: isSel ? "3px solid var(--hgss-accent)" : "3px solid transparent",
-                       textAlign:"left" }}>
-              {id && <img src={pokeSpriteUrl(id)} alt={name}
-                style={{ width:28, height:28, imageRendering:"pixelated", flexShrink:0 }} />}
-              <span style={{ fontSize:12, fontWeight: isSel ? "700" : "400",
-                             color: isSel ? C.text : C.muted }}>{name}</span>
+                       padding:"6px 10px", cursor:"pointer", textAlign:"left",
+                       background: isSel ? "rgba(var(--hgss-accent-rgb,212,98,26),0.15)" : "transparent",
+                       border:"none", borderBottom:`1px solid ${C.border}30`,
+                       borderLeft: isSel ? "3px solid var(--hgss-accent)"
+                                 : isCaught ? `3px solid ${C.green}` : "3px solid transparent",
+                       opacity: isCaught && !isSel ? 0.5 : 1 }}>
+              <div style={{ position:"relative", flexShrink:0 }}>
+                {id && <img src={pokeSpriteUrl(id)} alt={name}
+                  style={{ width:28, height:28, imageRendering:"pixelated",
+                           filter: isCaught ? "none" : "grayscale(0.7)" }} />}
+                {isCaught && <div style={{ position:"absolute", bottom:-2, right:-2,
+                  fontSize:8, color:C.green, fontWeight:"700",
+                  background:C.card, borderRadius:"50%", lineHeight:1, padding:1 }}>✓</div>}
+              </div>
+              <span style={{ fontSize:12, fontWeight: isSel?"700":"400",
+                             color: isSel ? C.text : isCaught ? C.green : C.muted }}>{name}</span>
             </button>
           );
         })}
@@ -8769,16 +8927,24 @@ function HuntTab({ version, isMobile }) {
       ) : (
         <>
           {/* Header */}
-          <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12 }}>
-            {dexId && <img src={pokeSpriteUrl(dexId)} alt={selected}
-              style={{ width:48, height:48, imageRendering:"pixelated" }} />}
-            <div>
-              <div style={{ fontSize:18, fontWeight:"700", color:C.text }}>{selected}</div>
-              {dexId && <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace" }}>
-                #{String(dexId).padStart(3,"0")}
-              </div>}
-            </div>
-          </div>
+          {(() => {
+            const isCaught = !!caught[selected];
+            return (
+              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12,
+                            padding:"10px 14px", background:C.card, borderRadius:8,
+                            border:`1px solid ${isCaught?C.green:C.border}` }}>
+                {dexId && <img src={pokeSpriteUrl(dexId)} alt={selected}
+                  style={{ width:48, height:48, imageRendering:"pixelated" }} />}
+                <div style={{ flex:1 }}>
+                  <div style={{ fontSize:18, fontWeight:"700", color:isCaught?C.green:C.text }}>{selected}</div>
+                  {dexId && <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace" }}>
+                    #{String(dexId).padStart(3,"0")}
+                  </div>}
+                </div>
+                {isCaught && <div style={{ fontSize:13, color:C.green, fontWeight:"700" }}>✓ Caught</div>}
+              </div>
+            );
+          })()}
 
           {/* Results */}
           {locs.length === 0 ? (

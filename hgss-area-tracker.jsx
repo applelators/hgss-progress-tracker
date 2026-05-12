@@ -1528,15 +1528,15 @@ const DT_CANDIDATES = [
   { name:"Heracross",   types:["Bug","Fighting"],   hms:["Cut","Strength","Rock Smash"] },
   { name:"Espeon",      types:["Psychic"],          hms:["Cut"] },
   { name:"Umbreon",     types:["Dark"],             hms:["Cut"] },
-  { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Strength","Rock Smash","Rock Climb"] },
-  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], hgOnly:true },
+  { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Strength","Rock Smash","Rock Climb"], tradeOnly:true },
+  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], hgOnly:true, tradeOnly:true },
   { name:"Donphan",     types:["Ground"],           hms:["Strength","Rock Smash"], hgOnly:true },
   { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], ssOnly:true },
   { name:"Skarmory",    types:["Steel","Flying"],   hms:["Cut","Fly","Rock Smash"], ssOnly:true },
   { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"] },
-  { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"] },
-  { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
-  { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"] },
+  { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"], tradeOnly:true },
+  { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], tradeOnly:true },
+  { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true },
   { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly"] },
   { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"] },
   { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true },
@@ -1551,7 +1551,7 @@ const DT_CANDIDATES = [
   { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"] },
   { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"] },
   { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"] },
-  { name:"Porygon2",    types:["Normal"],           hms:[] },
+  { name:"Porygon2",    types:["Normal"],           hms:[], tradeOnly:true },
   { name:"Bellossom",   types:["Grass"],            hms:["Cut"], ssOnly:true },
   { name:"Jumpluff",    types:["Grass","Flying"],   hms:[] },
   { name:"Sudowoodo",   types:["Rock"],             hms:["Strength","Rock Smash"] },
@@ -1756,6 +1756,7 @@ function getCandWeaknesses(cand) {
 function scoreCandidateInContext(cand, fixedNames, version) {
   if (version === "hg" && cand.ssOnly) return -Infinity;
   if (version === "ss" && cand.hgOnly) return -Infinity;
+  if (cand.tradeOnly) return -Infinity;
 
   const teamCov = getTeamCoverage(fixedNames);
   const newCov  = [...getCandCoverage(cand)].filter(t => !teamCov.has(t)).length;
@@ -4017,7 +4018,7 @@ function DreamTeamTab({ isMobile, version }) {
   const resetPins = () => { setPins({}); setExpandedAltSlot(null); };
 
   const versionLabel = cand => cand.hgOnly ? "HG" : cand.ssOnly ? "SS" : null;
-  const needsTrade   = cand => cand && ((version === "hg" && cand.ssOnly) || (version === "ss" && cand.hgOnly));
+  const needsTrade   = cand => cand && (cand.tradeOnly || (version === "hg" && cand.ssOnly) || (version === "ss" && cand.hgOnly));
 
   const FavSelect = () => (
     <select value={favorite} onChange={e => { setFavorite(e.target.value); setPins({}); setExpandedAltSlot(null); }}
@@ -4027,7 +4028,7 @@ function DreamTeamTab({ isMobile, version }) {
         const cand = DT_CANDIDATES.find(c => c.name === (DT_FINAL_FORM[p.name] || p.name));
         const vl = cand ? versionLabel(cand) : null;
         const trade = cand ? needsTrade(cand) : false;
-        const suffix = trade ? ` (${vl} — needs trade)` : vl ? ` (${vl})` : "";
+        const suffix = cand?.tradeOnly ? " (trade evo)" : trade ? ` (${vl} — needs trade)` : vl ? ` (${vl})` : "";
         return <option key={p.johtoId} value={p.name}>#{String(p.johtoId).padStart(3,"0")} {p.name}{suffix}</option>;
       })}
     </select>

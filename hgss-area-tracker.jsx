@@ -1164,8 +1164,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  // ─── RETURN VISITS (UNAUDITED) ─────────────────────────────────────────────
-  { part:"(Return Visits)", id:"route-30-return", name:"Route 30 (Return)",
+  { part:"Part 11", id:"route-30-return", name:"Route 30 (Return)",
     note:"HP Up from Youngster Joey after a phone rematch. Exp. Share from Mr. Pokémon in exchange for the Red Scale (obtained at Lake of Rage).",
     pokemon:[],
     items:[
@@ -1174,17 +1173,8 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"new-bark-town-return", name:"New Bark Town (Return)",
-    note:"Return to Professor Elm at key late-game milestones.",
-    pokemon:[],
-    items:[
-      {name:"Master Ball", hidden:false, note:"From Prof. Elm after earning all 8 Johto badges"},
-      {name:"S.S. Ticket", hidden:false, note:"From Prof. Elm after entering the Hall of Fame"},
-    ],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"ruins-of-alph-strength-return", name:"Ruins of Alph (Return — Strength)",
-    note:"Requires Surf + Strength to reach the SW chamber via Union Cave.",
+  { part:"Part 10", id:"ruins-of-alph-strength-return", name:"Ruins of Alph (Return — Strength)",
+    note:"Requires Surf + Strength (Storm Badge) to reach the SW chamber via Union Cave.",
     pokemon:[],
     items:[
       {name:"Leppa Berry",  hidden:false, note:"SW chamber via Union Cave"},
@@ -1194,8 +1184,8 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"union-cave-strength-return", name:"Union Cave (Return — Strength)",
-    note:"Requires Surf + Strength to reach the deepest B2F section.",
+  { part:"Part 10", id:"union-cave-strength-return", name:"Union Cave (Return — Strength)",
+    note:"Requires Surf + Strength (Storm Badge) to reach the deepest B2F section.",
     pokemon:[],
     items:[
       {name:"TM18 Rain Dance", hidden:false, note:"B2F E ridge"},
@@ -1203,8 +1193,8 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"slowpoke-well-strength-return", name:"Slowpoke Well (Return — Strength)",
-    note:"Requires Surf + Strength to reach the eastern section of B1F.",
+  { part:"Part 10", id:"slowpoke-well-strength-return", name:"Slowpoke Well (Return — Strength)",
+    note:"Requires Surf + Strength (Storm Badge) to reach the eastern section of B1F.",
     pokemon:[],
     items:[
       {name:"Full Heal",       hidden:true,  note:"E side of central ridge"},
@@ -1213,8 +1203,8 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"goldenrod-city-return", name:"Goldenrod City (Return — Bill)",
-    note:"Return after meeting Bill in Ecruteak City. He'll be at his house in Goldenrod.",
+  { part:"Part 8", id:"goldenrod-city-return", name:"Goldenrod City (Return — Bill)",
+    note:"Return after meeting Bill in Ecruteak City (Part 8). He'll be at his house in Goldenrod.",
     pokemon:[
       {name:"Eevee", method:"Gift", levels:"5", rate:"One", note:"From Bill's house after meeting him in Ecruteak City"},
     ],
@@ -1223,7 +1213,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"goldenrod-city-rocket-return", name:"Goldenrod City (Return — Team Rocket)",
+  { part:"Part 12", id:"goldenrod-city-rocket-return", name:"Goldenrod City (Return — Team Rocket)",
     note:"Return after defeating Team Rocket at the Radio Tower.",
     pokemon:[],
     items:[
@@ -1235,34 +1225,14 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"burned-tower-strength-return", name:"Burned Tower (Return — Strength)",
-    note:"Return with Strength to reach the NW corner and S-central rock in B1F.",
+  { part:"Part 10", id:"burned-tower-strength-return", name:"Burned Tower (Return — Strength)",
+    note:"Return with Strength (Storm Badge) to reach the NW corner and S-central rock in B1F.",
     floors:[
       { label:"B1F", pokemon:[], items:[
           {name:"TM12 Taunt", hidden:false, note:"NW corner"},
           {name:"Revive",     hidden:true,  note:"S-central area on rock"},
         ], trainers:[] },
     ] },
-
-  { part:"(Return Visits)", id:"national-park-rock-climb-return", name:"National Park (Return — Rock Climb)",
-    note:"Return with Rock Climb to reach the NE cliff.",
-    pokemon:[],
-    items:[
-      {name:"Shiny Stone", hidden:false, note:"NE cliff"},
-    ],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"route-38-rock-climb-return", name:"Route 38 (Return — Rock Climb)",
-    note:"Return with Rock Climb to reach the SW fenced area and the easternmost hilltop Headbutt tree.",
-    pokemon:[
-      {name:"Exeggcute", method:"Headbutt", levels:"18–20", rate:"65%", note:"Easternmost hilltop tree"},
-      {name:"Burmy",     method:"Headbutt", levels:"18–25", rate:"35%", note:"Easternmost hilltop tree"},
-    ],
-    items:[
-      {name:"Lax Incense", hidden:false, note:"SW area behind fence via Route 39"},
-      {name:"HP Up",       hidden:true,  note:"SW area behind fence via Route 39"},
-    ],
-    trainers:[] },
 
   // ─── PART 5 (AZALEA RETURN) ────────────────────────────────────────────────
   { part:"Part 5", id:"azalea-town-return", name:"Azalea Town (Return)",
@@ -1282,8 +1252,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  // ─── RETURN VISITS — PHONE REGISTRATION PRIZES ─────────────────────────────
-  { part:"(Return Visits)", id:"national-park-phone-return", name:"National Park (Return — Phone)",
+  { part:"Part 7", id:"national-park-phone-return", name:"National Park (Return — Phone)",
     note:"Register Pokéfan Beverly's number; she occasionally offers a Nugget when you visit.",
     pokemon:[],
     items:[
@@ -1291,7 +1260,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-34-phone-return", name:"Route 34 (Return — Phone)",
+  { part:"Part 5", id:"route-34-phone-return", name:"Route 34 (Return — Phone)",
     note:"Register Picnicker Gina's number; she occasionally gives a Leaf Stone when you visit.",
     pokemon:[],
     items:[
@@ -1299,7 +1268,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-36-phone-return", name:"Route 36 (Return — Phone)",
+  { part:"Part 7", id:"route-36-phone-return", name:"Route 36 (Return — Phone)",
     note:"Register School Kid Alan's number; he occasionally gives a Fire Stone when you visit.",
     pokemon:[],
     items:[
@@ -1307,7 +1276,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-38-phone-return", name:"Route 38 (Return — Phone)",
+  { part:"Part 8", id:"route-38-phone-return", name:"Route 38 (Return — Phone)",
     note:"Register Lass Dana's number; she occasionally gives a Thunder Stone when you visit.",
     pokemon:[],
     items:[
@@ -1315,7 +1284,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-39-phone-return", name:"Route 39 (Return — Phone)",
+  { part:"Part 8", id:"route-39-phone-return", name:"Route 39 (Return — Phone)",
     note:"Register Pokéfan Derek's number; he occasionally gives a Nugget when you visit.",
     pokemon:[],
     items:[
@@ -1988,7 +1957,7 @@ const AREAS = [
     ] },
 
   // ─── PART 14 ─────────────────────────────────────────────────────────────────
-  { part:"Part 14", id:"new-bark-town-return", name:"New Bark Town (Return — Master Ball)",
+  { part:"Part 14", id:"new-bark-town-master-ball", name:"New Bark Town (Return — Master Ball)",
     note:"Return to Prof. Elm's lab after earning all 8 Johto badges. He gives you a Master Ball.",
     pokemon:[],
     items:[
@@ -2251,9 +2220,8 @@ const AREAS = [
       {class:"Champion",   name:"Lance", note:"Dragon Pokémon master. Ice moves are critical — all three Dragonite are vulnerable.", team:[{name:"Gyarados", level:46},{name:"Dragonite", level:49},{name:"Dragonite", level:49},{name:"Aerodactyl", level:48},{name:"Charizard", level:48},{name:"Dragonite", level:50}]},
     ] },
 
-  // ─── RETURN VISITS (Parts 9–16) ──────────────────────────────────────────────
-  { part:"(Return Visits)", id:"route-41-whirlpool-return", name:"Route 41 (Return — Whirlpool)",
-    note:"Return with HM05 Whirlpool to access the islands and reach the Whirl Islands caves.",
+  { part:"Part 11", id:"route-41-whirlpool-return", name:"Route 41 (Return — Whirlpool)",
+    note:"Return with HM05 Whirlpool (usable after Glacier Badge) to access the islands and reach the Whirl Islands caves.",
     pokemon:[],
     items:[
       {name:"Stardust", hidden:true, note:"×4 — hidden on the four islands' beaches (requires Whirlpool)"},
@@ -2261,18 +2229,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"olivine-city-post-return", name:"Olivine City (Return — Post-Game)",
-    note:"Protein requires the S.S. Ticket to board the ship. National Pokédex from Prof. Oak requires entering the Hall of Fame. Rare Candy requires Rock Climb.",
-    pokemon:[],
-    items:[
-      {name:"Protein",        hidden:true,  note:"Olivine Harbor SW of S.S. Aqua (requires S.S. Ticket)"},
-      {name:"National Pokédex",hidden:false,note:"From Prof. Oak in Olivine Harbor building (post Hall of Fame)"},
-      {name:"Rare Candy",     hidden:false, note:"E of lighthouse, on lone rock (requires Rock Climb)"},
-      {name:"TM57 Charge Beam",hidden:false,note:"NE of lighthouse on small beach (requires Surf) — accessible from first visit but needs Surf"},
-    ],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"olivine-lighthouse-rematch-return", name:"Olivine Lighthouse (Return — Rematch)",
+  { part:"Part 9",  id:"olivine-lighthouse-rematch-return", name:"Olivine Lighthouse (Return — Rematch)",
     note:"Register Sailor Huey's number; he occasionally gives a Protein on rematch.",
     pokemon:[],
     items:[
@@ -2280,15 +2237,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-42-rock-climb-return", name:"Route 42 (Return — Rock Climb)",
-    note:"Return with Rock Climb to access the cliff north of the eastern lake via Mt. Mortar.",
-    pokemon:[],
-    items:[
-      {name:"Dubious Disc", hidden:false, note:"N of eastern lake, accessed via Mt. Mortar (requires Rock Climb)"},
-    ],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"route-43-phone-return", name:"Route 43 (Return — Phone)",
+  { part:"Part 11", id:"route-43-phone-return", name:"Route 43 (Return — Phone)",
     note:"Register Picnicker Tiffany's number; she occasionally gives a Poké Doll.",
     pokemon:[],
     items:[
@@ -2296,7 +2245,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-44-phone-return", name:"Route 44 (Return — Phone)",
+  { part:"Part 12", id:"route-44-phone-return", name:"Route 44 (Return — Phone)",
     note:"Register Bird Keeper Vance's number; he gives Carbos after a phone rematch.",
     pokemon:[],
     items:[
@@ -2304,15 +2253,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-45-rock-climb-return", name:"Route 45 (Return — Rock Climb)",
-    note:"Return with Rock Climb. The PP Max is on a cliff in the SW area, accessed via Route 46.",
-    pokemon:[],
-    items:[
-      {name:"PP Max", hidden:true, note:"SW cliff accessible via Route 46 (requires Rock Climb)"},
-    ],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"route-45-phone-return", name:"Route 45 (Return — Phone)",
+  { part:"Part 13", id:"route-45-phone-return", name:"Route 45 (Return — Phone)",
     note:"Register Black Belt Kenji and Hiker Parry's numbers for rematch rewards.",
     pokemon:[],
     items:[
@@ -2321,7 +2262,7 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-46-phone-return", name:"Route 46 (Return — Phone)",
+  { part:"Part 13", id:"route-46-phone-return", name:"Route 46 (Return — Phone)",
     note:"Register Picnicker Erin's number; she gives Calcium after a second rematch.",
     pokemon:[],
     items:[
@@ -2329,28 +2270,12 @@ const AREAS = [
     ],
     trainers:[] },
 
-  { part:"(Return Visits)", id:"route-27-phone-return", name:"Route 27 (Return — Phone)",
+  { part:"Part 15", id:"route-27-phone-return", name:"Route 27 (Return — Phone)",
     note:"Register Bird Keeper Jose's number; he occasionally gives a Star Piece.",
     pokemon:[],
     items:[
       {name:"Star Piece", hidden:false, note:"Sometimes from Bird Keeper Jose after phone registration"},
     ],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"bell-tower-return", name:"Bell Tower (Return — Rainbow Wing)",
-    note:"SS players return after obtaining the Rainbow Wing in Pewter City post-Kanto. Ho-Oh appears at lv70.",
-    pokemon:[
-      {name:"Ho-Oh", method:"Gift", levels:"70", rate:"One", warn:true, ssOnly:true, note:"SS only — requires Rainbow Wing obtained in Pewter City post-Kanto"},
-    ],
-    items:[],
-    trainers:[] },
-
-  { part:"(Return Visits)", id:"whirl-islands-return", name:"Whirl Islands (Return — Silver Wing)",
-    note:"HG players return after obtaining the Silver Wing in Pewter City post-Kanto. Lugia appears at lv70.",
-    pokemon:[
-      {name:"Lugia", method:"Gift", levels:"70", rate:"One", warn:true, hgOnly:true, note:"HG only — requires Silver Wing obtained in Pewter City post-Kanto"},
-    ],
-    items:[],
     trainers:[] },
 
   // ═══════════════════════════════════════════════════════════════════
@@ -2419,6 +2344,24 @@ const AREAS = [
       {class:"Gentleman", name:"Gregory", team:[{name:"Pikachu",level:46},{name:"Flaaffy",level:43},{name:"Electrike",level:42}]},
       {class:"Gym Leader", name:"Lt. Surge", team:[{name:"Raichu",level:51},{name:"Electrode",level:47},{name:"Electrode",level:47},{name:"Magneton",level:47},{name:"Electabuzz",level:53}]},
     ] },
+
+  { part:"Part 17", id:"new-bark-town-ss-ticket", name:"New Bark Town (Return — S.S. Ticket)",
+    note:"Return to Professor Elm's lab after entering the Hall of Fame. He gives the S.S. Ticket for the ship to Kanto.",
+    pokemon:[],
+    items:[
+      {name:"S.S. Ticket", hidden:false, note:"From Professor Elm after entering the Hall of Fame"},
+    ],
+    trainers:[] },
+
+  { part:"Part 17", id:"olivine-city-post-return", name:"Olivine City (Return — Post-Game)",
+    note:"National Pokédex from Prof. Oak requires entering the Hall of Fame. Protein is south of the S.S. Aqua dock (requires S.S. Ticket). Rare Candy requires Rock Climb (Part 28).",
+    pokemon:[],
+    items:[
+      {name:"National Pokédex", hidden:false, note:"From Prof. Oak in Olivine Harbor building (post Hall of Fame)"},
+      {name:"Protein",          hidden:true,  note:"Olivine Harbor SW of S.S. Aqua (requires S.S. Ticket)"},
+      {name:"Rare Candy",       hidden:false, note:"E of lighthouse, on lone rock (requires Rock Climb — Part 28)"},
+    ],
+    trainers:[] },
 
   // ── Part 18 ─────────────────────────────────────────────────────────
   { part:"Part 18", id:"route-6", name:"Route 6",
@@ -3225,6 +3168,22 @@ const AREAS = [
       {class:"Gym Leader", name:"Brock", team:[{name:"Graveler",level:51},{name:"Rhyhorn",level:51},{name:"Omastar",level:53},{name:"Onix",level:54},{name:"Kabutops",level:52}]},
     ] },
 
+  { part:"Part 24", id:"bell-tower-return", name:"Bell Tower (Return — Rainbow Wing)",
+    note:"SS players return after obtaining the Rainbow Wing in Pewter City. Ho-Oh appears at lv70.",
+    pokemon:[
+      {name:"Ho-Oh", method:"Gift", levels:"70", rate:"One", warn:true, ssOnly:true, note:"SS only — requires Rainbow Wing from Pewter City old man"},
+    ],
+    items:[],
+    trainers:[] },
+
+  { part:"Part 24", id:"whirl-islands-return", name:"Whirl Islands (Return — Silver Wing)",
+    note:"HG players return after obtaining the Silver Wing in Pewter City. Lugia appears at lv70.",
+    pokemon:[
+      {name:"Lugia", method:"Gift", levels:"70", rate:"One", warn:true, hgOnly:true, note:"HG only — requires Silver Wing from Pewter City old man"},
+    ],
+    items:[],
+    trainers:[] },
+
   // ── Part 25 ─────────────────────────────────────────────────────────
   { part:"Part 25", id:"route-3", name:"Route 3",
     note:"East of Pewter through Mt. Moon. Version-exclusive snake Pokémon.",
@@ -3673,6 +3632,42 @@ const AREAS = [
     items:[
       {name:"Full Restore", hidden:true, note:"Mt. Silver exterior"},
       {name:"Reaper Cloth", hidden:false, note:"Via Surf"},
+    ],
+    trainers:[] },
+
+  { part:"Part 28", id:"national-park-rock-climb-return", name:"National Park (Return — Rock Climb)",
+    note:"Return with Rock Climb (from Oak after 16 badges) to reach the NE cliff.",
+    pokemon:[],
+    items:[
+      {name:"Shiny Stone", hidden:false, note:"NE cliff"},
+    ],
+    trainers:[] },
+
+  { part:"Part 28", id:"route-38-rock-climb-return", name:"Route 38 (Return — Rock Climb)",
+    note:"Return with Rock Climb to reach the SW fenced area and the easternmost hilltop Headbutt tree.",
+    pokemon:[
+      {name:"Exeggcute", method:"Headbutt", levels:"18–20", rate:"65%", note:"Easternmost hilltop tree"},
+      {name:"Burmy",     method:"Headbutt", levels:"18–25", rate:"35%", note:"Easternmost hilltop tree"},
+    ],
+    items:[
+      {name:"Lax Incense", hidden:false, note:"SW area behind fence via Route 39"},
+      {name:"HP Up",       hidden:true,  note:"SW area behind fence via Route 39"},
+    ],
+    trainers:[] },
+
+  { part:"Part 28", id:"route-42-rock-climb-return", name:"Route 42 (Return — Rock Climb)",
+    note:"Return with Rock Climb to access the cliff north of the eastern lake via Mt. Mortar.",
+    pokemon:[],
+    items:[
+      {name:"Dubious Disc", hidden:false, note:"N of eastern lake, accessed via Mt. Mortar (requires Rock Climb)"},
+    ],
+    trainers:[] },
+
+  { part:"Part 28", id:"route-45-rock-climb-return", name:"Route 45 (Return — Rock Climb)",
+    note:"Return with Rock Climb. The PP Max is on a cliff in the SW area, accessed via Route 46.",
+    pokemon:[],
+    items:[
+      {name:"PP Max", hidden:true, note:"SW cliff accessible via Route 46 (requires Rock Climb)"},
     ],
     trainers:[] },
 
@@ -6474,7 +6469,7 @@ function getMoveSuper(moveName) {
 }
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
-const AUDITED_PARTS = new Set(["Part 1","Part 2","Part 3","Part 4","Part 5","Part 6","Part 7","Part 8","Part 9","Part 10","Part 11","Part 12","Part 13","Part 14","Part 15","Part 16","(Return Visits)","Part 17","Part 18","Part 19","Part 20","Part 21","Part 22","Part 23","Part 24","Part 25","Part 26","Part 27","Part 28","Part 29","Part 30","Part 31","Part 32"]);
+const AUDITED_PARTS = new Set(["Part 1","Part 2","Part 3","Part 4","Part 5","Part 6","Part 7","Part 8","Part 9","Part 10","Part 11","Part 12","Part 13","Part 14","Part 15","Part 16","Part 17","Part 18","Part 19","Part 20","Part 21","Part 22","Part 23","Part 24","Part 25","Part 26","Part 27","Part 28","Part 29","Part 30","Part 31","Part 32"]);
 
 const ROAMING_POKEMON = [
   {name:"Raikou",  id:243, region:"Johto", minJohtoBadges:4},

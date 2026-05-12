@@ -3662,7 +3662,7 @@ function SkyBar({ timeFilter, setTime }) {
   return (
     <div style={{
       position:"relative", overflow:"hidden", flexShrink:0,
-      background: skyBg, height:80, transition:"background 0.85s ease",
+      background: skyBg, height:96, transition:"background 0.85s ease",
     }}>
       {STARS.map((s,i) => (
         <div key={i} style={{
@@ -3684,7 +3684,7 @@ function SkyBar({ timeFilter, setTime }) {
         transition:"left 1s ease, background 0.8s ease, box-shadow 0.8s ease",
       }} />
       {/* Period label + countdown — left side */}
-      <div style={{ position:"absolute", left:14, bottom:14, fontFamily:"'DM Sans',sans-serif" }}>
+      <div style={{ position:"absolute", left:14, bottom:22, fontFamily:"'DM Sans',sans-serif" }}>
         <div style={{ fontSize:9, fontWeight:"700", letterSpacing:1.2, textTransform:"uppercase", color:"rgba(255,255,255,0.5)", marginBottom:3 }}>
           {realPeriod.charAt(0).toUpperCase()+realPeriod.slice(1)}
         </div>
@@ -3695,7 +3695,7 @@ function SkyBar({ timeFilter, setTime }) {
         </div>
       </div>
       {/* Time filter buttons — right side */}
-      <div style={{ position:"absolute", bottom:14, right:16, display:"flex", gap:5 }}>
+      <div style={{ position:"absolute", bottom:22, right:16, display:"flex", gap:5 }}>
         {[["all","All",null],["morning","Morning",TIME_COLORS.morning.icon],["day","Day",TIME_COLORS.day.icon],["night","Night",TIME_COLORS.night.icon]].map(([v,label,icon]) => {
           const btc = TIME_COLORS[v];
           const isActive = timeFilter === v;
@@ -3714,9 +3714,26 @@ function SkyBar({ timeFilter, setTime }) {
           );
         })}
       </div>
-      {/* Period progress bar — bottom edge */}
-      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:3, background:"rgba(255,255,255,0.07)" }}>
-        <div style={{ height:"100%", width:`${Math.min(progress,1)*100}%`, background:realTc.badge, opacity:0.5, borderRadius:"0 2px 2px 0" }} />
+      {/* 24 h labeled timeline — bottom edge */}
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:18, display:"flex" }}>
+        {/* Night 12 AM – 4 AM  (4 h = 16.67%) */}
+        <div style={{ width:"16.67%", background:"rgba(30,40,70,0.7)", display:"flex", alignItems:"center", justifyContent:"center", borderRight:"1px solid rgba(255,255,255,0.06)" }}>
+          <span style={{ fontSize:7, color:TIME_COLORS.night.badge, whiteSpace:"nowrap", fontFamily:"'JetBrains Mono',monospace", opacity:0.85 }}>12–4 AM</span>
+        </div>
+        {/* Morning 4 AM – 10 AM  (6 h = 25%) */}
+        <div style={{ width:"25%", background:"rgba(126,200,200,0.13)", display:"flex", alignItems:"center", justifyContent:"center", borderRight:"1px solid rgba(255,255,255,0.06)" }}>
+          <span style={{ fontSize:7, color:TIME_COLORS.morning.badge, whiteSpace:"nowrap", fontFamily:"'JetBrains Mono',monospace", opacity:0.9 }}>4–10 AM</span>
+        </div>
+        {/* Day 10 AM – 8 PM  (10 h = 41.67%) */}
+        <div style={{ width:"41.67%", background:"rgba(248,208,48,0.1)", display:"flex", alignItems:"center", justifyContent:"center", borderRight:"1px solid rgba(255,255,255,0.06)" }}>
+          <span style={{ fontSize:7, color:TIME_COLORS.day.badge, whiteSpace:"nowrap", fontFamily:"'JetBrains Mono',monospace", opacity:0.9 }}>10 AM – 8 PM</span>
+        </div>
+        {/* Night 8 PM – 12 AM  (4 h = 16.67%) */}
+        <div style={{ width:"16.67%", background:"rgba(30,40,70,0.7)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <span style={{ fontSize:7, color:TIME_COLORS.night.badge, whiteSpace:"nowrap", fontFamily:"'JetBrains Mono',monospace", opacity:0.85 }}>8 PM–12</span>
+        </div>
+        {/* Current-time cursor */}
+        <div style={{ position:"absolute", left:`${(h + m/60) / 24 * 100}%`, top:0, bottom:0, width:1.5, background:"rgba(255,255,255,0.65)", borderRadius:1, pointerEvents:"none" }} />
       </div>
     </div>
   );
@@ -5995,25 +6012,69 @@ function DexDetail({ selected, caught, locs, toggleCaught, compact }) {
       )}
       {!compact && <EvoChainDisplay name={selected.name} caught={caught} />}
       {!compact && (() => {
-        const moves = LEARNSETS[selected.name];
+        const finalForm = DT_FINAL_FORM[selected.name] || selected.name;
+        const moves = LEARNSETS[selected.name] || LEARNSETS[finalForm];
+        const tmTips = DT_TM_TIPS[finalForm] || DT_TM_TIPS[selected.name] || [];
         const delay = EVO_DELAY[selected.name];
-        if ((!moves || moves.length === 0) && !delay) return null;
+        if ((!moves || moves.length === 0) && tmTips.length === 0 && !delay) return null;
+        const MoveRow = ({ move, level, kind, src, oneTime }) => {
+          const isGood = MOVE_TIERS.good.has(move);
+          const isSkip = MOVE_TIERS.skip.has(move);
+          const type   = MOVE_TYPES[move];
+          const cat    = MOVE_CATEGORY[move];
+          const stat   = MOVE_STATS[move];
+          const nameColor = kind === "tm" ? (isGood ? C.green : C.gold)
+                          : isGood ? C.green : isSkip ? C.muted : C.text;
+          return (
+            <div style={{ display:"flex", alignItems:"center", gap:5, padding:"3px 0", borderBottom:`1px solid rgba(255,255,255,0.04)` }}>
+              <span style={{ fontSize:9, fontWeight:"700", color: kind === "tm" ? C.gold : C.muted, fontFamily:"'JetBrains Mono',monospace", minWidth:kind==="tm"?24:20, textAlign:"right", flexShrink:0 }}>
+                {kind === "tm" ? "TM" : level}
+              </span>
+              <span style={{ fontSize:11, fontWeight: isGood ? "600" : "400", color: nameColor, flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                {move}
+              </span>
+              {type && (
+                <span style={{ fontSize:7, color:"#fff", background:TYPE_COLORS[type]||"#888", padding:"1px 4px", borderRadius:3, fontWeight:"700", letterSpacing:0.2, flexShrink:0 }}>
+                  {type}
+                </span>
+              )}
+              {cat && stat?.bp && (
+                <span style={{ fontSize:9, color:C.muted, fontFamily:"'JetBrains Mono',monospace", flexShrink:0 }}>
+                  {cat} {stat.bp}
+                </span>
+              )}
+              {oneTime && <span style={{ fontSize:8, color:"#e8a020", flexShrink:0 }}>1×</span>}
+            </div>
+          );
+        };
         return (
           <div style={{ marginBottom:14 }}>
-            <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:8, textTransform:"uppercase" }}>Level-up Moves</div>
             {moves && moves.length > 0 && (
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"2px 12px", marginBottom: delay ? 8 : 0 }}>
-                {moves.map((m, i) => {
-                  const isGood = MOVE_TIERS.good.has(m.move);
-                  const isSkip = MOVE_TIERS.skip.has(m.move);
-                  return (
-                    <div key={i} style={{ display:"flex", alignItems:"baseline", gap:5, padding:"2px 0" }}>
-                      <span style={{ fontSize:10, fontWeight:"700", color:C.gold, fontFamily:"'Courier New',monospace", minWidth:20, textAlign:"right" }}>{m.lv}</span>
-                      <span style={{ fontSize:10, color: isGood ? C.green : isSkip ? C.muted : C.text }}>{m.move}</span>
+              <>
+                <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, textTransform:"uppercase" }}>Level-up Moves</div>
+                <div style={{ marginBottom: (tmTips.length > 0 || delay) ? 10 : 0 }}>
+                  {[...moves].sort((a,b) => a.lv - b.lv).map((m, i) => (
+                    <MoveRow key={i} move={m.move} level={m.lv} kind="lv" />
+                  ))}
+                </div>
+              </>
+            )}
+            {tmTips.length > 0 && (
+              <>
+                <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, marginTop: moves?.length ? 4 : 0, textTransform:"uppercase" }}>TM / Tutor</div>
+                <div style={{ marginBottom: delay ? 10 : 0 }}>
+                  {tmTips.map((m, i) => (
+                    <div key={i} style={{ marginBottom:6 }}>
+                      <MoveRow move={m.move} kind="tm" oneTime={m.oneTime} />
+                      {m.src && (
+                        <div style={{ fontSize:9, color:C.muted, lineHeight:1.4, paddingLeft:28, marginTop:1, fontStyle:"italic" }}>
+                          {m.src}
+                        </div>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              </>
             )}
             {delay && (
               <div style={{ fontSize:10, color:"#c8960a", lineHeight:1.5, padding:"5px 8px", background:"rgba(200,150,10,0.08)", borderRadius:5, borderLeft:"2px solid #c8960a" }}>

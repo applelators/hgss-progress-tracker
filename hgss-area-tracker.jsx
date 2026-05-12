@@ -1470,6 +1470,10 @@ const LEARNSETS = {
     {move:"Discharge",     lv:40},
     {move:"Hydro Pump",    lv:52},
   ],
+  "Quagsire": [
+    {move:"Earthquake",    lv:53},
+    {move:"Amnesia",       lv:29},
+  ],
 };
 
 // ─── MOVE TIERS ──────────────────────────────────────────────────────────────
@@ -1656,6 +1660,8 @@ const DT_TM_TIPS = {
   "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Nidoqueen":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Ground STAB — Earthquake is Quagsire's only real battle move alongside the water HMs
+  "Quagsire":   [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"}],
 };
 
 const DT_FINAL_FORM = {

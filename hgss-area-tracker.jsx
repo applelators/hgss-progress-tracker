@@ -1438,11 +1438,60 @@ const EVO_METHODS = [
 // Level-up moves for Dream Team candidates — used by getDreamMoves to fill battle slots.
 // Data sourced from HGSS (Gen IV) learnset pages. Only moves worth suggesting are included.
 const LEARNSETS = {
+  // ── Johto Starters ───────────────────────────────────────────────────────────
   "Typhlosion": [
     {move:"Flame Wheel",   lv:20},
     {move:"Lava Plume",    lv:35},
     {move:"Flamethrower",  lv:42},
     {move:"Eruption",      lv:57},
+  ],
+  "Feraligatr": [
+    {move:"Ice Fang",      lv:32},
+    {move:"Crunch",        lv:46},
+  ],
+  "Meganium": [
+    {move:"Razor Leaf",    lv:17},
+    {move:"Body Slam",     lv:29},
+    {move:"Petal Dance",   lv:46},
+  ],
+  // ── Top Picks ────────────────────────────────────────────────────────────────
+  "Ampharos": [
+    {move:"Thunder Wave",  lv:14},
+    {move:"ThunderPunch",  lv:30},
+    {move:"Discharge",     lv:34},
+    {move:"Signal Beam",   lv:42},
+    {move:"Power Gem",     lv:59},
+  ],
+  "Heracross": [
+    {move:"Brick Break",   lv:19},
+    {move:"Close Combat",  lv:37},
+    {move:"Megahorn",      lv:55},
+  ],
+  "Espeon": [
+    {move:"Psybeam",       lv:29},
+    {move:"Future Sight",  lv:36},  // displayed in Dex; NOT in MOVE_TIERS.good (2-turn delay)
+    {move:"Psychic",       lv:57},
+  ],
+  "Umbreon": [
+    {move:"Confuse Ray",   lv:25},
+    {move:"Payback",       lv:45},
+  ],
+  "Crobat": [
+    {move:"Poison Fang",   lv:25},
+    {move:"Cross Poison",  lv:47},
+    {move:"Air Slash",     lv:57},
+  ],
+  "Donphan": [
+    {move:"Ice Fang",      lv:1},
+    {move:"Earthquake",    lv:53},
+  ],
+  "Houndoom": [
+    {move:"Dark Pulse",    lv:55},
+    {move:"Nasty Plot",    lv:61},
+  ],
+  "Skarmory": [
+    {move:"Steel Wing",    lv:34},
+    {move:"Air Slash",     lv:49},
   ],
   "Tyranitar": [
     {move:"Rock Slide",    lv:14},
@@ -1451,29 +1500,168 @@ const LEARNSETS = {
     {move:"Earthquake",    lv:47},
     {move:"Stone Edge",    lv:54},
   ],
-  "Heracross": [
-    {move:"Brick Break",   lv:19},
-    {move:"Close Combat",  lv:37},
-    {move:"Megahorn",      lv:55},
+  "Kingdra": [
+    {move:"Dragon Dance",  lv:41},
+    {move:"Dragon Pulse",  lv:57},
+    {move:"Hydro Pump",    lv:65},
   ],
-  "Ampharos": [
-    {move:"ThunderPunch",  lv:30},
-    {move:"Discharge",     lv:34},
+  "Politoed": [
+    {move:"Perish Song",   lv:1},
+    {move:"Hyper Voice",   lv:55},
+  ],
+  "Slowking": [
+    {move:"Amnesia",       lv:29},
+    {move:"Zen Headbutt",  lv:53},
+    {move:"Nasty Plot",    lv:58},
+  ],
+  "Blissey": [
+    {move:"Softboiled",    lv:23},
+    {move:"Egg Bomb",      lv:46},
+  ],
+  "Ursaring": [
+    {move:"Slash",         lv:43},
+    {move:"Hammer Arm",    lv:57},
+  ],
+  "Mantine": [
     {move:"Signal Beam",   lv:42},
-    {move:"Power Gem",     lv:59},
+    {move:"Air Slash",     lv:49},
+    {move:"Hydro Pump",    lv:56},
   ],
+  // ── Good Picks ───────────────────────────────────────────────────────────────
   "Xatu": [
-    {move:"Future Sight",  lv:42},
+    {move:"Confuse Ray",   lv:29},
+    {move:"Future Sight",  lv:42},  // displayed in Dex; NOT in MOVE_TIERS.good
     {move:"Psychic",       lv:59},
   ],
   "Lanturn": [
     {move:"Discharge",     lv:40},
     {move:"Hydro Pump",    lv:52},
   ],
-  "Quagsire": [
-    {move:"Earthquake",    lv:53},
-    {move:"Amnesia",       lv:29},
+  "Azumarill": [
+    {move:"Aqua Tail",     lv:52},
+    {move:"Superpower",    lv:62},
   ],
+  "Quagsire": [
+    {move:"Amnesia",       lv:29},
+    {move:"Earthquake",    lv:53},
+  ],
+  "Forretress": [
+    {move:"Rapid Spin",    lv:1},
+    {move:"Explosion",     lv:54},
+  ],
+  "Noctowl": [
+    {move:"Air Slash",     lv:33},
+    {move:"Extrasensory",  lv:41},
+  ],
+  "Granbull": [
+    {move:"Crunch",        lv:29},
+    {move:"Hammer Arm",    lv:52},
+  ],
+  "Miltank": [
+    {move:"Body Slam",     lv:20},
+    {move:"Zen Headbutt",  lv:28},
+  ],
+  "Hitmontop": [
+    {move:"Rapid Spin",    lv:26},
+    {move:"Close Combat",  lv:58},
+  ],
+  "Porygon2": [
+    {move:"Discharge",     lv:34},
+    {move:"Tri Attack",    lv:52},
+    {move:"Signal Beam",   lv:60},
+  ],
+  "Bellossom": [
+    {move:"Petal Dance",   lv:46},
+    {move:"SolarBeam",     lv:53},
+  ],
+  "Jumpluff": [
+    {move:"Sleep Powder",  lv:6},
+    {move:"Leech Seed",    lv:10},
+  ],
+  "Sudowoodo": [
+    {move:"Rock Slide",    lv:29},
+    {move:"Sucker Punch",  lv:38},
+    {move:"Wood Hammer",   lv:46},
+  ],
+  "Girafarig": [
+    {move:"Psybeam",       lv:21},
+    {move:"Zen Headbutt",  lv:33},
+    {move:"Crunch",        lv:45},
+  ],
+  "Magcargo": [
+    {move:"Rock Slide",    lv:37},
+    {move:"Lava Plume",    lv:44},
+  ],
+  "Piloswine": [
+    {move:"Ice Fang",      lv:40},
+    {move:"Earthquake",    lv:52},
+  ],
+  "Octillery": [
+    {move:"Signal Beam",   lv:47},
+    {move:"Gunk Shot",     lv:54},
+  ],
+  "Corsola": [
+    {move:"AncientPower",  lv:37},
+  ],
+  "Furret": [
+    {move:"Slash",         lv:28},
+    {move:"Sucker Punch",  lv:37},
+  ],
+  "Sunflora": [
+    {move:"Giga Drain",    lv:57},
+    {move:"Leaf Storm",    lv:61},
+  ],
+  // ── Niche Picks ─────────────────────────────────────────────────────────────
+  "Ariados": [
+    {move:"Pin Missile",   lv:38},
+    {move:"Cross Poison",  lv:41},
+    {move:"Sucker Punch",  lv:47},
+  ],
+  "Ledian": [
+    {move:"Mach Punch",    lv:1},
+  ],
+  "Sneasel": [
+    {move:"Slash",         lv:41},
+    {move:"Night Slash",   lv:46},
+    {move:"Ice Shard",     lv:46},
+  ],
+  "Misdreavus": [
+    {move:"Psybeam",       lv:19},
+    {move:"Shadow Ball",   lv:37},
+    {move:"Power Gem",     lv:54},
+  ],
+  "Murkrow": [
+    {move:"Wing Attack",   lv:16},
+    {move:"Sucker Punch",  lv:37},
+  ],
+  "Qwilfish": [
+    {move:"Aqua Tail",     lv:40},
+    {move:"Poison Jab",    lv:47},
+  ],
+  "Dunsparce": [
+    {move:"AncientPower",  lv:33},
+    {move:"Body Slam",     lv:41},
+  ],
+  "Gligar": [
+    {move:"X-Scissor",     lv:49},
+  ],
+  "Stantler": [
+    {move:"Sucker Punch",  lv:41},
+    {move:"Zen Headbutt",  lv:49},
+  ],
+  "Scizor": [
+    {move:"Swords Dance",  lv:38},
+    {move:"Iron Head",     lv:52},
+    {move:"X-Scissor",     lv:59},
+  ],
+  "Steelix": [
+    {move:"Rock Slide",    lv:47},
+    {move:"Stone Edge",    lv:55},
+  ],
+  "Delibird":  [],
+  "Shuckle":   [],
+  "Smeargle":  [],
+  "Wobbuffet": [],
 };
 
 // ─── DREAM TEAM ABILITIES ────────────────────────────────────────────────────
@@ -1563,6 +1751,11 @@ const MOVE_TIERS = {
     "Stone Edge","Close Combat","Focus Blast","Discharge","Signal Beam","Dark Pulse",
     "Eruption","Lava Plume","Power Gem","Zen Headbutt","Night Slash","Aqua Tail",
     "Leaf Blade","Poison Jab","Iron Head","Rock Slide","Thunder Wave",
+    // Coverage & priority moves for HGSS candidates
+    "Air Slash","Ice Fang","Mach Punch","Sucker Punch","Hammer Arm","Cross Poison",
+    "Extrasensory","Wood Hammer","Explosion","X-Scissor","Dragon Pulse","Nasty Plot",
+    "Aqua Jet","Leaf Storm","Gunk Shot","Ice Shard","Steel Wing","Dragon Dance",
+    "Superpower","Hyper Voice","Swords Dance","Rapid Spin",
   ]),
   skip: new Set([
     "Bide","Rage","Constrict","Splash","Bind","Wrap","String Shot",
@@ -1600,13 +1793,13 @@ const DT_CANDIDATES = [
   { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], ssOnly:true, stats:{atk:90,  spa:110, spe:95} },
   { name:"Skarmory",    types:["Steel","Flying"],   hms:["Cut","Fly","Rock Smash"], ssOnly:true, stats:{atk:80,  spa:40,  spe:70} },
   { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:134, spa:95,  spe:61} },
-  { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"], tradeOnly:true },
-  { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], tradeOnly:true },
-  { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true },
-  { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly"] },
-  { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"] },
-  { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true },
-  { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true },
+  { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"], tradeOnly:true, stats:{atk:95, spa:95,  spe:85} },
+  { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:90,  spe:70} },
+  { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:100, spe:30} },
+  { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly"], stats:{atk:90, spa:70,  spe:130} },
+  { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:10, spa:75,  spe:55} },
+  { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true, stats:{atk:130,spa:75,  spe:55} },
+  { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true, stats:{atk:40, spa:80,  spe:70} },
   // ── Good picks ───────────────────────────────────────────────────────────────
   { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },
   { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4, stats:{atk:58,  spa:76,  spe:67} },
@@ -1614,34 +1807,34 @@ const DT_CANDIDATES = [
   { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:85,  spa:65,  spe:35} },
   { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"], stats:{atk:90,  spa:30,  spe:40} },
   { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"], stats:{atk:50,  spa:76,  spe:70} },
-  { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"] },
-  { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"] },
-  { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"] },
-  { name:"Porygon2",    types:["Normal"],           hms:[], tradeOnly:true },
-  { name:"Bellossom",   types:["Grass"],            hms:["Cut"], ssOnly:true },
-  { name:"Jumpluff",    types:["Grass","Flying"],   hms:[] },
-  { name:"Sudowoodo",   types:["Rock"],             hms:["Strength","Rock Smash"] },
-  { name:"Girafarig",   types:["Normal","Psychic"], hms:["Strength","Rock Smash"] },
-  { name:"Magcargo",    types:["Fire","Rock"],      hms:["Strength","Rock Smash"] },
-  { name:"Piloswine",   types:["Ice","Ground"],     hms:["Strength","Rock Smash"] },
-  { name:"Octillery",   types:["Water"],            hms:["Surf","Waterfall","Whirlpool"] },
-  { name:"Corsola",     types:["Water","Rock"],     hms:["Surf","Strength","Whirlpool","Rock Smash"] },
-  { name:"Furret",      types:["Normal"],           hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"] },
-  { name:"Sunflora",    types:["Grass"],            hms:["Cut"] },
+  { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:120,spa:45,  spe:45} },
+  { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:80, spa:40,  spe:100} },
+  { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"], stats:{atk:95, spa:35,  spe:70} },
+  { name:"Porygon2",    types:["Normal"],           hms:[], tradeOnly:true, stats:{atk:80, spa:105, spe:60} },
+  { name:"Bellossom",   types:["Grass"],            hms:["Cut"], ssOnly:true, stats:{atk:80, spa:90,  spe:50} },
+  { name:"Jumpluff",    types:["Grass","Flying"],   hms:[], stats:{atk:55, spa:55,  spe:110} },
+  { name:"Sudowoodo",   types:["Rock"],             hms:["Strength","Rock Smash"], stats:{atk:100,spa:30,  spe:30} },
+  { name:"Girafarig",   types:["Normal","Psychic"], hms:["Strength","Rock Smash"], stats:{atk:80, spa:90,  spe:85} },
+  { name:"Magcargo",    types:["Fire","Rock"],      hms:["Strength","Rock Smash"], stats:{atk:50, spa:80,  spe:30} },
+  { name:"Piloswine",   types:["Ice","Ground"],     hms:["Strength","Rock Smash"], stats:{atk:100,spa:60,  spe:50} },
+  { name:"Octillery",   types:["Water"],            hms:["Surf","Waterfall","Whirlpool"], stats:{atk:105,spa:105, spe:45} },
+  { name:"Corsola",     types:["Water","Rock"],     hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:55, spa:65,  spe:35} },
+  { name:"Furret",      types:["Normal"],           hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:76, spa:56,  spe:90} },
+  { name:"Sunflora",    types:["Grass"],            hms:["Cut"], stats:{atk:75, spa:105, spe:30} },
   // ── Niche picks ──────────────────────────────────────────────────────────────
-  { name:"Ariados",     types:["Bug","Poison"],     hms:[] },
-  { name:"Ledian",      types:["Bug","Flying"],     hms:["Strength","Rock Smash"] },
-  { name:"Sneasel",     types:["Dark","Ice"],       hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"] },
-  { name:"Misdreavus",  types:["Ghost"],            hms:[], ssOnly:true },
-  { name:"Murkrow",     types:["Dark","Flying"],    hms:["Fly"], hgOnly:true },
-  { name:"Shuckle",     types:["Bug","Rock"],       hms:["Strength","Rock Smash"] },
-  { name:"Qwilfish",    types:["Water","Poison"],   hms:["Surf","Waterfall","Whirlpool"] },
-  { name:"Dunsparce",   types:["Normal"],           hms:["Strength","Rock Smash"] },
-  { name:"Gligar",      types:["Ground","Flying"],  hms:["Cut","Strength","Rock Smash"], hgOnly:true },
-  { name:"Smeargle",    types:["Normal"],           hms:[] },
-  { name:"Wobbuffet",   types:["Psychic"],          hms:[] },
-  { name:"Stantler",    types:["Normal"],           hms:[] },
-  { name:"Delibird",    types:["Ice","Flying"],     hms:["Fly"], ssOnly:true },
+  { name:"Ariados",     types:["Bug","Poison"],     hms:[], stats:{atk:90, spa:60,  spe:40} },
+  { name:"Ledian",      types:["Bug","Flying"],     hms:["Strength","Rock Smash"], stats:{atk:35, spa:35,  spe:85} },
+  { name:"Sneasel",     types:["Dark","Ice"],       hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:95, spa:35,  spe:115} },
+  { name:"Misdreavus",  types:["Ghost"],            hms:[], ssOnly:true, stats:{atk:60, spa:85,  spe:85} },
+  { name:"Murkrow",     types:["Dark","Flying"],    hms:["Fly"], hgOnly:true, stats:{atk:85, spa:42,  spe:91} },
+  { name:"Shuckle",     types:["Bug","Rock"],       hms:["Strength","Rock Smash"], stats:{atk:10, spa:10,  spe:5} },
+  { name:"Qwilfish",    types:["Water","Poison"],   hms:["Surf","Waterfall","Whirlpool"], stats:{atk:95, spa:55,  spe:85} },
+  { name:"Dunsparce",   types:["Normal"],           hms:["Strength","Rock Smash"], stats:{atk:70, spa:65,  spe:45} },
+  { name:"Gligar",      types:["Ground","Flying"],  hms:["Cut","Strength","Rock Smash"], hgOnly:true, stats:{atk:75, spa:35,  spe:85} },
+  { name:"Smeargle",    types:["Normal"],           hms:[], stats:{atk:20, spa:20,  spe:75} },
+  { name:"Wobbuffet",   types:["Psychic"],          hms:[], stats:{atk:33, spa:33,  spe:33} },
+  { name:"Stantler",    types:["Normal"],           hms:[], stats:{atk:95, spa:62,  spe:85} },
+  { name:"Delibird",    types:["Ice","Flying"],     hms:["Fly"], ssOnly:true, stats:{atk:55, spa:55,  spe:75} },
 ];
 const DT_GROUPS = {};
 const DT_LEGENDARY = new Set(["Raikou","Entei","Suicune","Lugia","Ho-Oh","Celebi","Mewtwo","Mew","Articuno","Zapdos","Moltres"]);
@@ -1679,8 +1872,12 @@ const DT_TM_TIPS = {
   "Electrode":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
   "Raichu":     [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
-  // Ice — Ice Beam via Game Corner; physical Ice types prefer Ice Punch via Move Tutor
-  "Feraligatr": [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Starters — coverage TMs
+  "Meganium":   [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
+                 {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
+  // Ice — Ice Beam via Game Corner; physical attackers prefer Ice Punch via Move Tutor
+  "Feraligatr": [{move:"Ice Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000) — preferred: 105 Atk > 79 SpA"},
+                 {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins) — alternative if Ice Punch unavailable"}],
   "Lapras":     [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Dewgong":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Cloyster":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
@@ -1725,6 +1922,60 @@ const DT_TM_TIPS = {
   "Nidoqueen":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   // Ground STAB — Earthquake is Quagsire's only real battle move alongside the water HMs
   "Quagsire":   [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"}],
+  // Eevee evolutions
+  "Espeon":     [{move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym) — covers Dark/Ghost, Espeon's main blind spots"}],
+  // Umbreon: staller, no offensive TMs worth it
+  // Crobat: all key moves come from level-up
+  // Physical-attackers needing Earthquake coverage
+  "Donphan":    [{move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  "Ursaring":   [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"}],
+  "Granbull":   [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"}],
+  "Sudowoodo":  [{move:"Earthquake", src:"TM26 — Victory Road (Johto) — essential Rock/Ground dual coverage"}],
+  "Hitmontop":  [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"},
+                 {move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  "Gligar":     [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"},
+                 {move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  // Normal attackers
+  "Furret":     [{move:"Dig",        src:"TM28 — National Park area or buy — Ground coverage"}],
+  "Blissey":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  // Grass types needing SolarBeam
+  "Jumpluff":   [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
+                 {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
+  "Sunflora":   [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
+                 {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
+  "Bellossom":  [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
+                 {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
+  // Ghost — Shadow Ball from Morty is the key
+  "Misdreavus": [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
+  // Mixed attackers needing coverage
+  "Girafarig":  [{move:"Psychic",    src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
+  "Stantler":   [{move:"Psychic",    src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Octillery":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Corsola":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Dark/Niche types
+  "Sneasel":    [{move:"Ice Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000) — key STAB for physical attacker"}],
+  "Delibird":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Trade-only
+  "Kingdra":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Politoed":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Slowking":   [{move:"Psychic",    src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+                 {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Porygon2":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  // Bug/Steel
+  "Scizor":     [{move:"Swords Dance",src:"TM75 — available mid-game — sets up devastating X-Scissor sweeps"},
+                 {move:"X-Scissor",  src:"TM81 — Cianwood City area"}],
+  "Steelix":    [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"},
+                 {move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  // Mantine: all key moves come from level-up
+  // Skarmory: Spikes and Steel Wing from level-up are sufficient
+  // Azumarill: Aqua Tail and Superpower come from level-up (lv52 and lv62)
+  // Noctowl: Shadow Ball from Morty covers its Ghost/Psychic/Dark blind spot
+  "Noctowl":    [{move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
 };
 
 const DT_FINAL_FORM = {
@@ -2608,26 +2859,29 @@ const MOVE_TYPES = {
   Thunderbolt:"Electric",Thunder:"Electric",ThunderPunch:"Electric","Thunder Wave":"Electric",
   // Fire
   Flamethrower:"Fire","Fire Blast":"Fire",Eruption:"Fire","Fire Punch":"Fire","Will-O-Wisp":"Fire","Lava Plume":"Fire","Heat Wave":"Fire",
-  // Water
-  "Ice Beam":"Ice",Blizzard:"Ice","Ice Punch":"Ice","Sheer Cold":"Ice",
+  // Ice
+  "Ice Beam":"Ice",Blizzard:"Ice","Ice Punch":"Ice","Sheer Cold":"Ice","Ice Fang":"Ice","Ice Shard":"Ice",
+  // Water (priority / physical)
+  "Aqua Jet":"Water",
   // Ground
   Earthquake:"Ground",Fissure:"Ground",
   // Grass
   SolarBeam:"Grass","Razor Leaf":"Grass","Vine Whip":"Grass","Petal Dance":"Grass",
   "Giga Drain":"Grass","Sleep Powder":"Grass",Spore:"Grass","Leech Seed":"Grass",
+  "Wood Hammer":"Grass","Leaf Storm":"Grass",
   // Poison
-  "Sludge Bomb":"Poison",Toxic:"Poison","Poison Fang":"Poison",
+  "Sludge Bomb":"Poison",Toxic:"Poison","Poison Fang":"Poison","Poison Jab":"Poison","Gunk Shot":"Poison","Cross Poison":"Poison",
   // Psychic
   Psychic:"Psychic",Psybeam:"Psychic","Future Sight":"Psychic","Zen Headbutt":"Psychic",
-  Amnesia:"Psychic",Agility:"Psychic",Hypnosis:"Psychic",
+  Amnesia:"Psychic",Agility:"Psychic",Hypnosis:"Psychic",Extrasensory:"Psychic","Nasty Plot":"Dark",
   // Bug
-  Megahorn:"Bug","Silver Wind":"Bug",Twineedle:"Bug","Pin Missile":"Bug","Leech Life":"Bug","Signal Beam":"Bug",
+  Megahorn:"Bug","Silver Wind":"Bug",Twineedle:"Bug","Pin Missile":"Bug","Leech Life":"Bug","Signal Beam":"Bug","X-Scissor":"Bug","Mach Punch":"Fighting","U-turn":"Bug",
   // Rock
   "Rock Slide":"Rock",AncientPower:"Rock","Stone Edge":"Rock","Power Gem":"Rock",
   // Ghost
   "Shadow Ball":"Ghost","Confuse Ray":"Ghost",Lick:"Ghost",
   // Dragon
-  Outrage:"Dragon","Dragon Rage":"Dragon",Twister:"Dragon","Dragon Dance":"Dragon","Dragon Claw":"Dragon",
+  Outrage:"Dragon","Dragon Rage":"Dragon",Twister:"Dragon","Dragon Dance":"Dragon","Dragon Claw":"Dragon","Dragon Pulse":"Dragon",
   // Dark
   Crunch:"Dark",Pursuit:"Dark",Bite:"Dark","Dark Pulse":"Dark","Night Slash":"Dark",Payback:"Dark",
   // Steel
@@ -2637,11 +2891,12 @@ const MOVE_TYPES = {
   "Sky Uppercut":"Fighting",Submission:"Fighting",Superpower:"Fighting",
   "Close Combat":"Fighting","Focus Blast":"Fighting","Cross Chop":"Fighting",
   "Rock Smash":"Fighting","Karate Chop":"Fighting","Low Kick":"Fighting",
+  "Hammer Arm":"Fighting",
   // Normal (damaging)
   "Hyper Beam":"Normal","Body Slam":"Normal",Thrash:"Normal","Hyper Voice":"Normal",
   "Skull Bash":"Normal",ExtremeSpeed:"Normal","Hyper Fang":"Normal","Super Fang":"Normal",
   Slash:"Normal","Tri Attack":"Normal","Rapid Spin":"Normal",Swift:"Normal",
-  "Wing Attack":"Flying","Drill Peck":"Flying","Air Cutter":"Flying","Aerial Ace":"Flying",
+  "Wing Attack":"Flying","Drill Peck":"Flying","Air Cutter":"Flying","Aerial Ace":"Flying","Air Slash":"Flying","Steel Wing":"Steel",
   "Water Gun":"Water","Hydro Pump":"Water",Whirlpool:"Water","Aqua Tail":"Water",
   // Normal — HMs
   "Rock Climb":"Normal",
@@ -2782,6 +3037,35 @@ const MOVE_STATS = {
   "Rock Climb":     { bp:90,  acc:85,  pp:20 },
   // Psychic extras
   "Zen Headbutt":   { bp:80,  acc:90,  pp:15 },
+  Extrasensory:     { bp:80,  acc:100, pp:30 },
+  // Ice extras
+  "Ice Fang":       { bp:65,  acc:95,  pp:15 },
+  "Ice Shard":      { bp:40,  acc:100, pp:30 },
+  // Flying extras
+  "Air Slash":      { bp:75,  acc:95,  pp:20 },
+  "Steel Wing":     { bp:70,  acc:90,  pp:25 },
+  // Bug extras
+  "X-Scissor":      { bp:80,  acc:100, pp:15 },
+  "Mach Punch":     { bp:40,  acc:100, pp:30 },
+  "U-turn":         { bp:70,  acc:100, pp:20 },
+  // Dark extras
+  "Sucker Punch":   { bp:80,  acc:100, pp:5  },
+  "Nasty Plot":     { bp:null,acc:null, pp:20 },
+  // Dragon extras
+  "Dragon Pulse":   { bp:90,  acc:100, pp:10 },
+  // Poison extras
+  "Poison Jab":     { bp:80,  acc:100, pp:20 },
+  "Cross Poison":   { bp:70,  acc:100, pp:20 },
+  "Gunk Shot":      { bp:120, acc:70,  pp:5  },
+  // Fighting extras
+  "Hammer Arm":     { bp:100, acc:90,  pp:10 },
+  // Grass extras
+  "Wood Hammer":    { bp:120, acc:100, pp:15 },
+  "Leaf Storm":     { bp:140, acc:90,  pp:5  },
+  // Normal extras
+  Explosion:        { bp:250, acc:100, pp:5  },
+  // Water extras
+  "Aqua Jet":       { bp:40,  acc:100, pp:20 },
   // Status
   "Swords Dance":   { bp:null,acc:null, pp:30 },
   "Belly Drum":     { bp:null,acc:null, pp:10 },
@@ -2818,27 +3102,27 @@ const MOVE_CATEGORY = {
   "Sky Uppercut":"P", Superpower:"P", Submission:"P", "Cross Chop":"P",
   "Karate Chop":"P", "Low Kick":"P",
   // Bug
-  Megahorn:"P", "Pin Missile":"P", Twineedle:"P", "Leech Life":"P",
+  Megahorn:"P", "Pin Missile":"P", Twineedle:"P", "Leech Life":"P", "X-Scissor":"P", "U-turn":"P",
   // Dark — all Physical in Gen IV except Dark Pulse
-  Crunch:"P", Bite:"P", Pursuit:"P", "Night Slash":"P", Payback:"P",
+  Crunch:"P", Bite:"P", Pursuit:"P", "Night Slash":"P", Payback:"P", "Sucker Punch":"P",
   // Steel
-  "Iron Head":"P", "Iron Tail":"P", "Metal Claw":"P", "Meteor Mash":"P",
+  "Iron Head":"P", "Iron Tail":"P", "Metal Claw":"P", "Meteor Mash":"P", "Steel Wing":"P",
   // Psychic (Gen IV Physical despite Psychic type)
-  "Zen Headbutt":"P",
+  "Zen Headbutt":"P", "Extrasensory":"S",
   // Flying
   Fly:"P", "Wing Attack":"P", "Drill Peck":"P", "Aerial Ace":"P",
   // Dragon
   Outrage:"P", "Dragon Claw":"P",
   // Grass
-  "Leaf Blade":"P", "Razor Leaf":"P",
+  "Leaf Blade":"P", "Razor Leaf":"P", "Wood Hammer":"P",
   // Poison
-  "Poison Jab":"P", "Poison Fang":"P",
+  "Poison Jab":"P", "Poison Fang":"P", "Cross Poison":"P", "Gunk Shot":"P",
   // Water (Physical despite Water type in Gen IV)
-  "Aqua Tail":"P",
+  "Aqua Tail":"P", "Aqua Jet":"P",
   // Normal
   ExtremeSpeed:"P", "Body Slam":"P", Thrash:"P", "Hyper Beam":"P",
   "Skull Bash":"P", Slam:"P", "Hyper Fang":"P", Slash:"P",
-  "Tri Attack":"P", "Rapid Spin":"P", Bite:"P",
+  "Tri Attack":"P", "Rapid Spin":"P", Bite:"P", Explosion:"P",
   // ── Special ─────────────────────────────────────────────────────────────────
   // Water
   Surf:"S", "Hydro Pump":"S", Whirlpool:"S", "Water Gun":"S",
@@ -2856,8 +3140,20 @@ const MOVE_CATEGORY = {
   "Dark Pulse":"S",
   // Bug (Special in Gen IV)
   "Signal Beam":"S", "Silver Wind":"S",
+  // Flying (Special in Gen IV)
+  "Air Slash":"S",
+  // Grass (Special)
+  "Leaf Storm":"S",
+  // Psychic (Special)
+  Extrasensory:"S",
+  // Dragon (Special)
+  "Dragon Pulse":"S",
+  // Ice extras
+  "Ice Fang":"P", "Ice Shard":"P",
   // Rock (Special in Gen IV)
   "Power Gem":"S", AncientPower:"S",
+  // Fighting (Physical except Focus Blast)
+  "Hammer Arm":"P", "Mach Punch":"P", "Cross Chop":"P",
   // Fighting (Special)
   "Focus Blast":"S",
   // Poison
@@ -2871,7 +3167,7 @@ const MOVE_CATEGORY = {
 };
 
 const STATUS_MOVES = new Set([
-  "Swords Dance","Amnesia","Agility","Dragon Dance","Belly Drum",
+  "Swords Dance","Amnesia","Agility","Dragon Dance","Belly Drum","Nasty Plot",
   "Sleep Powder","Spore","Hypnosis","Toxic","Leech Seed","Protect",
   "Rain Dance","Sunny Day","Sandstorm","Safeguard","Thunder Wave",
   "Will-O-Wisp","Confuse Ray","Stockpile","Swallow","Softboiled",

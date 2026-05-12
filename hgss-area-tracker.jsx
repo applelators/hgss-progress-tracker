@@ -171,9 +171,9 @@ const AREAS = [
   { part:"Part 1", id:"new-bark-town", name:"New Bark Town",
     note:"Choose your first partner Pokémon from Professor Elm.",
     pokemon:[
-      {name:"Chikorita", method:"Gift", levels:"5", rate:"One", warn:true},
-      {name:"Cyndaquil", method:"Gift", levels:"5", rate:"One", warn:true},
-      {name:"Totodile",  method:"Gift", levels:"5", rate:"One", warn:true},
+      {name:"Chikorita", method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"johto-starter", choiceId:"chikorita"},
+      {name:"Cyndaquil", method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"johto-starter", choiceId:"cyndaquil"},
+      {name:"Totodile",  method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"johto-starter", choiceId:"totodile"},
     ],
     items:[
       {name:"Potion ×6",   hidden:false, note:"5 from Elm's aide + 1 on the spot Silver stood"},
@@ -2479,6 +2479,15 @@ const AREAS = [
       {class:"Gym Leader", name:"Sabrina", team:[{name:"Espeon",level:53},{name:"Mr. Mime",level:53},{name:"Alakazam",level:55}]},
     ] },
 
+  { part:"Part 18", id:"fighting-dojo", name:"Fighting Dojo",
+    note:"The Karate King is away training in Mt. Mortar. Speak to him there to receive either Hitmonlee or Hitmonchan — choose one (one per save file).",
+    pokemon:[
+      {name:"Hitmonlee",  method:"Gift", levels:"25", rate:"One", warn:true, note:"Left choice — receive from Karate King in Mt. Mortar", choiceGroup:"fighting-dojo", choiceId:"hitmonlee"},
+      {name:"Hitmonchan", method:"Gift", levels:"25", rate:"One", warn:true, note:"Right choice — receive from Karate King in Mt. Mortar", choiceGroup:"fighting-dojo", choiceId:"hitmonchan"},
+    ],
+    items:[],
+    trainers:[] },
+
   // ── Part 19 ─────────────────────────────────────────────────────────
   { part:"Part 19", id:"route-8", name:"Route 8",
     note:"Lavender Town to Celadon gate. Bikers line the path. Apricorn available.",
@@ -3841,9 +3850,9 @@ const AREAS = [
   { part:"Part 30", id:"pallet-town-oak-starters", name:"Pallet Town (Return — Kanto Starters)",
     note:"Professor Oak gives one Kanto starter after defeating Red.",
     pokemon:[
-      {name:"Bulbasaur", method:"Gift", levels:"5", rate:"One", warn:true, note:"Choose one of three from Professor Oak after defeating Red"},
-      {name:"Charmander", method:"Gift", levels:"5", rate:"One", warn:true},
-      {name:"Squirtle", method:"Gift", levels:"5", rate:"One", warn:true},
+      {name:"Bulbasaur",  method:"Gift", levels:"5", rate:"One", warn:true, note:"Choose one of three from Professor Oak after defeating Red", choiceGroup:"kanto-starter", choiceId:"bulbasaur"},
+      {name:"Charmander", method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"kanto-starter", choiceId:"charmander"},
+      {name:"Squirtle",   method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"kanto-starter", choiceId:"squirtle"},
     ],
     items:[],
     trainers:[] },
@@ -3851,9 +3860,9 @@ const AREAS = [
   { part:"Part 30", id:"saffron-city-post", name:"Saffron City (Return — Hoenn Starters)",
     note:"Steven at Silph Co. gives one Hoenn starter after showing him a high-level Pokémon. Trade Beldum for Forretress available.",
     pokemon:[
-      {name:"Treecko", method:"Gift", levels:"5", rate:"One", warn:true, note:"Choose one of three from Steven in Silph Co. after defeating Red"},
-      {name:"Torchic", method:"Gift", levels:"5", rate:"One", warn:true},
-      {name:"Mudkip", method:"Gift", levels:"5", rate:"One", warn:true},
+      {name:"Treecko", method:"Gift", levels:"5", rate:"One", warn:true, note:"Choose one of three from Steven in Silph Co. after defeating Red", choiceGroup:"hoenn-starter", choiceId:"treecko"},
+      {name:"Torchic", method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"hoenn-starter", choiceId:"torchic"},
+      {name:"Mudkip",  method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"hoenn-starter", choiceId:"mudkip"},
     ],
     items:[
       {name:"Steelix Lure", hidden:false, note:"Trade Beldum for Forretress (available after Steven in Pewter Museum)"},

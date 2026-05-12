@@ -6553,6 +6553,10 @@ const ITEM_SPRITE = {
   "Thunder Stone":"thunder-stone","TM17 Protect":"tm-normal","TM25 Thunder":"tm-electric",
   "Macho Brace":"macho-brace",
   "TM02 Dragon Claw":"tm-dragon","TM07 Hail":"tm-ice","Guard Spec.":"guard-spec","TM50 Overheat":"tm-fire",
+  "Red Apricorn":"red-apricorn","Blue Apricorn":"blue-apricorn","Green Apricorn":"green-apricorn",
+  "Yellow Apricorn":"yellow-apricorn","Black Apricorn":"black-apricorn","White Apricorn":"white-apricorn","Pink Apricorn":"pink-apricorn",
+  "Blu Apricorn":"blue-apricorn","Grn Apricorn":"green-apricorn",
+  "Ylw Apricorn":"yellow-apricorn","Blk Apricorn":"black-apricorn","Wht Apricorn":"white-apricorn","Pnk Apricorn":"pink-apricorn",
 };
 const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
 const METHOD_SPRITE_URL = {
@@ -11183,13 +11187,13 @@ const RECURRING_AREAS = [];
 
 // Apricorn color → { label, ball, bg, fg }
 const APRICORN_STYLES = {
-  Grn: { label:"Grn", ball:"Friend Ball",  bg:"#1a3a1a", fg:"#6fcf6f" },
-  Red: { label:"Red", ball:"Level Ball",   bg:"#3a1a1a", fg:"#e07070" },
-  Blu: { label:"Blu", ball:"Lure Ball",    bg:"#1a2a3a", fg:"#70a0e0" },
-  Ylw: { label:"Ylw", ball:"Moon Ball",    bg:"#3a321a", fg:"#d4b84a" },
-  Blk: { label:"Blk", ball:"Heavy Ball",   bg:"#222228", fg:"#a0a0b8" },
-  Wht: { label:"Wht", ball:"Fast Ball",    bg:"#2a2a2a", fg:"#d8d8d8" },
-  Pnk: { label:"Pnk", ball:"Love Ball",   bg:"#3a1a2a", fg:"#d470a8" },
+  Grn: { label:"Grn", ball:"Friend Ball",  bg:"#1a3a1a", fg:"#6fcf6f", sprite:"green-apricorn"  },
+  Red: { label:"Red", ball:"Level Ball",   bg:"#3a1a1a", fg:"#e07070", sprite:"red-apricorn"    },
+  Blu: { label:"Blu", ball:"Lure Ball",    bg:"#1a2a3a", fg:"#70a0e0", sprite:"blue-apricorn"   },
+  Ylw: { label:"Ylw", ball:"Moon Ball",    bg:"#3a321a", fg:"#d4b84a", sprite:"yellow-apricorn" },
+  Blk: { label:"Blk", ball:"Heavy Ball",   bg:"#222228", fg:"#a0a0b8", sprite:"black-apricorn"  },
+  Wht: { label:"Wht", ball:"Fast Ball",    bg:"#2a2a2a", fg:"#d8d8d8", sprite:"white-apricorn"  },
+  Pnk: { label:"Pnk", ball:"Love Ball",    bg:"#3a1a2a", fg:"#d470a8", sprite:"pink-apricorn"   },
 };
 
 const APRICORN_TREES = [
@@ -11287,20 +11291,9 @@ function ApricornSection() {
                 cursor:"pointer", opacity: done ? 0.65 : 1,
                 transition:"opacity 0.15s, border-color 0.15s",
               }}>
-                <div style={{
-                  width:12, height:12, borderRadius:"50%",
-                  background: done ? style.fg : C.border,
-                  border:`2px solid ${style.fg}`,
-                  flexShrink:0, transition:"background 0.15s",
-                }} />
-                <div style={{
-                  display:"inline-block", fontSize:9, fontWeight:700,
-                  color: style.fg, background: style.bg,
-                  border:`1px solid ${style.fg}55`, borderRadius:3,
-                  padding:"1px 5px", flexShrink:0, letterSpacing:0.5,
-                }}>
-                  {style.label}
-                </div>
+                <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${style.sprite}.png`}
+                  alt={style.label}
+                  style={{ width:20, height:20, imageRendering:"pixelated", flexShrink:0 }} />
                 <div style={{ flex:1, fontSize:12, color: done ? C.muted : C.text }}>
                   {tree.note}
                 </div>

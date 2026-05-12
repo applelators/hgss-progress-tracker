@@ -1439,229 +1439,372 @@ const EVO_METHODS = [
 // Data sourced from HGSS (Gen IV) learnset pages. Only moves worth suggesting are included.
 const LEARNSETS = {
   // ── Johto Starters ───────────────────────────────────────────────────────────
+  "Chikorita": [ {move:"Razor Leaf",   lv:17} ],
+  "Bayleef":   [ {move:"Razor Leaf",   lv:17}, {move:"Body Slam",    lv:29} ],
+  "Meganium":  [ {move:"Razor Leaf",   lv:17}, {move:"Body Slam",    lv:29}, {move:"Petal Dance",  lv:46} ],
+  "Cyndaquil": [ {move:"Flame Wheel",  lv:14} ],
+  "Quilava":   [ {move:"Flame Wheel",  lv:14}, {move:"Flamethrower", lv:31} ],
   "Typhlosion": [
-    {move:"Flame Wheel",   lv:20},
-    {move:"Lava Plume",    lv:35},
-    {move:"Flamethrower",  lv:42},
-    {move:"Eruption",      lv:57},
+    {move:"Flame Wheel",  lv:20}, {move:"Lava Plume",   lv:35},
+    {move:"Flamethrower", lv:42}, {move:"Eruption",     lv:57},
   ],
-  "Feraligatr": [
-    {move:"Ice Fang",      lv:32},
-    {move:"Crunch",        lv:46},
+  "Totodile":  [ {move:"Bite",         lv:13}, {move:"Crunch",       lv:27} ],
+  "Croconaw":  [ {move:"Ice Fang",     lv:32}, {move:"Crunch",       lv:39} ],
+  "Feraligatr":[ {move:"Ice Fang",     lv:32}, {move:"Crunch",       lv:46} ],
+  // ── Early-route Birds ────────────────────────────────────────────────────────
+  "Pidgey":    [ {move:"Wing Attack",  lv:21} ],
+  "Pidgeotto": [ {move:"Wing Attack",  lv:21}, {move:"Mirror Move",  lv:44} ],
+  "Pidgeot":   [ {move:"Wing Attack",  lv:21}, {move:"Air Slash",    lv:54}, {move:"Mirror Move",  lv:62} ],
+  "Spearow":   [ {move:"Aerial Ace",   lv:21}, {move:"Pursuit",      lv:17}, {move:"Drill Peck",   lv:33} ],
+  "Fearow":    [ {move:"Drill Peck",   lv:33}, {move:"Mirror Move",  lv:47} ],
+  "Hoothoot":  [ {move:"Hypnosis",     lv:9}  ],
+  "Noctowl":   [ {move:"Air Slash",    lv:33}, {move:"Extrasensory", lv:41} ],
+  "Rattata":   [ {move:"Hyper Fang",   lv:14}, {move:"Super Fang",   lv:20} ],
+  "Raticate":  [ {move:"Hyper Fang",   lv:14}, {move:"Super Fang",   lv:20}, {move:"Sucker Punch", lv:28} ],
+  "Sentret":   [ {move:"Slash",        lv:19} ],
+  "Furret":    [ {move:"Slash",        lv:28}, {move:"Sucker Punch",  lv:37} ],
+  // ── Electric mouse ───────────────────────────────────────────────────────────
+  "Pichu":     [ {move:"Thunder Wave", lv:5}  ],
+  "Pikachu":   [ {move:"Thunder Wave", lv:13}, {move:"Discharge",    lv:29}, {move:"Thunderbolt",  lv:33} ],
+  "Raichu":    [ {move:"Discharge",    lv:29}, {move:"Thunderbolt",  lv:33} ],
+  // ── Bugs ─────────────────────────────────────────────────────────────────────
+  "Caterpie":  [], "Metapod": [], "Weedle": [], "Kakuna": [],
+  "Butterfree": [
+    {move:"Sleep Powder", lv:10}, {move:"Psybeam",      lv:17},
+    {move:"Silver Wind",  lv:26}, {move:"Air Slash",    lv:38}, {move:"Bug Buzz",     lv:47},
   ],
-  "Meganium": [
-    {move:"Razor Leaf",    lv:17},
-    {move:"Body Slam",     lv:29},
-    {move:"Petal Dance",   lv:46},
+  "Beedrill": [
+    {move:"Twineedle",    lv:1},  {move:"Pin Missile",  lv:20},
+    {move:"Poison Jab",   lv:25}, {move:"X-Scissor",    lv:33},
   ],
-  // ── Top Picks ────────────────────────────────────────────────────────────────
+  "Ledyba":    [ {move:"Mach Punch",   lv:1}  ],
+  "Ledian":    [ {move:"Mach Punch",   lv:1}  ],
+  "Spinarak":  [ {move:"Pin Missile",  lv:25}, {move:"Cross Poison", lv:36} ],
+  "Ariados":   [ {move:"Pin Missile",  lv:38}, {move:"Cross Poison", lv:41}, {move:"Sucker Punch", lv:47} ],
+  // ── Rock / Ground ────────────────────────────────────────────────────────────
+  "Geodude":  [ {move:"Rock Blast",   lv:11}, {move:"Rock Slide",   lv:36} ],
+  "Graveler": [ {move:"Rock Blast",   lv:11}, {move:"Rock Slide",   lv:36}, {move:"Stone Edge",   lv:49}, {move:"Explosion",    lv:54} ],
+  "Golem":    [ {move:"Rock Blast",   lv:11}, {move:"Rock Slide",   lv:36}, {move:"Stone Edge",   lv:49}, {move:"Explosion",    lv:54} ],
+  // ── Bat line ─────────────────────────────────────────────────────────────────
+  "Zubat":   [ {move:"Confuse Ray",  lv:9},  {move:"Poison Fang",  lv:25} ],
+  "Golbat":  [ {move:"Confuse Ray",  lv:9},  {move:"Poison Fang",  lv:25}, {move:"Air Slash",    lv:47} ],
+  "Crobat":  [ {move:"Poison Fang",  lv:25}, {move:"Cross Poison", lv:47}, {move:"Air Slash",    lv:57} ],
+  // ── Clefairy line ────────────────────────────────────────────────────────────
+  "Cleffa":    [],
+  "Clefairy":  [ {move:"Body Slam",    lv:34}, {move:"Hyper Voice",  lv:49} ],
+  "Clefable":  [ {move:"Body Slam",    lv:34}, {move:"Hyper Voice",  lv:49} ],
+  // ── Jigglypuff line ──────────────────────────────────────────────────────────
+  "Igglybuff":  [],
+  "Jigglypuff": [ {move:"Body Slam",   lv:26}, {move:"Hyper Voice",  lv:49} ],
+  "Wigglytuff": [ {move:"Hyper Voice", lv:49} ],
+  // ── Togepi line ──────────────────────────────────────────────────────────────
+  "Togepi":  [],
+  "Togetic": [ {move:"AncientPower", lv:37}, {move:"Air Slash",    lv:45} ],
+  // ── Sandshrew line ───────────────────────────────────────────────────────────
+  "Sandshrew": [ {move:"Slash",        lv:18} ],
+  "Sandslash": [ {move:"Slash",        lv:18}, {move:"Earthquake",   lv:47} ],
+  // ── Ekans line ───────────────────────────────────────────────────────────────
+  "Ekans": [ {move:"Bite",         lv:13}, {move:"Poison Jab",   lv:22} ],
+  "Arbok": [ {move:"Crunch",       lv:22}, {move:"Poison Jab",   lv:28}, {move:"Gunk Shot",    lv:58} ],
+  // ── Dunsparce ────────────────────────────────────────────────────────────────
+  "Dunsparce": [ {move:"AncientPower", lv:33}, {move:"Body Slam",    lv:41} ],
+  // ── Mareep line ──────────────────────────────────────────────────────────────
+  "Mareep":  [ {move:"Thunder Wave", lv:9},  {move:"Discharge",    lv:34} ],
+  "Flaaffy": [ {move:"Thunder Wave", lv:9},  {move:"ThunderPunch", lv:30}, {move:"Discharge",    lv:34}, {move:"Power Gem",    lv:50} ],
   "Ampharos": [
-    {move:"Thunder Wave",  lv:14},
-    {move:"ThunderPunch",  lv:30},
-    {move:"Discharge",     lv:34},
-    {move:"Signal Beam",   lv:42},
-    {move:"Power Gem",     lv:59},
+    {move:"Thunder Wave", lv:14}, {move:"ThunderPunch", lv:30},
+    {move:"Discharge",    lv:34}, {move:"Signal Beam",  lv:42}, {move:"Power Gem",    lv:59},
   ],
-  "Heracross": [
-    {move:"Brick Break",   lv:19},
-    {move:"Close Combat",  lv:37},
-    {move:"Megahorn",      lv:55},
+  // ── Wooper line ──────────────────────────────────────────────────────────────
+  "Wooper":   [ {move:"Slam",         lv:19} ],
+  "Quagsire": [ {move:"Amnesia",      lv:29}, {move:"Earthquake",   lv:53} ],
+  // ── Ghost line ───────────────────────────────────────────────────────────────
+  "Gastly":  [ {move:"Hypnosis",     lv:1},  {move:"Night Shade",  lv:8},  {move:"Shadow Ball",  lv:33} ],
+  "Haunter": [ {move:"Hypnosis",     lv:1},  {move:"Night Shade",  lv:8},  {move:"Shadow Ball",  lv:33}, {move:"Dark Pulse",   lv:50} ],
+  "Gengar":  [ {move:"Hypnosis",     lv:1},  {move:"Shadow Ball",  lv:33}, {move:"Dark Pulse",   lv:50}, {move:"Destiny Bond", lv:68} ],
+  "Unown":   [],
+  // ── Onix / Steelix ───────────────────────────────────────────────────────────
+  "Onix":    [ {move:"Rock Slide",   lv:29}, {move:"Stone Edge",   lv:54}, {move:"Explosion",    lv:59} ],
+  "Steelix": [ {move:"Rock Slide",   lv:47}, {move:"Stone Edge",   lv:55} ],
+  // ── Bellsprout line ──────────────────────────────────────────────────────────
+  "Bellsprout": [ {move:"Vine Whip",    lv:13}, {move:"Razor Leaf",   lv:23} ],
+  "Weepinbell": [ {move:"Razor Leaf",   lv:23}, {move:"Leaf Blade",   lv:47} ],
+  "Victreebel": [ {move:"Leaf Blade",   lv:47}, {move:"Leaf Storm",   lv:54} ],
+  // ── Hoppip line ──────────────────────────────────────────────────────────────
+  "Hoppip":   [ {move:"Sleep Powder", lv:6},  {move:"Leech Seed",   lv:10} ],
+  "Skiploom": [ {move:"Sleep Powder", lv:6},  {move:"Leech Seed",   lv:10} ],
+  "Jumpluff": [ {move:"Sleep Powder", lv:6},  {move:"Leech Seed",   lv:10} ],
+  // ── Paras line ───────────────────────────────────────────────────────────────
+  "Paras":    [ {move:"Slash",        lv:22}, {move:"Spore",        lv:39} ],
+  "Parasect": [ {move:"Slash",        lv:22}, {move:"X-Scissor",    lv:39}, {move:"Spore",        lv:45} ],
+  // ── Poliwag line ─────────────────────────────────────────────────────────────
+  "Poliwag":   [ {move:"Hypnosis",     lv:15}, {move:"Body Slam",    lv:25} ],
+  "Poliwhirl": [ {move:"Hypnosis",     lv:15}, {move:"Body Slam",    lv:25}, {move:"Submission",   lv:36} ],
+  "Poliwrath": [ {move:"Body Slam",    lv:25}, {move:"Submission",   lv:36}, {move:"Superpower",   lv:61} ],
+  "Politoed":  [ {move:"Perish Song",  lv:1},  {move:"Hyper Voice",  lv:55} ],
+  // ── Magikarp / Gyarados ──────────────────────────────────────────────────────
+  "Magikarp": [],
+  "Gyarados": [
+    {move:"Bite",         lv:20}, {move:"Ice Fang",     lv:30}, {move:"Aqua Tail",    lv:35},
+    {move:"Dragon Dance", lv:50}, {move:"Hyper Beam",   lv:55}, {move:"Hydro Pump",   lv:60},
   ],
-  "Espeon": [
-    {move:"Psybeam",       lv:29},
-    {move:"Future Sight",  lv:36},  // displayed in Dex; NOT in MOVE_TIERS.good (2-turn delay)
-    {move:"Psychic",       lv:57},
-  ],
-  "Umbreon": [
-    {move:"Confuse Ray",   lv:25},
-    {move:"Payback",       lv:45},
-  ],
-  "Crobat": [
-    {move:"Poison Fang",   lv:25},
-    {move:"Cross Poison",  lv:47},
-    {move:"Air Slash",     lv:57},
-  ],
-  "Donphan": [
-    {move:"Ice Fang",      lv:1},
-    {move:"Earthquake",    lv:53},
-  ],
-  "Houndoom": [
-    {move:"Dark Pulse",    lv:55},
-    {move:"Nasty Plot",    lv:61},
-  ],
-  "Skarmory": [
-    {move:"Steel Wing",    lv:34},
-    {move:"Air Slash",     lv:49},
-  ],
-  "Tyranitar": [
-    {move:"Rock Slide",    lv:14},
-    {move:"Dark Pulse",    lv:28},
-    {move:"Crunch",        lv:41},
-    {move:"Earthquake",    lv:47},
-    {move:"Stone Edge",    lv:54},
-  ],
-  "Kingdra": [
-    {move:"Dragon Dance",  lv:41},
-    {move:"Dragon Pulse",  lv:57},
-    {move:"Hydro Pump",    lv:65},
-  ],
-  "Politoed": [
-    {move:"Perish Song",   lv:1},
-    {move:"Hyper Voice",   lv:55},
-  ],
-  "Slowking": [
-    {move:"Amnesia",       lv:29},
-    {move:"Zen Headbutt",  lv:53},
-    {move:"Nasty Plot",    lv:58},
-  ],
-  "Blissey": [
-    {move:"Softboiled",    lv:23},
-    {move:"Egg Bomb",      lv:46},
-  ],
-  "Ursaring": [
-    {move:"Slash",         lv:43},
-    {move:"Hammer Arm",    lv:57},
-  ],
-  "Mantine": [
-    {move:"Signal Beam",   lv:42},
-    {move:"Air Slash",     lv:49},
-    {move:"Hydro Pump",    lv:56},
-  ],
-  // ── Good Picks ───────────────────────────────────────────────────────────────
-  "Xatu": [
-    {move:"Confuse Ray",   lv:29},
-    {move:"Future Sight",  lv:42},  // displayed in Dex; NOT in MOVE_TIERS.good
-    {move:"Psychic",       lv:59},
-  ],
-  "Lanturn": [
-    {move:"Discharge",     lv:40},
-    {move:"Hydro Pump",    lv:52},
-  ],
-  "Azumarill": [
-    {move:"Aqua Tail",     lv:52},
-    {move:"Superpower",    lv:62},
-  ],
-  "Quagsire": [
-    {move:"Amnesia",       lv:29},
-    {move:"Earthquake",    lv:53},
-  ],
-  "Forretress": [
-    {move:"Rapid Spin",    lv:1},
-    {move:"Explosion",     lv:54},
-  ],
-  "Noctowl": [
-    {move:"Air Slash",     lv:33},
-    {move:"Extrasensory",  lv:41},
-  ],
-  "Granbull": [
-    {move:"Crunch",        lv:29},
-    {move:"Hammer Arm",    lv:52},
-  ],
-  "Miltank": [
-    {move:"Body Slam",     lv:20},
-    {move:"Zen Headbutt",  lv:28},
-  ],
-  "Hitmontop": [
-    {move:"Rapid Spin",    lv:26},
-    {move:"Close Combat",  lv:58},
-  ],
-  "Porygon2": [
-    {move:"Discharge",     lv:34},
-    {move:"Tri Attack",    lv:52},
-    {move:"Signal Beam",   lv:60},
-  ],
-  "Bellossom": [
-    {move:"Petal Dance",   lv:46},
-    {move:"SolarBeam",     lv:53},
-  ],
-  "Jumpluff": [
-    {move:"Sleep Powder",  lv:6},
-    {move:"Leech Seed",    lv:10},
-  ],
-  "Sudowoodo": [
-    {move:"Rock Slide",    lv:29},
-    {move:"Sucker Punch",  lv:38},
-    {move:"Wood Hammer",   lv:46},
-  ],
-  "Girafarig": [
-    {move:"Psybeam",       lv:21},
-    {move:"Zen Headbutt",  lv:33},
-    {move:"Crunch",        lv:45},
-  ],
-  "Magcargo": [
-    {move:"Rock Slide",    lv:37},
-    {move:"Lava Plume",    lv:44},
-  ],
-  "Piloswine": [
-    {move:"Ice Fang",      lv:40},
-    {move:"Earthquake",    lv:52},
-  ],
-  "Octillery": [
-    {move:"Signal Beam",   lv:47},
-    {move:"Gunk Shot",     lv:54},
-  ],
-  "Corsola": [
-    {move:"AncientPower",  lv:37},
-  ],
-  "Furret": [
-    {move:"Slash",         lv:28},
-    {move:"Sucker Punch",  lv:37},
-  ],
-  "Sunflora": [
-    {move:"Giga Drain",    lv:57},
-    {move:"Leaf Storm",    lv:61},
-  ],
-  // ── Niche Picks ─────────────────────────────────────────────────────────────
-  "Ariados": [
-    {move:"Pin Missile",   lv:38},
-    {move:"Cross Poison",  lv:41},
-    {move:"Sucker Punch",  lv:47},
-  ],
-  "Ledian": [
-    {move:"Mach Punch",    lv:1},
-  ],
-  "Sneasel": [
-    {move:"Slash",         lv:41},
-    {move:"Night Slash",   lv:46},
-    {move:"Ice Shard",     lv:46},
-  ],
-  "Misdreavus": [
-    {move:"Psybeam",       lv:19},
-    {move:"Shadow Ball",   lv:37},
-    {move:"Power Gem",     lv:54},
-  ],
-  "Murkrow": [
-    {move:"Wing Attack",   lv:16},
-    {move:"Sucker Punch",  lv:37},
-  ],
-  "Qwilfish": [
-    {move:"Aqua Tail",     lv:40},
-    {move:"Poison Jab",    lv:47},
-  ],
-  "Dunsparce": [
-    {move:"AncientPower",  lv:33},
-    {move:"Body Slam",     lv:41},
-  ],
-  "Gligar": [
-    {move:"X-Scissor",     lv:49},
-  ],
-  "Stantler": [
-    {move:"Sucker Punch",  lv:41},
-    {move:"Zen Headbutt",  lv:49},
-  ],
-  "Scizor": [
-    {move:"Swords Dance",  lv:38},
-    {move:"Iron Head",     lv:52},
-    {move:"X-Scissor",     lv:59},
-  ],
-  "Steelix": [
-    {move:"Rock Slide",    lv:47},
-    {move:"Stone Edge",    lv:55},
-  ],
-  "Delibird":  [],
-  "Shuckle":   [],
-  "Smeargle":  [],
+  // ── Goldeen line ─────────────────────────────────────────────────────────────
+  "Goldeen": [ {move:"Agility",      lv:24}, {move:"Horn Drill",   lv:44} ],
+  "Seaking": [ {move:"Agility",      lv:24}, {move:"Aqua Tail",    lv:38}, {move:"Horn Drill",   lv:50} ],
+  // ── Slowpoke line ────────────────────────────────────────────────────────────
+  "Slowpoke": [ {move:"Amnesia",      lv:22}, {move:"Zen Headbutt", lv:37}, {move:"Psychic",      lv:46} ],
+  "Slowbro":  [ {move:"Amnesia",      lv:22}, {move:"Zen Headbutt", lv:37}, {move:"Psychic",      lv:46}, {move:"Nasty Plot",   lv:58} ],
+  "Slowking": [ {move:"Amnesia",      lv:29}, {move:"Zen Headbutt", lv:53}, {move:"Nasty Plot",   lv:58} ],
+  // ── Oddish line ──────────────────────────────────────────────────────────────
+  "Oddish":    [ {move:"Sleep Powder", lv:15}, {move:"Petal Dance",  lv:39} ],
+  "Gloom":     [ {move:"Sleep Powder", lv:15}, {move:"Petal Dance",  lv:46} ],
+  "Vileplume": [ {move:"Petal Dance",  lv:46}, {move:"Giga Drain",   lv:57}, {move:"SolarBeam",    lv:65} ],
+  "Bellossom": [ {move:"Petal Dance",  lv:46}, {move:"SolarBeam",    lv:53} ],
+  // ── Drowzee line ─────────────────────────────────────────────────────────────
+  "Drowzee": [ {move:"Hypnosis",     lv:1},  {move:"Psybeam",      lv:19}, {move:"Psychic",      lv:33} ],
+  "Hypno":   [ {move:"Hypnosis",     lv:1},  {move:"Psychic",      lv:33}, {move:"Nasty Plot",   lv:49} ],
+  // ── Abra line ────────────────────────────────────────────────────────────────
+  "Abra":     [ {move:"Psybeam",      lv:16} ],
+  "Kadabra":  [ {move:"Psybeam",      lv:16}, {move:"Psychic",      lv:30}, {move:"Calm Mind",    lv:38}, {move:"Future Sight", lv:42} ],
+  "Alakazam": [ {move:"Psybeam",      lv:16}, {move:"Psychic",      lv:30}, {move:"Calm Mind",    lv:38}, {move:"Future Sight", lv:54} ],
+  "Ditto":    [],
+  // ── Pineco / Forretress ──────────────────────────────────────────────────────
+  "Pineco":     [ {move:"Self-Destruct", lv:38} ],
+  "Forretress": [ {move:"Rapid Spin",    lv:1},  {move:"Explosion",     lv:54} ],
+  // ── Nidoran lines ────────────────────────────────────────────────────────────
+  "Nidoran♀": [ {move:"Bite",         lv:13}, {move:"Poison Fang",  lv:25} ],
+  "Nidorina":  [ {move:"Bite",         lv:13}, {move:"Poison Fang",  lv:25}, {move:"Crunch",       lv:38} ],
+  "Nidoqueen": [ {move:"Crunch",       lv:38}, {move:"Superpower",   lv:43} ],
+  "Nidoran♂": [ {move:"Bite",         lv:13}, {move:"Poison Jab",   lv:25} ],
+  "Nidorino":  [ {move:"Bite",         lv:13}, {move:"Poison Jab",   lv:25}, {move:"Crunch",       lv:38} ],
+  "Nidoking":  [ {move:"Crunch",       lv:38}, {move:"Thrash",       lv:43}, {move:"Megahorn",     lv:53} ],
+  // ── Yanma / Yanmega ──────────────────────────────────────────────────────────
+  "Yanma":   [ {move:"AncientPower", lv:19}, {move:"Air Slash",    lv:33} ],
+  "Yanmega": [ {move:"AncientPower", lv:19}, {move:"Air Slash",    lv:33}, {move:"Bug Buzz",     lv:38} ],
+  // ── Sunkern / Sunflora ───────────────────────────────────────────────────────
+  "Sunkern":  [],
+  "Sunflora": [ {move:"Giga Drain",   lv:57}, {move:"Leaf Storm",   lv:61} ],
+  // ── Exeggcute / Exeggutor ────────────────────────────────────────────────────
+  "Exeggcute": [ {move:"Hypnosis",     lv:1}  ],
+  "Exeggutor": [ {move:"Hypnosis",     lv:1},  {move:"Egg Bomb",     lv:27}, {move:"SolarBeam",    lv:29}, {move:"Leaf Storm",   lv:37} ],
+  // ── Sudowoodo / Wobbuffet ────────────────────────────────────────────────────
+  "Sudowoodo": [ {move:"Rock Slide",   lv:29}, {move:"Sucker Punch", lv:38}, {move:"Wood Hammer",  lv:46} ],
   "Wobbuffet": [],
+  // ── Venonat / Venomoth ───────────────────────────────────────────────────────
+  "Venonat":  [ {move:"Sleep Powder", lv:25}, {move:"Psybeam",      lv:30} ],
+  "Venomoth": [ {move:"Sleep Powder", lv:25}, {move:"Psychic",      lv:35}, {move:"Silver Wind",  lv:38}, {move:"Bug Buzz",     lv:52} ],
+  // ── Scyther / Scizor ─────────────────────────────────────────────────────────
+  "Scyther": [ {move:"Slash",        lv:29}, {move:"X-Scissor",    lv:37}, {move:"Swords Dance", lv:38}, {move:"Air Slash",    lv:51} ],
+  "Scizor":  [ {move:"Swords Dance", lv:38}, {move:"Iron Head",    lv:52}, {move:"X-Scissor",    lv:59} ],
+  // ── Pinsir / Heracross ───────────────────────────────────────────────────────
+  "Pinsir":    [ {move:"X-Scissor",    lv:24}, {move:"Guillotine",   lv:31}, {move:"Submission",   lv:36}, {move:"Superpower",   lv:51} ],
+  "Heracross": [ {move:"Brick Break",  lv:19}, {move:"Close Combat", lv:37}, {move:"Megahorn",     lv:55} ],
+  // ── Koffing / Weezing ────────────────────────────────────────────────────────
+  "Koffing": [ {move:"Sludge",       lv:21}, {move:"Self-Destruct", lv:32}, {move:"Explosion",    lv:47} ],
+  "Weezing": [ {move:"Sludge",       lv:21}, {move:"Self-Destruct", lv:32}, {move:"Explosion",    lv:47}, {move:"Gunk Shot",    lv:55} ],
+  // ── Grimer / Muk ─────────────────────────────────────────────────────────────
+  "Grimer": [ {move:"Sludge",       lv:18}, {move:"Gunk Shot",    lv:45} ],
+  "Muk":    [ {move:"Sludge",       lv:18}, {move:"Gunk Shot",    lv:45}, {move:"Explosion",    lv:55} ],
+  // ── Magnemite / Magneton ──────────────────────────────────────────────────────
+  "Magnemite": [ {move:"Thunder Wave", lv:6},  {move:"Discharge",    lv:34} ],
+  "Magneton":  [ {move:"Thunder Wave", lv:6},  {move:"Discharge",    lv:34}, {move:"Thunderbolt",  lv:38}, {move:"Flash Cannon", lv:50} ],
+  // ── Voltorb / Electrode ──────────────────────────────────────────────────────
+  "Voltorb":   [ {move:"Thunder Wave", lv:19}, {move:"Discharge",    lv:29}, {move:"Explosion",    lv:43} ],
+  "Electrode": [ {move:"Thunder Wave", lv:19}, {move:"Discharge",    lv:29}, {move:"Thunderbolt",  lv:32}, {move:"Explosion",    lv:43} ],
+  // ── Aipom / Ambipom ──────────────────────────────────────────────────────────
+  "Aipom":   [ {move:"Slash",        lv:22}, {move:"Double Hit",   lv:32} ],
+  "Ambipom": [ {move:"Double Hit",   lv:32}, {move:"Nasty Plot",   lv:38}, {move:"Hyper Voice",  lv:47} ],
+  // ── Snubbull / Granbull ──────────────────────────────────────────────────────
+  "Snubbull": [ {move:"Crunch",       lv:29} ],
+  "Granbull": [ {move:"Crunch",       lv:29}, {move:"Hammer Arm",   lv:52} ],
+  // ── Vulpix / Ninetales ───────────────────────────────────────────────────────
+  "Vulpix":    [ {move:"Flamethrower", lv:37}, {move:"Fire Blast",   lv:53} ],
+  "Ninetales": [ {move:"Flamethrower", lv:37}, {move:"Fire Blast",   lv:53}, {move:"Nasty Plot",   lv:66} ],
+  // ── Growlithe / Arcanine ─────────────────────────────────────────────────────
+  "Growlithe": [ {move:"Bite",         lv:13}, {move:"Fire Fang",    lv:19}, {move:"Flamethrower", lv:29}, {move:"Crunch",       lv:34}, {move:"ExtremeSpeed", lv:49} ],
+  "Arcanine":  [ {move:"ExtremeSpeed", lv:39}, {move:"Flamethrower", lv:44}, {move:"Crunch",       lv:48}, {move:"Outrage",      lv:54} ],
+  // ── Stantler ─────────────────────────────────────────────────────────────────
+  "Stantler": [ {move:"Sucker Punch", lv:41}, {move:"Zen Headbutt", lv:49} ],
+  // ── Marill / Azumarill ───────────────────────────────────────────────────────
+  "Marill":    [ {move:"Aqua Tail",    lv:49} ],
+  "Azumarill": [ {move:"Aqua Tail",    lv:52}, {move:"Superpower",   lv:62} ],
+  // ── Diglett / Dugtrio ────────────────────────────────────────────────────────
+  "Diglett": [ {move:"Slash",        lv:18}, {move:"Earthquake",   lv:43} ],
+  "Dugtrio": [ {move:"Slash",        lv:18}, {move:"Earthquake",   lv:43}, {move:"Stone Edge",   lv:53} ],
+  // ── Mankey / Primeape ────────────────────────────────────────────────────────
+  "Mankey":   [ {move:"Karate Chop",  lv:7},  {move:"Cross Chop",   lv:37} ],
+  "Primeape": [ {move:"Cross Chop",   lv:37}, {move:"Close Combat", lv:46}, {move:"Superpower",   lv:57} ],
+  // ── Meowth / Persian ─────────────────────────────────────────────────────────
+  "Meowth":  [ {move:"Slash",        lv:29}, {move:"Night Slash",  lv:33} ],
+  "Persian": [ {move:"Slash",        lv:29}, {move:"Night Slash",  lv:33}, {move:"Hyper Voice",  lv:49} ],
+  // ── Psyduck / Golduck ────────────────────────────────────────────────────────
+  "Psyduck": [ {move:"Zen Headbutt", lv:37}, {move:"Amnesia",      lv:41} ],
+  "Golduck": [ {move:"Zen Headbutt", lv:37}, {move:"Amnesia",      lv:41}, {move:"Aqua Tail",    lv:54}, {move:"Hydro Pump",   lv:58} ],
+  // ── Machop line ──────────────────────────────────────────────────────────────
+  "Machop":   [ {move:"Karate Chop",  lv:7},  {move:"Seismic Toss", lv:14} ],
+  "Machoke":  [ {move:"Karate Chop",  lv:7},  {move:"Submission",   lv:28}, {move:"Cross Chop",   lv:46} ],
+  "Machamp":  [ {move:"Cross Chop",   lv:46}, {move:"Close Combat", lv:52}, {move:"DynamicPunch", lv:58} ],
+  // ── Tyrogue / Hitmons ────────────────────────────────────────────────────────
+  "Tyrogue":    [],
+  "Hitmonlee":  [ {move:"Hi Jump Kick", lv:33}, {move:"Blaze Kick",   lv:44}, {move:"Close Combat", lv:56} ],
+  "Hitmonchan": [ {move:"Ice Punch",    lv:1},  {move:"ThunderPunch", lv:1},  {move:"Fire Punch",   lv:1},  {move:"Mach Punch",   lv:1},  {move:"Close Combat", lv:56} ],
+  "Hitmontop":  [ {move:"Rapid Spin",   lv:26}, {move:"Close Combat", lv:58} ],
+  // ── Girafarig ────────────────────────────────────────────────────────────────
+  "Girafarig": [ {move:"Psybeam",      lv:21}, {move:"Zen Headbutt", lv:33}, {move:"Crunch",       lv:45} ],
+  // ── Tauros / Miltank ─────────────────────────────────────────────────────────
+  "Tauros":  [ {move:"Body Slam",    lv:15}, {move:"Thrash",       lv:35}, {move:"Zen Headbutt", lv:46} ],
+  "Miltank": [ {move:"Body Slam",    lv:20}, {move:"Zen Headbutt", lv:28} ],
+  // ── Magby / Magmar ───────────────────────────────────────────────────────────
+  "Magby":   [ {move:"Fire Punch",   lv:1},  {move:"Flamethrower", lv:37}, {move:"Lava Plume",   lv:43} ],
+  "Magmar":  [ {move:"Fire Punch",   lv:1},  {move:"Flamethrower", lv:37}, {move:"Lava Plume",   lv:43} ],
+  // ── Smoochum / Jynx ──────────────────────────────────────────────────────────
+  "Smoochum": [ {move:"Ice Punch",    lv:1},  {move:"Psychic",      lv:33} ],
+  "Jynx":     [ {move:"Ice Punch",    lv:1},  {move:"Psychic",      lv:33}, {move:"Blizzard",     lv:51} ],
+  // ── Elekid / Electabuzz ──────────────────────────────────────────────────────
+  "Elekid":     [ {move:"ThunderPunch", lv:1},  {move:"Discharge",    lv:36} ],
+  "Electabuzz": [ {move:"ThunderPunch", lv:1},  {move:"Discharge",    lv:36}, {move:"Thunderbolt",  lv:41} ],
+  // ── Mr. Mime / Smeargle ──────────────────────────────────────────────────────
+  "Mr. Mime": [ {move:"Psybeam",      lv:11}, {move:"Psychic",      lv:33}, {move:"Nasty Plot",   lv:46} ],
+  "Smeargle": [],
+  // ── Farfetch'd ───────────────────────────────────────────────────────────────
+  "Farfetch’d": [ {move:"Slash",        lv:17}, {move:"Swords Dance", lv:37}, {move:"Night Slash",  lv:43}, {move:"Air Slash",    lv:49} ],
+  // ── Natu / Xatu ──────────────────────────────────────────────────────────────
+  "Natu": [ {move:"Psychic",      lv:29} ],
+  "Xatu": [ {move:"Confuse Ray",  lv:29}, {move:"Future Sight",  lv:42}, {move:"Psychic",      lv:59} ],
+  // ── Qwilfish ─────────────────────────────────────────────────────────────────
+  "Qwilfish": [ {move:"Aqua Tail",    lv:40}, {move:"Poison Jab",   lv:47} ],
+  // ── Tentacool / Tentacruel ───────────────────────────────────────────────────
+  "Tentacool":  [ {move:"Poison Jab",   lv:30}, {move:"Hydro Pump",   lv:43} ],
+  "Tentacruel": [ {move:"Poison Jab",   lv:30}, {move:"Hydro Pump",   lv:43}, {move:"Gunk Shot",    lv:57} ],
+  // ── Krabby / Kingler ─────────────────────────────────────────────────────────
+  "Krabby":  [ {move:"Crabhammer",   lv:21}, {move:"Guillotine",   lv:26} ],
+  "Kingler": [ {move:"Crabhammer",   lv:21}, {move:"X-Scissor",    lv:49}, {move:"Guillotine",   lv:54} ],
+  "Shuckle": [],
+  // ── Staryu / Starmie ─────────────────────────────────────────────────────────
+  "Staryu":  [ {move:"Confuse Ray",  lv:26}, {move:"Hydro Pump",   lv:47} ],
+  "Starmie": [ {move:"Confuse Ray",  lv:26}, {move:"Hydro Pump",   lv:47}, {move:"Power Gem",    lv:53} ],
+  // ── Shellder / Cloyster ──────────────────────────────────────────────────────
+  "Shellder": [ {move:"Icicle Spear", lv:25} ],
+  "Cloyster": [ {move:"Icicle Spear", lv:25}, {move:"Blizzard",     lv:49} ],
+  // ── Corsola / Remoraid / Octillery ───────────────────────────────────────────
+  "Corsola":   [ {move:"AncientPower", lv:37} ],
+  "Remoraid":  [],
+  "Octillery": [ {move:"Signal Beam",  lv:47}, {move:"Gunk Shot",    lv:54} ],
+  // ── Chinchou / Lanturn ───────────────────────────────────────────────────────
+  "Chinchou": [ {move:"Thunder Wave", lv:23}, {move:"Discharge",    lv:40} ],
+  "Lanturn":  [ {move:"Discharge",    lv:40}, {move:"Hydro Pump",   lv:52} ],
+  // ── Seel / Dewgong ───────────────────────────────────────────────────────────
+  "Seel":    [ {move:"Ice Beam",     lv:37} ],
+  "Dewgong": [ {move:"Ice Beam",     lv:37}, {move:"Sheer Cold",   lv:51}, {move:"Blizzard",     lv:57} ],
+  // ── Lickitung / Lickilicky ───────────────────────────────────────────────────
+  "Lickitung": [ {move:"Body Slam",   lv:25}, {move:"Slam",         lv:37} ],
+  "Lickilicky":[ {move:"Body Slam",   lv:25}, {move:"Hyper Voice",  lv:37}, {move:"Power Whip",   lv:57} ],
+  // ── Tangela / Tangrowth ──────────────────────────────────────────────────────
+  "Tangela":   [ {move:"Vine Whip",    lv:1},  {move:"Giga Drain",   lv:29}, {move:"AncientPower", lv:36}, {move:"Power Whip",   lv:50} ],
+  "Tangrowth": [ {move:"Giga Drain",   lv:29}, {move:"AncientPower", lv:36}, {move:"Power Whip",   lv:50} ],
+  // ── Eevee evolutions ─────────────────────────────────────────────────────────
+  "Eevee":    [ {move:"Bite",         lv:29} ],
+  "Vaporeon": [ {move:"Hydro Pump",   lv:36}, {move:"Aqua Tail",    lv:57} ],
+  "Jolteon":  [ {move:"Thunder Wave", lv:9},  {move:"Discharge",    lv:29}, {move:"Thunderbolt",  lv:36} ],
+  "Flareon":  [ {move:"Fire Fang",    lv:20}, {move:"Lava Plume",   lv:36}, {move:"Flare Blitz",  lv:71} ],
+  "Espeon":   [ {move:"Psybeam",      lv:29}, {move:"Future Sight", lv:36}, {move:"Psychic",      lv:57} ],
+  "Umbreon":  [ {move:"Confuse Ray",  lv:25}, {move:"Payback",      lv:45} ],
+  // ── Horsea line ──────────────────────────────────────────────────────────────
+  "Horsea":  [ {move:"Dragon Pulse",  lv:37}, {move:"Hydro Pump",   lv:44} ],
+  "Seadra":  [ {move:"Dragon Pulse",  lv:37}, {move:"Hydro Pump",   lv:44}, {move:"Dragon Dance", lv:57} ],
+  "Kingdra": [ {move:"Dragon Dance",  lv:41}, {move:"Dragon Pulse",  lv:57}, {move:"Hydro Pump",   lv:65} ],
+  // ── Gligar / Delibird ────────────────────────────────────────────────────────
+  "Gligar":   [ {move:"X-Scissor",    lv:49} ],
+  "Delibird": [],
+  // ── Swinub / Piloswine / Mamoswine ──────────────────────────────────────────
+  "Swinub":    [ {move:"Ice Shard",    lv:22}, {move:"Earthquake",   lv:46} ],
+  "Piloswine": [ {move:"Ice Fang",     lv:40}, {move:"Earthquake",   lv:52} ],
+  "Mamoswine": [ {move:"Ice Fang",     lv:1},  {move:"Ice Shard",    lv:1},  {move:"Earthquake",   lv:52}, {move:"Superpower",   lv:62} ],
+  // ── Teddiursa / Ursaring ─────────────────────────────────────────────────────
+  "Teddiursa": [ {move:"Slash",        lv:29} ],
+  "Ursaring":  [ {move:"Slash",        lv:43}, {move:"Hammer Arm",   lv:57} ],
+  // ── Phanpy / Donphan ─────────────────────────────────────────────────────────
+  "Phanpy":  [ {move:"Body Slam",    lv:17} ],
+  "Donphan": [ {move:"Ice Fang",     lv:1},  {move:"Earthquake",   lv:53} ],
+  // ── Mantine / Skarmory ───────────────────────────────────────────────────────
+  "Mantine": [ {move:"Signal Beam",  lv:42}, {move:"Air Slash",    lv:49}, {move:"Hydro Pump",   lv:56} ],
+  "Skarmory":[ {move:"Steel Wing",   lv:34}, {move:"Air Slash",    lv:49} ],
+  // ── Doduo / Dodrio ───────────────────────────────────────────────────────────
+  "Doduo":  [ {move:"Drill Peck",   lv:29}, {move:"Agility",      lv:33} ],
+  "Dodrio": [ {move:"Tri Attack",   lv:1},  {move:"Drill Peck",   lv:29}, {move:"Agility",      lv:33} ],
+  // ── Ponyta / Rapidash ────────────────────────────────────────────────────────
+  "Ponyta":   [ {move:"Fire Fang",    lv:24}, {move:"Flamethrower", lv:33}, {move:"Fire Blast",   lv:47} ],
+  "Rapidash": [ {move:"Fire Fang",    lv:24}, {move:"Flamethrower", lv:33}, {move:"Fire Blast",   lv:47}, {move:"Megahorn",     lv:63} ],
+  // ── Cubone / Marowak ─────────────────────────────────────────────────────────
+  "Cubone":  [ {move:"Bone Rush",    lv:25}, {move:"Thrash",       lv:31} ],
+  "Marowak": [ {move:"Bone Rush",    lv:25}, {move:"Thrash",       lv:31}, {move:"Earthquake",   lv:45} ],
+  // ── Kangaskhan ───────────────────────────────────────────────────────────────
+  "Kangaskhan": [ {move:"Crunch",       lv:26}, {move:"Sucker Punch", lv:36}, {move:"Outrage",      lv:46} ],
+  // ── Rhyhorn / Rhydon ─────────────────────────────────────────────────────────
+  "Rhyhorn": [ {move:"Rock Blast",   lv:30}, {move:"Earthquake",   lv:55} ],
+  "Rhydon":  [ {move:"Rock Blast",   lv:30}, {move:"Earthquake",   lv:55}, {move:"Stone Edge",   lv:62}, {move:"Megahorn",     lv:76} ],
+  // ── Murkrow ──────────────────────────────────────────────────────────────────
+  "Murkrow": [ {move:"Wing Attack",  lv:16}, {move:"Sucker Punch", lv:37} ],
+  // ── Houndour / Houndoom ──────────────────────────────────────────────────────
+  "Houndour": [ {move:"Crunch",       lv:22}, {move:"Flamethrower", lv:43}, {move:"Dark Pulse",   lv:49} ],
+  "Houndoom": [ {move:"Dark Pulse",   lv:55}, {move:"Nasty Plot",   lv:61} ],
+  // ── Slugma / Magcargo ────────────────────────────────────────────────────────
+  "Slugma":   [ {move:"Rock Slide",   lv:37}, {move:"Lava Plume",   lv:44} ],
+  "Magcargo": [ {move:"Rock Slide",   lv:37}, {move:"Lava Plume",   lv:44} ],
+  // ── Sneasel / Misdreavus ─────────────────────────────────────────────────────
+  "Sneasel":   [ {move:"Slash",        lv:41}, {move:"Night Slash",  lv:46}, {move:"Ice Shard",    lv:46} ],
+  "Misdreavus":[ {move:"Psybeam",      lv:19}, {move:"Shadow Ball",  lv:37}, {move:"Power Gem",    lv:54} ],
+  // ── Porygon / Porygon2 ───────────────────────────────────────────────────────
+  "Porygon":  [ {move:"Tri Attack",   lv:23}, {move:"Discharge",    lv:34} ],
+  "Porygon2": [ {move:"Discharge",    lv:34}, {move:"Tri Attack",   lv:52}, {move:"Signal Beam",  lv:60} ],
+  // ── Chansey / Blissey ────────────────────────────────────────────────────────
+  "Chansey": [ {move:"Softboiled",   lv:23}, {move:"Body Slam",    lv:33}, {move:"Egg Bomb",     lv:46} ],
+  "Blissey": [ {move:"Softboiled",   lv:23}, {move:"Egg Bomb",     lv:46} ],
+  // ── Lapras ───────────────────────────────────────────────────────────────────
+  "Lapras": [
+    {move:"Body Slam",    lv:23}, {move:"Ice Beam",     lv:30},
+    {move:"Hydro Pump",   lv:43}, {move:"Sheer Cold",   lv:50}, {move:"Blizzard",     lv:57},
+  ],
+  // ── Fossils ──────────────────────────────────────────────────────────────────
+  "Omanyte": [ {move:"AncientPower", lv:19}, {move:"Rock Blast",   lv:31}, {move:"Hydro Pump",   lv:55} ],
+  "Omastar": [ {move:"AncientPower", lv:19}, {move:"Rock Blast",   lv:31}, {move:"Hydro Pump",   lv:55} ],
+  "Kabuto":    [ {move:"Slash",        lv:25}, {move:"AncientPower", lv:31}, {move:"Stone Edge",   lv:46} ],
+  "Kabutops":  [ {move:"AncientPower", lv:31}, {move:"Aqua Tail",    lv:38}, {move:"Stone Edge",   lv:46} ],
+  "Aerodactyl":[ {move:"AncientPower", lv:33}, {move:"Crunch",       lv:41}, {move:"Stone Edge",   lv:57} ],
+  // ── Snorlax ───────────────────────────────────────────────────────────────────
+  "Snorlax": [ {move:"Body Slam",    lv:17}, {move:"Amnesia",      lv:25}, {move:"Rest",         lv:29}, {move:"Crunch",       lv:41}, {move:"Hyper Beam",   lv:57} ],
+  // ── Kanto starters (post-game via Prof. Oak) ─────────────────────────────────
+  "Bulbasaur": [ {move:"Vine Whip",    lv:9},  {move:"Razor Leaf",   lv:13}, {move:"Leech Seed",   lv:19}, {move:"Sleep Powder", lv:25} ],
+  "Ivysaur":   [ {move:"Razor Leaf",   lv:13}, {move:"Sleep Powder", lv:25}, {move:"Petal Dance",  lv:43} ],
+  "Venusaur":  [ {move:"Razor Leaf",   lv:13}, {move:"Sleep Powder", lv:25}, {move:"Petal Dance",  lv:43}, {move:"SolarBeam",    lv:53} ],
+  "Charmander":[ {move:"Dragon Rage",  lv:16}, {move:"Slash",        lv:28} ],
+  "Charmeleon":[ {move:"Dragon Rage",  lv:16}, {move:"Slash",        lv:28}, {move:"Flamethrower", lv:34} ],
+  "Charizard": [ {move:"Flamethrower", lv:34}, {move:"Slash",        lv:46}, {move:"Air Slash",    lv:62}, {move:"Fire Blast",   lv:75} ],
+  "Squirtle":  [ {move:"Water Gun",    lv:13}, {move:"Bite",         lv:25} ],
+  "Wartortle": [ {move:"Bite",         lv:25}, {move:"Rapid Spin",   lv:34}, {move:"Aqua Tail",    lv:39} ],
+  "Blastoise": [ {move:"Bite",         lv:25}, {move:"Aqua Tail",    lv:39}, {move:"Skull Bash",   lv:52}, {move:"Hydro Pump",   lv:59} ],
+  // ── Legendary Birds ──────────────────────────────────────────────────────────
+  "Articuno": [ {move:"Ice Beam",     lv:1},  {move:"Agility",      lv:29}, {move:"Blizzard",     lv:50}, {move:"Sheer Cold",   lv:57} ],
+  "Zapdos":   [ {move:"Discharge",    lv:1},  {move:"Agility",      lv:29}, {move:"Thunderbolt",  lv:36}, {move:"Thunder",      lv:50} ],
+  "Moltres":  [ {move:"Flamethrower", lv:1},  {move:"Agility",      lv:29}, {move:"Fire Blast",   lv:43}, {move:"Sky Attack",   lv:57} ],
+  // ── Legendary Beasts ─────────────────────────────────────────────────────────
+  "Raikou":  [ {move:"Discharge",    lv:22}, {move:"Calm Mind",    lv:29}, {move:"Thunderbolt",  lv:43}, {move:"Thunder",      lv:57} ],
+  "Entei":   [ {move:"Flamethrower", lv:22}, {move:"Eruption",     lv:50}, {move:"ExtremeSpeed", lv:57} ],
+  "Suicune": [ {move:"Hydro Pump",   lv:22}, {move:"Ice Beam",     lv:29}, {move:"Calm Mind",    lv:43}, {move:"Blizzard",     lv:57} ],
+  // ── Dratini line ─────────────────────────────────────────────────────────────
+  "Dratini":   [ {move:"Dragon Rage",  lv:11}, {move:"Slam",         lv:20}, {move:"Aqua Tail",    lv:35} ],
+  "Dragonair": [ {move:"Dragon Rage",  lv:11}, {move:"Aqua Tail",    lv:35}, {move:"Dragon Dance", lv:45}, {move:"Outrage",      lv:53} ],
+  "Dragonite": [ {move:"Fire Punch",   lv:1},  {move:"ThunderPunch", lv:1},  {move:"Aqua Tail",    lv:35}, {move:"Dragon Dance", lv:45}, {move:"Outrage",      lv:61}, {move:"Hyper Beam",   lv:71} ],
+  // ── Larvitar line ────────────────────────────────────────────────────────────
+  "Larvitar": [ {move:"Rock Slide",   lv:14}, {move:"Crunch",       lv:28} ],
+  "Pupitar":  [ {move:"Rock Slide",   lv:14}, {move:"Dark Pulse",   lv:28}, {move:"Crunch",       lv:34} ],
+  "Tyranitar":[ {move:"Rock Slide",   lv:14}, {move:"Dark Pulse",   lv:28}, {move:"Crunch",       lv:41}, {move:"Earthquake",   lv:47}, {move:"Stone Edge",   lv:54} ],
+  // ── Mascots / Legendaries ─────────────────────────────────────────────────────
+  "Lugia":   [ {move:"Hydro Pump",   lv:29}, {move:"Aeroblast",    lv:43}, {move:"Calm Mind",    lv:57} ],
+  "Ho-Oh":   [ {move:"Flamethrower", lv:15}, {move:"Sacred Fire",  lv:43}, {move:"Brave Bird",   lv:57} ],
+  "Mewtwo":  [ {move:"Calm Mind",    lv:36}, {move:"Amnesia",      lv:47}, {move:"Aura Sphere",  lv:57}, {move:"Psychic",      lv:64} ],
+  "Mew":     [],
+  "Celebi":  [ {move:"Recover",      lv:29}, {move:"Calm Mind",    lv:57}, {move:"Leaf Storm",   lv:73} ],
 };
 
 // ─── DREAM TEAM ABILITIES ────────────────────────────────────────────────────
@@ -1756,6 +1899,11 @@ const MOVE_TIERS = {
     "Extrasensory","Wood Hammer","Explosion","X-Scissor","Dragon Pulse","Nasty Plot",
     "Aqua Jet","Leaf Storm","Gunk Shot","Ice Shard","Steel Wing","Dragon Dance",
     "Superpower","Hyper Voice","Swords Dance","Rapid Spin",
+    // Full Johto dex additions
+    "Sacred Fire","Aeroblast","Bug Buzz","Crabhammer","Power Whip",
+    "Calm Mind","Recover","Flare Blitz","Brave Bird","Blaze Kick",
+    "Aura Sphere","Fire Fang","Sky Attack","Self-Destruct","Icicle Spear",
+    "Leaf Blade","Flash Cannon","Discharge","Night Shade","Flame Wheel","DynamicPunch",
   ]),
   skip: new Set([
     "Bide","Rage","Constrict","Splash","Bind","Wrap","String Shot",
@@ -2902,6 +3050,27 @@ const MOVE_TYPES = {
   "Rock Climb":"Normal",
   Slam:"Normal","Wrap":"Normal","Horn Drill":"Normal","Guillotine":"Normal",
   Endeavor:"Normal","Spit Up":"Normal","Mirror Move":"Flying",
+  // ── Full-dex additions ─────────────────────────────────────────────────────
+  // Fire
+  "Sacred Fire":"Fire","Flare Blitz":"Fire","Blaze Kick":"Fire","Fire Fang":"Fire","Flame Wheel":"Fire",
+  // Flying
+  "Aeroblast":"Flying","Brave Bird":"Flying","Sky Attack":"Flying",
+  // Bug
+  "Bug Buzz":"Bug",
+  // Water / Rock
+  "Crabhammer":"Water","Rock Blast":"Rock",
+  // Grass
+  "Power Whip":"Grass","Leaf Blade":"Grass",
+  // Fighting
+  "Aura Sphere":"Fighting","DynamicPunch":"Fighting","Seismic Toss":"Fighting",
+  // Electric / Steel / Ice
+  Discharge:"Electric","Thunder Fang":"Electric","Flash Cannon":"Steel","Icicle Spear":"Ice",
+  // Ghost / Poison / Ground
+  "Night Shade":"Ghost","Destiny Bond":"Ghost",Sludge:"Poison","Bone Rush":"Ground",
+  // Normal
+  "Self-Destruct":"Normal","Egg Bomb":"Normal","Double Hit":"Normal",Explosion:"Normal",
+  // Status
+  "Calm Mind":"Psychic","Recover":"Normal",Rest:"Normal",
   // Normal (status — no damage, so super-effective display is skipped)
   "Swords Dance":"Normal","Belly Drum":"Normal",Safeguard:"Normal",Protect:"Normal",
   "Rain Dance":"Water","Sunny Day":"Fire",Sandstorm:"Rock",
@@ -3083,6 +3252,48 @@ const MOVE_STATS = {
   Leer:             { bp:null,acc:100, pp:30 },
   Growl:            { bp:null,acc:100, pp:40 },
   "Mirror Move":    { bp:null,acc:null, pp:20 },
+  // ── Full-dex additions ───────────────────────────────────────────────────────
+  // Fire
+  "Sacred Fire":    { bp:100, acc:95,  pp:5  },
+  "Flare Blitz":    { bp:120, acc:100, pp:15 },
+  "Blaze Kick":     { bp:85,  acc:90,  pp:10 },
+  "Fire Fang":      { bp:65,  acc:95,  pp:15 },
+  "Flame Wheel":    { bp:60,  acc:100, pp:25 },
+  // Flying
+  Aeroblast:        { bp:100, acc:95,  pp:5  },
+  "Brave Bird":     { bp:120, acc:100, pp:15 },
+  "Sky Attack":     { bp:140, acc:90,  pp:5  },
+  // Bug
+  "Bug Buzz":       { bp:90,  acc:100, pp:10 },
+  // Water / Rock
+  Crabhammer:       { bp:90,  acc:90,  pp:10 },
+  "Rock Blast":     { bp:25,  acc:90,  pp:10 },
+  // Grass
+  "Power Whip":     { bp:120, acc:85,  pp:10 },
+  "Leaf Blade":     { bp:90,  acc:100, pp:15 },
+  // Fighting
+  "Aura Sphere":    { bp:90,  acc:null, pp:20 },
+  DynamicPunch:     { bp:100, acc:50,  pp:5  },
+  "Seismic Toss":   { bp:null,acc:100, pp:20 },
+  // Electric / Steel / Ice
+  Discharge:        { bp:80,  acc:100, pp:15 },
+  "Thunder Fang":   { bp:65,  acc:95,  pp:15 },
+  "Flash Cannon":   { bp:80,  acc:100, pp:10 },
+  "Icicle Spear":   { bp:25,  acc:100, pp:30 },
+  // Ghost / Poison / Ground
+  "Night Shade":    { bp:null,acc:100, pp:15 },
+  "Destiny Bond":   { bp:null,acc:null, pp:5  },
+  Sludge:           { bp:65,  acc:100, pp:20 },
+  "Bone Rush":      { bp:25,  acc:90,  pp:10 },
+  // Normal
+  "Self-Destruct":  { bp:200, acc:100, pp:5  },
+  "Egg Bomb":       { bp:100, acc:75,  pp:10 },
+  "Double Hit":     { bp:35,  acc:90,  pp:10 },
+  Explosion:        { bp:250, acc:100, pp:5  },
+  // Status
+  "Calm Mind":      { bp:null,acc:null, pp:20 },
+  Recover:          { bp:null,acc:null, pp:10 },
+  Rest:             { bp:null,acc:null, pp:10 },
 };
 // P = Physical, S = Special (status moves have no category badge — bp is null)
 // Gen IV introduced per-move categories, breaking from the old type-based rule.
@@ -3164,6 +3375,15 @@ const MOVE_CATEGORY = {
   "Hyper Voice":"S", Swift:"S",
   // Dragon
   Twister:"S", "Dragon Rage":"S",
+  // ── Full-dex additions ───────────────────────────────────────────────────────
+  // Physical
+  "Sacred Fire":"P","Flare Blitz":"P","Blaze Kick":"P","Fire Fang":"P","Flame Wheel":"P",
+  "Brave Bird":"P","Sky Attack":"P","Crabhammer":"P","Power Whip":"P","Leaf Blade":"P",
+  "Icicle Spear":"P","Rock Blast":"P","Self-Destruct":"P","Egg Bomb":"P","Double Hit":"P",
+  Explosion:"P","Bone Rush":"P",DynamicPunch:"P",
+  // Special
+  Aeroblast:"S","Bug Buzz":"S","Aura Sphere":"S","Flash Cannon":"S",
+  Discharge:"S","Night Shade":"S",Sludge:"S",
 };
 
 const STATUS_MOVES = new Set([
@@ -3173,6 +3393,7 @@ const STATUS_MOVES = new Set([
   "Will-O-Wisp","Confuse Ray","Stockpile","Swallow","Softboiled",
   "Mean Look","Scary Face","Focus Energy","Mirror Move","Flash",
   "Leer","Growl","Tail Whip","String Shot","Disable","Encore","Glare","Screech",
+  "Calm Mind","Recover","Rest","Destiny Bond","Perish Song",
 ]);
 function getMoveSuper(moveName) {
   const type = MOVE_TYPES[moveName];

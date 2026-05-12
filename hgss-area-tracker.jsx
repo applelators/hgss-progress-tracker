@@ -4373,6 +4373,13 @@ for (const area of AREAS) {
   }
 }
 
+// Pokémon whose only wild-encounter source in HGSS is the Pokéwalker.
+const WALKER_ONLY_POKEMON = new Set(
+  Object.entries(LOCATION_MAP)
+    .filter(([, locs]) => locs.length > 0 && locs.every(l => l.part === "Pokéwalker"))
+    .map(([name]) => name)
+);
+
 // ─── OBTAIN METHOD SETS ──────────────────────────────────────────────────────
 // Pokémon not found as wild encounters or gifts — must evolve or trade-evolve.
 const EVO_ONLY_SET = new Set([
@@ -8949,7 +8956,7 @@ function NationalDexPanel({ caught, setDexSelected, version }) {
       {!collapsed && (
         <div style={{ padding:"10px 12px", background:"rgba(0,0,0,0.12)" }}>
           <div style={{ fontSize:10, color:C.muted, marginBottom:8, lineHeight:1.5 }}>
-            Gen II Pokémon found in the Sevii Islands post-game. Includes wild catches, gifts, and evolutions of Kanto Pokémon achievable in FRLG.
+            Gen III/IV Pokémon obtainable via the Pokéwalker or post-game events. Pokémon marked PW ONLY are exclusively available through the Pokéwalker.
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(72px,1fr))", gap:5 }}>
             {NATIONAL_DEX.map(p => {
@@ -8970,8 +8977,9 @@ function NationalDexPanel({ caught, setDexSelected, version }) {
                   <img src={pokeSpriteUrl(p.id)} alt={p.name}
                     style={{ width:36, height:36, imageRendering:"pixelated", display:"block", margin:"0 auto",
                              opacity:isCaught?1:0.7, filter:isCaught?"none":"brightness(0)" }} />
-                  <div style={{ fontSize:8, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(p.johtoId).padStart(3,"0")}</div>
+                  <div style={{ fontSize:8, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(p.id).padStart(3,"0")}</div>
                   <div style={{ fontSize:9, color:isCaught?C.green:C.text, fontWeight:isCaught?"600":"400", lineHeight:1.2, wordBreak:"break-word" }}>{p.name}</div>
+                  {WALKER_ONLY_POKEMON.has(p.name) && <div style={{ fontSize:7, fontWeight:"700", color:"#9060d0", marginTop:1, letterSpacing:"0.02em" }}>PW ONLY</div>}
                 </div>
               );
             })}
@@ -9075,6 +9083,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                   {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[p.name]]; return cs ? <div style={{ fontSize:8, fontWeight:"700", color:cs.color, marginTop:1, letterSpacing:"0.02em" }}>{cs.label.toUpperCase()}</div> : null; })()}
                   {TRADE_EVO_SET.has(p.name) && <div style={{ fontSize:8, fontWeight:"700", color:"#c89832", marginTop:1, letterSpacing:"0.02em" }}>TRADE EVO</div>}
                   {EVO_ONLY_SET.has(p.name) && <div style={{ fontSize:8, fontWeight:"700", color:"#5a9fd4", marginTop:1, letterSpacing:"0.02em" }}>EVO ONLY</div>}
+                  {WALKER_ONLY_POKEMON.has(p.name) && <div style={{ fontSize:8, fontWeight:"700", color:"#9060d0", marginTop:1, letterSpacing:"0.02em" }}>PW ONLY</div>}
                 </div>
               );
             })}

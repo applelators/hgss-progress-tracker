@@ -143,7 +143,22 @@ const DEX = [
 // ─── NATIONAL DEX (Gen II/III/IV obtainable in HGSS) — Phase 2: update ──────
 // ─── NATIONAL DEX (Gen III/IV obtainable post-game) — Phase 5: expand ────────
 const NATIONAL_DEX = [
-  // TODO: Add Gen III/IV Pokémon (Pokéwalker, Pal Park, events, Safari Zone)
+  // Gen III — Pokéwalker + events
+  {id:255,name:"Torchic"},{id:263,name:"Zigzagoon"},{id:264,name:"Linoone"},
+  {id:265,name:"Wurmple"},{id:279,name:"Pelipper"},{id:298,name:"Azurill"},
+  {id:300,name:"Skitty"},{id:302,name:"Sableye"},{id:307,name:"Meditite"},
+  {id:313,name:"Volbeat"},{id:314,name:"Illumise"},{id:318,name:"Carvanha"},
+  {id:320,name:"Wailmer"},{id:349,name:"Feebas"},{id:351,name:"Castform"},
+  {id:352,name:"Kecleon"},{id:355,name:"Duskull"},{id:357,name:"Tropius"},
+  {id:361,name:"Snorunt"},{id:374,name:"Beldum"},
+  // Gen IV — Pokéwalker + events
+  {id:399,name:"Bidoof"},{id:400,name:"Bibarel"},{id:401,name:"Kricketot"},
+  {id:403,name:"Shinx"},{id:406,name:"Budew"},{id:415,name:"Combee"},
+  {id:417,name:"Pachirisu"},{id:418,name:"Buizel"},{id:422,name:"Shellos"},
+  {id:427,name:"Buneary"},{id:433,name:"Chingling"},{id:436,name:"Bronzor"},
+  {id:438,name:"Bonsly"},{id:439,name:"Mime Jr."},{id:440,name:"Happiny"},
+  {id:441,name:"Chatot"},{id:442,name:"Spiritomb"},{id:446,name:"Munchlax"},
+  {id:453,name:"Croagunk"},{id:456,name:"Finneon"},{id:459,name:"Snover"},
 ];
 
 // ─── AREA DATA ────────────────────────────────────────────────────────────────
@@ -4020,6 +4035,331 @@ const AREAS = [
     pokemon:[],
     items:[],
     trainers:[] },
+
+  // ─── POKÉWALKER COURSES ────────────────────────────────────────────────────
+  { part:"Pokéwalker", id:"pw-refreshing-field", name:"Refreshing Field",
+    note:"Default course. Walk more steps to earn watts and encounter rarer Pokémon.",
+    pokemon:[
+      {name:"Pidgey",     method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Sentret",    method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Nidoran♀",  method:"Pokéwalker", levels:"5",  rate:"75%",  note:"≥500W"},
+      {name:"Nidoran♂",  method:"Pokéwalker", levels:"5",  rate:"75%",  note:"≥500W"},
+      {name:"Doduo",      method:"Pokéwalker", levels:"8",  rate:"70%",  note:"≥2000W"},
+      {name:"Kangaskhan", method:"Pokéwalker", levels:"8",  rate:"50%",  note:"≥3000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-noisy-forest", name:"Noisy Forest",
+    note:"Default course.",
+    pokemon:[
+      {name:"Spearow",    method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Oddish",     method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Paras",      method:"Pokéwalker", levels:"6",  rate:"89%",  note:"≥700W"},
+      {name:"Venonat",    method:"Pokéwalker", levels:"6",  rate:"89%",  note:"≥700W"},
+      {name:"Bellsprout", method:"Pokéwalker", levels:"8",  rate:"70%",  note:"≥3000W"},
+      {name:"Wobbuffet",  method:"Pokéwalker", levels:"15", rate:"30%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-rugged-road", name:"Rugged Road",
+    note:"Unlocked at 50W.",
+    pokemon:[
+      {name:"Geodude",    method:"Pokéwalker", levels:"8",  rate:"100%"},
+      {name:"Hoothoot",   method:"Pokéwalker", levels:"6",  rate:"100%"},
+      {name:"Machop",     method:"Pokéwalker", levels:"7",  rate:"92%",  note:"≥1000W"},
+      {name:"Ponyta",     method:"Pokéwalker", levels:"7",  rate:"92%",  note:"≥1000W"},
+      {name:"Onix",       method:"Pokéwalker", levels:"9",  rate:"80%",  note:"≥4000W"},
+      {name:"Magby",      method:"Pokéwalker", levels:"9",  rate:"50%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-beautiful-beach", name:"Beautiful Beach",
+    note:"Unlocked at 200W.",
+    pokemon:[
+      {name:"Sunkern",    method:"Pokéwalker", levels:"6",  rate:"100%"},
+      {name:"Wooper",     method:"Pokéwalker", levels:"6",  rate:"100%"},
+      {name:"Slowpoke",   method:"Pokéwalker", levels:"8",  rate:"87%",  note:"≥1000W"},
+      {name:"Poliwag",    method:"Pokéwalker", levels:"8",  rate:"87%",  note:"≥1500W"},
+      {name:"Psyduck",    method:"Pokéwalker", levels:"10", rate:"70%",  note:"≥4000W"},
+      {name:"Staryu",     method:"Pokéwalker", levels:"10", rate:"60%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-suburban-area", name:"Suburban Area",
+    note:"Unlocked at 500W.",
+    pokemon:[
+      {name:"Rattata",    method:"Pokéwalker", levels:"7",  rate:"100%"},
+      {name:"Hoothoot",   method:"Pokéwalker", levels:"7",  rate:"100%"},
+      {name:"Magnemite",  method:"Pokéwalker", levels:"8",  rate:"85%",  note:"≥1000W"},
+      {name:"Murkrow",    method:"Pokéwalker", levels:"11", rate:"45%",  note:"≥1000W"},
+      {name:"Magnemite",  method:"Pokéwalker", levels:"11", rate:"40%",  note:"≥4000W"},
+      {name:"Elekid",     method:"Pokéwalker", levels:"11", rate:"15%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-dim-cave", name:"Dim Cave",
+    note:"Unlocked at 1,000W.",
+    pokemon:[
+      {name:"Zubat",      method:"Pokéwalker", levels:"8",  rate:"100%"},
+      {name:"Machop",     method:"Pokéwalker", levels:"8",  rate:"100%"},
+      {name:"Gastly",     method:"Pokéwalker", levels:"10", rate:"92%",  note:"≥1000W"},
+      {name:"Onix",       method:"Pokéwalker", levels:"10", rate:"92%",  note:"≥1000W"},
+      {name:"Gastly",     method:"Pokéwalker", levels:"15", rate:"20%",  note:"≥5000W"},
+      {name:"Smoochum",   method:"Pokéwalker", levels:"12", rate:"50%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-blue-lake", name:"Blue Lake",
+    note:"Unlocked at 2,000W.",
+    pokemon:[
+      {name:"Tentacool",  method:"Pokéwalker", levels:"9",  rate:"100%"},
+      {name:"Goldeen",    method:"Pokéwalker", levels:"9",  rate:"100%"},
+      {name:"Shellder",   method:"Pokéwalker", levels:"12", rate:"92%",  note:"≥500W"},
+      {name:"Krabby",     method:"Pokéwalker", levels:"12", rate:"72%",  note:"≥500W"},
+      {name:"Poliwag",    method:"Pokéwalker", levels:"15", rate:"60%",  note:"≥4000W"},
+      {name:"Dratini",    method:"Pokéwalker", levels:"10", rate:"30%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-town-outskirts", name:"Town Outskirts",
+    note:"Unlocked at 3,000W.",
+    pokemon:[
+      {name:"Rattata",    method:"Pokéwalker", levels:"16", rate:"100%"},
+      {name:"Furret",     method:"Pokéwalker", levels:"15", rate:"100%"},
+      {name:"Grimer",     method:"Pokéwalker", levels:"13", rate:"75%",  note:"≥1500W"},
+      {name:"Koffing",    method:"Pokéwalker", levels:"13", rate:"75%",  note:"≥1500W"},
+      {name:"Voltorb",    method:"Pokéwalker", levels:"15", rate:"60%",  note:"≥3000W"},
+      {name:"Abra",       method:"Pokéwalker", levels:"15", rate:"40%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-hoenn-field", name:"Hoenn Field",
+    note:"Unlocked at 5,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Zigzagoon",  method:"Pokéwalker", levels:"17", rate:"100%"},
+      {name:"Wurmple",    method:"Pokéwalker", levels:"15", rate:"100%"},
+      {name:"Volbeat",    method:"Pokéwalker", levels:"25", rate:"84%",  note:"≥2000W"},
+      {name:"Illumise",   method:"Pokéwalker", levels:"25", rate:"84%",  note:"≥2000W"},
+      {name:"Linoone",    method:"Pokéwalker", levels:"30", rate:"75%",  note:"≥5000W"},
+      {name:"Skitty",     method:"Pokéwalker", levels:"30", rate:"50%",  note:"≥7500W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-warm-beach", name:"Warm Beach",
+    note:"Unlocked at 7,500W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Goldeen",    method:"Pokéwalker", levels:"22", rate:"100%"},
+      {name:"Magikarp",   method:"Pokéwalker", levels:"15", rate:"100%"},
+      {name:"Carvanha",   method:"Pokéwalker", levels:"26", rate:"84%",  note:"≥1500W"},
+      {name:"Horsea",     method:"Pokéwalker", levels:"20", rate:"84%",  note:"≥1500W"},
+      {name:"Azurill",    method:"Pokéwalker", levels:"20", rate:"50%",  note:"≥5000W"},
+      {name:"Wailmer",    method:"Pokéwalker", levels:"31", rate:"50%",  note:"≥7000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-volcano-path", name:"Volcano Path",
+    note:"Unlocked at 10,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Geodude",    method:"Pokéwalker", levels:"29", rate:"100%"},
+      {name:"Ponyta",     method:"Pokéwalker", levels:"19", rate:"100%"},
+      {name:"Rhyhorn",    method:"Pokéwalker", levels:"25", rate:"85%",  note:"≥2000W"},
+      {name:"Houndour",   method:"Pokéwalker", levels:"27", rate:"85%",  note:"≥2000W"},
+      {name:"Slugma",     method:"Pokéwalker", levels:"31", rate:"70%",  note:"≥5000W"},
+      {name:"Meditite",   method:"Pokéwalker", levels:"32", rate:"60%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-treehouse", name:"Treehouse",
+    note:"Unlocked at 15,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Gloom",      method:"Pokéwalker", levels:"14", rate:"100%"},
+      {name:"Weepinbell", method:"Pokéwalker", levels:"13", rate:"100%"},
+      {name:"Girafarig",  method:"Pokéwalker", levels:"28", rate:"85%",  note:"≥1000W"},
+      {name:"Stantler",   method:"Pokéwalker", levels:"28", rate:"85%",  note:"≥1000W"},
+      {name:"Castform",   method:"Pokéwalker", levels:"30", rate:"30%",  note:"≥5000W"},
+      {name:"Kecleon",    method:"Pokéwalker", levels:"30", rate:"30%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-scary-cave", name:"Scary Cave",
+    note:"Unlocked at 20,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Gastly",     method:"Pokéwalker", levels:"15", rate:"100%"},
+      {name:"Machop",     method:"Pokéwalker", levels:"13", rate:"100%"},
+      {name:"Golbat",     method:"Pokéwalker", levels:"33", rate:"65%",  note:"≥500W"},
+      {name:"Natu",       method:"Pokéwalker", levels:"24", rate:"55%",  note:"≥1000W"},
+      {name:"Marowak",    method:"Pokéwalker", levels:"30", rate:"45%",  note:"≥5000W"},
+      {name:"Tauros",     method:"Pokéwalker", levels:"30", rate:"45%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-sinnoh-field", name:"Sinnoh Field",
+    note:"Unlocked at 25,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Bidoof",     method:"Pokéwalker", levels:"13", rate:"100%"},
+      {name:"Kricketot",  method:"Pokéwalker", levels:"15", rate:"100%"},
+      {name:"Shinx",      method:"Pokéwalker", levels:"33", rate:"55%",  note:"≥3000W"},
+      {name:"Budew",      method:"Pokéwalker", levels:"30", rate:"55%",  note:"≥3000W"},
+      {name:"Combee",     method:"Pokéwalker", levels:"30", rate:"45%",  note:"≥7000W"},
+      {name:"Mime Jr.",   method:"Pokéwalker", levels:"29", rate:"40%",  note:"≥7000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-icy-mountain-rd", name:"Icy Mountain Rd.",
+    note:"Unlocked at 30,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Mareep",     method:"Pokéwalker", levels:"15", rate:"100%"},
+      {name:"Swinub",     method:"Pokéwalker", levels:"16", rate:"100%"},
+      {name:"Sneasel",    method:"Pokéwalker", levels:"28", rate:"55%",  note:"≥3000W"},
+      {name:"Bronzor",    method:"Pokéwalker", levels:"20", rate:"75%",  note:"≥3000W"},
+      {name:"Snorunt",    method:"Pokéwalker", levels:"28", rate:"50%",  note:"≥10000W"},
+      {name:"Snover",     method:"Pokéwalker", levels:"31", rate:"50%",  note:"≥10000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-big-forest", name:"Big Forest",
+    note:"Unlocked at 40,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Exeggcute",  method:"Pokéwalker", levels:"17", rate:"100%"},
+      {name:"Mareep",     method:"Pokéwalker", levels:"19", rate:"100%"},
+      {name:"Tangela",    method:"Pokéwalker", levels:"30", rate:"55%",  note:"≥1000W"},
+      {name:"Bibarel",    method:"Pokéwalker", levels:"30", rate:"55%",  note:"≥1000W"},
+      {name:"Tropius",    method:"Pokéwalker", levels:"35", rate:"50%",  note:"≥6000W"},
+      {name:"Bonsly",     method:"Pokéwalker", levels:"30", rate:"40%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-white-lake", name:"White Lake",
+    note:"Unlocked at 50,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Chinchou",   method:"Pokéwalker", levels:"17", rate:"100%"},
+      {name:"Remoraid",   method:"Pokéwalker", levels:"19", rate:"100%"},
+      {name:"Haunter",    method:"Pokéwalker", levels:"25", rate:"55%",  note:"≥500W"},
+      {name:"Buizel",     method:"Pokéwalker", levels:"28", rate:"65%",  note:"≥1000W"},
+      {name:"Misdreavus", method:"Pokéwalker", levels:"32", rate:"50%",  note:"≥6000W"},
+      {name:"Chingling",  method:"Pokéwalker", levels:"22", rate:"50%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-stormy-beach", name:"Stormy Beach",
+    note:"Unlocked at 65,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Psyduck",    method:"Pokéwalker", levels:"22", rate:"100%"},
+      {name:"Shellder",   method:"Pokéwalker", levels:"20", rate:"100%"},
+      {name:"Seel",       method:"Pokéwalker", levels:"27", rate:"65%",  note:"≥1500W"},
+      {name:"Magikarp",   method:"Pokéwalker", levels:"30", rate:"65%",  note:"≥500W"},
+      {name:"Shellos",    method:"Pokéwalker", levels:"30", rate:"55%",  note:"≥5000W"},
+      {name:"Finneon",    method:"Pokéwalker", levels:"26", rate:"30%",  note:"≥4000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-resort", name:"Resort",
+    note:"Unlocked at 80,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Marill",     method:"Pokéwalker", levels:"25", rate:"100%"},
+      {name:"Hoppip",     method:"Pokéwalker", levels:"25", rate:"100%"},
+      {name:"Clefairy",   method:"Pokéwalker", levels:"31", rate:"55%",  note:"≥4000W"},
+      {name:"Jigglypuff", method:"Pokéwalker", levels:"30", rate:"55%",  note:"≥4000W"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"30", rate:"45%",  note:"≥8000W"},
+      {name:"Pachirisu",  method:"Pokéwalker", levels:"33", rate:"45%",  note:"≥8000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-quiet-cave", name:"Quiet Cave",
+    note:"Unlocked at 100,000W. Requires National Pokédex.",
+    pokemon:[
+      {name:"Golbat",     method:"Pokéwalker", levels:"33", rate:"100%"},
+      {name:"Noctowl",    method:"Pokéwalker", levels:"30", rate:"100%"},
+      {name:"Feebas",     method:"Pokéwalker", levels:"30", rate:"20%",  note:"≥500W"},
+      {name:"Chingling",  method:"Pokéwalker", levels:"26", rate:"45%",  note:"≥500W"},
+      {name:"Spiritomb",  method:"Pokéwalker", levels:"31", rate:"5%",   note:"≥10000W"},
+      {name:"Munchlax",   method:"Pokéwalker", levels:"33", rate:"15%",  note:"≥10000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-beyond-the-sea", name:"Beyond the Sea",
+    note:"Unlocked via GTS trade (send or receive a Pokémon from another country).",
+    pokemon:[
+      {name:"Chinchou",   method:"Pokéwalker", levels:"12", rate:"100%"},
+      {name:"Remoraid",   method:"Pokéwalker", levels:"14", rate:"100%"},
+      {name:"Horsea",     method:"Pokéwalker", levels:"15", rate:"55%",  note:"≥3000W"},
+      {name:"Corsola",    method:"Pokéwalker", levels:"16", rate:"55%",  note:"≥2500W"},
+      {name:"Staryu",     method:"Pokéwalker", levels:"18", rate:"20%",  note:"≥5000W · holds Water Stone"},
+      {name:"Octillery",  method:"Pokéwalker", levels:"19", rate:"5%",   note:"≥5000W · holds Focus Band"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-night-skys-edge", name:"Night Sky's Edge",
+    note:"Unlocked by transferring Jirachi via the Pokémon Colosseum Bonus Disc.",
+    pokemon:[
+      {name:"Geodude",    method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Onix",       method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Hoothoot",   method:"Pokéwalker", levels:"6",  rate:"75%",  note:"≥2500W"},
+      {name:"Zubat",      method:"Pokéwalker", levels:"9",  rate:"75%",  note:"≥2500W"},
+      {name:"Clefairy",   method:"Pokéwalker", levels:"8",  rate:"55%",  note:"≥5000W"},
+      {name:"Jigglypuff", method:"Pokéwalker", levels:"10", rate:"55%",  note:"≥5000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-yellow-forest", name:"Yellow Forest",
+    note:"Wi-Fi Event course. All encounters are Pikachu — each holds a different Berry.",
+    pokemon:[
+      {name:"Pikachu",    method:"Pokéwalker", levels:"10", rate:"100%", note:"♂ · holds TinyMushroom"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"10", rate:"100%", note:"♀ · holds Oran Berry"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"13", rate:"35%",  note:"♂ · ≥2000W · holds Leppa Berry"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"12", rate:"8%",   note:"♀ · ≥5000W · holds Sitrus Berry"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"15", rate:"2%",   note:"♂ · ≥10000W · holds Shuca Berry"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"14", rate:"3%",   note:"♀ · ≥9500W · holds Lum Berry"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-rally", name:"Rally",
+    note:"Wi-Fi Event course.",
+    pokemon:[
+      {name:"Pachirisu",  method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Buneary",    method:"Pokéwalker", levels:"5",  rate:"100%"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"10", rate:"55%",  note:"≥500W"},
+      {name:"Croagunk",   method:"Pokéwalker", levels:"10", rate:"55%",  note:"≥500W"},
+      {name:"Sableye",    method:"Pokéwalker", levels:"15", rate:"25%",  note:"≥1000W"},
+      {name:"Chatot",     method:"Pokéwalker", levels:"15", rate:"25%",  note:"≥1000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-sightseeing", name:"Sightseeing",
+    note:"Wi-Fi Event course.",
+    pokemon:[
+      {name:"Meowth",     method:"Pokéwalker", levels:"10", rate:"100%"},
+      {name:"Pikachu",    method:"Pokéwalker", levels:"8",  rate:"100%"},
+      {name:"Poliwhirl",  method:"Pokéwalker", levels:"15", rate:"35%",  note:"≥500W"},
+      {name:"Pelipper",   method:"Pokéwalker", levels:"15", rate:"35%",  note:"≥3000W"},
+      {name:"Eevee",      method:"Pokéwalker", levels:"10", rate:"10%",  note:"≥7000W"},
+      {name:"Torchic",    method:"Pokéwalker", levels:"10", rate:"1%",   note:"≥10000W"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-winners-path", name:"Winner's Path",
+    note:"Wi-Fi Event course. Pokémon all hold special items.",
+    pokemon:[
+      {name:"Magikarp",   method:"Pokéwalker", levels:"5",  rate:"100%", note:"holds Wacan Berry"},
+      {name:"Bronzor",    method:"Pokéwalker", levels:"5",  rate:"100%", note:"holds Occa Berry"},
+      {name:"Horsea",     method:"Pokéwalker", levels:"5",  rate:"55%",  note:"≥3000W · holds Dragon Scale"},
+      {name:"Duskull",    method:"Pokéwalker", levels:"5",  rate:"55%",  note:"≥3000W · holds Reaper Cloth"},
+      {name:"Beldum",     method:"Pokéwalker", levels:"5",  rate:"20%",  note:"≥8000W · holds Shuca Berry"},
+      {name:"Munchlax",   method:"Pokéwalker", levels:"5",  rate:"5%",   note:"≥8000W · holds Leftovers"},
+    ],
+    items:[], trainers:[] },
+
+  { part:"Pokéwalker", id:"pw-amity-meadow", name:"Amity Meadow",
+    note:"Wi-Fi Event course. All Pokémon hold Berries.",
+    pokemon:[
+      {name:"Cleffa",     method:"Pokéwalker", levels:"5",  rate:"100%", note:"holds Qualot Berry"},
+      {name:"Igglybuff",  method:"Pokéwalker", levels:"5",  rate:"100%", note:"holds Grepa Berry"},
+      {name:"Smoochum",   method:"Pokéwalker", levels:"5",  rate:"55%",  note:"≥2000W · holds Hondew Berry"},
+      {name:"Happiny",    method:"Pokéwalker", levels:"5",  rate:"55%",  note:"≥2000W · holds Pomeg Berry"},
+      {name:"Elekid",     method:"Pokéwalker", levels:"5",  rate:"20%",  note:"≥5000W · holds Tamato Berry"},
+      {name:"Magby",      method:"Pokéwalker", levels:"5",  rate:"20%",  note:"≥5000W · holds Kelpsy Berry"},
+    ],
+    items:[], trainers:[] },
 ];
 
 // ─── BUILD LOCATION MAP ── (which areas each Pokémon appears in)
@@ -6119,6 +6459,13 @@ function getMoveSuper(moveName) {
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
 const AUDITED_PARTS = new Set(["Part 1","Part 2","Part 3","Part 4","Part 5","Part 6","Part 7","Part 8","Part 9","Part 10","Part 11","Part 12","Part 13","Part 14","Part 15","Part 16","(Return Visits)","Part 17","Part 18","Part 19","Part 20","Part 21","Part 22","Part 23","Part 24","Part 25","Part 26","Part 27","Part 28","Part 29","Part 30","Part 31","Part 32"]);
+
+const ROAMING_POKEMON = [
+  {name:"Raikou",  id:243, region:"Johto", minJohtoBadges:4},
+  {name:"Entei",   id:244, region:"Johto", minJohtoBadges:4},
+  {name:"Latias",  id:380, region:"Kanto", minTotalBadges:16, hgOnly:true},
+  {name:"Latios",  id:381, region:"Kanto", minTotalBadges:16, ssOnly:true},
+];
 // ─── CATCH RATE DATA ──────────────────────────────────────────────────────────
 // Gen III base catch rates for all 151 Kanto Pokémon (FRLG)
 const CATCH_RATE_DATA = []; // TODO: Add HGSS base catch rates
@@ -6697,6 +7044,7 @@ function HGSSTracker() {
   const [tmState, setTmState]     = useState({});   // {TM01: true, HM03: true, ...}
   const [trades, setTrades]       = useState({});   // {`${areaId}|trade|${name}`: true}
   const [sweeps, setSweeps]       = useState({});   // {areaId: timestamp ms}
+  const [roaming, setRoaming]     = useState(() => { try { return JSON.parse(localStorage.getItem("hgss-roaming")) || {}; } catch { return {}; } });
   const [ceremonyQueue, setCeremonyQueue] = useState([]); // Tier-1 events
 
   const pushCeremony = React.useCallback((event) => {
@@ -7268,6 +7616,7 @@ function HGSSTracker() {
           {[
             // Primary — used every play session
             ["areas","Areas","primary"],["dex","Pokédex","primary"],
+            ["walker","Pokéwalker","primary"],
             ["team","Team","primary"],["battle","Battle","primary"],
             // Divider
             ["__div1","",null],
@@ -7311,7 +7660,10 @@ function HGSSTracker() {
       {tab === "dex" && <DexTab caught={caught} toggleCaught={toggleCaught} dexFilter={dexFilter} setDexFilter={setDexFilter} dexSelected={dexSelected} setDexSelected={setDexSelected} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Areas ── */}
-      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} trades={trades} toggleTrade={toggleTrade} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} timeFilter={timeFilter} setTime={setTime} />}
+      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} trades={trades} toggleTrade={toggleTrade} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} timeFilter={timeFilter} setTime={setTime} roaming={roaming} setRoaming={setRoaming} badges={badges} />}
+
+      {/* ── Tab: Pokéwalker ── */}
+      {tab === "walker" && <WalkerTab caught={caught} toggleCaught={toggleCaught} isMobile={isMobile} version={version} />}
 
       {/* ── Tab: Dream Team ── */}
       {tab === "team" && <DreamTeamTab isMobile={isMobile} version={version} />}
@@ -9069,8 +9421,122 @@ function countItemsDone(area, areaId, itemsState) {
   return (area.items || []).filter((_, i) => itemsState[flatItemKey(areaId, i)]).length;
 }
 
+// ─── ROAMING POKÉMON CARD ─────────────────────────────────────────────────────
+function RoamingCard({ roaming, setRoaming, version, badges }) {
+  const johtoBadgeCount = JOHTO_BADGES.filter(b => badges[b.id]).length;
+  const totalBadgeCount = BADGES.filter(b => badges[b.id]).length;
+  const visible = ROAMING_POKEMON.filter(r => {
+    if (r.hgOnly && version !== "hg") return false;
+    if (r.ssOnly && version !== "ss") return false;
+    if (r.minJohtoBadges && johtoBadgeCount < r.minJohtoBadges) return false;
+    if (r.minTotalBadges && totalBadgeCount < r.minTotalBadges) return false;
+    return true;
+  });
+  if (visible.length === 0) return null;
+  const cycleState = name => setRoaming(prev => {
+    const next = { ...prev, [name]: ((prev[name] || 0) + 1) % 3 };
+    try { localStorage.setItem("hgss-roaming", JSON.stringify(next)); } catch {}
+    return next;
+  });
+  const STATE_ICON  = ["○", "◎", "●"];
+  const STATE_COLOR = ["rgba(180,185,200,0.55)", "#c8960a", "#4ab770"];
+  return (
+    <div style={{ borderBottom:`1px solid ${C.border}`, padding:"8px 12px 6px" }}>
+      <div style={{ fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase", marginBottom:6, display:"flex", alignItems:"center", gap:5 }}>
+        <span style={{ color:"var(--hgss-accent)", fontSize:12 }}>◈</span> Roaming
+      </div>
+      {visible.map(r => {
+        const st = roaming[r.name] || 0;
+        return (
+          <div key={r.name} onClick={() => cycleState(r.name)}
+            style={{ display:"flex", alignItems:"center", gap:7, padding:"3px 4px", cursor:"pointer", borderRadius:4, borderLeft: st===2 ? `3px solid ${C.green}` : "3px solid transparent", marginBottom:1, userSelect:"none" }}>
+            <img src={pokeSpriteUrl(r.id)} alt={r.name} style={{ width:26, height:26, imageRendering:"pixelated", flexShrink:0, opacity: st===0 ? 0.45 : 1 }} />
+            <span style={{ flex:1, fontSize:11, color: st===2 ? C.green : C.text, fontWeight:"600" }}>{r.name}</span>
+            <span style={{ fontSize:9, color:C.muted, marginRight:2 }}>{r.region}</span>
+            <span style={{ fontSize:15, color:STATE_COLOR[st], lineHeight:1 }}>{STATE_ICON[st]}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── POKÉWALKER TAB ───────────────────────────────────────────────────────────
+function WalkerTab({ caught, toggleCaught, isMobile, version }) {
+  const walkerAreas = React.useMemo(() => AREAS.filter(a => a.part === "Pokéwalker"), []);
+  const [walkerAreaId, setWalkerAreaId] = React.useState(null);
+  const walkerArea = walkerAreaId ? walkerAreas.find(a => a.id === walkerAreaId) : null;
+
+  const showSidebar = !isMobile || !walkerAreaId;
+  const showMain    = !isMobile || !!walkerAreaId;
+
+  const caughtCount = walkerArea
+    ? [...new Set(walkerArea.pokemon.map(p => p.name))].filter(n => caught[n]).length
+    : 0;
+  const uniqueCount = walkerArea ? new Set(walkerArea.pokemon.map(p => p.name)).size : 0;
+
+  return (
+    <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection: isMobile ? "column" : "row" }}>
+      {showSidebar && (
+        <div style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, overflowY:"auto", display:"flex", flexDirection:"column", flex: isMobile ? "1" : "unset" }}>
+          <div style={{ padding:"8px 12px 6px", borderBottom:`1px solid ${C.border}`, fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase" }}>
+            <span style={{ color:"var(--hgss-accent)", marginRight:5 }}>◈</span>Pokéwalker Courses
+          </div>
+          {walkerAreas.map(a => {
+            const uniqueNames = [...new Set(a.pokemon.map(p => p.name))];
+            const done = uniqueNames.filter(n => caught[n]).length;
+            const total = uniqueNames.length;
+            const allDone = done === total && total > 0;
+            const isActive = walkerAreaId === a.id;
+            return (
+              <div key={a.id} onClick={() => setWalkerAreaId(a.id)}
+                style={{ padding:"7px 12px", cursor:"pointer", borderLeft: isActive ? `3px solid var(--hgss-accent)` : "3px solid transparent", background: isActive ? "rgba(255,255,255,0.04)" : "transparent", display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, borderBottom:`1px solid ${C.border}22` }}>
+                <span style={{ fontSize:12, color: allDone ? C.green : isActive ? C.text : C.muted, fontWeight: isActive ? "600" : "400", flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                  {allDone ? "✓ " : ""}{a.name}
+                </span>
+                <span style={{ fontSize:10, color:C.muted, flexShrink:0 }}>{done}/{total}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {showMain && (
+        <div style={{ flex:1, overflowY:"auto" }}>
+          {!walkerArea ? (
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", height:"100%", color:C.muted, textAlign:"center", gap:12 }}>
+              <div style={{ fontSize:32, opacity:0.4 }}>👟</div>
+              <div style={{ fontSize:14, fontWeight:"600", color:C.text, opacity:0.5 }}>Select a course</div>
+              <div style={{ fontSize:12, maxWidth:280, lineHeight:1.8, color:C.muted }}>27 courses — walk to earn watts and encounter Pokémon. Rarer Pokémon require more watts.</div>
+            </div>
+          ) : (
+            <>
+              {isMobile && (
+                <div style={{ padding:"8px 16px 0" }}>
+                  <button onClick={() => setWalkerAreaId(null)} style={{ background:"transparent", border:"none", color:C.muted, fontSize:13, cursor:"pointer", padding:"0 0 4px", display:"flex", alignItems:"center", gap:5, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
+                    ← Courses
+                  </button>
+                </div>
+              )}
+              <div style={{ padding:"14px 20px 8px" }}>
+                <div style={{ fontSize:18, fontWeight:"700", color:C.text, marginBottom:4 }}>{walkerArea.name}</div>
+                {walkerArea.note && <div style={{ fontSize:12, color:C.muted, lineHeight:1.6 }}>{walkerArea.note}</div>}
+                <div style={{ fontSize:11, color: caughtCount===uniqueCount && uniqueCount>0 ? C.green : C.muted, marginTop:6 }}>
+                  {caughtCount}/{uniqueCount} unique Pokémon caught
+                </div>
+              </div>
+              <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:4 }}>
+                {renderPokemonList(walkerArea.pokemon, caught, toggleCaught, version, isMobile, {}, walkerArea.id, {}, () => {})}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
-function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, trades, toggleTrade, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups, timeFilter, setTime }) {
+function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, trades, toggleTrade, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups, timeFilter, setTime, roaming, setRoaming, badges }) {
   const isPassedPokemon = p  => !!(p.choiceGroup  && choiceGroups?.[p.choiceGroup]  && choiceGroups[p.choiceGroup]  !== p.choiceId);
   const isPassedItem    = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
@@ -9242,6 +9708,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
+        {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
         {filtered
           ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)
           : Object.entries(groups).map(([part, list]) => {

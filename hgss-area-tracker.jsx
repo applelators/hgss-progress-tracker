@@ -1586,20 +1586,20 @@ const EVO_DELAY = {}; // TODO: Add Johto evolution delay notes
 // Tyranitar (pseudo-legendary) is always locked into slot 1 unless it's the favorite.
 const DT_CANDIDATES = [
   // ── Starters ─────────────────────────────────────────────────────────────────
-  { name:"Typhlosion",  types:["Fire"],            hms:["Cut","Strength","Rock Smash","Rock Climb"] },
-  { name:"Feraligatr",  types:["Water"],            hms:["Cut","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Rock Climb"] },
-  { name:"Meganium",    types:["Grass"],            hms:["Cut","Strength","Rock Smash","Rock Climb"] },
+  { name:"Typhlosion",  types:["Fire"],            hms:["Cut","Strength","Rock Smash","Rock Climb"], stats:{atk:84,  spa:109, spe:100} },
+  { name:"Feraligatr",  types:["Water"],            hms:["Cut","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:105, spa:79,  spe:78} },
+  { name:"Meganium",    types:["Grass"],            hms:["Cut","Strength","Rock Smash","Rock Climb"], stats:{atk:82,  spa:83,  spe:80} },
   // ── Top picks ────────────────────────────────────────────────────────────────
-  { name:"Ampharos",    types:["Electric"],         hms:["Strength","Rock Smash","Rock Climb"] },
-  { name:"Heracross",   types:["Bug","Fighting"],   hms:["Cut","Strength","Rock Smash"] },
-  { name:"Espeon",      types:["Psychic"],          hms:["Cut"] },
-  { name:"Umbreon",     types:["Dark"],             hms:["Cut"] },
-  { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Strength","Rock Smash","Rock Climb"], tradeOnly:true },
-  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], hgOnly:true, tradeOnly:true },
-  { name:"Donphan",     types:["Ground"],           hms:["Strength","Rock Smash"], hgOnly:true },
-  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], ssOnly:true },
-  { name:"Skarmory",    types:["Steel","Flying"],   hms:["Cut","Fly","Rock Smash"], ssOnly:true },
-  { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"] },
+  { name:"Ampharos",    types:["Electric"],         hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:45,  spa:115, spe:55} },
+  { name:"Heracross",   types:["Bug","Fighting"],   hms:["Cut","Strength","Rock Smash"], stats:{atk:125, spa:35,  spe:85} },
+  { name:"Espeon",      types:["Psychic"],          hms:["Cut"], stats:{atk:65,  spa:130, spe:110} },
+  { name:"Umbreon",     types:["Dark"],             hms:["Cut"], stats:{atk:65,  spa:60,  spe:65} },
+  { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Strength","Rock Smash","Rock Climb"], tradeOnly:true, stats:{atk:85,  spa:30,  spe:30} },
+  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], hgOnly:true, tradeOnly:true, stats:{atk:130, spa:55,  spe:65} },
+  { name:"Donphan",     types:["Ground"],           hms:["Strength","Rock Smash"], hgOnly:true, stats:{atk:120, spa:60,  spe:50} },
+  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], ssOnly:true, stats:{atk:90,  spa:110, spe:95} },
+  { name:"Skarmory",    types:["Steel","Flying"],   hms:["Cut","Fly","Rock Smash"], ssOnly:true, stats:{atk:80,  spa:40,  spe:70} },
+  { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:134, spa:95,  spe:61} },
   { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"], tradeOnly:true },
   { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], tradeOnly:true },
   { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true },
@@ -1608,12 +1608,12 @@ const DT_CANDIDATES = [
   { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true },
   { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true },
   // ── Good picks ───────────────────────────────────────────────────────────────
-  { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3 },
-  { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4 },
-  { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], ssOnly:true },
-  { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"] },
-  { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"] },
-  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"] },
+  { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },
+  { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4, stats:{atk:58,  spa:76,  spe:67} },
+  { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], ssOnly:true, stats:{atk:50,  spa:50,  spe:50} },
+  { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:85,  spa:65,  spe:35} },
+  { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"], stats:{atk:90,  spa:30,  spe:40} },
+  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"], stats:{atk:50,  spa:76,  spe:70} },
   { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"] },
   { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"] },
   { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"] },
@@ -1698,7 +1698,7 @@ const DT_TM_TIPS = {
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   // Fire — Flamethrower via Game Corner
   "Typhlosion": [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"},
-                 {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
+                 {move:"Focus Blast", src:"TM52 — Goldenrod Dept. Store 5F (₽3,500) — covers Rock/Dark/Steel that resist Fire"}],
   "Arcanine":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Ninetales":  [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Houndoom":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
@@ -2800,6 +2800,76 @@ const MOVE_STATS = {
   Growl:            { bp:null,acc:100, pp:40 },
   "Mirror Move":    { bp:null,acc:null, pp:20 },
 };
+// P = Physical, S = Special (status moves have no category badge — bp is null)
+// Gen IV introduced per-move categories, breaking from the old type-based rule.
+// Key exceptions from old type expectations: Bite/Crunch/Pursuit/Payback = P (was S),
+// Shadow Ball = S (was P), Dark Pulse = S, Zen Headbutt = P, Aqua Tail = P,
+// Waterfall = P, Leaf Blade = P.
+const MOVE_CATEGORY = {
+  // ── Physical ────────────────────────────────────────────────────────────────
+  // HMs
+  Cut:"P", Fly:"P", Strength:"P", "Rock Smash":"P", Waterfall:"P", "Rock Climb":"P",
+  // Elemental punches
+  ThunderPunch:"P", "Fire Punch":"P", "Ice Punch":"P",
+  // Ground / Rock
+  Earthquake:"P", "Stone Edge":"P", "Rock Slide":"P",
+  // Fighting
+  "Close Combat":"P", "Brick Break":"P", "Hi Jump Kick":"P", "High Jump Kick":"P",
+  "Sky Uppercut":"P", Superpower:"P", Submission:"P", "Cross Chop":"P",
+  "Karate Chop":"P", "Low Kick":"P",
+  // Bug
+  Megahorn:"P", "Pin Missile":"P", Twineedle:"P", "Leech Life":"P",
+  // Dark — all Physical in Gen IV except Dark Pulse
+  Crunch:"P", Bite:"P", Pursuit:"P", "Night Slash":"P", Payback:"P",
+  // Steel
+  "Iron Head":"P", "Iron Tail":"P", "Metal Claw":"P", "Meteor Mash":"P",
+  // Psychic (Gen IV Physical despite Psychic type)
+  "Zen Headbutt":"P",
+  // Flying
+  Fly:"P", "Wing Attack":"P", "Drill Peck":"P", "Aerial Ace":"P",
+  // Dragon
+  Outrage:"P", "Dragon Claw":"P",
+  // Grass
+  "Leaf Blade":"P", "Razor Leaf":"P",
+  // Poison
+  "Poison Jab":"P", "Poison Fang":"P",
+  // Water (Physical despite Water type in Gen IV)
+  "Aqua Tail":"P",
+  // Normal
+  ExtremeSpeed:"P", "Body Slam":"P", Thrash:"P", "Hyper Beam":"P",
+  "Skull Bash":"P", Slam:"P", "Hyper Fang":"P", Slash:"P",
+  "Tri Attack":"P", "Rapid Spin":"P", Bite:"P",
+  // ── Special ─────────────────────────────────────────────────────────────────
+  // Water
+  Surf:"S", "Hydro Pump":"S", Whirlpool:"S", "Water Gun":"S",
+  // Fire
+  Flamethrower:"S", "Fire Blast":"S", Eruption:"S", "Lava Plume":"S", "Heat Wave":"S",
+  // Electric
+  Thunderbolt:"S", Thunder:"S", Discharge:"S",
+  // Ice
+  "Ice Beam":"S", Blizzard:"S",
+  // Psychic
+  Psychic:"S", Psybeam:"S", "Future Sight":"S",
+  // Ghost
+  "Shadow Ball":"S",
+  // Dark (Special in Gen IV)
+  "Dark Pulse":"S",
+  // Bug (Special in Gen IV)
+  "Signal Beam":"S", "Silver Wind":"S",
+  // Rock (Special in Gen IV)
+  "Power Gem":"S", AncientPower:"S",
+  // Fighting (Special)
+  "Focus Blast":"S",
+  // Poison
+  "Sludge Bomb":"S",
+  // Grass
+  "Giga Drain":"S", SolarBeam:"S", "Petal Dance":"S",
+  // Normal
+  "Hyper Voice":"S", Swift:"S",
+  // Dragon
+  Twister:"S", "Dragon Rage":"S",
+};
+
 const STATUS_MOVES = new Set([
   "Swords Dance","Amnesia","Agility","Dragon Dance","Belly Drum",
   "Sleep Powder","Spore","Hypnosis","Toxic","Leech Seed","Protect",
@@ -4254,6 +4324,7 @@ function DreamTeamTab({ isMobile, version }) {
                   <div style={{ fontSize:9, color:C.muted }}>
                     {dexEntry ? `#${String(dexEntry.johtoId).padStart(3,"0")}` : ""}
                     {candInfo ? ` · ${candInfo.types.join("/")}` : (finalForm !== name ? ` · → ${finalForm}` : "")}
+                    {candInfo?.stats ? ` · Atk ${candInfo.stats.atk} / SpA ${candInfo.stats.spa} / Spe ${candInfo.stats.spe}` : ""}
                   </div>
                 </div>
                 {!hardLocked && (
@@ -4301,6 +4372,21 @@ function DreamTeamTab({ isMobile, version }) {
                         <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
                           <span style={{ fontSize:11, fontWeight:"600", color:C.text }}>{m.move}</span>
                           {MOVE_TYPES[m.move] && <span style={{ fontSize:8, color:"#fff", background:TYPE_COLORS[MOVE_TYPES[m.move]]||"#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3, flexShrink:0 }}>{MOVE_TYPES[m.move]}</span>}
+                          {(() => {
+                            const cat = MOVE_CATEGORY[m.move];
+                            if (!cat) return null;
+                            const isStat = candInfo?.stats;
+                            const mismatch = isStat && cat === "P" && candInfo.stats.spa - candInfo.stats.atk > 20
+                                          || isStat && cat === "S" && candInfo.stats.atk - candInfo.stats.spa > 20;
+                            const catBg = cat === "P" ? (mismatch ? "#8b2020" : "#7a4a10") : "#2a4a8a";
+                            const catLabel = cat === "P" ? "Physical" : "Special";
+                            return (
+                              <span title={mismatch ? `⚠ ${catLabel} move — Pokémon's ${cat==="P"?"SpA":"Atk"} is much higher` : catLabel}
+                                style={{ fontSize:8, color:"#fff", background:catBg, padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3, flexShrink:0, cursor:"default" }}>
+                                {cat}{mismatch ? " ⚠" : ""}
+                              </span>
+                            );
+                          })()}
                           <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
                           {isOneTime && <span style={{ fontSize:8, color:"#e8a020", background:"rgba(232,160,32,0.12)", border:"1px solid rgba(232,160,32,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0, whiteSpace:"nowrap" }}>1× only</span>}
                         </div>

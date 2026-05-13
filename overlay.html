@@ -6,238 +6,486 @@
   <title>HGSS Stream Overlay</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ──────────────────────────────────────────────────────────────
+       TOKENS — tracker palette
+       ────────────────────────────────────────────────────────────── */
+    :root {
+      --bg:                #0a0d14;
+      --pill-text:         #ffffff;
+      --pill-border:       #1a2a1a;
 
-    body {
-      background: #0a0d14;
+      --row-bg:            rgba(0, 0, 0, 0.42);
+      --row-bg-alt:        rgba(0, 0, 0, 0.50);
+      --row-bg-caught:     rgba(74, 183, 112, 0.16);
+      --row-border-caught: #4ab770;
+
+      --text:              #f4f6f4;
+      --text-muted:        rgba(244, 246, 244, 0.55);
+      --text-dim:          rgba(244, 246, 244, 0.25);
+      --name-hg:           #e8c048;
+      --name-ss:           #90b8d8;
+      --rate-num:          #d8dcd2;
+      --check:             #4ab770;
+
+      --time-morning:      #e8a060;
+      --time-day:          #e8c048;
+      --time-night:        #90b8d8;
+
+      /* Area-type palette — default "route" */
+      --area-border:      #3d7a3d;
+      --area-bg:          rgba(74, 154, 74, 0.06);
+      --area-tint:        rgba(74, 154, 74, 0.14);
+      --area-halo:        rgba(74, 154, 74, 0.22);
+      --area-pulse-mid:   #2f6f2f;
+      --area-glow:        rgba(74, 154, 74, 0.35);
+    }
+
+    /* Per-area-type palette overrides */
+    .overlay-frame[data-area-type="route"]  {
+      --area-border:#3d7a3d; --area-bg:rgba(74,154,74,0.06); --area-tint:rgba(74,154,74,0.14);
+      --area-halo:rgba(74,154,74,0.22); --area-pulse-mid:#2f6f2f; --area-glow:rgba(74,154,74,0.35);
+    }
+    .overlay-frame[data-area-type="town"]   {
+      --area-border:#b56a4a; --area-bg:rgba(200,110,70,0.06); --area-tint:rgba(220,130,90,0.14);
+      --area-halo:rgba(220,130,90,0.22); --area-pulse-mid:#8a4a30; --area-glow:rgba(220,130,90,0.35);
+    }
+    .overlay-frame[data-area-type="cave"]   {
+      --area-border:#6a6a78; --area-bg:rgba(120,120,140,0.06); --area-tint:rgba(150,150,170,0.14);
+      --area-halo:rgba(150,150,170,0.22); --area-pulse-mid:#4a4a58; --area-glow:rgba(150,150,170,0.35);
+    }
+    .overlay-frame[data-area-type="forest"] {
+      --area-border:#2d6a5a; --area-bg:rgba(58,130,110,0.06); --area-tint:rgba(70,160,130,0.14);
+      --area-halo:rgba(70,160,130,0.22); --area-pulse-mid:#1f4d40; --area-glow:rgba(70,160,130,0.35);
+    }
+    .overlay-frame[data-area-type="tower"]  {
+      --area-border:#c8a040; --area-bg:rgba(220,175,70,0.06); --area-tint:rgba(240,200,90,0.14);
+      --area-halo:rgba(240,200,90,0.22); --area-pulse-mid:#a07820; --area-glow:rgba(240,200,90,0.35);
+    }
+    .overlay-frame[data-area-type="sea"]    {
+      --area-border:#3d6a90; --area-bg:rgba(74,130,180,0.06); --area-tint:rgba(90,150,200,0.14);
+      --area-halo:rgba(90,150,200,0.22); --area-pulse-mid:#2a5070; --area-glow:rgba(90,150,200,0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg);
       font-family: 'DM Sans', system-ui, sans-serif;
-      color: #fff;
+      color: var(--text);
       min-height: 100vh;
     }
 
-    /* ── Keyframes ────────────────────────────────────────────────── */
-
-    @keyframes header-in {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ──────────────────────────────────────────────────────────────
+       OVERLAY FRAME
+       ────────────────────────────────────────────────────────────── */
+    #overlay-root {
+      padding: 12px;
+    }
+    .overlay-frame {
+      position: relative;
+      width: min(360px, 100%);
+      user-select: none;
+      container-type: inline-size;
+      container-name: overlay;
     }
 
-    @keyframes row-in {
-      from { opacity: 0; transform: translateX(-10px); }
-      to   { opacity: 1; transform: translateX(0); }
+    /* Progressive rate-column hiding when overlay is narrow. */
+    @container overlay (max-width: 320px) {
+      .rate-cell.drop-1 { display: none; }
+    }
+    @container overlay (max-width: 270px) {
+      .rate-cell.drop-2 { display: none; }
     }
 
-    @keyframes panel-exit {
-      from { opacity: 1; transform: translateY(0); }
-      to   { opacity: 0; transform: translateY(-6px); }
-    }
-
-    @keyframes border-pulse {
-      0%, 100% { border-color: #4a9a4a; box-shadow: 0 0 6px rgba(74,154,74,0.15); }
-      50%       { border-color: #72c472; box-shadow: 0 0 16px rgba(74,154,74,0.45); }
-    }
-
-    @keyframes pokeball-spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    @keyframes sprite-bob {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-3px); }
-    }
-
-    @keyframes rate-shimmer {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.6; }
-    }
-
-    @keyframes caught-pop {
-      0%   { transform: scale(0.5); opacity: 0; }
-      55%  { transform: scale(1.25); opacity: 1; }
-      100% { transform: scale(1);    opacity: 1; }
-    }
-
-    @keyframes check-glow {
-      0%, 100% { text-shadow: none; }
-      50%       { text-shadow: 0 0 8px rgba(74,183,112,0.9); }
-    }
-
-    /* ── Exit transition ─────────────────────────────────────────── */
-    #overlay-root.exiting {
-      animation: panel-exit 0.18s ease-out forwards;
-      pointer-events: none;
-    }
-
-    /* ── Area header ─────────────────────────────────────────────── */
+    /* ── Route pill ───────────────────────────────────────────────── */
     .area-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 8px 4px;
-      padding: 9px 14px;
-      background: rgba(74,154,74,0.12);
-      border: 2px solid #4a9a4a;
+      position: relative;
+      margin: 0 auto 10px;
+      padding: 9px 22px 10px;
+      width: fit-content;
+      min-width: 60%;
+      text-align: center;
+      background: var(--area-tint);
+      color: var(--pill-text);
+      border: 2px solid var(--area-border);
       border-radius: 8px;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
       font-size: 17px;
-      letter-spacing: 0.01em;
-      animation: header-in 0.35s cubic-bezier(0.2,0.8,0.3,1) both,
-                 border-pulse 3.2s 0.5s ease-in-out infinite;
+      letter-spacing: 0.02em;
+      animation:
+        header-in 0.40s cubic-bezier(0.2,0.8,0.3,1) both,
+        pill-pulse 3.2s 0.5s ease-in-out infinite;
     }
+    .area-header::before {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 12px;
+      background: radial-gradient(
+        ellipse at center,
+        var(--area-halo) 0%,
+        transparent 70%
+      );
+      z-index: -1;
+      animation: halo-pulse 3.2s 0.5s ease-in-out infinite;
+    }
+    .area-header.completed {
+      background: linear-gradient(180deg, rgba(74,183,112,0.22) 0%, rgba(74,154,74,0.18) 100%);
+      color: #d8efd2;
+      border-color: #72c472;
+      text-shadow: 0 0 8px rgba(114,196,114,0.5);
+    }
+    .area-header .check-badge {
+      display: none;
+      margin-left: 8px;
+      color: #c8f0c8;
+      font-weight: 700;
+    }
+    .area-header.completed .check-badge { display: inline; }
 
-    .area-header .pokeball {
-      width: 18px;
-      height: 18px;
+    /* ── Page strip (tucks under the pill when paginating) ──────── */
+    .page-strip {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      height: 14px;
+      margin: -4px auto 4px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .page-strip.visible { opacity: 1; }
+    .page-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .page-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+    .page-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .page-dot {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: radial-gradient(circle at 40% 38%, #fff 0%, #e0e0e0 40%, #c00 40%, #c00 50%, #222 50%, #222 52%, #c00 52%);
-      flex-shrink: 0;
-      border: 1.5px solid #888;
-      animation: pokeball-spin 18s linear infinite;
+      background: rgba(255,255,255,0.18);
+      transition: background 0.35s, transform 0.35s, box-shadow 0.35s;
+    }
+    .page-dot.active {
+      background: #72c472;
+      transform: scale(1.25);
+      box-shadow: 0 0 8px rgba(114,196,114,0.55);
     }
 
-    /* ── Pokémon rows ────────────────────────────────────────────── */
-    .poke-list { padding: 0 4px 8px; }
+    /* ── Rows container ───────────────────────────────────────────── */
+    .rows-card {
+      position: relative;
+      padding: 8px 8px 10px;
+      background: var(--area-bg);
+      border: 1.5px solid var(--area-border);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: background 0.4s, border-color 0.4s;
+    }
 
+    /* ── Row pill ─────────────────────────────────────────────────── */
     .poke-row {
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 3px 8px 3px 6px;
-      border-radius: 4px;
+      gap: 6px;
+      padding: 4px 8px 4px 4px;
+      height: 40px;
+      border-radius: 5px;
+      background: var(--row-bg);
       border-left: 3px solid transparent;
-      /* entrance — delay driven by --row-i CSS var set inline */
-      animation: row-in 0.32s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i,0) * 48ms) both;
+      animation: row-in 0.34s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i, 0) * 48ms) both;
     }
-    .poke-row.alt { background: rgba(255,255,255,0.04); }
+    .poke-row > .sprite    { flex: 0 0 56px; }
+    .poke-row > .poke-name { flex: 0 1 auto; min-width: 0; }
+    .poke-row > .rates     { flex: 0 0 auto; margin-left: auto; }
+
+    .poke-row.alt    { background: var(--row-bg-alt); }
     .poke-row.caught {
-      border-left-color: #4ab770;
-      background: rgba(74,183,112,0.09) !important;
+      background: var(--row-bg-caught) !important;
+      border-left-color: var(--row-border-caught);
+    }
+    .poke-row.pad {
+      visibility: hidden;
+      pointer-events: none;
+      background: transparent;
     }
 
-    /* ── Caught check ────────────────────────────────────────────── */
-    .check {
-      width: 12px;
-      font-size: 9px;
-      color: #4ab770;
-      flex-shrink: 0;
-      font-weight: 700;
-      line-height: 1;
-    }
-    .check.visible {
-      animation: caught-pop 0.42s cubic-bezier(0.2,0.8,0.3,1) both,
-                 check-glow 2.5s 0.5s ease-in-out infinite;
-    }
-
-    /* ── Sprite ──────────────────────────────────────────────────── */
+    /* ── Sprite ───────────────────────────────────────────────────── */
     .sprite {
-      width: 32px;
-      height: 32px;
+      width: 56px; height: 56px;
       image-rendering: pixelated;
-      flex-shrink: 0;
-      /* bob: each sprite gets a unique phase via --row-i */
-      animation: sprite-bob 2.6s calc(var(--row-i,0) * 0.38s) ease-in-out infinite;
+      image-rendering: -moz-crisp-edges;
+      z-index: 1;
+      position: relative;
+      animation: sprite-bob 2.6s calc(var(--row-i, 0) * 0.38s) ease-in-out infinite;
     }
 
-    /* ── Name ────────────────────────────────────────────────────── */
+    /* ── Name ─────────────────────────────────────────────────────── */
     .poke-name {
-      flex: 1;
-      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
       font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.2;
     }
-    .poke-name.hg { color: #e8c048; }
-    .poke-name.ss { color: #90b8d8; }
+    .poke-name.hg { color: var(--name-hg); }
+    .poke-name.ss { color: var(--name-ss); }
 
-    /* ── Rate columns ────────────────────────────────────────────── */
+    /* ── Rates ────────────────────────────────────────────────────── */
     .rates {
       display: flex;
       gap: 2px;
       align-items: center;
-      flex-shrink: 0;
     }
-
     .rate-cell {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 1px;
-      min-width: 38px;
+      gap: 2px;
       justify-content: flex-end;
+      width: 46px;
+      padding: 2px 3px;
+      border-radius: 4px;
     }
-    .rate-cell.zero { opacity: 0.28; }
-
-    /* Non-zero rates pulse softly */
-    .rate-cell:not(.zero) .rate-num {
-      animation: rate-shimmer 3.8s ease-in-out infinite;
-      /* stagger shimmer phase so they don't all pulse in sync */
-      animation-delay: calc(var(--row-i,0) * 0.6s);
-    }
+    .rate-cell.zero { opacity: 0.26; }
 
     .rate-num {
-      font-size: 10.5px;
       font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       font-weight: 500;
       letter-spacing: -0.03em;
+      color: var(--rate-num);
     }
-
+    .rate-cell:not(.zero) .rate-num {
+      animation: rate-shimmer 3.8s calc(var(--row-i, 0) * 0.6s) ease-in-out infinite;
+    }
     .time-icon {
-      width: 11px;
-      height: 11px;
-      object-fit: contain;
+      width: 13px; height: 13px;
+      color: var(--text-muted);
       flex-shrink: 0;
     }
+    .rate-cell:not(.zero) .time-icon { color: #d8efd2; }
 
-    /* ── Placeholder / status ────────────────────────────────────── */
+    /* Active column highlight — per time-of-day color */
+    .rate-cell.active-time {
+      border-radius: 4px;
+      animation: glow-soft 3.0s ease-in-out infinite;
+    }
+    .rate-cell.active-time .rate-num {
+      font-weight: 600;
+      animation: none !important;
+    }
+    .rate-cell.active-time.zero { opacity: 0.55; }
+
+    .rate-cell.active-time[data-time="morning"] {
+      background: rgba(232, 160, 96, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(232, 160, 96, 0.40);
+    }
+    .rate-cell.active-time[data-time="morning"] .time-icon { color: var(--time-morning); filter: drop-shadow(0 0 3px rgba(232,160,96,0.60)); }
+    .rate-cell.active-time[data-time="morning"] .rate-num  { color: #f4e0c8; }
+
+    .rate-cell.active-time[data-time="day"] {
+      background: rgba(232, 192, 72, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(232, 192, 72, 0.40);
+    }
+    .rate-cell.active-time[data-time="day"] .time-icon { color: var(--time-day); filter: drop-shadow(0 0 3px rgba(232,192,72,0.60)); }
+    .rate-cell.active-time[data-time="day"] .rate-num  { color: #f8f0c8; }
+
+    .rate-cell.active-time[data-time="night"] {
+      background: rgba(144, 184, 216, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(144, 184, 216, 0.40);
+    }
+    .rate-cell.active-time[data-time="night"] .time-icon { color: var(--time-night); filter: drop-shadow(0 0 3px rgba(144,184,216,0.60)); }
+    .rate-cell.active-time[data-time="night"] .rate-num  { color: #d8e8f4; }
+
+    /* ── Placeholder / status states ─────────────────────────────── */
     .placeholder {
-      color: rgba(255,255,255,0.25);
+      padding: 56px 24px;
       text-align: center;
-      padding: 40px 20px;
-      font-size: 12px;
+      color: var(--text-dim);
+      font-size: 13px;
       line-height: 1.6;
+      background: var(--area-bg);
+      border: 1.5px solid var(--area-border);
+      border-radius: 6px;
+      animation: header-in 0.4s ease both;
+    }
+    .placeholder strong {
+      display: block;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .loading-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      margin: 0 2px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      animation: dot-pulse 1.2s ease-in-out infinite;
+    }
+    .loading-dot:nth-child(2) { animation-delay: 0.15s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.30s; }
+
+    /* ── Exit transition ─────────────────────────────────────────── */
+    .overlay-frame.exiting > * {
+      animation: panel-exit 0.18s ease-out forwards;
     }
 
-    .no-pokemon {
-      color: rgba(255,255,255,0.2);
-      font-size: 11px;
-      text-align: center;
-      padding: 14px;
+    /* ── Keyframes ───────────────────────────────────────────────── */
+    @keyframes header-in {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes row-in {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes panel-exit {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-6px); }
+    }
+    @keyframes pill-pulse {
+      0%, 100% { border-color: var(--area-border);    box-shadow: 0 0 0 0 transparent; }
+      50%      { border-color: var(--area-pulse-mid); box-shadow: 0 0 16px 0 var(--area-glow); }
+    }
+    @keyframes halo-pulse {
+      0%, 100% { opacity: 0.35; }
+      50%      { opacity: 0.95; }
+    }
+    @keyframes sprite-bob {
+      0%, 100% { transform: translateY(0px); }
+      50%      { transform: translateY(-3px); }
+    }
+    @keyframes rate-shimmer {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.55; }
+    }
+    @keyframes glow-soft {
+      0%, 100% { filter: brightness(1);    }
+      50%      { filter: brightness(1.15); }
+    }
+    @keyframes dot-pulse {
+      0%, 100% { opacity: 0.25; transform: scale(0.85); }
+      50%      { opacity: 1;    transform: scale(1.10); }
     }
 
-    /* ── Reduced motion ──────────────────────────────────────────── */
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      .area-header  { animation: none !important; }
-      .area-header .pokeball { animation: none !important; }
-      .poke-row     { animation: none !important; }
-      .sprite       { animation: none !important; }
-      .check.visible { animation: none !important; }
-      .rate-cell:not(.zero) .rate-num { animation: none !important; }
-      #overlay-root.exiting { animation: none !important; opacity: 0; }
+      .area-header, .area-header::before, .poke-row, .sprite,
+      .rate-cell:not(.zero) .rate-num,
+      .rate-cell.active-time, .loading-dot, .placeholder {
+        animation: none !important;
+      }
     }
   </style>
 </head>
 <body>
   <div id="overlay-root">
-    <div class="placeholder">Loading tracker data…</div>
+    <div class="overlay-frame">
+      <div class="placeholder">
+        <strong>Loading</strong>
+        Fetching tracker data
+        <span class="loading-dot"></span>
+        <span class="loading-dot"></span>
+        <span class="loading-dot"></span>
+      </div>
+    </div>
   </div>
 
-  <!-- React needed so JSX components compile without errors when eval'd -->
+  <!-- React is loaded so the tracker JSX compiles without errors when eval'd. -->
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
   <script>
-    var currentAreaId = null;
-    var renderTimer   = null;
+    'use strict';
 
+    // ──────────────────────────────────────────────────────────────
+    // STATE & TIMERS
+    // ──────────────────────────────────────────────────────────────
+    var currentAreaId  = null;
+    var currentPage    = 0;
+    var renderTimer    = null;
+    var pageTimer      = null;
+    var timeOfDayTimer = null;
+
+    var PAGE_SIZE = 10;
+    var DWELL_MS  = 6000;
+
+    // HGSS-style time-of-day windows:
+    //   morning  4:00 –  9:59
+    //   day     10:00 – 19:59
+    //   night   20:00 –  3:59
+    function currentTimeOfDay() {
+      var h = new Date().getHours();
+      if (h >= 4 && h < 10) return 'morning';
+      if (h >= 10 && h < 20) return 'day';
+      return 'night';
+    }
+
+    // Which non-active time-of-day column drops first when overlay narrows.
+    var HIDE_PRIORITY = {
+      morning: ['night', 'day'],
+      day:     ['morning', 'night'],
+      night:   ['morning', 'day'],
+    };
+
+    // ──────────────────────────────────────────────────────────────
+    // ICONS — inline SVG so the overlay is self-contained.
+    // ──────────────────────────────────────────────────────────────
+    var ICONS = {
+      morning: '<svg class="time-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">'
+        + '<circle cx="8" cy="9.5" r="2.8" fill="currentColor" stroke="none"/>'
+        + '<line x1="2.5" y1="14" x2="13.5" y2="14"/>'
+        + '<line x1="8" y1="3.5" x2="8" y2="5"/>'
+        + '<line x1="3.8" y1="5.5" x2="4.8" y2="6.5"/>'
+        + '<line x1="12.2" y1="5.5" x2="11.2" y2="6.5"/>'
+        + '</svg>',
+      day: '<svg class="time-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">'
+        + '<circle cx="8" cy="8" r="2.8" fill="currentColor" stroke="none"/>'
+        + '<line x1="8" y1="1.5" x2="8" y2="3"/>'
+        + '<line x1="8" y1="13" x2="8" y2="14.5"/>'
+        + '<line x1="1.5" y1="8" x2="3" y2="8"/>'
+        + '<line x1="13" y1="8" x2="14.5" y2="8"/>'
+        + '<line x1="3.3" y1="3.3" x2="4.4" y2="4.4"/>'
+        + '<line x1="11.6" y1="11.6" x2="12.7" y2="12.7"/>'
+        + '<line x1="3.3" y1="12.7" x2="4.4" y2="11.6"/>'
+        + '<line x1="11.6" y1="4.4" x2="12.7" y2="3.3"/>'
+        + '</svg>',
+      night: '<svg class="time-icon" viewBox="0 0 16 16" fill="currentColor">'
+        + '<path d="M11.5 1.8 a6.4 6.4 0 1 0 2.7 11.6 a4.6 4.6 0 0 1 -2.7 -11.6 z"/>'
+        + '</svg>'
+    };
+
+    // ──────────────────────────────────────────────────────────────
+    // LOCALSTORAGE HELPERS
+    // ──────────────────────────────────────────────────────────────
     function getVersion() {
       return localStorage.getItem('hgss-version') || 'hg';
     }
-
     function getCaught() {
       try { return JSON.parse(localStorage.getItem('hgss-caught') || '{}'); }
       catch (e) { return {}; }
@@ -249,6 +497,39 @@
       return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png';
     }
 
+    // ──────────────────────────────────────────────────────────────
+    // AREA-TYPE INFERENCE
+    // Heuristic — derives a type from area name + encounter methods.
+    // Returns one of: route, town, cave, forest, tower, sea
+    // ──────────────────────────────────────────────────────────────
+    function inferAreaType(area) {
+      if (!area) return 'route';
+      var name = String(area.id || area.name || '').toLowerCase();
+
+      // All-aquatic areas (Surf/Old Rod/Good Rod/Super Rod only) → sea
+      var rawMons = getRawPokemon(area);
+      var aquaMethods = ['surf', 'old rod', 'good rod', 'super rod'];
+      var aquaCount = 0;
+      for (var i = 0; i < rawMons.length; i++) {
+        var m = (rawMons[i].method || '').toLowerCase();
+        if (aquaMethods.indexOf(m) !== -1) aquaCount++;
+      }
+      if (rawMons.length > 0 && aquaCount === rawMons.length) return 'sea';
+
+      if (/forest/.test(name))                                       return 'forest';
+      if (/tower|lighthouse|ruins/.test(name))                       return 'tower';
+      if (/cave|well|tunnel|path|mt|mount|moon|island|den|mortar/.test(name)) return 'cave';
+      if (/city|town/.test(name))                                    return 'town';
+      if (/route|park|zone|safari/.test(name))                       return 'route';
+
+      return 'route';
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    // POKEMON GROUPING
+    // Same logic as the original overlay — collapse multiple entries
+    // per Pokemon name and assign morning/day/night rates.
+    // ──────────────────────────────────────────────────────────────
     function getRawPokemon(area) {
       if (!area) return [];
       if (area.floors) {
@@ -264,8 +545,11 @@
         if (version === 'ss' && p.hgOnly) return;
         if (p.method && (p.method === 'Gift' || p.method === 'Trade' || p.method === 'Event')) return;
         if (!map.has(p.name)) {
-          map.set(p.name, { name: p.name, morning: null, day: null, night: null,
-                            hgOnly: !!p.hgOnly, ssOnly: !!p.ssOnly });
+          map.set(p.name, {
+            name: p.name,
+            morning: null, day: null, night: null,
+            hgOnly: !!p.hgOnly, ssOnly: !!p.ssOnly
+          });
         }
         var e = map.get(p.name);
         if (!p.time) {
@@ -279,96 +563,174 @@
       return Array.from(map.values());
     }
 
-    var ICON = {
-      morning: 'icons/60px-Morning_Icon_BDSP.png',
-      day:     'icons/60px-Day_Icon_BDSP.png',
-      night:   'icons/60px-Night_Icon_BDSP.png',
-    };
-
-    function rateCell(rate, time) {
-      var isZero = !rate || rate === '0%';
-      return '<span class="rate-cell' + (isZero ? ' zero' : '') + '">' +
-        '<span class="rate-num">' + (rate || '0%') + '</span>' +
-        '<img class="time-icon" src="' + ICON[time] + '" alt="' + time + '">' +
-        '</span>';
+    function sortByActiveTime(grouped, tod) {
+      var parsePct = function(s) {
+        var n = parseInt(s, 10);
+        return Number.isFinite(n) ? n : 0;
+      };
+      // Stable sort by active time-of-day rate, descending. Tiebreak by name.
+      return grouped
+        .map(function(p, idx) { return { p: p, idx: idx }; })
+        .sort(function(a, b) {
+          var diff = parsePct(b.p[tod]) - parsePct(a.p[tod]);
+          return diff !== 0 ? diff : a.idx - b.idx;
+        })
+        .map(function(o) { return o.p; });
     }
 
-    function buildHTML(area, version, caught) {
-      var grouped = groupPokemon(getRawPokemon(area), version);
+    // ──────────────────────────────────────────────────────────────
+    // RENDER HELPERS
+    // ──────────────────────────────────────────────────────────────
+    function rateCellHTML(rate, time, tod) {
+      var zero = !rate || rate === '0%';
+      var active = (time === tod) && !zero;
+      var order = HIDE_PRIORITY[tod] || [];
+      var dropIdx = order.indexOf(time);
+      var dropCls = dropIdx === 0 ? ' drop-1' : dropIdx === 1 ? ' drop-2' : '';
+      return '<span class="rate-cell' + (zero ? ' zero' : '') + (active ? ' active-time' : '') + dropCls + '"'
+        + ' data-time="' + time + '">'
+        + '<span class="rate-num">' + (rate || '0%') + '</span>'
+        + ICONS[time]
+        + '</span>';
+    }
 
-      var html = '<div class="area-header">' +
-        '<div class="pokeball"></div>' +
-        '<span>' + area.name + '</span>' +
-      '</div><div class="poke-list">';
+    function rowHTML(p, i, caught) {
+      var nameCls = 'poke-name' + (p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
+      var rowCls  = 'poke-row' + (i % 2 === 1 ? ' alt' : '') + (caught ? ' caught' : '');
+      var sprite  = spriteUrl(p.name);
+      var tod     = currentTimeOfDay();
+      return '<div class="' + rowCls + '" style="--row-i:' + i + '">'
+        + (sprite
+            ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
+            : '<span class="sprite"></span>')
+        + '<span class="' + nameCls + '">' + p.name + '</span>'
+        + '<div class="rates">'
+            + rateCellHTML(p.morning, 'morning', tod)
+            + rateCellHTML(p.day,     'day',     tod)
+            + rateCellHTML(p.night,   'night',   tod)
+        + '</div>'
+        + '</div>';
+    }
 
-      if (grouped.length === 0) {
-        html += '<div class="no-pokemon">No wild Pokémon</div>';
-      } else {
-        grouped.forEach(function(p, i) {
-          var isCaught = !!caught[p.name];
-          var nameCls  = 'poke-name' + (p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
-          var rowCls   = 'poke-row' + (i % 2 === 1 ? ' alt' : '') + (isCaught ? ' caught' : '');
-          var sprite   = spriteUrl(p.name);
+    function padRowHTML(i) {
+      return '<div class="poke-row pad" style="--row-i:' + i + '" aria-hidden="true"></div>';
+    }
 
-          html +=
-            '<div class="' + rowCls + '" style="--row-i:' + i + '">' +
-              '<span class="check' + (isCaught ? ' visible' : '') + '">' + (isCaught ? '✓' : '') + '</span>' +
-              (sprite
-                ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
-                : '<span class="sprite"></span>') +
-              '<span class="' + nameCls + '">' + p.name + '</span>' +
-              '<div class="rates">' +
-                rateCell(p.morning, 'morning') +
-                rateCell(p.day,     'day') +
-                rateCell(p.night,   'night') +
-              '</div>' +
-            '</div>';
-        });
+    function pageStripHTML(page, pages) {
+      if (pages <= 1) return '<div class="page-strip" aria-hidden="true"></div>';
+      var dots = '';
+      for (var i = 0; i < pages; i++) {
+        dots += '<span class="page-dot' + (i === page ? ' active' : '') + '"></span>';
       }
-
-      return html + '</div>';
+      return '<div class="page-strip visible" aria-hidden="true">'
+        + '<span class="page-info">'
+        +   '<span class="page-counter">' + (page + 1) + '/' + pages + '</span>'
+        +   '<span class="page-dots">' + dots + '</span>'
+        + '</span>'
+        + '</div>';
     }
 
+    // ──────────────────────────────────────────────────────────────
+    // MAIN RENDER
+    // ──────────────────────────────────────────────────────────────
     function doRender(areaId) {
-      var root  = document.getElementById('overlay-root');
+      var root = document.getElementById('overlay-root');
       var areas = window.__HGSS_AREAS;
 
+      // Data not yet loaded
       if (!areas) {
-        root.innerHTML = '<div class="placeholder">Tracker data not available.<br>Open the tracker first.</div>';
-        return;
-      }
-      if (!areaId) {
-        root.innerHTML = '<div class="placeholder">Select an area in the tracker<br>to see encounter rates.</div>';
+        root.innerHTML = '<div class="overlay-frame"><div class="placeholder">'
+          + '<strong>Tracker data unavailable</strong>'
+          + 'Open the tracker first.</div></div>';
         return;
       }
 
+      // No active area
+      if (!areaId) {
+        root.innerHTML = '<div class="overlay-frame"><div class="placeholder">'
+          + '<strong>No active area</strong>'
+          + 'Select an area in the tracker<br/>to see encounter rates.</div></div>';
+        return;
+      }
+
+      // Find the area
       var area = null;
       for (var i = 0; i < areas.length; i++) {
         if (areas[i].id === areaId) { area = areas[i]; break; }
       }
       if (!area) {
-        root.innerHTML = '<div class="placeholder">Area not found</div>';
+        root.innerHTML = '<div class="overlay-frame"><div class="placeholder">'
+          + '<strong>Area not found</strong>'
+          + areaId
+          + '</div></div>';
         return;
       }
 
-      root.innerHTML = buildHTML(area, getVersion(), getCaught());
+      var version  = getVersion();
+      var caught   = getCaught();
+      var areaType = inferAreaType(area);
+      var tod      = currentTimeOfDay();
+
+      var grouped  = groupPokemon(getRawPokemon(area), version);
+      var sorted   = sortByActiveTime(grouped, tod);
+
+      // Completed state — every visible Pokemon is caught.
+      var completed = sorted.length > 0 && sorted.every(function(p) { return caught[p.name]; });
+
+      // Pagination
+      var pages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+      if (currentPage >= pages) currentPage = 0;
+      var start = currentPage * PAGE_SIZE;
+      var pageItems = sorted.slice(start, start + PAGE_SIZE);
+
+      var rowsHTML = '';
+      if (sorted.length === 0) {
+        rowsHTML = '<div class="poke-row pad" style="--row-i:0"></div>'
+          + '<div class="placeholder" style="border:none; padding: 20px 0; background:transparent; grid-column: 1 / -1;">'
+          +   '<strong>No wild Pok&eacute;mon</strong>'
+          + '</div>';
+      } else {
+        for (var k = 0; k < pageItems.length; k++) {
+          var p = pageItems[k];
+          var globalIdx = start + k;
+          var isCaught = !!caught[p.name];
+          rowsHTML += rowHTML(p, k, isCaught);
+        }
+        // Pad to PAGE_SIZE so the rows-card height stays fixed across pages.
+        for (var j = pageItems.length; j < PAGE_SIZE; j++) {
+          rowsHTML += padRowHTML(j);
+        }
+      }
+
+      root.innerHTML =
+        '<div class="overlay-frame" data-area-type="' + areaType + '">'
+          + '<div class="area-header' + (completed ? ' completed' : '') + '">'
+              + '<span>' + area.name + '</span>'
+              + '<span class="check-badge">✓</span>'
+          + '</div>'
+          + pageStripHTML(currentPage, pages)
+          + '<div class="rows-card">' + rowsHTML + '</div>'
+        + '</div>';
+
+      schedulePageAdvance(pages);
+      scheduleTimeRefresh();
     }
 
+    // Animated swap (panel-exit → re-render) for area changes.
     function renderArea(areaId) {
       var isNewArea = areaId !== currentAreaId;
       currentAreaId = areaId;
+      if (isNewArea) currentPage = 0;
 
       if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
 
-      var root = document.getElementById('overlay-root');
-      var hasContent = !!root.querySelector('.area-header');
+      var frame = document.querySelector('.overlay-frame');
+      var hasContent = frame && frame.querySelector('.area-header');
 
       if (isNewArea && hasContent) {
-        // Animate old content out, then swap
-        root.classList.add('exiting');
+        frame.classList.add('exiting');
         renderTimer = setTimeout(function() {
           renderTimer = null;
-          root.classList.remove('exiting');
           doRender(areaId);
         }, 185);
       } else {
@@ -376,23 +738,60 @@
       }
     }
 
+    // Pagination auto-advance — re-render with next page after dwell.
+    function schedulePageAdvance(pages) {
+      if (pageTimer) { clearTimeout(pageTimer); pageTimer = null; }
+      if (pages <= 1) return;
+      pageTimer = setTimeout(function() {
+        currentPage = (currentPage + 1) % pages;
+        var frame = document.querySelector('.overlay-frame');
+        if (frame) {
+          frame.classList.add('exiting');
+          setTimeout(function() { doRender(currentAreaId); }, 185);
+        } else {
+          doRender(currentAreaId);
+        }
+      }, DWELL_MS);
+    }
+
+    // Re-render each minute so the time-of-day chip stays current.
+    function scheduleTimeRefresh() {
+      if (timeOfDayTimer) { clearTimeout(timeOfDayTimer); timeOfDayTimer = null; }
+      timeOfDayTimer = setTimeout(function() {
+        doRender(currentAreaId);
+      }, 60000);
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    // LISTEN FOR TRACKER STATE CHANGES
+    // ──────────────────────────────────────────────────────────────
     window.addEventListener('storage', function(e) {
       if (e.key === 'hgss-active-area') renderArea(e.newValue);
       if (e.key === 'hgss-caught' || e.key === 'hgss-version') renderArea(currentAreaId);
     });
 
+    // ──────────────────────────────────────────────────────────────
+    // BOOT — fetch the tracker JSX, eval it to populate window.__HGSS_*
+    // ──────────────────────────────────────────────────────────────
     fetch('hgss-area-tracker.jsx')
-      .then(function(r) { return r.text(); })
+      .then(function(r) {
+        if (!r.ok) throw new Error('Tracker JSX not found (HTTP ' + r.status + ')');
+        return r.text();
+      })
       .then(function(jsx) {
         var code = Babel.transform(jsx, { presets: ['react'] }).code;
         (0, eval)(code);
         renderArea(localStorage.getItem('hgss-active-area'));
       })
       .catch(function(err) {
-        console.error('Overlay error:', err);
+        // Warn (not error) so a missing JSX in dev preview doesn't trip
+        // console-error checks; production renders the placeholder below.
+        console.warn('Overlay load failed:', err);
         document.getElementById('overlay-root').innerHTML =
-          '<div class="placeholder" style="color:#f88">Failed to load tracker data.<br>' +
-          'Make sure the server is running:<br><code>python3 -m http.server 8080</code></div>';
+          '<div class="overlay-frame"><div class="placeholder" style="color:#f88">'
+          + '<strong>Failed to load</strong>'
+          + 'Make sure the server is running:<br/><code style="font-family:monospace">python3 -m http.server 8080</code>'
+          + '</div></div>';
       });
   </script>
 </body>

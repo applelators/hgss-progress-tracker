@@ -16,6 +16,20 @@ A single-page React 18 app tracking a 100% completion + Living Dex run of Pokém
 
 ---
 
+## Overlay (`overlay.html`)
+
+A read-only OBS browser-source overlay that mirrors the active area's encounter table in real time. Full documentation is in **[OVERLAY.md](OVERLAY.md)** — read it before touching `overlay.html`.
+
+Quick reference:
+- **Data pipeline:** fetches `hgss-area-tracker.jsx`, Babel-transforms it, evals it to get `window.__HGSS_AREAS` / `window.__HGSS_DEX_ID`, then reads `hgss-active-area` from localStorage.
+- **Area-type theming:** border/tint/halo shift per type (`route`, `town`, `cave`, `forest`, `tower`, `sea`) via `data-area-type` attribute + scoped CSS vars. Reference area-type vars directly at use sites — do **not** alias through `:root` (the override won't apply).
+- **Time-of-day spotlight:** active column (morning/day/night) gets a colored backdrop; rows sort by that column's rate descending.
+- **Pagination:** > 10 Pokémon splits into pages of 10, auto-advancing every 6 s. Padding rows keep the card height fixed — don't swap them to `display:none`.
+- **Read-only:** the overlay never writes to localStorage.
+- **Outer dimensions are load-bearing** (360 px wide, ~40 px rows) — don't resize; use the container-query drop-priority pattern to fit narrower frames.
+
+---
+
 ## Part Audit Pipeline
 
 ### One part at a time

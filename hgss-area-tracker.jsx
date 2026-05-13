@@ -3694,7 +3694,7 @@ const AREAS = [
           {name:"Donphan", method:"Grass", levels:"43–47", rate:"5%", hgOnly:true},
           {name:"Larvitar", method:"Grass", levels:"25–35", rate:"5%"},
         ], items:[
-          {name:"Iron", hidden:false, note:"Upper mountainside"},
+          {name:"Iron", hidden:true, note:"Upper mountainside"},
         ], trainers:[] },
       { label:"3F Cave", pokemon:[
           {name:"Golbat", method:"Cave", levels:"40–45", rate:"20%"},
@@ -3748,10 +3748,10 @@ const AREAS = [
           {name:"Nugget", hidden:false, note:"1F"},
           {name:"Hyper Potion", hidden:false, note:"1F"},
           {name:"Full Restore", hidden:false, note:"1F"},
-          {name:"Revive", hidden:false, note:"1F"},
+          {name:"Revive", hidden:true, note:"1F"},
           {name:"Max Elixir", hidden:false, note:"1F"},
           {name:"Sea Incense", hidden:false, note:"1F"},
-          {name:"Rare Candy", hidden:false, note:"1F"},
+          {name:"Rare Candy", hidden:true, note:"1F"},
         ], trainers:[] },
       { label:"2F", pokemon:[
           {name:"Golbat", method:"Cave", levels:"45–55", rate:"25%"},
@@ -3765,9 +3765,9 @@ const AREAS = [
         ], items:[
           {name:"TM24 Thunderbolt", hidden:false, note:"2F"},
           {name:"PP Up", hidden:false, note:"×2, 2F"},
-          {name:"Zinc", hidden:false, note:"2F"},
-          {name:"Full Heal", hidden:false, note:"2F"},
-          {name:"Big Pearl", hidden:false, note:"2F"},
+          {name:"Zinc", hidden:true, note:"2F"},
+          {name:"Full Heal", hidden:true, note:"2F"},
+          {name:"Big Pearl", hidden:true, note:"2F"},
           {name:"Ultra Ball", hidden:false, note:"×2, 2F"},
           {name:"Odd Incense", hidden:false, note:"2F"},
           {name:"Protein", hidden:false, note:"2F"},

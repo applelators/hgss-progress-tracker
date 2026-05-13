@@ -675,19 +675,9 @@
       var root = document.getElementById('overlay-root');
       var areas = window.__HGSS_AREAS;
 
-      // Data not yet loaded
-      if (!areas) {
-        root.innerHTML = '<div class="overlay-frame"><div class="placeholder">'
-          + '<strong>Tracker data unavailable</strong>'
-          + 'Open the tracker first.</div></div>';
-        return;
-      }
-
-      // No active area
-      if (!areaId) {
-        root.innerHTML = '<div class="overlay-frame"><div class="placeholder">'
-          + '<strong>No active area</strong>'
-          + 'Select an area in the tracker<br/>to see encounter rates.</div></div>';
+      // Data not yet loaded or no active area — hide overlay entirely
+      if (!areas || !areaId) {
+        root.innerHTML = '';
         return;
       }
 

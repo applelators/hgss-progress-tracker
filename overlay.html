@@ -483,9 +483,10 @@
     // ──────────────────────────────────────────────────────────────
     // STATE — polled from /state worker; localStorage is the fallback
     // ──────────────────────────────────────────────────────────────
-    var _polledVersion = null;
-    var _polledCaught  = null;
-    var _polledAreaId  = null;
+    var _polledVersion   = null;
+    var _polledCaught    = null;
+    var _polledCaughtStr = null;  // serialized for change detection
+    var _polledAreaId    = null;
 
     function getVersion() {
       return _polledVersion || localStorage.getItem('hgss-version') || 'hg';
@@ -505,7 +506,10 @@
           if (!s) return;
           var changed = false;
           if (s.version && s.version !== _polledVersion) { _polledVersion = s.version; changed = true; }
-          if (s.caught)  { _polledCaught  = s.caught;  changed = true; }
+          if (s.caught) {
+            var cs = JSON.stringify(s.caught);
+            if (cs !== _polledCaughtStr) { _polledCaught = s.caught; _polledCaughtStr = cs; changed = true; }
+          }
           if (s.areaId && s.areaId !== _polledAreaId) {
             _polledAreaId = s.areaId;
             changed = true;

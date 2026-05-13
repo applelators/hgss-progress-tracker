@@ -538,6 +538,13 @@
       return area.pokemon || [];
     }
 
+    function resolveRate(rate, version) {
+      if (!rate) return rate;
+      var m = rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
+      if (m) return version === 'hg' ? m[1] : m[2];
+      return rate;
+    }
+
     function groupPokemon(rawList, version) {
       var map = new Map();
       rawList.forEach(function(p) {
@@ -552,12 +559,13 @@
           });
         }
         var e = map.get(p.name);
+        var rate = resolveRate(p.rate, version);
         if (!p.time) {
-          if (!e.morning) e.morning = p.rate;
-          if (!e.day)     e.day     = p.rate;
-          if (!e.night)   e.night   = p.rate;
+          if (!e.morning) e.morning = rate;
+          if (!e.day)     e.day     = rate;
+          if (!e.night)   e.night   = rate;
         } else {
-          e[p.time] = p.rate;
+          e[p.time] = rate;
         }
       });
       return Array.from(map.values());

@@ -416,7 +416,7 @@ const AREAS = [
           {name:"Goldeen",   method:"Old Rod", levels:"10", rate:"15%"},
         ], items:[
           {name:"X Attack",    hidden:false, note:"NW area"},
-          {name:"Great Ball",  hidden:false, note:"Between two rocks SE of Hiker Russel"},
+          {name:"Great Ball",  hidden:true,  note:"Between two rocks SE of Hiker Russel"},
           {name:"Great Ball",  hidden:false, note:"E-central near Firebreather Bill"},
           {name:"Potion",      hidden:false, note:"W-central, N side of largest pool"},
           {name:"Parlyz Heal", hidden:true,  note:"E of largest pool on a stalagmite"},
@@ -2155,7 +2155,8 @@ const AREAS = [
         {name:"Graveler", method:"Rock Smash", levels:"30–33", rate:"20%"},
       ], items:[
         {name:"Potion",      hidden:false, note:"SE of bridge"},
-        {name:"Full Heal",   hidden:true,  note:"×2 — S of bridge (hidden) + between central ridges under bridge"},
+        {name:"Full Heal",   hidden:true,  note:"S of bridge, southern ridge W side"},
+        {name:"Full Heal",   hidden:false, note:"Between central ridges, under S end of bridge"},
         {name:"Max Potion",  hidden:true,  note:"W-central area, one step S of three rocks along wall"},
         {name:"Max Revive",  hidden:false, note:"NE area, narrow passage (requires Strength)"},
       ], trainers:[] },
@@ -3418,7 +3419,8 @@ const AREAS = [
           {name:"Zubat", method:"Cave", levels:"20–24", rate:"15%"},
         ], items:[
           {name:"Grip Claw", hidden:false, note:"B1F"},
-          {name:"Ice Heal", hidden:false, note:"×2, B1F"},
+          {name:"Ice Heal", hidden:true,  note:"B1F — W side of lighter-colored ground"},
+          {name:"Ice Heal", hidden:false, note:"B1F — NE area, on rocky ridge"},
         ], trainers:[
           {class:"Skier", name:"Cady", team:[{name:"Delibird",level:53}]},
         ] },
@@ -3442,7 +3444,7 @@ const AREAS = [
           {name:"Zubat", method:"Cave", levels:"20–24", rate:"10%"},
           {name:"Seel", method:"Cave", levels:"22–26", rate:"10%"},
         ], items:[
-          {name:"Pearl", hidden:false, note:"×2, B3F lower"},
+          {name:"Pearl", hidden:true,  note:"×2, B3F lower"},
           {name:"Max Revive", hidden:false, note:"B3F lower"},
         ], trainers:[] },
       { label:"B4F", pokemon:[
@@ -3765,11 +3767,13 @@ const AREAS = [
           {name:"Wobbuffet", method:"Cave", levels:"45–55", rate:"5%"},
         ], items:[
           {name:"TM24 Thunderbolt", hidden:false, note:"2F"},
-          {name:"PP Up", hidden:false, note:"×2, 2F"},
+          {name:"PP Up", hidden:false, note:"2F — W of west-central ladder (requires Rock Smash)"},
+          {name:"PP Up", hidden:true,  note:"2F — SE clearing, lone crystal in SE corner"},
           {name:"Zinc", hidden:true, note:"2F"},
           {name:"Full Heal", hidden:true, note:"2F"},
           {name:"Big Pearl", hidden:true, note:"2F"},
-          {name:"Ultra Ball", hidden:false, note:"×2, 2F"},
+          {name:"Ultra Ball", hidden:true,  note:"2F — SE clearing, NE of northernmost lone crystal"},
+          {name:"Ultra Ball", hidden:false, note:"2F — NW, west-central area"},
           {name:"Odd Incense", hidden:false, note:"2F"},
           {name:"Protein", hidden:false, note:"2F"},
         ], trainers:[] },

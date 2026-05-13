@@ -4361,6 +4361,8 @@ const TRADE_EVO_SET = new Set(["Alakazam","Machamp","Golem","Gengar"]);
 // Used in PokemonEntry to flag when a better hunting spot exists elsewhere.
 function _locPct(loc, ver) {
   if (!loc.rate) return null;
+  const mHG = loc.rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
+  if (mHG) return parseRatePct(ver === "hg" ? mHG[1] : mHG[2]);
   const m = loc.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
   if (m) return parseRatePct(ver === "hg" ? m[1] : m[2]);
   return parseRatePct(loc.rate);
@@ -8875,9 +8877,12 @@ function HuntTab({ caught, version, isMobile }) {
         return true;
       })
       .map(loc => {
-        const splitMatch = loc.rate && loc.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
+        const mHG2      = loc.rate && loc.rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
+        const splitMatch = !mHG2 && loc.rate && loc.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
         let pct;
-        if (splitMatch) {
+        if (mHG2) {
+          pct = parseRatePct(version === "hg" ? mHG2[1] : mHG2[2]);
+        } else if (splitMatch) {
           pct = version === "hg" ? parseRatePct(splitMatch[1]) : parseRatePct(splitMatch[2]);
         } else {
           pct = parseRatePct(loc.rate);
@@ -9012,7 +9017,7 @@ function HuntTab({ caught, version, isMobile }) {
                         <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>{loc.part}</div>
                       </div>
                       <div style={{ textAlign:"right", flexShrink:0 }}>
-                        <RateDisplay rate={loc.rate} isMobile={isMobile} />
+                        <RateDisplay rate={loc.rate} isMobile={isMobile} version={version} />
                       </div>
                     </div>
                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
@@ -10373,6 +10378,8 @@ function renderPokemonList(pokemon, caught, toggleCaught, version, isMobile, cho
   // Sort within each consecutive method block by effective rate descending.
   // Method block order is preserved; only intra-group ordering changes.
   const getPct = p => {
+    const mHG = p.rate && p.rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
+    if (mHG) return parseRatePct(version === "hg" ? mHG[1] : mHG[2]) || 0;
     const m = p.rate && p.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
     if (m) return (version === "hg" ? parseRatePct(m[1]) : parseRatePct(m[2])) || 0;
     return parseRatePct(p.rate) || 0;
@@ -10418,8 +10425,11 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
   const isPassed = !!(p.choiceGroup && choiceGroups?.[p.choiceGroup] && choiceGroups[p.choiceGroup] !== p.choiceId);
 
   // Determine if a better-rate area exists for this Pokémon
-  const splitMatch = p.rate && p.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
-  const currentPct = splitMatch
+  const hgssMatch  = p.rate && p.rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
+  const splitMatch = !hgssMatch && p.rate && p.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
+  const currentPct = hgssMatch
+    ? parseRatePct(version === "hg" ? hgssMatch[1] : hgssMatch[2])
+    : splitMatch
     ? parseRatePct(version === "hg" ? splitMatch[1] : splitMatch[2])
     : parseRatePct(p.rate);
   const best = BEST_AREA_MAP[version][p.name];
@@ -10450,7 +10460,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
         {p.time && TIME_COLORS[p.time] && (() => { const tc=TIME_COLORS[p.time]; const label=p.time==="morning"?"Morning":p.time==="day"?"Day":"Night"; return (
           <span style={{ fontSize:9, fontWeight:"700", color:tc.badge, background:tc.badgeBg, border:`1px solid ${tc.badge}60`, padding:"1px 5px", borderRadius:99, letterSpacing:0.3, whiteSpace:"nowrap", display:"inline-flex", alignItems:"center", gap:3 }}><img src={tc.icon} style={{width:10,height:10,objectFit:"contain",display:"block"}} />{label}</span>
         ); })()}
-        <RateDisplay rate={p.rate} isMobile={isMobile} />
+        <RateDisplay rate={p.rate} isMobile={isMobile} version={version} />
         {p.levels&&<div style={{ fontSize:10, color:C.muted }}>Lv.{p.levels}</div>}
       </div>
     </Row>
@@ -10669,17 +10679,21 @@ function encMath(pct) {
 // Parses rate strings like "5% FR / 10% LG" into split FR/LG pills,
 // or renders a plain rate badge for simple values like "50%" or "×1".
 // Hover (desktop) or tap (mobile) shows encounter math tooltip.
-function RateDisplay({ rate, isMobile }) {
+function RateDisplay({ rate, isMobile, version }) {
   const [pos, setPos] = useState(null);
   const ref = React.useRef(null);
   if (!rate) return null;
 
-  const splitMatch = rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
-  const isOneTime  = rate === "×1";
+  // Resolve "HG X%/SS Y%" to the selected-version token before display logic
+  const hgssMatch   = rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
+  const displayRate = hgssMatch ? (version === "hg" ? hgssMatch[1] : hgssMatch[2]) : rate;
+
+  const splitMatch = displayRate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
+  const isOneTime  = displayRate === "×1";
 
   const frPct     = splitMatch ? parseRatePct(splitMatch[1]) : null;
   const lgPct     = splitMatch ? parseRatePct(splitMatch[2]) : null;
-  const simplePct = (!splitMatch && !isOneTime) ? parseRatePct(rate) : null;
+  const simplePct = (!splitMatch && !isOneTime) ? parseRatePct(displayRate) : null;
   const frMath    = frPct     ? encMath(frPct)     : null;
   const lgMath    = lgPct     ? encMath(lgPct)     : null;
   const simpleMath = simplePct ? encMath(simplePct) : null;
@@ -10704,7 +10718,7 @@ function RateDisplay({ rate, isMobile }) {
   ) : (() => {
     const num = simplePct || 0;
     const rateColor = num >= 30 ? "#5ab0d8" : num >= 10 ? "#d4b840" : "#9878cc";
-    return <span style={{ fontSize:12, fontWeight:"700", color:rateColor, whiteSpace:"nowrap" }}>{rate}</span>;
+    return <span style={{ fontSize:12, fontWeight:"700", color:rateColor, whiteSpace:"nowrap" }}>{displayRate}</span>;
   })();
 
   if (isMobile) {

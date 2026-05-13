@@ -9878,6 +9878,33 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     try { localStorage.setItem("hgss-collapsed-parts", JSON.stringify([...n])); } catch {}
     return n;
   });
+  const [partTimes, setPartTimes] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("hgss-part-times") || "{}"); } catch { return {}; }
+  });
+  const [editingPartTime, setEditingPartTime] = useState(null);
+  const setPartTime = (part, val) => {
+    const h = parseFloat(val);
+    setPartTimes(prev => {
+      const next = { ...prev };
+      if (!isNaN(h) && h > 0) next[part] = h; else delete next[part];
+      try { localStorage.setItem("hgss-part-times", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+  const partSizes = useMemo(() => {
+    const out = {};
+    for (const [p, list] of Object.entries(groups)) out[p] = list.length;
+    return out;
+  }, [groups]);
+  const { hoursPerArea, totalLogged, totalEstimated } = useMemo(() => {
+    const logged = Object.entries(partTimes).filter(([, h]) => h > 0);
+    if (!logged.length) return { hoursPerArea: null, totalLogged: 0, totalEstimated: null };
+    const totalH = logged.reduce((s, [, h]) => s + h, 0);
+    const totalS = logged.reduce((s, [p]) => s + (partSizes[p] || 1), 0);
+    const hpa = totalH / totalS;
+    const remaining = Object.keys(partSizes).filter(p => !partTimes[p]).reduce((s, p) => s + (partSizes[p] || 1), 0);
+    return { hoursPerArea: hpa, totalLogged: totalH, totalEstimated: remaining * hpa };
+  }, [partTimes, partSizes]);
   const sidebarRef = React.useRef(null);
   useEffect(() => {
     const el = sidebarRef.current;
@@ -10018,6 +10045,12 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
+        {hoursPerArea != null && (
+          <div style={{ padding:"5px 12px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}`, display:"flex", gap:12, flexWrap:"wrap" }}>
+            <span>⏱ <b style={{ color:C.text }}>{totalLogged.toFixed(1)}h</b> logged</span>
+            <span>est. remaining: <b style={{ color:C.gold }}>{totalEstimated.toFixed(1)}h</b></span>
+          </div>
+        )}
         {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
         {filtered
           ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)
@@ -10030,7 +10063,26 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                 <div key={part}>
                   <div onClick={() => togglePart(part)} style={{ padding:"6px 12px 6px 10px", fontSize:10, letterSpacing:2, color: partColor, textTransform:"uppercase", background:"rgba(0,0,0,0.2)", borderBottom:`1px solid ${C.border}`, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"space-between", userSelect:"none" }}>
                     <span>{isDone ? "✓ " : isSoft ? "~ " : ""}{part}</span>
-                    <span style={{ fontSize:11, opacity:0.6, marginLeft:6 }}>{isCollapsed ? "▶" : "▼"}</span>
+                    <span style={{ display:"flex", alignItems:"center", gap:5 }}>
+                      {(() => {
+                        const logged = partTimes[part];
+                        const est = !logged && hoursPerArea ? Math.round(hoursPerArea * (partSizes[part] || 1) * 10) / 10 : null;
+                        return editingPartTime === part ? (
+                          <input autoFocus type="number" min="0" step="0.5" defaultValue={logged || ""}
+                            style={{ width:46, fontSize:10, background:"rgba(0,0,0,0.5)", border:`1px solid ${C.border}`, color:C.text, borderRadius:3, padding:"1px 4px", textAlign:"center", fontFamily:"inherit", textTransform:"none", letterSpacing:0 }}
+                            onClick={e => e.stopPropagation()}
+                            onBlur={e => { setPartTime(part, e.target.value); setEditingPartTime(null); }}
+                            onKeyDown={e => { if (e.key === "Enter") { setPartTime(part, e.target.value); setEditingPartTime(null); } if (e.key === "Escape") setEditingPartTime(null); }} />
+                        ) : (
+                          <span onClick={e => { e.stopPropagation(); setEditingPartTime(part); }}
+                            style={{ color: logged ? C.green : C.muted, opacity: logged ? 1 : 0.5, cursor:"text", letterSpacing:0, textTransform:"none", fontSize:10, minWidth:24, textAlign:"right" }}
+                            title={logged ? `${logged}h — click to edit` : est ? `~${est}h estimated — click to log` : "Click to log time"}>
+                            {logged ? `${logged}h` : est ? `~${est}h` : "⏱"}
+                          </span>
+                        );
+                      })()}
+                      <span style={{ fontSize:11, opacity:0.6 }}>{isCollapsed ? "▶" : "▼"}</span>
+                    </span>
                   </div>
                   {!isCollapsed && list.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)}
                 </div>

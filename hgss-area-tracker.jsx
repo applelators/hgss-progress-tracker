@@ -176,7 +176,8 @@ const AREAS = [
       {name:"Totodile",  method:"Gift", levels:"5", rate:"One", warn:true, choiceGroup:"johto-starter", choiceId:"totodile"},
     ],
     items:[
-      {name:"Potion ×6",   hidden:false, note:"5 from Elm's aide + 1 on the spot Silver stood"},
+      {name:"Potion ×5",   hidden:false, note:"From Elm's aide"},
+      {name:"Potion",      hidden:true,  note:"On the spot Silver was standing"},
       {name:"Pokégear",    hidden:false, note:"From Mom after receiving first partner Pokémon"},
     ],
     trainers:[] },

@@ -481,15 +481,41 @@
     };
 
     // ──────────────────────────────────────────────────────────────
-    // LOCALSTORAGE HELPERS
+    // STATE — polled from /state worker; localStorage is the fallback
     // ──────────────────────────────────────────────────────────────
+    var _polledVersion = null;
+    var _polledCaught  = null;
+    var _polledAreaId  = null;
+
     function getVersion() {
-      return localStorage.getItem('hgss-version') || 'hg';
+      return _polledVersion || localStorage.getItem('hgss-version') || 'hg';
     }
     function getCaught() {
+      if (_polledCaught) return _polledCaught;
       try { return JSON.parse(localStorage.getItem('hgss-caught') || '{}'); }
       catch (e) { return {}; }
     }
+
+    // Poll /state every 1.5 s so the overlay updates even when the tracker
+    // is open in a regular browser (OBS Chromium has its own localStorage).
+    (function startPolling() {
+      var STATE_URL = '/state';
+      function poll() {
+        fetch(STATE_URL).then(function(r) { return r.json(); }).then(function(s) {
+          if (!s) return;
+          var changed = false;
+          if (s.version && s.version !== _polledVersion) { _polledVersion = s.version; changed = true; }
+          if (s.caught)  { _polledCaught  = s.caught;  changed = true; }
+          if (s.areaId && s.areaId !== _polledAreaId) {
+            _polledAreaId = s.areaId;
+            changed = true;
+          }
+          if (changed) renderArea(_polledAreaId || currentAreaId);
+        }).catch(function() {});
+      }
+      poll();
+      setInterval(poll, 1500);
+    })();
 
     function spriteUrl(name) {
       var id = window.__HGSS_DEX_ID && window.__HGSS_DEX_ID[name];

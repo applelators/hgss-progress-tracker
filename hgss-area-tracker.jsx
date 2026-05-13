@@ -7474,7 +7474,7 @@ function HGSSTracker() {
 
   // Sync state to /state Pages Function so the OBS overlay can poll it
   // cross-browser (OBS Chromium has isolated localStorage from Chrome).
-  const OVERLAY_SYNC_URL = "https://frlg.nabunan.com/state";
+  const OVERLAY_SYNC_URL = "https://hgss.nabunan.com/state";
   useEffect(() => {
     if (!booted) return;
     const timer = setTimeout(() => {

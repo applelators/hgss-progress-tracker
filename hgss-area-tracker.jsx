@@ -5616,13 +5616,86 @@ const STARS = Array.from({length:30},(_,i)=>({
 // ─── 100% COMPLETION CHECKLIST DATA ──────────────────────────────────────────
 const COMPLETION_SECTIONS = [
   {
-    id:"story", title:"Story Milestones", color:"#c8960a",
+    id:"trainer-card", title:"Trainer Card Stars", color:"#d4b840",
     items:[
-      { id:"johto-champ", label:"Defeat Elite Four + Champion Lance", note:"Complete the Johto League" },
-      { id:"kanto-champ", label:"Defeat Red on Mt. Silver", note:"Complete the Kanto post-game" },
-    ]
+      { id:"johto-champ",      label:"★   Enter the Hall of Fame",          note:"Defeat the Johto Elite Four + Champion Lance" },
+      { id:"shiny-leaves",     label:"★★  Shiny Leaf Crown",                note:"Collect 5 Shiny Leaves on one Pokémon, then speak to Ethan/Lyra in New Bark Town" },
+      { id:"pokeathlon-all",   label:"★★★ Win all 10 Pokéathlon events",    note:"Set a record in all 10 events across the 5 Pokéathlon Domes" },
+      { id:"battle-tower-100", label:"★★★★ 100-win streak at Battle Tower", note:"Win 100 consecutive battles in the Battle Tower" },
+      { id:"natl-dex-star",    label:"★★★★★ National Pokédex complete",      note:"Capture 484 Pokémon — out of scope for this tracker", disabled:true },
+    ],
   },
-  // TODO: Expand with HGSS-specific checklist items
+  {
+    id:"story", title:"Story & Badges", color:"#c8960a",
+    items:[
+      { id:"all-johto-badges", label:"All 8 Johto Badges",      auto:"all-johto-badges", note:"Defeat all 8 Johto Gym Leaders" },
+      { id:"all-kanto-badges", label:"All 8 Kanto Badges",      auto:"all-kanto-badges", note:"Defeat all 8 Kanto Gym Leaders" },
+      { id:"kanto-champ",      label:"Defeat Red on Mt. Silver", note:"Complete the Kanto post-game challenge" },
+    ],
+  },
+  {
+    id:"pokedex", title:"Johto Pokédex", color:"#4ab770",
+    items:[
+      { id:"johto-dex", label:"Johto Pokédex completed", auto:"johto-dex", note:"Catch all non-event Pokémon in the tracker's Johto Dex" },
+      { id:"diploma",   label:"Received Diploma",         note:"Talk to Game Freak director in Goldenrod City Condominiums" },
+    ],
+  },
+  {
+    id:"legendaries", title:"Legendary Captures", color:"#a87acc",
+    items:[
+      { id:"lgd-raikou",   label:"Raikou",   auto:"caught-raikou",   note:"Roaming Johto — unlocks after visiting Burned Tower" },
+      { id:"lgd-entei",    label:"Entei",    auto:"caught-entei",    note:"Roaming Johto — unlocks after visiting Burned Tower" },
+      { id:"lgd-suicune",  label:"Suicune",  auto:"caught-suicune",  note:"Route 25 → Cianwood → Vermilion → Cerulean → Mt. Mortar" },
+      { id:"lgd-lugia",    label:"Lugia",    auto:"caught-lugia",    note:"Whirl Islands — HG requires Silver Wing from Pewter City old man" },
+      { id:"lgd-hooh",     label:"Ho-Oh",    auto:"caught-hooh",     note:"Bell Tower — SS requires Rainbow Wing from Pewter City old man" },
+      { id:"lgd-articuno", label:"Articuno", auto:"caught-articuno", note:"Seafoam Islands B3F" },
+      { id:"lgd-zapdos",   label:"Zapdos",   auto:"caught-zapdos",   note:"Power Plant" },
+      { id:"lgd-moltres",  label:"Moltres",  auto:"caught-moltres",  note:"Mt. Silver 2F" },
+      { id:"lgd-mewtwo",   label:"Mewtwo",   auto:"caught-mewtwo",   note:"Cerulean Cave B1F" },
+      { id:"lgd-latias",   label:"Latias",   auto:"caught-latias",   note:"Roaming Kanto (HG) after defeating Red — or trade from SS" },
+      { id:"lgd-latios",   label:"Latios",   auto:"caught-latios",   note:"Roaming Kanto (SS) after defeating Red — or trade from HG" },
+      { id:"lgd-mew",      label:"Mew",      auto:"caught-mew",      note:"Pokéwalker — optional", optional:true },
+      { id:"lgd-celebi",   label:"Celebi",   auto:"caught-celebi",   note:"Ilex Forest Shrine via Pokéwalker or event — optional", optional:true },
+    ],
+  },
+  {
+    id:"key-events", title:"Key Events & Items", color:"#5a9fd4",
+    items:[
+      { id:"kimono-girls",  label:"Kimono Girls all defeated",  note:"Battle all 5 Kimono Girls at Ecruteak Dance Theater — unlocks Lugia/Ho-Oh ritual" },
+      { id:"silver-wing",   label:"Silver Wing obtained",       note:"SS: from Radio Director after Team Rocket disbands · HG: from old man in Pewter City" },
+      { id:"rainbow-wing",  label:"Rainbow Wing obtained",      note:"HG: from Radio Director after Team Rocket disbands · SS: from old man in Pewter City" },
+      { id:"natl-dex-item", label:"National Pokédex obtained",  note:"From Prof. Oak in Olivine Harbor building after entering the Hall of Fame" },
+      { id:"super-rod",     label:"Super Rod obtained",         note:"From the fisherman on Route 12" },
+    ],
+  },
+  {
+    id:"hms", title:"HMs", color:"#8888d0",
+    items:[
+      { id:"hm-cut",       label:"HM01 Cut",        note:"From the Charcoal Man's apprentice in Ilex Forest after catching his Farfetch'd" },
+      { id:"hm-fly",       label:"HM02 Fly",        note:"From Chuck's wife outside Cianwood City Gym after defeating Chuck" },
+      { id:"hm-surf",      label:"HM03 Surf",       note:"From Elder Li in Ecruteak City after defeating the Kimono Girls" },
+      { id:"hm-strength",  label:"HM04 Strength",   note:"From the sailor in Olivine City Café" },
+      { id:"hm-whirlpool", label:"HM05 Whirlpool",  note:"From Lance in the Mahogany Rocket Hideout" },
+      { id:"hm-rocksmash", label:"HM06 Rock Smash", note:"From a man in Cianwood City" },
+      { id:"hm-waterfall", label:"HM07 Waterfall",  note:"From Jasmine on the beach after earning all 16 badges" },
+      { id:"hm-rockclimb", label:"HM08 Rock Climb", note:"From Prof. Oak in Pallet Town after earning all 16 badges" },
+    ],
+  },
+  {
+    id:"battle-frontier", title:"Battle Frontier Prints", color:"#c85252",
+    items:[
+      { id:"bf-castle-silver",  label:"Battle Castle — Silver Print",  optional:true, note:"Defeat Castle Valet Darach (21-win streak)",      reward:"Silver Print" },
+      { id:"bf-castle-gold",    label:"Battle Castle — Gold Print",    optional:true, note:"Defeat Castle Valet Darach again (49 wins)",       reward:"Gold Print"   },
+      { id:"bf-hall-silver",    label:"Battle Hall — Silver Print",    optional:true, note:"Defeat Hall Matron Argenta (50-win streak)",       reward:"Silver Print" },
+      { id:"bf-hall-gold",      label:"Battle Hall — Gold Print",      optional:true, note:"Defeat Hall Matron Argenta again (170 wins)",      reward:"Gold Print"   },
+      { id:"bf-tower-silver",   label:"Battle Tower — Silver Print",   optional:true, note:"Defeat Tower Tycoon Palmer (21-win streak)",       reward:"Silver Print" },
+      { id:"bf-tower-gold",     label:"Battle Tower — Gold Print",     optional:true, note:"Defeat Tower Tycoon Palmer again (49 wins)",       reward:"Gold Print"   },
+      { id:"bf-factory-silver", label:"Battle Factory — Silver Print", optional:true, note:"Defeat Factory Head Thorton (21-win streak)",      reward:"Silver Print" },
+      { id:"bf-factory-gold",   label:"Battle Factory — Gold Print",   optional:true, note:"Defeat Factory Head Thorton again (49 wins)",      reward:"Gold Print"   },
+      { id:"bf-arcade-silver",  label:"Battle Arcade — Silver Print",  optional:true, note:"Defeat Arcade Star Dahlia (21-win streak)",        reward:"Silver Print" },
+      { id:"bf-arcade-gold",    label:"Battle Arcade — Gold Print",    optional:true, note:"Defeat Arcade Star Dahlia again (49 wins)",        reward:"Gold Print"   },
+    ],
+  },
 ];
 
 // ─── AREA TYPE ────────────────────────────────────────────────────────────────
@@ -7625,13 +7698,18 @@ function HGSSTracker() {
   const area = areaId ? AREAS.find(a => a.id === areaId) : null;
 
   const { completionDone, completionTotal } = useMemo(() => {
-    const kdc = DEX.filter(p => !p.event && caught[p.name]).length;
+    const nonEventTotal = DEX.filter(p => !p.event).length;
     const as = {
-      "kanto-dex": kdc >= 150,
-      "farfetchd":  !!caught["Farfetch'd"],
-      "jynx":       !!caught["Jynx"],
-      "mr-mime":    !!caught["Mr. Mime"],
-      "lickitung":  !!caught["Lickitung"],
+      "all-johto-badges": JOHTO_BADGES.every(b => badges[b.id]),
+      "all-kanto-badges": KANTO_BADGES.every(b => badges[b.id]),
+      "johto-dex":        DEX.filter(p => !p.event && caught[p.name]).length >= nonEventTotal,
+      "caught-raikou":    !!caught["Raikou"],   "caught-entei":    !!caught["Entei"],
+      "caught-suicune":   !!caught["Suicune"],  "caught-lugia":    !!caught["Lugia"],
+      "caught-hooh":      !!caught["Ho-Oh"],    "caught-articuno": !!caught["Articuno"],
+      "caught-zapdos":    !!caught["Zapdos"],   "caught-moltres":  !!caught["Moltres"],
+      "caught-mewtwo":    !!caught["Mewtwo"],   "caught-latias":   !!caught["Latias"],
+      "caught-latios":    !!caught["Latios"],   "caught-mew":      !!caught["Mew"],
+      "caught-celebi":    !!caught["Celebi"],
     };
     let total = 0, done = 0;
     for (const sec of COMPLETION_SECTIONS) {
@@ -7642,7 +7720,7 @@ function HGSSTracker() {
       }
     }
     return { completionDone: done, completionTotal: total };
-  }, [caught, checklist]);
+  }, [caught, checklist, badges]);
 
   const globalStats = useMemo(() => {
     const auditedAreas = AREAS.filter(a => AUDITED_PARTS.has(a.part));
@@ -7830,7 +7908,7 @@ function HGSSTracker() {
       {tab === "boxes" && <BoxTab />}
 
       {/* ── Tab: 100% Completion ── */}
-      {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} isMobile={isMobile} />}
+      {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} badges={badges} version={version} isMobile={isMobile} />}
       </div>
 
       {/* Tier-1 ceremony overlay (8th badge / legendary catch) */}
@@ -9026,16 +9104,23 @@ function HuntTab({ caught, version, isMobile }) {
 }
 
 // ─── COMPLETION TAB ───────────────────────────────────────────────────────────
-function CompletionTab({ caught, checklist, toggleChecklist, isMobile }) {
-  const kantoDexCount = useMemo(() =>
-    DEX.filter(p => !p.event && caught[p.name]).length, [caught]);
+function CompletionTab({ caught, checklist, toggleChecklist, badges, version, isMobile }) {
+  const nonEventTotal   = DEX.filter(p => !p.event).length;
+  const dexCaughtCount  = useMemo(() => DEX.filter(p => !p.event && caught[p.name]).length, [caught]);
+  const johtoBadgeCount = JOHTO_BADGES.filter(b => badges[b.id]).length;
+  const kantoBadgeCount = KANTO_BADGES.filter(b => badges[b.id]).length;
 
   const autoState = {
-    "kanto-dex": kantoDexCount >= 150,
-    "farfetchd":  !!caught["Farfetch'd"],
-    "jynx":       !!caught["Jynx"],
-    "mr-mime":    !!caught["Mr. Mime"],
-    "lickitung":  !!caught["Lickitung"],
+    "all-johto-badges": johtoBadgeCount === 8,
+    "all-kanto-badges": kantoBadgeCount === 8,
+    "johto-dex":        dexCaughtCount >= nonEventTotal,
+    "caught-raikou":    !!caught["Raikou"],   "caught-entei":    !!caught["Entei"],
+    "caught-suicune":   !!caught["Suicune"],  "caught-lugia":    !!caught["Lugia"],
+    "caught-hooh":      !!caught["Ho-Oh"],    "caught-articuno": !!caught["Articuno"],
+    "caught-zapdos":    !!caught["Zapdos"],   "caught-moltres":  !!caught["Moltres"],
+    "caught-mewtwo":    !!caught["Mewtwo"],   "caught-latias":   !!caught["Latias"],
+    "caught-latios":    !!caught["Latios"],   "caught-mew":      !!caught["Mew"],
+    "caught-celebi":    !!caught["Celebi"],
   };
 
   let totalItems = 0, doneItems = 0;
@@ -9141,12 +9226,9 @@ function CompletionTab({ caught, checklist, toggleChecklist, isMobile }) {
                           </div>
                           <div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>
                             {item.note}
-                            {item.auto === "kanto-dex" && (
-                              <span style={{ marginLeft:5, fontWeight:"600",
-                                             color: kantoDexCount >= 150 ? C.green : C.gold }}>
-                                ({kantoDexCount}/150)
-                              </span>
-                            )}
+                            {item.auto === "johto-dex"        && <span style={{ marginLeft:5, fontWeight:"600", color: dexCaughtCount >= nonEventTotal ? C.green : C.gold }}>({dexCaughtCount}/{nonEventTotal})</span>}
+                            {item.auto === "all-johto-badges" && <span style={{ marginLeft:5, fontWeight:"600", color: johtoBadgeCount===8 ? C.green : C.gold }}>({johtoBadgeCount}/8)</span>}
+                            {item.auto === "all-kanto-badges" && <span style={{ marginLeft:5, fontWeight:"600", color: kantoBadgeCount===8 ? C.green : C.gold }}>({kantoBadgeCount}/8)</span>}
                           </div>
                         </div>
                       </div>

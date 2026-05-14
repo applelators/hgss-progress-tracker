@@ -7932,6 +7932,42 @@ function DreamTeamTab({ isMobile, version }) {
   const tmWinners     = React.useMemo(() => team ? assignOneTimeTMs(team) : {}, [team]);
   const hmAssignments = React.useMemo(() => team ? assignHMs(team, hmPerPokemon) : {}, [team, hmPerPokemon]);
 
+  const catchOrder = React.useMemo(() => {
+    if (!team) return [];
+    const sortedAreas = AREAS.map((area, i) => ({ area, i }))
+      .sort((a, b) => {
+        const pA = parseInt(a.area.part?.match(/\d+/)?.[0] || 999);
+        const pB = parseInt(b.area.part?.match(/\d+/)?.[0] || 999);
+        return pA - pB || a.i - b.i;
+      });
+    const findLocation = (name) => {
+      const searchNames = [name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b)];
+      for (const { area } of sortedAreas) {
+        if (area.part === "Pokéwalker") continue;
+        for (const searchName of searchNames) {
+          const matches = _allPokemon(area).filter(p =>
+            p.name === searchName &&
+            !(version === "hg" && p.ssOnly) &&
+            !(version === "ss" && p.hgOnly)
+          );
+          if (!matches.length) continue;
+          const times = [...new Set(matches.map(p => p.time).filter(Boolean))];
+          const timeStr = !times.length || ["morning","day","night"].every(t => times.includes(t))
+            ? null
+            : times.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join("/");
+          return {
+            teamName: name, catchName: searchName, areaName: area.name,
+            part: area.part, partNum: parseInt(area.part?.match(/\d+/)?.[0] || 999),
+            method: matches[0].method, levels: matches[0].levels,
+            timeStr, needsEvo: searchName !== name,
+          };
+        }
+      }
+      return { teamName: name, catchName: null, areaName: null, part: null, partNum: 999 };
+    };
+    return team.map(findLocation).sort((a, b) => a.partNum - b.partNum);
+  }, [team, version]);
+
   const isHardLocked = idx => idx === 0 || (idx === 1 && !isTyranitarLine);
 
   const togglePin = (idx) => {
@@ -8271,6 +8307,40 @@ function DreamTeamTab({ isMobile, version }) {
             </div>
           );
         })}
+      </div>
+
+      {/* Catch Order */}
+      <div style={{ marginTop:24, marginBottom:8 }}>
+        <div style={{ fontSize:9, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:10, fontWeight:"700" }}>
+          Earliest Catch Locations
+        </div>
+        <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+          {catchOrder.map(({ teamName, catchName, areaName, part, method, levels, timeStr, needsEvo }) => {
+            const dexEntry = DEX.find(p => p.name === (needsEvo ? catchName : teamName));
+            const teamEntry = DEX.find(p => p.name === teamName);
+            return (
+              <div key={teamName} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, border:`1px solid ${C.border}`, borderRadius:8 }}>
+                {teamEntry && <img src={pokeSpriteUrl(teamEntry.id)} alt={teamName} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:2 }}>
+                    <span style={{ fontSize:12, fontWeight:"700", color:C.text }}>{teamName}</span>
+                    {needsEvo && <span style={{ fontSize:9, color:C.muted }}>catch {catchName} → evolve</span>}
+                  </div>
+                  {areaName ? (
+                    <div style={{ fontSize:10, color:C.muted, lineHeight:1.5 }}>
+                      <span style={{ color:C.gold, fontWeight:"600" }}>{part}</span>
+                      <span style={{ color:C.text }}> · {areaName}</span>
+                      <span> · {method}{levels ? `, Lv. ${levels}` : ""}</span>
+                      {timeStr && <span style={{ color:"#a87acc" }}> · {timeStr} only</span>}
+                    </div>
+                  ) : (
+                    <div style={{ fontSize:10, color:C.muted }}>See Pokédex for location</div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

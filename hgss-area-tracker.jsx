@@ -4760,7 +4760,7 @@ const _EVO_CHAINS_RAW = [
   ["Geodude","Graveler","Golem"],
   ["Gastly","Haunter","Gengar"],
   // Branching
-  { pre:["Eevee"], post:[["Vaporeon"],["Jolteon"],["Flareon"]] },
+  { pre:["Eevee"], post:[["Vaporeon"],["Jolteon"],["Flareon"],["Espeon"],["Umbreon"]] },
 ];
 const EVO_MAP = {};
 for (const chain of _EVO_CHAINS_RAW) {
@@ -5414,7 +5414,8 @@ const DT_TM_TIPS = {
   "Quagsire":   [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"}],
   // Eevee evolutions
   "Espeon":     [{move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym) — covers Dark/Ghost, Espeon's main blind spots"}],
-  // Umbreon: staller, no offensive TMs worth it
+  "Umbreon":    [{move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym) — only move that hits Ghost types (immune to Dark STAB)"},
+                 {move:"Toxic",       src:"TM06 — defeat Janine (Fuchsia City Gym, Kanto) — enables Umbreon's stall role"}],
   // Crobat: all key moves come from level-up
   // Physical-attackers needing Earthquake coverage
   "Donphan":    [{move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],

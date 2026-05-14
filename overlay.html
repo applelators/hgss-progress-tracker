@@ -217,8 +217,14 @@
       animation: row-in 0.34s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i, 0) * 48ms) both;
     }
     .poke-row > .sprite    { flex: 0 0 256px; }
-    .poke-row > .poke-name { flex: 0 1 auto; min-width: 0; }
-    .poke-row > .rates     { flex: 0 0 auto; margin-left: auto; }
+    .right-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      min-width: 0;
+    }
 
     .poke-row.alt    { background: var(--row-bg-alt); }
     .poke-row.caught {
@@ -645,11 +651,13 @@
         + (sprite
             ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
             : '<span class="sprite"></span>')
-        + '<span class="' + nameCls + '">' + p.name + '</span>'
-        + '<div class="rates">'
-            + rateCellHTML(p.morning, 'morning', tod)
-            + rateCellHTML(p.day,     'day',     tod)
-            + rateCellHTML(p.night,   'night',   tod)
+        + '<div class="right-col">'
+        +   '<span class="' + nameCls + '">' + p.name + '</span>'
+        +   '<div class="rates">'
+        +     rateCellHTML(p.morning, 'morning', tod)
+        +     rateCellHTML(p.day,     'day',     tod)
+        +     rateCellHTML(p.night,   'night',   tod)
+        +   '</div>'
         + '</div>'
         + '</div>';
     }

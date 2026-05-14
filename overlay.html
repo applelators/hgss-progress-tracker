@@ -73,46 +73,48 @@
       background: transparent;
       font-family: 'DM Sans', system-ui, sans-serif;
       color: var(--text);
-      min-height: 100vh;
+      width: 900px;
+      height: 1400px;
+      overflow: hidden;
     }
 
     /* ──────────────────────────────────────────────────────────────
        OVERLAY FRAME
        ────────────────────────────────────────────────────────────── */
     #overlay-root {
-      padding: 12px;
+      padding: 16px;
     }
     .overlay-frame {
       position: relative;
-      width: min(360px, 100%);
+      width: min(900px, 100%);
       user-select: none;
       container-type: inline-size;
       container-name: overlay;
     }
 
     /* Progressive rate-column hiding when overlay is narrow. */
-    @container overlay (max-width: 320px) {
+    @container overlay (max-width: 800px) {
       .rate-cell.drop-1 { display: none; }
     }
-    @container overlay (max-width: 270px) {
+    @container overlay (max-width: 675px) {
       .rate-cell.drop-2 { display: none; }
     }
 
     /* ── Route pill ───────────────────────────────────────────────── */
     .area-header {
       position: relative;
-      margin: 0 auto 10px;
-      padding: 9px 22px 10px;
+      margin: 0 auto 16px;
+      padding: 14px 36px 16px;
       width: fit-content;
       min-width: 60%;
       text-align: center;
       background: var(--area-tint);
       color: var(--pill-text);
       border: 2px solid var(--area-border);
-      border-radius: 8px;
+      border-radius: 12px;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 17px;
+      font-size: 26px;
       letter-spacing: 0.02em;
       animation:
         header-in 0.40s cubic-bezier(0.2,0.8,0.3,1) both,
@@ -121,8 +123,8 @@
     .area-header::before {
       content: "";
       position: absolute;
-      inset: -6px;
-      border-radius: 12px;
+      inset: -10px;
+      border-radius: 18px;
       background: radial-gradient(
         ellipse at center,
         var(--area-halo) 0%,
@@ -139,7 +141,7 @@
     }
     .area-header .check-badge {
       display: none;
-      margin-left: 8px;
+      margin-left: 12px;
       color: #c8f0c8;
       font-weight: 700;
     }
@@ -150,9 +152,9 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 8px;
-      height: 14px;
-      margin: -4px auto 4px;
+      gap: 12px;
+      height: 22px;
+      margin: -6px auto 6px;
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -164,19 +166,19 @@
     }
     .page-counter {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
+      font-size: 14px;
       font-weight: 500;
       color: var(--text-muted);
       letter-spacing: 0.04em;
     }
     .page-dots {
       display: flex;
-      gap: 5px;
+      gap: 8px;
       align-items: center;
     }
     .page-dot {
-      width: 6px;
-      height: 6px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: rgba(255,255,255,0.18);
       transition: background 0.35s, transform 0.35s, box-shadow 0.35s;
@@ -190,13 +192,13 @@
     /* ── Rows container ───────────────────────────────────────────── */
     .rows-card {
       position: relative;
-      padding: 8px 8px 10px;
+      padding: 12px 12px 14px;
       background: var(--area-bg);
-      border: 1.5px solid var(--area-border);
-      border-radius: 6px;
+      border: 2px solid var(--area-border);
+      border-radius: 9px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       transition: background 0.4s, border-color 0.4s;
     }
 
@@ -204,15 +206,15 @@
     .poke-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 8px 4px 4px;
-      height: 40px;
-      border-radius: 5px;
+      gap: 10px;
+      padding: 6px 14px 6px 6px;
+      height: 76px;
+      border-radius: 8px;
       background: var(--row-bg);
-      border-left: 3px solid transparent;
+      border-left: 5px solid transparent;
       animation: row-in 0.34s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i, 0) * 48ms) both;
     }
-    .poke-row > .sprite    { flex: 0 0 56px; }
+    .poke-row > .sprite    { flex: 0 0 80px; }
     .poke-row > .poke-name { flex: 0 1 auto; min-width: 0; }
     .poke-row > .rates     { flex: 0 0 auto; margin-left: auto; }
 
@@ -229,7 +231,7 @@
 
     /* ── Sprite ───────────────────────────────────────────────────── */
     .sprite {
-      width: 56px; height: 56px;
+      width: 80px; height: 80px;
       image-rendering: pixelated;
       image-rendering: -moz-crisp-edges;
       z-index: 1;
@@ -240,7 +242,7 @@
     /* ── Name ─────────────────────────────────────────────────────── */
     .poke-name {
       font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
+      font-size: 22px;
       font-weight: 600;
       line-height: 1.2;
       letter-spacing: 0.01em;
@@ -260,17 +262,17 @@
     .rate-cell {
       display: inline-flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
       justify-content: flex-end;
-      width: 46px;
-      padding: 2px 3px;
-      border-radius: 4px;
+      width: 72px;
+      padding: 4px 6px;
+      border-radius: 6px;
     }
     .rate-cell.zero { opacity: 0.26; }
 
     .rate-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 17px;
       font-weight: 500;
       letter-spacing: -0.03em;
       color: var(--rate-num);
@@ -279,7 +281,7 @@
       animation: rate-shimmer 3.8s calc(var(--row-i, 0) * 0.6s) ease-in-out infinite;
     }
     .time-icon {
-      width: 13px; height: 13px;
+      width: 20px; height: 20px;
       color: var(--text-muted);
       flex-shrink: 0;
     }
@@ -319,21 +321,21 @@
 
     /* ── Placeholder / status states ─────────────────────────────── */
     .placeholder {
-      padding: 56px 24px;
+      padding: 80px 36px;
       text-align: center;
       color: var(--text-dim);
-      font-size: 13px;
+      font-size: 18px;
       line-height: 1.6;
       background: var(--area-bg);
-      border: 1.5px solid var(--area-border);
-      border-radius: 6px;
+      border: 2px solid var(--area-border);
+      border-radius: 9px;
       animation: header-in 0.4s ease both;
     }
     .placeholder strong {
       display: block;
       color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 6px;
+      font-size: 20px;
+      margin-bottom: 10px;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -341,8 +343,8 @@
     }
     .loading-dot {
       display: inline-block;
-      width: 5px; height: 5px;
-      margin: 0 2px;
+      width: 8px; height: 8px;
+      margin: 0 3px;
       border-radius: 50%;
       background: var(--text-muted);
       animation: dot-pulse 1.2s ease-in-out infinite;
@@ -432,7 +434,7 @@
     var pageTimer      = null;
     var timeOfDayTimer = null;
 
-    var PAGE_SIZE = 10;
+    var PAGE_SIZE = 14;
     var DWELL_MS  = 6000;
 
     // HGSS-style time-of-day windows:

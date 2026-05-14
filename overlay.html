@@ -82,7 +82,7 @@
        OVERLAY FRAME
        ────────────────────────────────────────────────────────────── */
     #overlay-root {
-      padding: 16px;
+      padding: 20px;
     }
     .overlay-frame {
       position: relative;
@@ -103,18 +103,18 @@
     /* ── Route pill ───────────────────────────────────────────────── */
     .area-header {
       position: relative;
-      margin: 0 auto 16px;
-      padding: 14px 36px 16px;
+      margin: 0 auto 22px;
+      padding: 18px 48px 20px;
       width: fit-content;
       min-width: 60%;
       text-align: center;
       background: var(--area-tint);
       color: var(--pill-text);
       border: 2px solid var(--area-border);
-      border-radius: 12px;
+      border-radius: 16px;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 26px;
+      font-size: 40px;
       letter-spacing: 0.02em;
       animation:
         header-in 0.40s cubic-bezier(0.2,0.8,0.3,1) both,
@@ -123,8 +123,8 @@
     .area-header::before {
       content: "";
       position: absolute;
-      inset: -10px;
-      border-radius: 18px;
+      inset: -14px;
+      border-radius: 26px;
       background: radial-gradient(
         ellipse at center,
         var(--area-halo) 0%,
@@ -141,7 +141,7 @@
     }
     .area-header .check-badge {
       display: none;
-      margin-left: 12px;
+      margin-left: 18px;
       color: #c8f0c8;
       font-weight: 700;
     }
@@ -152,9 +152,9 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 12px;
-      height: 22px;
-      margin: -6px auto 6px;
+      gap: 16px;
+      height: 30px;
+      margin: -8px auto 8px;
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -162,23 +162,23 @@
     .page-info {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
     }
     .page-counter {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 500;
       color: var(--text-muted);
       letter-spacing: 0.04em;
     }
     .page-dots {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
     }
     .page-dot {
-      width: 9px;
-      height: 9px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: rgba(255,255,255,0.18);
       transition: background 0.35s, transform 0.35s, box-shadow 0.35s;
@@ -186,19 +186,19 @@
     .page-dot.active {
       background: #72c472;
       transform: scale(1.25);
-      box-shadow: 0 0 8px rgba(114,196,114,0.55);
+      box-shadow: 0 0 12px rgba(114,196,114,0.55);
     }
 
     /* ── Rows container ───────────────────────────────────────────── */
     .rows-card {
       position: relative;
-      padding: 12px 12px 14px;
+      padding: 16px 18px 20px;
       background: var(--area-bg);
       border: 2px solid var(--area-border);
-      border-radius: 9px;
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 9px;
       transition: background 0.4s, border-color 0.4s;
     }
 
@@ -206,15 +206,15 @@
     .poke-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 14px 6px 6px;
-      height: 76px;
-      border-radius: 8px;
+      gap: 16px;
+      padding: 8px 20px 8px 8px;
+      height: 110px;
+      border-radius: 12px;
       background: var(--row-bg);
-      border-left: 5px solid transparent;
+      border-left: 7px solid transparent;
       animation: row-in 0.34s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i, 0) * 48ms) both;
     }
-    .poke-row > .sprite    { flex: 0 0 80px; }
+    .poke-row > .sprite    { flex: 0 0 112px; }
     .poke-row > .poke-name { flex: 0 1 auto; min-width: 0; }
     .poke-row > .rates     { flex: 0 0 auto; margin-left: auto; }
 
@@ -231,7 +231,7 @@
 
     /* ── Sprite ───────────────────────────────────────────────────── */
     .sprite {
-      width: 80px; height: 80px;
+      width: 112px; height: 112px;
       image-rendering: pixelated;
       image-rendering: -moz-crisp-edges;
       z-index: 1;
@@ -242,7 +242,7 @@
     /* ── Name ─────────────────────────────────────────────────────── */
     .poke-name {
       font-family: 'DM Sans', sans-serif;
-      font-size: 22px;
+      font-size: 34px;
       font-weight: 600;
       line-height: 1.2;
       letter-spacing: 0.01em;
@@ -256,23 +256,23 @@
     /* ── Rates ────────────────────────────────────────────────────── */
     .rates {
       display: flex;
-      gap: 2px;
+      gap: 6px;
       align-items: center;
     }
     .rate-cell {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       justify-content: flex-end;
-      width: 72px;
-      padding: 4px 6px;
-      border-radius: 6px;
+      width: 100px;
+      padding: 6px 8px;
+      border-radius: 8px;
     }
     .rate-cell.zero { opacity: 0.26; }
 
     .rate-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 17px;
+      font-size: 24px;
       font-weight: 500;
       letter-spacing: -0.03em;
       color: var(--rate-num);
@@ -281,7 +281,7 @@
       animation: rate-shimmer 3.8s calc(var(--row-i, 0) * 0.6s) ease-in-out infinite;
     }
     .time-icon {
-      width: 20px; height: 20px;
+      width: 28px; height: 28px;
       color: var(--text-muted);
       flex-shrink: 0;
     }
@@ -321,21 +321,21 @@
 
     /* ── Placeholder / status states ─────────────────────────────── */
     .placeholder {
-      padding: 80px 36px;
+      padding: 120px 50px;
       text-align: center;
       color: var(--text-dim);
-      font-size: 18px;
+      font-size: 24px;
       line-height: 1.6;
       background: var(--area-bg);
       border: 2px solid var(--area-border);
-      border-radius: 9px;
+      border-radius: 14px;
       animation: header-in 0.4s ease both;
     }
     .placeholder strong {
       display: block;
       color: var(--text-muted);
-      font-size: 20px;
-      margin-bottom: 10px;
+      font-size: 28px;
+      margin-bottom: 14px;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -343,8 +343,8 @@
     }
     .loading-dot {
       display: inline-block;
-      width: 8px; height: 8px;
-      margin: 0 3px;
+      width: 12px; height: 12px;
+      margin: 0 4px;
       border-radius: 50%;
       background: var(--text-muted);
       animation: dot-pulse 1.2s ease-in-out infinite;
@@ -434,7 +434,7 @@
     var pageTimer      = null;
     var timeOfDayTimer = null;
 
-    var PAGE_SIZE = 14;
+    var PAGE_SIZE = 10;
     var DWELL_MS  = 6000;
 
     // HGSS-style time-of-day windows:

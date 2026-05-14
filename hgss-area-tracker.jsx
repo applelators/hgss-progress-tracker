@@ -5210,20 +5210,8 @@ const DT_ABILITIES = {
   "Wobbuffet":  { name:"Shadow Tag",    desc:"Opponent cannot switch out — forces them to fight or use Struggle" },
   "Stantler":   { name:"Intimidate",    desc:"Lowers opponent's Attack by one stage on switch-in" },
   "Delibird":   { name:"Vital Spirit",  desc:"Cannot be put to sleep" },
-  // ── Added candidates ────────────────────────────────────────────────────────
-  "Gyarados":   { name:"Intimidate",   desc:"Lowers opponent's Attack by one stage on switch-in" },
-  "Dragonite":  { name:"Inner Focus",  desc:"Cannot be made to flinch (only ability in Gen IV)" },
-  "Arcanine":   { name:"Intimidate",   desc:"Lowers opponent's Attack by one stage on switch-in" },
+  // ── Gen IV evolutions of Gen II lines ───────────────────────────────────────
   "Togekiss":   { name:"Serene Grace", desc:"Doubles secondary effect chances — Air Slash flinch becomes 60%" },
-  "Alakazam":   { name:"Synchronize",  desc:"Reflects Burn / Paralysis / Poison back to the inflicter" },
-  "Slowbro":    { name:"Own Tempo",    desc:"Cannot be confused — more reliable than Oblivious in-game" },
-  "Exeggutor":  { name:"Chlorophyll",  desc:"Doubles Speed in sunlight" },
-  "Victreebel": { name:"Chlorophyll",  desc:"Doubles Speed in sunlight" },
-  "Tentacruel": { name:"Clear Body",   desc:"Own stats cannot be lowered by opponents (only ability in Gen IV)" },
-  "Hypno":      { name:"Insomnia",     desc:"Cannot be put to sleep — blocks Hypnosis, Spore, Sleep Powder" },
-  "Vaporeon":   { name:"Water Absorb", desc:"Immune to Water moves; restores ¼ max HP instead" },
-  "Jolteon":    { name:"Volt Absorb",  desc:"Immune to Electric moves; restores ¼ max HP instead" },
-  "Flareon":    { name:"Flash Fire",   desc:"Immune to Fire moves; boosts own Fire moves by 1.5× when hit by one" },
   "Ambipom":    { name:"Technician",   desc:"Moves with base power ≤ 60 deal 1.5× damage — Double Hit, Fake Out" },
   "Yanmega":    { name:"Speed Boost",  desc:"Gains +1 Speed at the end of every turn" },
   "Mamoswine":  { name:"Snow Cloak",   desc:"Evasion +25% in hail" },
@@ -5308,12 +5296,7 @@ const DT_CANDIDATES = [
   { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:10, spa:75,  spe:55} },
   { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true, stats:{atk:130,spa:75,  spe:55} },
   { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true, stats:{atk:40, spa:80,  spe:70} },
-  { name:"Gyarados",   types:["Water","Flying"],   hms:["Surf","Strength","Waterfall","Whirlpool"], stats:{atk:125, spa:60,  spe:81} },
-  { name:"Dragonite",  types:["Dragon","Flying"],  hms:["Cut","Fly","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:134, spa:100, spe:80} },
-  { name:"Arcanine",   types:["Fire"],             hms:["Strength"], hgOnly:true, stats:{atk:110, spa:100, spe:95} },
   { name:"Togekiss",   types:["Normal","Flying"],  hms:["Fly"], stats:{atk:50,  spa:120, spe:80} },
-  { name:"Alakazam",   types:["Psychic"],          hms:["Strength"], tradeOnly:true, stats:{atk:50,  spa:135, spe:120} },
-  { name:"Slowbro",    types:["Water","Psychic"],  hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:75,  spa:100, spe:30} },
   // ── Good picks ───────────────────────────────────────────────────────────────
   { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },
   { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4, stats:{atk:58,  spa:76,  spe:67} },
@@ -5335,13 +5318,6 @@ const DT_CANDIDATES = [
   { name:"Corsola",     types:["Water","Rock"],     hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:55, spa:65,  spe:35} },
   { name:"Furret",      types:["Normal"],           hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:76, spa:56,  spe:90} },
   { name:"Sunflora",    types:["Grass"],            hms:["Cut"], stats:{atk:75, spa:105, spe:30} },
-  { name:"Exeggutor",  types:["Grass","Psychic"],  hms:["Strength"], stats:{atk:95,  spa:125, spe:55} },
-  { name:"Victreebel", types:["Grass","Poison"],   hms:[], stats:{atk:105, spa:100, spe:70} },
-  { name:"Tentacruel", types:["Water","Poison"],   hms:["Surf","Waterfall","Whirlpool"], stats:{atk:70,  spa:80,  spe:100} },
-  { name:"Hypno",      types:["Psychic"],           hms:["Strength"], stats:{atk:73,  spa:73,  spe:67} },
-  { name:"Vaporeon",   types:["Water"],             hms:["Surf","Strength","Waterfall","Whirlpool"], stats:{atk:65,  spa:110, spe:65} },
-  { name:"Jolteon",    types:["Electric"],          hms:["Strength"], stats:{atk:65,  spa:110, spe:130} },
-  { name:"Flareon",    types:["Fire"],              hms:["Strength"], stats:{atk:130, spa:95,  spe:65} },
   { name:"Ambipom",    types:["Normal"],            hms:["Cut","Strength"], stats:{atk:100, spa:60,  spe:115} },
   { name:"Yanmega",    types:["Bug","Flying"],      hms:[], stats:{atk:76,  spa:90,  spe:95} },
   { name:"Mamoswine",  types:["Ice","Ground"],      hms:["Strength"], stats:{atk:130, spa:70,  spe:80} },
@@ -8341,11 +8317,7 @@ function DreamTeamTab({ isMobile, version }) {
     // All Eeveelutions share the same Eevee gift but DT_FINAL_FORM can only map "Eevee" to
     // one final form (Espeon). Patch the others to match Espeon's part number so they appear
     // in placeholder suggestions at the correct time.
-    if (result["Espeon"] !== undefined) {
-      for (const ev of ["Umbreon","Vaporeon","Jolteon","Flareon"]) {
-        result[ev] = Math.min(result[ev] ?? 999, result["Espeon"]);
-      }
-    }
+    if (result["Espeon"] !== undefined) result["Umbreon"] = Math.min(result["Umbreon"] ?? 999, result["Espeon"]);
     return result;
   }, [version]);
 
@@ -8862,7 +8834,7 @@ function DreamTeamTab({ isMobile, version }) {
                       </button>
                       {altExp && (
                         <div style={{ marginTop:8, display:"flex", flexDirection:"column", gap:5 }}>
-                          {available.slice(0, 12).map(({ c: altC, overlap }) => {
+                          {available.map(({ c: altC, overlap }) => {
                             const altDex  = DEX.find(p => p.name === altC.name);
                             const isCurr  = altC.name === phName;
                             const altPart = candidatePartNums[altC.name] || 999;

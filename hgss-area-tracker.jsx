@@ -8311,7 +8311,7 @@ function DreamTeamTab({ isMobile, version }) {
     const usedFinals = new Set(team.map(n => DT_FINAL_FORM[n] || n));
     return catchOrder
       .map(item => {
-        if (item.partNum < 15) return null;
+        if (item.partNum < 7) return null;
         const slotIdx = team.indexOf(item.teamName);
         if (slotIdx === -1) return null;
         const finalName = DT_FINAL_FORM[item.teamName] || item.teamName;

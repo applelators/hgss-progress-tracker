@@ -7968,6 +7968,33 @@ function DreamTeamTab({ isMobile, version }) {
     return team.map(findLocation).sort((a, b) => a.partNum - b.partNum);
   }, [team, version]);
 
+  // Earliest part number each DT_CANDIDATE can be obtained (for placeholder suggestions)
+  const candidatePartNums = React.useMemo(() => {
+    const sortedAreas = AREAS.map((area, i) => ({ area, i }))
+      .sort((a, b) => {
+        const pA = parseInt(a.area.part?.match(/\d+/)?.[0] || 999);
+        const pB = parseInt(b.area.part?.match(/\d+/)?.[0] || 999);
+        return pA - pB || a.i - b.i;
+      });
+    const result = {};
+    for (const cand of DT_CANDIDATES) {
+      const searchNames = [cand.name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === cand.name).map(([b]) => b)];
+      let found = 999;
+      outer: for (const { area } of sortedAreas) {
+        if (area.part === "Pokéwalker") continue;
+        for (const sn of searchNames) {
+          if (_allPokemon(area).some(p => p.name === sn &&
+              !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly))) {
+            found = parseInt(area.part?.match(/\d+/)?.[0] || 999);
+            break outer;
+          }
+        }
+      }
+      result[cand.name] = found;
+    }
+    return result;
+  }, [version]);
+
   const isHardLocked = idx => idx === 0 || (idx === 1 && !isTyranitarLine);
 
   const togglePin = (idx) => {
@@ -8315,28 +8342,52 @@ function DreamTeamTab({ isMobile, version }) {
           Earliest Catch Locations
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-          {catchOrder.map(({ teamName, catchName, areaName, part, method, levels, timeStr, needsEvo }) => {
-            const dexEntry = DEX.find(p => p.name === (needsEvo ? catchName : teamName));
+          {catchOrder.map(({ teamName, catchName, areaName, part, method, levels, timeStr, needsEvo, partNum }) => {
             const teamEntry = DEX.find(p => p.name === teamName);
+            const finalName = DT_FINAL_FORM[teamName] || teamName;
+            const candInfo  = DT_CANDIDATES.find(c => c.name === finalName);
+            const usedFinals = new Set(team.map(n => DT_FINAL_FORM[n] || n));
+            const placeholder = partNum >= 15 ? DT_CANDIDATES
+              .filter(c => !usedFinals.has(c.name) &&
+                !(version === "hg" && c.ssOnly) && !(version === "ss" && c.hgOnly) &&
+                (candidatePartNums[c.name] || 999) < partNum)
+              .map(c => ({ c, overlap: candInfo ? c.types.filter(t => candInfo.types.includes(t)).length : 0 }))
+              .sort((a, b) => b.overlap - a.overlap || (candidatePartNums[a.c.name] || 999) - (candidatePartNums[b.c.name] || 999))
+              [0] ?? null : null;
+            const phDex = placeholder ? DEX.find(p => p.name === placeholder.c.name) : null;
             return (
-              <div key={teamName} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, border:`1px solid ${C.border}`, borderRadius:8 }}>
-                {teamEntry && <img src={pokeSpriteUrl(teamEntry.id)} alt={teamName} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:2 }}>
-                    <span style={{ fontSize:12, fontWeight:"700", color:C.text }}>{teamName}</span>
-                    {needsEvo && <span style={{ fontSize:9, color:C.muted }}>catch {catchName} → evolve</span>}
-                  </div>
-                  {areaName ? (
-                    <div style={{ fontSize:10, color:C.muted, lineHeight:1.5 }}>
-                      <span style={{ color:C.gold, fontWeight:"600" }}>{part}</span>
-                      <span style={{ color:C.text }}> · {areaName}</span>
-                      <span> · {method}{levels ? `, Lv. ${levels}` : ""}</span>
-                      {timeStr && <span style={{ color:"#a87acc" }}> · {timeStr} only</span>}
+              <div key={teamName} style={{ background:C.card, border:`1px solid ${placeholder ? "rgba(200,150,10,0.35)" : C.border}`, borderRadius:8, overflow:"hidden" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px" }}>
+                  {teamEntry && <img src={pokeSpriteUrl(teamEntry.id)} alt={teamName} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:2 }}>
+                      <span style={{ fontSize:12, fontWeight:"700", color:C.text }}>{teamName}</span>
+                      {needsEvo && <span style={{ fontSize:9, color:C.muted }}>catch {catchName} → evolve</span>}
                     </div>
-                  ) : (
-                    <div style={{ fontSize:10, color:C.muted }}>See Pokédex for location</div>
-                  )}
+                    {areaName ? (
+                      <div style={{ fontSize:10, color:C.muted, lineHeight:1.5 }}>
+                        <span style={{ color:C.gold, fontWeight:"600" }}>{part}</span>
+                        <span style={{ color:C.text }}> · {areaName}</span>
+                        <span> · {method}{levels ? `, Lv. ${levels}` : ""}</span>
+                        {timeStr && <span style={{ color:"#a87acc" }}> · {timeStr} only</span>}
+                      </div>
+                    ) : (
+                      <div style={{ fontSize:10, color:C.muted }}>See Pokédex for location</div>
+                    )}
+                  </div>
                 </div>
+                {placeholder && (
+                  <div style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 12px 8px 12px", borderTop:"1px solid rgba(200,150,10,0.2)", background:"rgba(200,150,10,0.05)" }}>
+                    <span style={{ fontSize:9, color:C.gold, fontWeight:"700", letterSpacing:0.5, flexShrink:0 }}>PLACEHOLDER</span>
+                    {phDex && <img src={pokeSpriteUrl(phDex.id)} alt={placeholder.c.name} width={24} height={24} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
+                    <div style={{ fontSize:10, color:C.muted, flex:1 }}>
+                      <span style={{ fontWeight:"600", color:C.text }}>{placeholder.c.name}</span>
+                      <span style={{ color:C.muted }}> ({placeholder.c.types.join("/")})</span>
+                      <span> — available </span>
+                      <span style={{ color:C.gold, fontWeight:"600" }}>Part {candidatePartNums[placeholder.c.name]}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

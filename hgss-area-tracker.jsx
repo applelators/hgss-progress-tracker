@@ -6996,8 +6996,11 @@ function getDreamAcquisition(name) {
     const l = direct[0];
     return `${l.areaName}${l.levels ? ` — ${l.method}, Lv. ${l.levels}` : ` — ${l.method}`}`;
   }
-  for (const [base, final] of Object.entries(DT_FINAL_FORM)) {
-    if (final !== name) continue;
+  const preEvos = [
+    ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b),
+    ...(BRANCH_PRE_EVO[name] ? [BRANCH_PRE_EVO[name]] : []),
+  ];
+  for (const base of preEvos) {
     const baseLocs = LOCATION_MAP[base];
     if (baseLocs && baseLocs.length > 0) {
       const l = baseLocs[0];

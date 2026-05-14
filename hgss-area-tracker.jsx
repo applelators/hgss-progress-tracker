@@ -7892,6 +7892,8 @@ function DreamTeamTab({ isMobile, version }) {
   const [favorite,        setFavorite]        = React.useState("");
   const [pins,            setPins]            = React.useState({});   // {slotIdx: name}
   const [expandedAltSlot, setExpandedAltSlot] = React.useState(null);
+  const [expandedPhAlt,   setExpandedPhAlt]   = React.useState(null);
+  const [phPins,          setPhPins]          = React.useState({});
   const [hmPerPokemon,    setHmPerPokemon]    = React.useState(3);
 
   React.useEffect(() => {
@@ -7901,6 +7903,7 @@ function DreamTeamTab({ isMobile, version }) {
         const d = JSON.parse(r);
         if (d.favorite) setFavorite(d.favorite);
         if (d.pins) setPins(d.pins);
+        if (d.phPins) setPhPins(d.phPins);
         if (d.hmPerPokemon) setHmPerPokemon(d.hmPerPokemon);
       }
     } catch {}
@@ -7908,8 +7911,8 @@ function DreamTeamTab({ isMobile, version }) {
 
   React.useEffect(() => {
     if (!favorite) return;
-    try { localStorage.setItem("hgss-dream-team-v1", JSON.stringify({ favorite, pins, version, hmPerPokemon })); } catch {}
-  }, [favorite, pins, version, hmPerPokemon]);
+    try { localStorage.setItem("hgss-dream-team-v1", JSON.stringify({ favorite, pins, phPins, version, hmPerPokemon })); } catch {}
+  }, [favorite, pins, phPins, version, hmPerPokemon]);
 
   // Drop version-conflicting pins when version changes
   React.useEffect(() => {
@@ -7994,6 +7997,30 @@ function DreamTeamTab({ isMobile, version }) {
     }
     return result;
   }, [version]);
+
+  const placeholderSlots = React.useMemo(() => {
+    if (!team) return [];
+    const usedFinals = new Set(team.map(n => DT_FINAL_FORM[n] || n));
+    return catchOrder
+      .map(item => {
+        if (item.partNum < 15) return null;
+        const slotIdx = team.indexOf(item.teamName);
+        if (slotIdx === -1) return null;
+        const finalName = DT_FINAL_FORM[item.teamName] || item.teamName;
+        const candInfo  = DT_CANDIDATES.find(c => c.name === finalName);
+        const available = DT_CANDIDATES
+          .filter(c => !usedFinals.has(c.name) &&
+            !(version === "hg" && c.ssOnly) && !(version === "ss" && c.hgOnly) &&
+            (candidatePartNums[c.name] || 999) < item.partNum)
+          .map(c => ({ c, overlap: candInfo ? c.types.filter(t => candInfo.types.includes(t)).length : 0 }))
+          .sort((a, b) => b.overlap - a.overlap || (candidatePartNums[a.c.name]||999) - (candidatePartNums[b.c.name]||999));
+        if (!available.length) return null;
+        const pinned = phPins[slotIdx] ? available.find(x => x.c.name === phPins[slotIdx]) : null;
+        const active = pinned || available[0];
+        return { slotIdx, teamName: item.teamName, teamPart: item.part, teamPartNum: item.partNum, active, available };
+      })
+      .filter(Boolean);
+  }, [catchOrder, candidatePartNums, team, version, phPins]);
 
   const isHardLocked = idx => idx === 0 || (idx === 1 && !isTyranitarLine);
 
@@ -8336,58 +8363,216 @@ function DreamTeamTab({ isMobile, version }) {
         })}
       </div>
 
+      {/* Placeholder slots — full cards for late-game team members */}
+      {placeholderSlots.length > 0 && (
+        <div style={{ marginTop:20 }}>
+          <div style={{ fontSize:9, color:C.gold, letterSpacing:2, textTransform:"uppercase", fontWeight:"700", marginBottom:10 }}>
+            Temporary Slot{placeholderSlots.length > 1 ? "s" : ""}
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:14 }}>
+            {placeholderSlots.map(({ slotIdx, teamName, teamPart, active, available }) => {
+              const phName     = active.c.name;
+              const phFinal    = DT_FINAL_FORM[phName] || phName;
+              const phDex      = DEX.find(p => p.name === phName);
+              const phCand     = active.c;
+              const phAbility  = DT_ABILITIES[phFinal] || DT_ABILITIES[phName];
+              const phSuppressed = new Set(Object.entries(tmWinners).filter(([,w]) => w !== teamName).map(([mv]) => mv));
+              const phMoves    = getDreamMoves(phName, phSuppressed, []);
+              const phAcq      = getDreamAcquisition(phName);
+              const phEvoNote  = EVO_DELAY[phName];
+              const vl         = versionLabel(phCand);
+              const trade      = needsTrade(phCand);
+              const altExp     = expandedPhAlt === slotIdx;
+              const phChart    = getDefensiveChart(phCand.types);
+              const phImm  = TYPES_17.filter(t => phChart[t] === 0);
+              const phRes2 = TYPES_17.filter(t => phChart[t] === 0.25);
+              const phRes  = TYPES_17.filter(t => phChart[t] === 0.5);
+              const phWeak = TYPES_17.filter(t => phChart[t] === 2);
+              const phWeak4= TYPES_17.filter(t => phChart[t] === 4);
+              return (
+                <div key={slotIdx} style={{ background:C.card, border:"1px solid rgba(200,150,10,0.5)", borderRadius:10, overflow:"hidden", display:"flex", flexDirection:"column" }}>
+                  {/* Temp-slot banner */}
+                  <div style={{ padding:"5px 14px", background:"rgba(200,150,10,0.10)", borderBottom:"1px solid rgba(200,150,10,0.25)", display:"flex", alignItems:"center", gap:8 }}>
+                    <span style={{ fontSize:8, fontWeight:"700", color:C.gold, letterSpacing:1.5, textTransform:"uppercase" }}>Temp slot</span>
+                    <span style={{ fontSize:8, color:C.muted }}>until {teamName} ({teamPart})</span>
+                  </div>
+                  {/* Card header */}
+                  <div style={{ padding:"12px 14px", display:"flex", alignItems:"center", gap:10 }}>
+                    {phDex && <img src={pokeSpriteUrl(phDex.id)} alt={phName} style={{ width:48, height:48, imageRendering:"pixelated", flexShrink:0 }} />}
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:5, flexWrap:"wrap", marginBottom:2 }}>
+                        <span style={{ fontSize:14, fontWeight:"700" }}>{phName}</span>
+                        {vl && !trade && <span style={{ fontSize:8, color: vl==="HG"?"#c8960a":"#3fa84a", background: vl==="HG"?"rgba(212,98,26,0.12)":"rgba(63,168,74,0.12)", border:`1px solid ${vl==="HG"?"rgba(212,98,26,0.4)":"rgba(63,168,74,0.4)"}`, padding:"1px 5px", borderRadius:99, fontWeight:"700" }}>{vl}</span>}
+                        {trade && <span style={{ fontSize:8, color:"#e07b3a", background:"rgba(224,123,58,0.12)", border:"1px solid rgba(224,123,58,0.4)", padding:"1px 5px", borderRadius:99, fontWeight:"700" }}>⇄ TRADE ({vl})</span>}
+                      </div>
+                      <div style={{ fontSize:9, color:C.muted }}>
+                        {phDex ? `#${String(phDex.johtoId).padStart(3,"0")}` : ""}
+                        {` · ${phCand.types.join("/")}`}
+                        {phCand.stats ? ` · Atk ${phCand.stats.atk} / SpA ${phCand.stats.spa} / Spe ${phCand.stats.spe}` : ""}
+                        {` · avail. Part ${candidatePartNums[phName]}`}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ padding:"0 14px 14px", display:"flex", flexDirection:"column", gap:12, flex:1 }}>
+                    {/* Ability */}
+                    {phAbility && (
+                      <div>
+                        <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Ability</div>
+                        <div style={{ fontSize:10, lineHeight:1.5 }}>
+                          <span style={{ fontWeight:"700", color:C.text }}>{phAbility.name}</span>
+                          <span style={{ color:C.muted }}> — {phAbility.desc}</span>
+                        </div>
+                      </div>
+                    )}
+                    {/* Moveset */}
+                    <div>
+                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:5 }}>Moveset</div>
+                      <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                        {phMoves.map((m, i) => {
+                          const isHM      = m.kind === "hm";
+                          const isOneTime = m.kind === "tm" && m.oneTime;
+                          const moveColor = isHM ? "#4a8fc4" : isOneTime ? "#e8a020" : m.kind === "tm" ? C.gold : (MOVE_TIERS?.good?.has(m.move) ? C.green : C.muted);
+                          const superEff  = getMoveSuper(m.move);
+                          return (
+                            <div key={i} style={{ padding:"6px 8px", background:"rgba(0,0,0,0.18)", borderRadius:6, borderLeft:`2px solid ${moveColor}` }}>
+                              <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
+                                <span style={{ fontSize:11, fontWeight:"600", color:C.text }}>{m.move}</span>
+                                {MOVE_TYPES[m.move] && <span style={{ fontSize:8, color:"#fff", background:TYPE_COLORS[MOVE_TYPES[m.move]]||"#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3, flexShrink:0 }}>{MOVE_TYPES[m.move]}</span>}
+                                {(() => {
+                                  const cat = MOVE_CATEGORY[m.move];
+                                  if (!cat) return null;
+                                  const isStat = phCand.stats;
+                                  const mismatch = isStat && cat === "P" && phCand.stats.spa - phCand.stats.atk > 20
+                                                || isStat && cat === "S" && phCand.stats.atk - phCand.stats.spa > 20;
+                                  const catBg = cat === "P" ? (mismatch ? "#8b2020" : "#7a4a10") : "#2a4a8a";
+                                  return (
+                                    <span title={mismatch ? `⚠ move type mismatch` : (cat === "P" ? "Physical" : "Special")}
+                                      style={{ fontSize:8, color:"#fff", background:catBg, padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3, flexShrink:0, cursor:"default" }}>
+                                      {cat}{mismatch ? " ⚠" : ""}
+                                    </span>
+                                  );
+                                })()}
+                                <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
+                                {isOneTime && <span style={{ fontSize:8, color:"#e8a020", background:"rgba(232,160,32,0.12)", border:"1px solid rgba(232,160,32,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0, whiteSpace:"nowrap" }}>1× only</span>}
+                              </div>
+                              {MOVE_STATS[m.move] && (() => {
+                                const s = MOVE_STATS[m.move];
+                                return <div style={{ fontSize:9, color:C.muted, opacity:0.75, marginTop:2 }}>{s.bp != null ? `${s.bp} bp` : "— bp"} · {s.acc != null ? `${s.acc}%` : "—%"} · {s.pp} PP</div>;
+                              })()}
+                              {superEff.length > 0 && (
+                                <div style={{ display:"flex", gap:3, flexWrap:"wrap", marginTop:3 }}>
+                                  <span style={{ fontSize:8, color:C.muted }}>2× vs</span>
+                                  {superEff.map(t => <span key={t} style={{ fontSize:8, fontWeight:"700", color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"0 4px", borderRadius:2 }}>{t}</span>)}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                        {phMoves.length === 0 && <div style={{ fontSize:10, color:C.muted }}>No moveset data available.</div>}
+                      </div>
+                    </div>
+                    {/* Where to Get */}
+                    <div>
+                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Where to Get</div>
+                      <div style={{ fontSize:10, color:C.text, lineHeight:1.5 }}>{phAcq}</div>
+                    </div>
+                    {/* Evo note */}
+                    {phEvoNote && (
+                      <div style={{ fontSize:10, color:"#c8960a", lineHeight:1.5, padding:"5px 8px", background:"rgba(200,150,10,0.08)", borderRadius:5, borderLeft:"2px solid #c8960a" }}>
+                        ⏳ {phEvoNote}
+                      </div>
+                    )}
+                    {/* Defensive chart */}
+                    {(phWeak4.length > 0 || phWeak.length > 0 || phRes.length > 0 || phRes2.length > 0 || phImm.length > 0) && (
+                      <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                        {(phWeak4.length > 0 || phWeak.length > 0) && (
+                          <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
+                            <div style={{ fontSize:9, color:"#e07b3a", letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700" }}>Weak against</div>
+                            {phWeak4.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}><span style={{ fontSize:9, color:"#e83030", fontWeight:"700", minWidth:22 }}>4×</span>{phWeak4.map(t => <TypePill key={t} type={t} bg="#c02020" />)}</div>}
+                            {phWeak.length  > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}><span style={{ fontSize:9, color:"#e07b3a", fontWeight:"700", minWidth:22 }}>2×</span>{phWeak.map(t  => <TypePill key={t} type={t} />)}</div>}
+                          </div>
+                        )}
+                        {(phRes.length > 0 || phRes2.length > 0 || phImm.length > 0) && (
+                          <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
+                            <div style={{ fontSize:9, color:"#4a8fc4", letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700" }}>Strong against</div>
+                            {phRes.length  > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}><span style={{ fontSize:9, color:"#4a8fc4", fontWeight:"700", minWidth:22 }}>½×</span>{phRes.map(t  => <TypePill key={t} type={t} />)}</div>}
+                            {phRes2.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}><span style={{ fontSize:9, color:"#4a8fc4", fontWeight:"700", minWidth:22 }}>¼×</span>{phRes2.map(t => <TypePill key={t} type={t} />)}</div>}
+                            {phImm.length  > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}><span style={{ fontSize:9, color:"#7a5ab0", fontWeight:"700", minWidth:22 }}>0×</span>{phImm.map(t  => <TypePill key={t} type={t} bg="#5a3a8a" />)}</div>}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {/* Alternatives */}
+                    <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:10 }}>
+                      <button onClick={() => setExpandedPhAlt(altExp ? null : slotIdx)}
+                        style={{ display:"flex", alignItems:"center", gap:5, background:"none", border:"none", cursor:"pointer", color:C.muted, fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:10, fontWeight:"700", letterSpacing:1, padding:0, textTransform:"uppercase" }}>
+                        <span style={{ fontSize:9 }}>{altExp ? "▼" : "▶"}</span>
+                        <span>Alternatives</span>
+                      </button>
+                      {altExp && (
+                        <div style={{ marginTop:8, display:"flex", flexDirection:"column", gap:5 }}>
+                          {available.slice(0, 12).map(({ c: altC, overlap }) => {
+                            const altDex  = DEX.find(p => p.name === altC.name);
+                            const isCurr  = altC.name === phName;
+                            const altPart = candidatePartNums[altC.name] || 999;
+                            return (
+                              <div key={altC.name} style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 8px", background: isCurr?"rgba(200,150,10,0.08)":"rgba(0,0,0,0.12)", borderRadius:6, border:`1px solid ${isCurr?"rgba(200,150,10,0.3)":"transparent"}` }}>
+                                {altDex && <img src={pokeSpriteUrl(altDex.id)} alt={altC.name} width={26} height={26} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
+                                <div style={{ flex:1, minWidth:0 }}>
+                                  <span style={{ fontSize:12, fontWeight:"600", color: isCurr?C.gold:C.text }}>{altC.name}</span>
+                                  <span style={{ fontSize:9, color:C.muted, marginLeft:6 }}>{altC.types.join("/")}</span>
+                                </div>
+                                <span style={{ fontSize:9, color: overlap > 0 ? C.green : C.muted, fontWeight:"700", flexShrink:0, minWidth:28, textAlign:"right" }}>
+                                  Part {altPart}
+                                </span>
+                                {overlap > 0 && <span style={{ fontSize:8, color:C.green, background:"rgba(95,201,154,0.12)", border:"1px solid rgba(95,201,154,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0 }}>type match</span>}
+                                {!isCurr && (
+                                  <button onClick={() => { setPhPins(prev => ({ ...prev, [slotIdx]: altC.name })); setExpandedPhAlt(null); }}
+                                    style={{ padding:"3px 9px", background:"rgba(200,150,10,0.12)", border:"1px solid rgba(200,150,10,0.4)", borderRadius:4, cursor:"pointer", fontSize:9, color:C.gold, fontFamily:"'DM Sans',system-ui,sans-serif", fontWeight:"700", flexShrink:0 }}>
+                                    Use
+                                  </button>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Catch Order */}
       <div style={{ marginTop:24, marginBottom:8 }}>
         <div style={{ fontSize:9, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:10, fontWeight:"700" }}>
           Earliest Catch Locations
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-          {catchOrder.map(({ teamName, catchName, areaName, part, method, levels, timeStr, needsEvo, partNum }) => {
+          {catchOrder.map(({ teamName, catchName, areaName, part, method, levels, timeStr, needsEvo }) => {
             const teamEntry = DEX.find(p => p.name === teamName);
-            const finalName = DT_FINAL_FORM[teamName] || teamName;
-            const candInfo  = DT_CANDIDATES.find(c => c.name === finalName);
-            const usedFinals = new Set(team.map(n => DT_FINAL_FORM[n] || n));
-            const placeholder = partNum >= 15 ? DT_CANDIDATES
-              .filter(c => !usedFinals.has(c.name) &&
-                !(version === "hg" && c.ssOnly) && !(version === "ss" && c.hgOnly) &&
-                (candidatePartNums[c.name] || 999) < partNum)
-              .map(c => ({ c, overlap: candInfo ? c.types.filter(t => candInfo.types.includes(t)).length : 0 }))
-              .sort((a, b) => b.overlap - a.overlap || (candidatePartNums[a.c.name] || 999) - (candidatePartNums[b.c.name] || 999))
-              [0] ?? null : null;
-            const phDex = placeholder ? DEX.find(p => p.name === placeholder.c.name) : null;
             return (
-              <div key={teamName} style={{ background:C.card, border:`1px solid ${placeholder ? "rgba(200,150,10,0.35)" : C.border}`, borderRadius:8, overflow:"hidden" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px" }}>
-                  {teamEntry && <img src={pokeSpriteUrl(teamEntry.id)} alt={teamName} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
-                  <div style={{ flex:1, minWidth:0 }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:2 }}>
-                      <span style={{ fontSize:12, fontWeight:"700", color:C.text }}>{teamName}</span>
-                      {needsEvo && <span style={{ fontSize:9, color:C.muted }}>catch {catchName} → evolve</span>}
-                    </div>
-                    {areaName ? (
-                      <div style={{ fontSize:10, color:C.muted, lineHeight:1.5 }}>
-                        <span style={{ color:C.gold, fontWeight:"600" }}>{part}</span>
-                        <span style={{ color:C.text }}> · {areaName}</span>
-                        <span> · {method}{levels ? `, Lv. ${levels}` : ""}</span>
-                        {timeStr && <span style={{ color:"#a87acc" }}> · {timeStr} only</span>}
-                      </div>
-                    ) : (
-                      <div style={{ fontSize:10, color:C.muted }}>See Pokédex for location</div>
-                    )}
+              <div key={teamName} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, border:`1px solid ${C.border}`, borderRadius:8 }}>
+                {teamEntry && <img src={pokeSpriteUrl(teamEntry.id)} alt={teamName} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:2 }}>
+                    <span style={{ fontSize:12, fontWeight:"700", color:C.text }}>{teamName}</span>
+                    {needsEvo && <span style={{ fontSize:9, color:C.muted }}>catch {catchName} → evolve</span>}
                   </div>
+                  {areaName ? (
+                    <div style={{ fontSize:10, color:C.muted, lineHeight:1.5 }}>
+                      <span style={{ color:C.gold, fontWeight:"600" }}>{part}</span>
+                      <span style={{ color:C.text }}> · {areaName}</span>
+                      <span> · {method}{levels ? `, Lv. ${levels}` : ""}</span>
+                      {timeStr && <span style={{ color:"#a87acc" }}> · {timeStr} only</span>}
+                    </div>
+                  ) : (
+                    <div style={{ fontSize:10, color:C.muted }}>See Pokédex for location</div>
+                  )}
                 </div>
-                {placeholder && (
-                  <div style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 12px 8px 12px", borderTop:"1px solid rgba(200,150,10,0.2)", background:"rgba(200,150,10,0.05)" }}>
-                    <span style={{ fontSize:9, color:C.gold, fontWeight:"700", letterSpacing:0.5, flexShrink:0 }}>PLACEHOLDER</span>
-                    {phDex && <img src={pokeSpriteUrl(phDex.id)} alt={placeholder.c.name} width={24} height={24} style={{ imageRendering:"pixelated", flexShrink:0 }} />}
-                    <div style={{ fontSize:10, color:C.muted, flex:1 }}>
-                      <span style={{ fontWeight:"600", color:C.text }}>{placeholder.c.name}</span>
-                      <span style={{ color:C.muted }}> ({placeholder.c.types.join("/")})</span>
-                      <span> — available </span>
-                      <span style={{ color:C.gold, fontWeight:"600" }}>Part {candidatePartNums[placeholder.c.name]}</span>
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })}

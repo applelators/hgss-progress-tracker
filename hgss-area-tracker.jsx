@@ -5210,11 +5210,6 @@ const DT_ABILITIES = {
   "Wobbuffet":  { name:"Shadow Tag",    desc:"Opponent cannot switch out — forces them to fight or use Struggle" },
   "Stantler":   { name:"Intimidate",    desc:"Lowers opponent's Attack by one stage on switch-in" },
   "Delibird":   { name:"Vital Spirit",  desc:"Cannot be put to sleep" },
-  // ── Gen IV evolutions of Gen II lines ───────────────────────────────────────
-  "Togekiss":   { name:"Serene Grace", desc:"Doubles secondary effect chances — Air Slash flinch becomes 60%" },
-  "Ambipom":    { name:"Technician",   desc:"Moves with base power ≤ 60 deal 1.5× damage — Double Hit, Fake Out" },
-  "Yanmega":    { name:"Speed Boost",  desc:"Gains +1 Speed at the end of every turn" },
-  "Mamoswine":  { name:"Snow Cloak",   desc:"Evasion +25% in hail" },
 };
 
 // ─── MOVE TIERS ──────────────────────────────────────────────────────────────
@@ -5270,8 +5265,7 @@ const MOVE_TIERS = {
 const EVO_DELAY = {}; // TODO: Add Johto evolution delay notes
 
 // ─── DREAM TEAM BUILDER DATA ──────────────────────────────────────────────────
-// Gen II Pokémon only (national #152–251) plus Gen IV evolutions of Gen II lines
-// (Togekiss, Ambipom, Yanmega, Mamoswine). Final forms only, ordered best→decent.
+// Gen II Pokémon only (national #152–251). Final forms only, ordered best→decent.
 // Tyranitar (pseudo-legendary) is always locked into slot 1 unless it's the favorite.
 const DT_CANDIDATES = [
   // ── Starters ─────────────────────────────────────────────────────────────────
@@ -5296,7 +5290,6 @@ const DT_CANDIDATES = [
   { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:10, spa:75,  spe:55} },
   { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true, stats:{atk:130,spa:75,  spe:55} },
   { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true, stats:{atk:40, spa:80,  spe:70} },
-  { name:"Togekiss",   types:["Normal","Flying"],  hms:["Fly"], stats:{atk:50,  spa:120, spe:80} },
   // ── Good picks ───────────────────────────────────────────────────────────────
   { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },
   { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4, stats:{atk:58,  spa:76,  spe:67} },
@@ -5318,9 +5311,6 @@ const DT_CANDIDATES = [
   { name:"Corsola",     types:["Water","Rock"],     hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:55, spa:65,  spe:35} },
   { name:"Furret",      types:["Normal"],           hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:76, spa:56,  spe:90} },
   { name:"Sunflora",    types:["Grass"],            hms:["Cut"], stats:{atk:75, spa:105, spe:30} },
-  { name:"Ambipom",    types:["Normal"],            hms:["Cut","Strength"], stats:{atk:100, spa:60,  spe:115} },
-  { name:"Yanmega",    types:["Bug","Flying"],      hms:[], stats:{atk:76,  spa:90,  spe:95} },
-  { name:"Mamoswine",  types:["Ice","Ground"],      hms:["Strength"], stats:{atk:130, spa:70,  spe:80} },
   // ── Niche picks ──────────────────────────────────────────────────────────────
   { name:"Ariados",     types:["Bug","Poison"],     hms:[], stats:{atk:90, spa:60,  spe:40} },
   { name:"Ledian",      types:["Bug","Flying"],     hms:["Strength","Rock Smash"], stats:{atk:35, spa:35,  spe:85} },

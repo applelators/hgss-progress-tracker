@@ -88,7 +88,7 @@ const DEX = [
   {johtoId:154,id:238,name:"Smoochum"},  {johtoId:155,id:124,name:"Jynx"},
   {johtoId:156,id:239,name:"Elekid"},    {johtoId:157,id:125,name:"Electabuzz"},
   {johtoId:158,id:122,name:"Mr. Mime"},  {johtoId:159,id:235,name:"Smeargle"},
-  {johtoId:160,id:83, name:"Farfetch’d"},
+  {johtoId:160,id:83, name:"Farfetch'd"},
   {johtoId:161,id:177,name:"Natu"},      {johtoId:162,id:178,name:"Xatu"},
   {johtoId:163,id:211,name:"Qwilfish"},
   {johtoId:164,id:72, name:"Tentacool"}, {johtoId:165,id:73, name:"Tentacruel"},
@@ -140,25 +140,130 @@ const DEX = [
   {johtoId:256,id:251,name:"Celebi",  warn:true,event:true},
 ];
 
-// ─── NATIONAL DEX (Gen II/III/IV obtainable in HGSS) — Phase 2: update ──────
-// ─── NATIONAL DEX (Gen III/IV obtainable post-game) — Phase 5: expand ────────
+// ─── NATIONAL DEX (Gen III/IV obtainable in HGSS) ────────────────────────────
 const NATIONAL_DEX = [
-  // Gen III — Pokéwalker + events
-  {id:255,name:"Torchic"},{id:263,name:"Zigzagoon"},{id:264,name:"Linoone"},
-  {id:265,name:"Wurmple"},{id:279,name:"Pelipper"},{id:298,name:"Azurill"},
-  {id:300,name:"Skitty"},{id:302,name:"Sableye"},{id:307,name:"Meditite"},
-  {id:313,name:"Volbeat"},{id:314,name:"Illumise"},{id:318,name:"Carvanha"},
-  {id:320,name:"Wailmer"},{id:349,name:"Feebas"},{id:351,name:"Castform"},
-  {id:352,name:"Kecleon"},{id:355,name:"Duskull"},{id:357,name:"Tropius"},
-  {id:361,name:"Snorunt"},{id:374,name:"Beldum"},
-  // Gen IV — Pokéwalker + events
-  {id:399,name:"Bidoof"},{id:400,name:"Bibarel"},{id:401,name:"Kricketot"},
-  {id:403,name:"Shinx"},{id:406,name:"Budew"},{id:415,name:"Combee"},
-  {id:417,name:"Pachirisu"},{id:418,name:"Buizel"},{id:422,name:"Shellos"},
-  {id:427,name:"Buneary"},{id:433,name:"Chingling"},{id:436,name:"Bronzor"},
+  // ── Gen III ─────────────────────────────────────────────────────────────────
+  // Pokéwalker: Torchic line
+  {id:255,name:"Torchic"},{id:256,name:"Combusken"},{id:257,name:"Blaziken"},
+  // Pokéwalker
+  {id:263,name:"Zigzagoon"},{id:264,name:"Linoone"},
+  // Pokéwalker + Bug Contest (post-Nat Dex)
+  {id:265,name:"Wurmple"},
+  {id:266,name:"Silcoon"},{id:267,name:"Beautifly"},
+  {id:268,name:"Cascoon"},{id:269,name:"Dustox"},
+  // Safari Zone
+  {id:270,name:"Lotad"},{id:271,name:"Lombre"},{id:272,name:"Ludicolo"},
+  {id:273,name:"Seedot"},{id:274,name:"Nuzleaf"},{id:275,name:"Shiftry"},
+  // Pokéwalker: Wingull → Pelipper
+  {id:278,name:"Wingull"},{id:279,name:"Pelipper"},
+  // Safari Zone
+  {id:283,name:"Surskit"},{id:284,name:"Masquerain"},
+  {id:285,name:"Shroomish"},{id:286,name:"Breloom"},
+  {id:287,name:"Slakoth"},{id:288,name:"Vigoroth"},{id:289,name:"Slaking"},
+  // Bug Contest (post-Nat Dex)
+  {id:290,name:"Nincada"},{id:291,name:"Ninjask"},{id:292,name:"Shedinja"},
+  // Pokéwalker
+  {id:298,name:"Azurill"},
+  // Safari Zone
+  {id:299,name:"Nosepass"},
+  // Pokéwalker: Skitty → Delcatty
+  {id:300,name:"Skitty"},{id:301,name:"Delcatty"},
+  // Pokéwalker
+  {id:302,name:"Sableye"},
+  // Safari Zone: Aron line
+  {id:304,name:"Aron"},{id:305,name:"Lairon"},{id:306,name:"Aggron"},
+  // Pokéwalker: Meditite → Medicham
+  {id:307,name:"Meditite"},{id:308,name:"Medicham"},
+  // Safari Zone: Electrike line
+  {id:309,name:"Electrike"},{id:310,name:"Manectric"},
+  // Pokéwalker
+  {id:313,name:"Volbeat"},{id:314,name:"Illumise"},
+  // Safari Zone (also Budew evolution chain)
+  {id:315,name:"Roselia"},
+  // Pokéwalker: Carvanha → Sharpedo
+  {id:318,name:"Carvanha"},{id:319,name:"Sharpedo"},
+  // Pokéwalker: Wailmer → Wailord
+  {id:320,name:"Wailmer"},{id:321,name:"Wailord"},
+  // Safari Zone
+  {id:324,name:"Torkoal"},
+  {id:327,name:"Spinda"},
+  {id:328,name:"Trapinch"},{id:329,name:"Vibrava"},{id:330,name:"Flygon"},
+  {id:331,name:"Cacnea"},{id:332,name:"Cacturne"},
+  {id:335,name:"Zangoose"},
+  {id:336,name:"Seviper"},
+  {id:337,name:"Lunatone"},
+  {id:338,name:"Solrock"},
+  {id:339,name:"Barboach"},{id:340,name:"Whiscash"},
+  {id:341,name:"Corphish"},{id:342,name:"Crawdaunt"},
+  // Pokéwalker: Feebas → Milotic
+  {id:349,name:"Feebas"},{id:350,name:"Milotic"},
+  // Pokéwalker
+  {id:351,name:"Castform"},
+  {id:352,name:"Kecleon"},
+  // Safari Zone: Shuppet → Banette
+  {id:353,name:"Shuppet"},{id:354,name:"Banette"},
+  // Pokéwalker: Duskull → Dusclops → Dusknoir (Gen IV)
+  {id:355,name:"Duskull"},{id:356,name:"Dusclops"},
+  // Pokéwalker
+  {id:357,name:"Tropius"},
+  // Safari Zone (also Chingling → Chimecho)
+  {id:358,name:"Chimecho"},
+  // Pokéwalker: Snorunt → Glalie or Froslass (Gen IV)
+  {id:361,name:"Snorunt"},{id:362,name:"Glalie"},
+  // Safari Zone: Spheal line
+  {id:363,name:"Spheal"},{id:364,name:"Sealeo"},{id:365,name:"Walrein"},
+  // Safari Zone: Bagon line
+  {id:371,name:"Bagon"},{id:372,name:"Shelgon"},{id:373,name:"Salamence"},
+  // Pokéwalker: Beldum → Metang → Metagross
+  {id:374,name:"Beldum"},{id:375,name:"Metang"},{id:376,name:"Metagross"},
+  // ── Gen IV ──────────────────────────────────────────────────────────────────
+  // Pokéwalker: Bidoof → Bibarel
+  {id:399,name:"Bidoof"},{id:400,name:"Bibarel"},
+  // Bug Contest: Kricketot → Kricketune
+  {id:401,name:"Kricketot"},{id:402,name:"Kricketune"},
+  // Pokéwalker: Shinx → Luxio → Luxray
+  {id:403,name:"Shinx"},{id:404,name:"Luxio"},{id:405,name:"Luxray"},
+  // Pokéwalker: Budew → Roselia → Roserade (Shiny Stone via Pokéathlon/Bug Contest)
+  {id:406,name:"Budew"},{id:407,name:"Roserade"},
+  // Bug Contest: Combee → Vespiquen
+  {id:415,name:"Combee"},{id:416,name:"Vespiquen"},
+  // Pokéwalker
+  {id:417,name:"Pachirisu"},
+  // Pokéwalker: Buizel → Floatzel
+  {id:418,name:"Buizel"},{id:419,name:"Floatzel"},
+  // Pokéwalker: Shellos → Gastrodon
+  {id:422,name:"Shellos"},{id:423,name:"Gastrodon"},
+  // Pokéwalker: Buneary → Lopunny
+  {id:427,name:"Buneary"},{id:428,name:"Lopunny"},
+  // Pokéwalker: Chingling → Chimecho (Gen III, above)
+  {id:433,name:"Chingling"},
+  // Pokéwalker: Bronzor → Bronzong
+  {id:436,name:"Bronzor"},{id:437,name:"Bronzong"},
+  // Pokéwalker baby events
   {id:438,name:"Bonsly"},{id:439,name:"Mime Jr."},{id:440,name:"Happiny"},
-  {id:441,name:"Chatot"},{id:442,name:"Spiritomb"},{id:446,name:"Munchlax"},
-  {id:453,name:"Croagunk"},{id:456,name:"Finneon"},{id:459,name:"Snover"},
+  // Pokéwalker events
+  {id:441,name:"Chatot"},{id:442,name:"Spiritomb"},
+  // Safari Zone: Gible → Gabite → Garchomp
+  {id:443,name:"Gible"},{id:444,name:"Gabite"},{id:445,name:"Garchomp"},
+  // Pokéwalker event
+  {id:446,name:"Munchlax"},
+  // Safari Zone: Riolu → Lucario
+  {id:447,name:"Riolu"},{id:448,name:"Lucario"},
+  // Safari Zone: Hippopotas → Hippowdon
+  {id:449,name:"Hippopotas"},{id:450,name:"Hippowdon"},
+  // Safari Zone: Skorupi → Drapion
+  {id:451,name:"Skorupi"},{id:452,name:"Drapion"},
+  // Pokéwalker: Croagunk → Toxicroak
+  {id:453,name:"Croagunk"},{id:454,name:"Toxicroak"},
+  // Safari Zone
+  {id:455,name:"Carnivine"},
+  // Pokéwalker: Finneon → Lumineon
+  {id:456,name:"Finneon"},{id:457,name:"Lumineon"},
+  // Pokéwalker: Snover → Abomasnow
+  {id:459,name:"Snover"},{id:460,name:"Abomasnow"},
+  // Gen III evolutions requiring items available in HGSS
+  {id:477,name:"Dusknoir"},   // Dusclops + Reaper Cloth (trade)
+  {id:478,name:"Froslass"},   // Snorunt ♀ + Dawn Stone (Pokéathlon)
 ];
 
 // ─── AREA DATA ────────────────────────────────────────────────────────────────

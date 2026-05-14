@@ -526,7 +526,8 @@
     })();
 
     function spriteUrl(name) {
-      var id = window.__HGSS_DEX_ID && window.__HGSS_DEX_ID[name];
+      var id = (window.__HGSS_DEX_ID && window.__HGSS_DEX_ID[name])
+             || (window.__HGSS_NATIONAL_DEX_ID && window.__HGSS_NATIONAL_DEX_ID[name]);
       if (!id) return '';
       return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png';
     }

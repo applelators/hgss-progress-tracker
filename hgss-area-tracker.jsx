@@ -6711,6 +6711,8 @@ const DT_FINAL_FORM = {
   "Omanyte":"Omastar","Kabuto":"Kabutops",
   "Dratini":"Dragonite","Dragonair":"Dragonite",
 };
+// Pre-evo overrides for branching chains (DT_FINAL_FORM can only map one final form per key)
+const BRANCH_PRE_EVO = { "Umbreon":"Eevee" };
 
 // ── Offensive type coverage helpers ──────────────────────────────────────────
 // TYPE_CHART[atk][def] = multiplier; entries missing = 1×.
@@ -9434,7 +9436,7 @@ function DreamTeamTab({ isMobile, version }) {
         return pA - pB || a.i - b.i;
       });
     const findLocation = (name) => {
-      const searchNames = [name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b)];
+      const searchNames = [name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b), ...(BRANCH_PRE_EVO[name] ? [BRANCH_PRE_EVO[name]] : [])];
       for (const { area } of sortedAreas) {
         if (area.part === "Pokéwalker") continue;
         for (const searchName of searchNames) {
@@ -9471,7 +9473,7 @@ function DreamTeamTab({ isMobile, version }) {
       });
     const result = {};
     for (const cand of DT_CANDIDATES) {
-      const searchNames = [cand.name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === cand.name).map(([b]) => b)];
+      const searchNames = [cand.name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === cand.name).map(([b]) => b), ...(BRANCH_PRE_EVO[cand.name] ? [BRANCH_PRE_EVO[cand.name]] : [])];
       let found = 999;
       outer: for (const { area } of sortedAreas) {
         if (area.part === "Pokéwalker") continue;
@@ -9526,7 +9528,7 @@ function DreamTeamTab({ isMobile, version }) {
       });
     return placeholderSlots.map(({ active, teamName }) => {
       const name = active.c.name;
-      const searchNames = [name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b)];
+      const searchNames = [name, ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b), ...(BRANCH_PRE_EVO[name] ? [BRANCH_PRE_EVO[name]] : [])];
       for (const { area } of sortedAreas) {
         if (area.part === "Pokéwalker") continue;
         for (const searchName of searchNames) {

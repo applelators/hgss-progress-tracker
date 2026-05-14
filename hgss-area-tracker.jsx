@@ -5650,7 +5650,7 @@ function getAlternatives(slotIdx, team, version, count = 5) {
   return topN.map(x => ({ name: x.name, delta: Math.round(x.score - best) }));
 }
 
-function getDreamMoves(name, suppressedMoves, hms) {
+function getDreamMoves(name, suppressedMoves, hms, skipTMs = false) {
   suppressedMoves = suppressedMoves || new Set();
   hms = hms || [];
   const finalForm = DT_FINAL_FORM[name] || name;
@@ -5658,17 +5658,21 @@ function getDreamMoves(name, suppressedMoves, hms) {
   const tmTips   = DT_TM_TIPS[finalForm] || DT_TM_TIPS[name] || [];
   const result = [], used = new Set();
   // 1. HMs this Pokémon carries — fill slots first so they appear in the moveset
-  for (const hm of hms) {
-    if (result.length >= 4) break;
-    result.push({ move:hm, src:"HM", kind:"hm" });
-    used.add(hm);
+  if (!skipTMs) {
+    for (const hm of hms) {
+      if (result.length >= 4) break;
+      result.push({ move:hm, src:"HM", kind:"hm" });
+      used.add(hm);
+    }
   }
   // 2. TM tips — skip any one-time TM assigned to a different team member
-  for (const t of tmTips) {
-    if (result.length >= 4) break;
-    if (suppressedMoves.has(t.move)) continue;
-    result.push({ move:t.move, src:t.src, kind:"tm", oneTime:!!t.oneTime });
-    used.add(t.move);
+  if (!skipTMs) {
+    for (const t of tmTips) {
+      if (result.length >= 4) break;
+      if (suppressedMoves.has(t.move)) continue;
+      result.push({ move:t.move, src:t.src, kind:"tm", oneTime:!!t.oneTime });
+      used.add(t.move);
+    }
   }
   // 3. Strong level-up moves
   const goodMoves = [...learnset].filter(m => MOVE_TIERS && MOVE_TIERS.good && MOVE_TIERS.good.has(m.move)).sort((a,b) => b.lv - a.lv);
@@ -8691,7 +8695,7 @@ function DreamTeamTab({ isMobile, version }) {
               const phCand     = active.c;
               const phAbility  = DT_ABILITIES[phFinal] || DT_ABILITIES[phName];
               const phSuppressed = new Set(Object.entries(tmWinners).filter(([,w]) => w !== teamName).map(([mv]) => mv));
-              const phMoves    = getDreamMoves(phName, phSuppressed, []);
+              const phMoves    = getDreamMoves(phName, phSuppressed, [], true);
               const phAcq      = getDreamAcquisition(phName);
               const phEvoNote  = EVO_DELAY[phName];
               const vl         = versionLabel(phCand);

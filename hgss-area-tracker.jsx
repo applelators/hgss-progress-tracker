@@ -8303,6 +8303,10 @@ function DreamTeamTab({ isMobile, version }) {
       }
       result[cand.name] = found;
     }
+    // Umbreon evolves from Eevee like Espeon does, but DT_FINAL_FORM can only point "Eevee"
+    // to one final form (Espeon), so Umbreon's loop above never finds Eevee and stays at 999.
+    // Patch it to match Espeon's part number since they share the same Eevee gift.
+    if (result["Espeon"] !== undefined) result["Umbreon"] = Math.min(result["Umbreon"] ?? 999, result["Espeon"]);
     return result;
   }, [version]);
 

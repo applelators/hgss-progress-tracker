@@ -92,11 +92,13 @@
       container-name: overlay;
     }
 
-    /* Progressive rate-column hiding when overlay is narrow. */
-    @container overlay (max-width: 800px) {
+    /* Progressive rate-column hiding to keep names untruncated.
+       drop-1 always fires at the standard 900px width (hides least-relevant
+       non-active column); drop-2 fires only if the overlay is embedded smaller. */
+    @container overlay (max-width: 900px) {
       .rate-cell.drop-1 { display: none; }
     }
-    @container overlay (max-width: 675px) {
+    @container overlay (max-width: 720px) {
       .rate-cell.drop-2 { display: none; }
     }
 

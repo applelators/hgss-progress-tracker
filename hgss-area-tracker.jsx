@@ -9884,6 +9884,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     try { return JSON.parse(localStorage.getItem("hgss-part-times") || "{}"); } catch { return {}; }
   });
   const [editingPartTime, setEditingPartTime] = useState(null);
+  const [targetPart, setTargetPart] = useState(() => {
+    try { return localStorage.getItem("hgss-target-part") || "Part 10"; } catch { return "Part 10"; }
+  });
   const setPartTime = (part, val) => {
     const h = parseFloat(val);
     setPartTimes(prev => {
@@ -9898,6 +9901,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     for (const [p, list] of sortedGroupEntries(groups)) out[p] = list.length;
     return out;
   }, [groups]);
+  const sortedPartKeys = useMemo(() =>
+    Object.keys(partSizes).sort((a, b) => parseInt(a.match(/\d+/)?.[0]||0) - parseInt(b.match(/\d+/)?.[0]||0))
+  , [partSizes]);
   const { hoursPerArea, totalLogged, totalEstimated } = useMemo(() => {
     const logged = Object.entries(partTimes).filter(([, h]) => h > 0);
     if (!logged.length) return { hoursPerArea: null, totalLogged: 0, totalEstimated: null };
@@ -9907,6 +9913,13 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     const remaining = Object.keys(partSizes).filter(p => !partTimes[p]).reduce((s, p) => s + (partSizes[p] || 1), 0);
     return { hoursPerArea: hpa, totalLogged: totalH, totalEstimated: remaining * hpa };
   }, [partTimes, partSizes]);
+  const throughEstimate = useMemo(() => {
+    if (!hoursPerArea) return null;
+    const idx = sortedPartKeys.indexOf(targetPart);
+    if (idx === -1) return null;
+    const upTo = sortedPartKeys.slice(0, idx + 1);
+    return upTo.filter(p => !partTimes[p]).reduce((s, p) => s + (partSizes[p] || 1), 0) * hoursPerArea;
+  }, [hoursPerArea, targetPart, partTimes, partSizes, sortedPartKeys]);
   const sidebarRef = React.useRef(null);
   useEffect(() => {
     const el = sidebarRef.current;
@@ -10048,9 +10061,23 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
         {hoursPerArea != null && (
-          <div style={{ padding:"5px 12px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}`, display:"flex", gap:12, flexWrap:"wrap" }}>
-            <span>⏱ <b style={{ color:C.text }}>{totalLogged.toFixed(1)}h</b> logged</span>
-            <span>est. remaining: <b style={{ color:C.gold }}>{fmtHours(totalEstimated)}</b></span>
+          <div style={{ padding:"5px 12px 7px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}` }}>
+            <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:5 }}>
+              <span>⏱ <b style={{ color:C.text }}>{totalLogged.toFixed(1)}h</b> logged</span>
+              <span>est. remaining: <b style={{ color:C.gold }}>{fmtHours(totalEstimated)}</b></span>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:5 }}>
+              <span>est. through</span>
+              <select value={targetPart} onChange={e => { setTargetPart(e.target.value); try { localStorage.setItem("hgss-target-part", e.target.value); } catch {} }}
+                style={{ fontSize:10, background:"rgba(0,0,0,0.4)", border:`1px solid ${C.border}`, color:C.text, borderRadius:3, padding:"1px 3px", fontFamily:"inherit", cursor:"pointer" }}>
+                {sortedPartKeys.map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+              {throughEstimate != null && (
+                throughEstimate > 0
+                  ? <b style={{ color:C.gold }}>~{fmtHours(throughEstimate)}</b>
+                  : <b style={{ color:C.green }}>done ✓</b>
+              )}
+            </div>
           </div>
         )}
         {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}

@@ -210,13 +210,13 @@
       align-items: center;
       gap: 16px;
       padding: 8px 20px 8px 8px;
-      height: 108px;
-      border-radius: 12px;
+      height: 220px;
+      border-radius: 14px;
       background: var(--row-bg);
       border-left: 7px solid transparent;
       animation: row-in 0.34s cubic-bezier(0.2,0.8,0.3,1) calc(var(--row-i, 0) * 48ms) both;
     }
-    .poke-row > .sprite    { flex: 0 0 128px; }
+    .poke-row > .sprite    { flex: 0 0 256px; }
     .poke-row > .poke-name { flex: 0 1 auto; min-width: 0; }
     .poke-row > .rates     { flex: 0 0 auto; margin-left: auto; }
 
@@ -233,7 +233,7 @@
 
     /* ── Sprite ───────────────────────────────────────────────────── */
     .sprite {
-      width: 128px; height: 128px;
+      width: 256px; height: 256px;
       image-rendering: pixelated;
       image-rendering: -moz-crisp-edges;
       z-index: 1;
@@ -436,7 +436,7 @@
     var pageTimer      = null;
     var timeOfDayTimer = null;
 
-    var PAGE_SIZE = 10;
+    var PAGE_SIZE = 5;
     var DWELL_MS  = 6000;
 
     // HGSS-style time-of-day windows:

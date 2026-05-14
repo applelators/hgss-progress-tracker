@@ -6767,6 +6767,8 @@ function TickNumber({ value, style, color }) {
   );
 }
 function groupByPart(arr) { return arr.reduce((a, x) => { (a[x.part] = a[x.part]||[]).push(x); return a; }, {}); }
+function sortedGroupEntries(groups) { return Object.entries(groups).sort((a, b) => (parseInt(a[0].match(/\d+/)?.[0]||0) - parseInt(b[0].match(/\d+/)?.[0]||0))); }
+function fmtHours(h) { return h < 1 ? `${Math.round(h * 60)}m` : `${h.toFixed(1)}h`; }
 
 // ─── BADGE SVG ───────────────────────────────────────────────────────────────
 function BadgeSVG({ shape, color, earned, size=24 }) {
@@ -9893,7 +9895,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   };
   const partSizes = useMemo(() => {
     const out = {};
-    for (const [p, list] of Object.entries(groups)) out[p] = list.length;
+    for (const [p, list] of sortedGroupEntries(groups)) out[p] = list.length;
     return out;
   }, [groups]);
   const { hoursPerArea, totalLogged, totalEstimated } = useMemo(() => {
@@ -9916,7 +9918,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   }, []);
   const partFullDone = useMemo(() => {
     const result = {};
-    Object.entries(groups).forEach(([part, list]) => {
+    sortedGroupEntries(groups).forEach(([part, list]) => {
       result[part] = list.length > 0 && list.every(area => {
         const allPoks = flattenPokemon(area).filter(p =>
           !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly) && !isPassedPokemon(p));
@@ -9961,7 +9963,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   }, [partFullDone]);
   const partSoftDone = useMemo(() => {
     const result = {};
-    Object.entries(groups).forEach(([part, list]) => {
+    sortedGroupEntries(groups).forEach(([part, list]) => {
       if (partFullDone[part]) { result[part] = false; return; }
       result[part] = list.length > 0 && list.every(area => {
         const allPoks = flattenPokemon(area).filter(p =>
@@ -10048,13 +10050,13 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
         {hoursPerArea != null && (
           <div style={{ padding:"5px 12px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}`, display:"flex", gap:12, flexWrap:"wrap" }}>
             <span>⏱ <b style={{ color:C.text }}>{totalLogged.toFixed(1)}h</b> logged</span>
-            <span>est. remaining: <b style={{ color:C.gold }}>{totalEstimated.toFixed(1)}h</b></span>
+            <span>est. remaining: <b style={{ color:C.gold }}>{fmtHours(totalEstimated)}</b></span>
           </div>
         )}
         {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
         {filtered
           ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)
-          : Object.entries(groups).map(([part, list]) => {
+          : sortedGroupEntries(groups).map(([part, list]) => {
               const isCollapsed = collapsedParts.has(part);
               const isDone = partFullDone[part];
               const isSoft = partSoftDone[part];
@@ -10076,8 +10078,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                         ) : (
                           <span onClick={e => { e.stopPropagation(); setEditingPartTime(part); }}
                             style={{ color: logged ? C.green : C.muted, opacity: logged ? 1 : 0.5, cursor:"text", letterSpacing:0, textTransform:"none", fontSize:10, minWidth:24, textAlign:"right" }}
-                            title={logged ? `${logged}h — click to edit` : est ? `~${est}h estimated — click to log` : "Click to log time"}>
-                            {logged ? `${logged}h` : est ? `~${est}h` : "⏱"}
+                            title={logged ? `${logged}h — click to edit` : est ? `~${fmtHours(est)} estimated — click to log` : "Click to log time"}>
+                            {logged ? `${logged}h` : est ? `~${fmtHours(est)}` : "⏱"}
                           </span>
                         );
                       })()}

@@ -9475,7 +9475,7 @@ function HGSSTracker() {
       {tab === "recurring" && <RecurringTab sweeps={sweeps} markSwept={markSwept} />}
 
       {/* ── Tab: PC Boxes ── */}
-      {tab === "boxes" && <BoxTab />}
+      {tab === "boxes" && <BoxTab isMobile={isMobile} />}
 
       {/* ── Tab: 100% Completion ── */}
       {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} badges={badges} version={version} isMobile={isMobile} />}
@@ -13707,7 +13707,7 @@ function RecurringTab({ sweeps, markSwept }) {
 
 const BOX_SIZE = 30;
 
-function BoxTab() {
+function BoxTab({ isMobile }) {
   const { useState: useS, useMemo: useM, useCallback: useCB } = React;
 
   const [boxCaught, setBoxCaught] = useS(() => {
@@ -13799,7 +13799,7 @@ function BoxTab() {
                   <div style={{ height:"100%", width:`${Math.round(caughtInBox/box.length*100)}%`, background:C.green, borderRadius:99, transition:"width 0.3s" }} />
                 </div>
               </div>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(10, 1fr)", gap:3 }}>
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "repeat(6, 1fr)" : "repeat(10, 1fr)", gap:3 }}>
                 {box.map(p => {
                   const isCaught = !!boxCaught[p.name];
                   return (

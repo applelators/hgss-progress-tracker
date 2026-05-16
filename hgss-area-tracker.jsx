@@ -34,8 +34,8 @@ const DEX = [
   {johtoId:40, id:173,name:"Cleffa"},    {johtoId:41, id:35, name:"Clefairy"},   {johtoId:42, id:36, name:"Clefable"},
   {johtoId:43, id:174,name:"Igglybuff"}, {johtoId:44, id:39, name:"Jigglypuff"},{johtoId:45, id:40, name:"Wigglytuff"},
   {johtoId:46, id:175,name:"Togepi"},    {johtoId:47, id:176,name:"Togetic"},
-  {johtoId:48, id:27, name:"Sandshrew", ssOnly:true}, {johtoId:49, id:28, name:"Sandslash", ssOnly:true},
-  {johtoId:50, id:23, name:"Ekans",    hgOnly:true},  {johtoId:51, id:24, name:"Arbok",    hgOnly:true},
+  {johtoId:48, id:27, name:"Sandshrew"}, {johtoId:49, id:28, name:"Sandslash"},
+  {johtoId:50, id:23, name:"Ekans"},     {johtoId:51, id:24, name:"Arbok"},
   // ── Johto mid-game ────────────────────────────────────────────────────────
   {johtoId:52, id:206,name:"Dunsparce"},
   {johtoId:53, id:179,name:"Mareep"},    {johtoId:54, id:180,name:"Flaaffy"},    {johtoId:55, id:181,name:"Ampharos"},
@@ -43,7 +43,7 @@ const DEX = [
   {johtoId:58, id:92, name:"Gastly"},    {johtoId:59, id:93, name:"Haunter"},    {johtoId:60, id:94, name:"Gengar"},
   {johtoId:61, id:201,name:"Unown"},
   {johtoId:62, id:95, name:"Onix"},      {johtoId:63, id:208,name:"Steelix"},
-  {johtoId:64, id:69, name:"Bellsprout",hgOnly:true}, {johtoId:65, id:70, name:"Weepinbell",hgOnly:true}, {johtoId:66, id:71, name:"Victreebel",hgOnly:true},
+  {johtoId:64, id:69, name:"Bellsprout"}, {johtoId:65, id:70, name:"Weepinbell"}, {johtoId:66, id:71, name:"Victreebel"},
   {johtoId:67, id:187,name:"Hoppip"},    {johtoId:68, id:188,name:"Skiploom"},   {johtoId:69, id:189,name:"Jumpluff"},
   {johtoId:70, id:46, name:"Paras"},     {johtoId:71, id:47, name:"Parasect"},
   {johtoId:72, id:60, name:"Poliwag"},   {johtoId:73, id:61, name:"Poliwhirl"},  {johtoId:74, id:62, name:"Poliwrath"},
@@ -51,7 +51,7 @@ const DEX = [
   {johtoId:76, id:129,name:"Magikarp"},  {johtoId:77, id:130,name:"Gyarados"},
   {johtoId:78, id:118,name:"Goldeen"},   {johtoId:79, id:119,name:"Seaking"},
   {johtoId:80, id:79, name:"Slowpoke"},  {johtoId:81, id:80, name:"Slowbro"},    {johtoId:82, id:199,name:"Slowking"},
-  {johtoId:83, id:43, name:"Oddish",   ssOnly:true}, {johtoId:84, id:44, name:"Gloom",    ssOnly:true}, {johtoId:85, id:45, name:"Vileplume", ssOnly:true},
+  {johtoId:83, id:43, name:"Oddish"},   {johtoId:84, id:44, name:"Gloom"},    {johtoId:85, id:45, name:"Vileplume"},
   {johtoId:86, id:182,name:"Bellossom"},
   {johtoId:87, id:96, name:"Drowzee"},   {johtoId:88, id:97, name:"Hypno"},
   {johtoId:89, id:63, name:"Abra"},      {johtoId:90, id:64, name:"Kadabra"},    {johtoId:91, id:65, name:"Alakazam"},
@@ -64,8 +64,8 @@ const DEX = [
   {johtoId:105,id:102,name:"Exeggcute"},{johtoId:106,id:103,name:"Exeggutor"},
   {johtoId:107,id:185,name:"Sudowoodo"},{johtoId:108,id:202,name:"Wobbuffet"},
   {johtoId:109,id:48, name:"Venonat"},   {johtoId:110,id:49, name:"Venomoth"},
-  {johtoId:111,id:123,name:"Scyther",  hgOnly:true}, {johtoId:112,id:212,name:"Scizor"},
-  {johtoId:113,id:127,name:"Pinsir",   ssOnly:true}, {johtoId:114,id:214,name:"Heracross"},
+  {johtoId:111,id:123,name:"Scyther"},  {johtoId:112,id:212,name:"Scizor"},
+  {johtoId:113,id:127,name:"Pinsir"},   {johtoId:114,id:214,name:"Heracross"},
   {johtoId:115,id:109,name:"Koffing"},   {johtoId:116,id:110,name:"Weezing"},
   {johtoId:117,id:88, name:"Grimer"},    {johtoId:118,id:89, name:"Muk"},
   {johtoId:119,id:81, name:"Magnemite"}, {johtoId:120,id:82, name:"Magneton"},
@@ -75,7 +75,7 @@ const DEX = [
   {johtoId:127,id:37, name:"Vulpix",   ssOnly:true}, {johtoId:128,id:38, name:"Ninetales", ssOnly:true},
   {johtoId:129,id:58, name:"Growlithe", hgOnly:true},{johtoId:130,id:59, name:"Arcanine",  hgOnly:true},
   {johtoId:131,id:234,name:"Stantler"},
-  {johtoId:132,id:183,name:"Marill",   ssOnly:true}, {johtoId:133,id:184,name:"Azumarill", ssOnly:true},
+  {johtoId:132,id:183,name:"Marill"},   {johtoId:133,id:184,name:"Azumarill"},
   {johtoId:134,id:50, name:"Diglett"},   {johtoId:135,id:51, name:"Dugtrio"},
   {johtoId:136,id:56, name:"Mankey",   hgOnly:true}, {johtoId:137,id:57, name:"Primeape", hgOnly:true},
   {johtoId:138,id:52, name:"Meowth",   ssOnly:true}, {johtoId:139,id:53, name:"Persian",  ssOnly:true},
@@ -115,10 +115,10 @@ const DEX = [
   {johtoId:206,id:77, name:"Ponyta"},    {johtoId:207,id:78, name:"Rapidash"},
   {johtoId:208,id:104,name:"Cubone"},    {johtoId:209,id:105,name:"Marowak"},    {johtoId:210,id:115,name:"Kangaskhan"},
   {johtoId:211,id:111,name:"Rhyhorn"},   {johtoId:212,id:112,name:"Rhydon"},
-  {johtoId:213,id:198,name:"Murkrow",  hgOnly:true},
-  {johtoId:214,id:228,name:"Houndour", ssOnly:true}, {johtoId:215,id:229,name:"Houndoom", ssOnly:true},
+  {johtoId:213,id:198,name:"Murkrow"},
+  {johtoId:214,id:228,name:"Houndour"},  {johtoId:215,id:229,name:"Houndoom"},
   {johtoId:216,id:218,name:"Slugma"},    {johtoId:217,id:219,name:"Magcargo"},
-  {johtoId:218,id:215,name:"Sneasel"},   {johtoId:219,id:200,name:"Misdreavus", ssOnly:true},
+  {johtoId:218,id:215,name:"Sneasel"},   {johtoId:219,id:200,name:"Misdreavus"},
   {johtoId:220,id:137,name:"Porygon"},   {johtoId:221,id:233,name:"Porygon2"},
   {johtoId:222,id:113,name:"Chansey"},   {johtoId:223,id:242,name:"Blissey"},
   {johtoId:224,id:131,name:"Lapras"},
@@ -226,6 +226,8 @@ const NATIONAL_DEX = [
   {id:371,name:"Bagon"},{id:372,name:"Shelgon"},{id:373,name:"Salamence"},
   // Pokéwalker: Beldum → Metang → Metagross
   {id:374,name:"Beldum"},{id:375,name:"Metang"},{id:376,name:"Metagross"},
+  // Embedded Tower legendaries
+  {id:382,name:"Kyogre"},{id:383,name:"Groudon"},{id:384,name:"Rayquaza"},
   // ── Gen IV ──────────────────────────────────────────────────────────────────
   // Pokéwalker: Bidoof → Bibarel
   {id:399,name:"Bidoof"},{id:400,name:"Bibarel"},
@@ -3550,11 +3552,11 @@ const AREAS = [
       {name:"Spearow", method:"Headbutt (Common)", levels:"20–22", rate:"50%"},
       {name:"Heracross", method:"Headbutt (Common)", levels:"20–22", rate:"30%"},
       {name:"Exeggcute", method:"Headbutt (Common)", levels:"20–22", rate:"20%"},
-      {name:"Omanyte",   method:"Fossil", levels:"20", rate:"One", warn:true, hgOnly:true, note:"Helix Fossil — HG only"},
-      {name:"Kabuto",    method:"Fossil", levels:"20", rate:"One", warn:true, ssOnly:true, note:"Dome Fossil — SS only"},
+      {name:"Omanyte",   method:"Fossil", levels:"20", rate:"One", warn:true, note:"Helix Fossil — from Museum"},
+      {name:"Kabuto",    method:"Fossil", levels:"20", rate:"One", warn:true, note:"Dome Fossil — from Museum"},
       {name:"Aerodactyl",method:"Fossil", levels:"20", rate:"One", warn:true, note:"Old Amber — from Museum guide"},
-      {name:"Lileep",    method:"Fossil", levels:"20", rate:"One", warn:true, ssOnly:true, note:"Root Fossil — SS only"},
-      {name:"Anorith",   method:"Fossil", levels:"20", rate:"One", warn:true, hgOnly:true, note:"Claw Fossil — HG only"},
+      {name:"Lileep",    method:"Fossil", levels:"20", rate:"One", warn:true, note:"Root Fossil — from Museum"},
+      {name:"Anorith",   method:"Fossil", levels:"20", rate:"One", warn:true, note:"Claw Fossil — from Museum"},
       {name:"Cranidos",  method:"Fossil", levels:"20", rate:"One", warn:true, note:"Skull Fossil — import from D/P/Pt"},
       {name:"Shieldon",  method:"Fossil", levels:"20", rate:"One", warn:true, note:"Armor Fossil — import from D/P/Pt"},
     ],
@@ -6573,9 +6575,9 @@ const DT_CANDIDATES = [
   { name:"Espeon",      types:["Psychic"],          hms:["Cut"], stats:{atk:65,  spa:130, spe:110} },
   { name:"Umbreon",     types:["Dark"],             hms:["Cut"], stats:{atk:65,  spa:60,  spe:65} },
   { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Strength","Rock Smash","Rock Climb"], tradeOnly:true, stats:{atk:85,  spa:30,  spe:30} },
-  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], hgOnly:true, tradeOnly:true, stats:{atk:130, spa:55,  spe:65} },
+  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], tradeOnly:true, stats:{atk:130, spa:55,  spe:65} },
   { name:"Donphan",     types:["Ground"],           hms:["Strength","Rock Smash"], hgOnly:true, stats:{atk:120, spa:60,  spe:50} },
-  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], ssOnly:true, stats:{atk:90,  spa:110, spe:95} },
+  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], stats:{atk:90,  spa:110, spe:95} },
   { name:"Skarmory",    types:["Steel","Flying"],   hms:["Cut","Fly","Rock Smash"], ssOnly:true, stats:{atk:80,  spa:40,  spe:70} },
   { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:134, spa:95,  spe:61} },
   { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"], tradeOnly:true, stats:{atk:95, spa:95,  spe:85} },
@@ -6588,7 +6590,7 @@ const DT_CANDIDATES = [
   // ── Good picks ───────────────────────────────────────────────────────────────
   { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },
   { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4, stats:{atk:58,  spa:76,  spe:67} },
-  { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], ssOnly:true, stats:{atk:50,  spa:50,  spe:50} },
+  { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:50,  spa:50,  spe:50} },
   { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:85,  spa:65,  spe:35} },
   { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"], stats:{atk:90,  spa:30,  spe:40} },
   { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"], stats:{atk:50,  spa:76,  spe:70} },
@@ -6596,7 +6598,7 @@ const DT_CANDIDATES = [
   { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:80, spa:40,  spe:100} },
   { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"], stats:{atk:95, spa:35,  spe:70} },
   { name:"Porygon2",    types:["Normal"],           hms:[], tradeOnly:true, stats:{atk:80, spa:105, spe:60} },
-  { name:"Bellossom",   types:["Grass"],            hms:["Cut"], ssOnly:true, stats:{atk:80, spa:90,  spe:50} },
+  { name:"Bellossom",   types:["Grass"],            hms:["Cut"], stats:{atk:80, spa:90,  spe:50} },
   { name:"Jumpluff",    types:["Grass","Flying"],   hms:[], stats:{atk:55, spa:55,  spe:110} },
   { name:"Sudowoodo",   types:["Rock"],             hms:["Strength","Rock Smash"], stats:{atk:100,spa:30,  spe:30} },
   { name:"Girafarig",   types:["Normal","Psychic"], hms:["Strength","Rock Smash"], stats:{atk:80, spa:90,  spe:85} },
@@ -6610,8 +6612,8 @@ const DT_CANDIDATES = [
   { name:"Ariados",     types:["Bug","Poison"],     hms:[], stats:{atk:90, spa:60,  spe:40} },
   { name:"Ledian",      types:["Bug","Flying"],     hms:["Strength","Rock Smash"], stats:{atk:35, spa:35,  spe:85} },
   { name:"Sneasel",     types:["Dark","Ice"],       hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:95, spa:35,  spe:115} },
-  { name:"Misdreavus",  types:["Ghost"],            hms:[], ssOnly:true, stats:{atk:60, spa:85,  spe:85} },
-  { name:"Murkrow",     types:["Dark","Flying"],    hms:["Fly"], hgOnly:true, stats:{atk:85, spa:42,  spe:91} },
+  { name:"Misdreavus",  types:["Ghost"],            hms:[], stats:{atk:60, spa:85,  spe:85} },
+  { name:"Murkrow",     types:["Dark","Flying"],    hms:["Fly"], stats:{atk:85, spa:42,  spe:91} },
   { name:"Shuckle",     types:["Bug","Rock"],       hms:["Strength","Rock Smash"], stats:{atk:10, spa:10,  spe:5} },
   { name:"Qwilfish",    types:["Water","Poison"],   hms:["Surf","Waterfall","Whirlpool"], stats:{atk:95, spa:55,  spe:85} },
   { name:"Dunsparce",   types:["Normal"],           hms:["Strength","Rock Smash"], stats:{atk:70, spa:65,  spe:45} },
@@ -9505,19 +9507,20 @@ function HGSSTracker() {
 }
 
 // ─── TRADE TAB ───────────────────────────────────────────────────────────────
-// Version-exclusive evolutions/pre-evolutions confirmed by pokemondb but not catchable in AREAS
+// Per Serebii authoritative list — exclusives not catchable as wild encounters
+const SEREBII_HG = new Set(["Mankey","Primeape","Growlithe","Arcanine","Spinarak","Ariados","Gligar","Mantine","Phanpy","Donphan","Sableye","Baltoy","Claydol","Kyogre","Mantyke","Gliscor"]);
+const SEREBII_SS = new Set(["Vulpix","Ninetales","Meowth","Persian","Ledyba","Ledian","Teddiursa","Ursaring","Delibird","Skarmory","Mawile","Gulpin","Swalot","Groudon"]);
+
+// Serebii-confirmed exclusives that only appear via evolution/breeding (no wild encounter in AREAS)
 const HG_ONLY_SUPP = [
-  {name:"Omastar", locs:[{areaName:"Evolve Omanyte Lv.40 (HG — Helix Fossil)"}]},
-  {name:"Armaldo", locs:[{areaName:"Evolve Anorith Lv.40 (HG — Claw Fossil)"}]},
-  {name:"Claydol", locs:[{areaName:"Evolve Baltoy Lv.36 (HG swarm)"}]},
-  {name:"Gliscor", locs:[{areaName:"Evolve Gligar w/ Razor Fang at night (HG)"}]},
-  {name:"Mantyke", locs:[{areaName:"Breed Mantine + Remoraid in party (HG only)"}]},
+  {name:"Arcanine", locs:[{areaName:"Evolve Growlithe w/ Fire Stone (HG only)"}]},
+  {name:"Claydol",  locs:[{areaName:"Evolve Baltoy Lv.36 (HG swarm)"}]},
+  {name:"Gliscor",  locs:[{areaName:"Evolve Gligar w/ Razor Fang at night (HG)"}]},
+  {name:"Mantyke",  locs:[{areaName:"Breed Mantine + Remoraid in party (HG only)"}]},
 ];
 const SS_ONLY_SUPP = [
-  {name:"Ninetales",locs:[{areaName:"Evolve Vulpix w/ Fire Stone (SS only)"}]},
-  {name:"Kabutops", locs:[{areaName:"Evolve Kabuto Lv.40 (SS — Dome Fossil)"}]},
-  {name:"Swalot",   locs:[{areaName:"Evolve Gulpin Lv.26 (SS swarm)"}]},
-  {name:"Cradily",  locs:[{areaName:"Evolve Lileep Lv.40 (SS — Root Fossil)"}]},
+  {name:"Ninetales", locs:[{areaName:"Evolve Vulpix w/ Fire Stone (SS only)"}]},
+  {name:"Swalot",    locs:[{areaName:"Evolve Gulpin Lv.26 (SS swarm)"}]},
 ];
 
 const TRADE_EVOS = [
@@ -9565,7 +9568,8 @@ function TradeTab({ version, isMobile }) {
     const hg = {}, ss = {};
     for (const [name, locs] of Object.entries(LOCATION_MAP)) {
       if (!allDexId(name)) continue;
-      for (const [target, flag] of [[hg, "hgOnly"], [ss, "ssOnly"]]) {
+      for (const [[target, flag], serebiiSet] of [[[hg, "hgOnly"], SEREBII_HG], [[ss, "ssOnly"], SEREBII_SS]]) {
+        if (!serebiiSet.has(name)) continue;
         const fl = locs.filter(l => l[flag]);
         if (!fl.length) continue;
         const seen = new Set();

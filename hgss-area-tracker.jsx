@@ -9507,20 +9507,16 @@ function HGSSTracker() {
 }
 
 // ─── TRADE TAB ───────────────────────────────────────────────────────────────
-// Per Serebii authoritative list — exclusives not catchable as wild encounters
-const SEREBII_HG = new Set(["Mankey","Primeape","Growlithe","Arcanine","Spinarak","Ariados","Gligar","Mantine","Phanpy","Donphan","Sableye","Baltoy","Claydol","Kyogre","Mantyke","Gliscor"]);
-const SEREBII_SS = new Set(["Vulpix","Ninetales","Meowth","Persian","Ledyba","Ledian","Teddiursa","Ursaring","Delibird","Skarmory","Mawile","Gulpin","Swalot","Groudon"]);
+// Per Serebii — Johto Dex (#001–251) exclusives only
+const SEREBII_HG = new Set(["Mankey","Primeape","Growlithe","Arcanine","Spinarak","Ariados","Gligar","Mantine","Phanpy","Donphan"]);
+const SEREBII_SS = new Set(["Vulpix","Ninetales","Meowth","Persian","Ledyba","Ledian","Teddiursa","Ursaring","Delibird","Skarmory"]);
 
-// Serebii-confirmed exclusives that only appear via evolution/breeding (no wild encounter in AREAS)
+// Johto-exclusive Pokémon only obtainable via evolution (no wild encounter in AREAS)
 const HG_ONLY_SUPP = [
   {name:"Arcanine", locs:[{areaName:"Evolve Growlithe w/ Fire Stone (HG only)"}]},
-  {name:"Claydol",  locs:[{areaName:"Evolve Baltoy Lv.36 (HG swarm)"}]},
-  {name:"Gliscor",  locs:[{areaName:"Evolve Gligar w/ Razor Fang at night (HG)"}]},
-  {name:"Mantyke",  locs:[{areaName:"Breed Mantine + Remoraid in party (HG only)"}]},
 ];
 const SS_ONLY_SUPP = [
   {name:"Ninetales", locs:[{areaName:"Evolve Vulpix w/ Fire Stone (SS only)"}]},
-  {name:"Swalot",    locs:[{areaName:"Evolve Gulpin Lv.26 (SS swarm)"}]},
 ];
 
 const TRADE_EVOS = [
@@ -9567,7 +9563,7 @@ function TradeTab({ version, isMobile }) {
   const exclusives = useMemo(() => {
     const hg = {}, ss = {};
     for (const [name, locs] of Object.entries(LOCATION_MAP)) {
-      if (!allDexId(name)) continue;
+      if (!DEX_ID[name]) continue;
       for (const [[target, flag], serebiiSet] of [[[hg, "hgOnly"], SEREBII_HG], [[ss, "ssOnly"], SEREBII_SS]]) {
         if (!serebiiSet.has(name)) continue;
         const fl = locs.filter(l => l[flag]);

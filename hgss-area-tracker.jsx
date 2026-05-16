@@ -9594,8 +9594,10 @@ function TradeTab({ version, isMobile }) {
 
   const spareCount    = myEntries.filter(([n]) => spares[n]).length;
   const receivedCount = theirEntries.filter(([n]) => received[n]).length;
-  const johtoTradeEvos = TRADE_EVOS.filter(e => DEX_ID[e.from]);
-  const evoDoneCount   = johtoTradeEvos.filter(e => evoDone[`${e.from}-${e.to}`]).length;
+  const johtoTradeEvos = TRADE_EVOS.filter(e => DEX_ID[e.from] && DEX_ID[e.to]);
+  const natTradeEvos   = TRADE_EVOS.filter(e => !(DEX_ID[e.from] && DEX_ID[e.to]));
+  const evoDoneCount    = johtoTradeEvos.filter(e => evoDone[`${e.from}-${e.to}`]).length;
+  const natEvoDoneCount = natTradeEvos.filter(e => evoDone[`${e.from}-${e.to}`]).length;
 
   const parseRate = r => { const m = (r||"").match(/(\d+)/); return m ? +m[1] : 0; };
   const getBestLocs = locs => {
@@ -9695,7 +9697,7 @@ function TradeTab({ version, isMobile }) {
           </div>
         </div>
 
-        {/* Trade evolutions */}
+        {/* Trade evolutions — Johto Dex */}
         <div>
           {secHead("Trade evolutions", evoDoneCount, johtoTradeEvos.length, C.accent)}
           <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
@@ -9703,6 +9705,41 @@ function TradeTab({ version, isMobile }) {
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
             {johtoTradeEvos.map(({ from, to, item, itemSrc }) => {
+              const key = `${from}-${to}`;
+              const done = !!evoDone[key];
+              const fromId = allDexId(from), toId = allDexId(to);
+              return (
+                <div key={key} onClick={() => toggleEvo(key)}
+                  onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+                  style={rowSty(done)}>
+                  {fromId ? <img src={pokeSpriteUrl(fromId)} alt={from} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.55 }} />
+                           : <div style={{ width:36, height:36, flexShrink:0 }} />}
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                      <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{from}</span>
+                      {item && <span style={{ fontSize:9, fontWeight:"700", padding:"1px 6px", borderRadius:99, whiteSpace:"nowrap", color:"#c8a040", background:"rgba(200,150,40,0.18)", border:"1px solid rgba(200,150,40,0.4)" }}>+ {item}</span>}
+                      <span style={{ color:C.muted, fontSize:14 }}>→</span>
+                      {toId && <img src={pokeSpriteUrl(toId)} alt={to} style={{ width:30, height:30, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.45 }} />}
+                      <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{to}</span>
+                    </div>
+                    {itemSrc && <div style={{ fontSize:10, color:C.muted, marginTop:2 }}>{itemSrc}</div>}
+                  </div>
+                  <div style={chkSty(done)}>{done && "✓"}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Trade evolutions — National Dex only */}
+        <div>
+          {secHead("National Dex trade evolutions", natEvoDoneCount, natTradeEvos.length, C.muted)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Not required for Johto 100% completion — needed for Living Dex only. Evolved forms are National Dex Pokémon not in the Johto regional dex.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {natTradeEvos.map(({ from, to, item, itemSrc }) => {
               const key = `${from}-${to}`;
               const done = !!evoDone[key];
               const fromId = allDexId(from), toId = allDexId(to);

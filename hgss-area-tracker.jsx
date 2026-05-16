@@ -9594,12 +9594,27 @@ function TradeTab({ version, isMobile }) {
 
   const spareCount    = myEntries.filter(([n]) => spares[n]).length;
   const receivedCount = theirEntries.filter(([n]) => received[n]).length;
-  const evoDoneCount  = TRADE_EVOS.filter(e => evoDone[`${e.from}-${e.to}`]).length;
+  const johtoTradeEvos = TRADE_EVOS.filter(e => DEX_ID[e.from]);
+  const evoDoneCount   = johtoTradeEvos.filter(e => evoDone[`${e.from}-${e.to}`]).length;
 
-  const formatLocs = locs => {
-    if (locs.length <= 2) return locs.map(l => l.areaName).join(" · ");
-    return locs.slice(0, 2).map(l => l.areaName).join(" · ") + ` +${locs.length - 2} more`;
+  const parseRate = r => { const m = (r||"").match(/(\d+)/); return m ? +m[1] : 0; };
+  const getBestLocs = locs => {
+    const maxR = Math.max(0, ...locs.map(l => parseRate(l.rate)));
+    return maxR > 0 ? locs.filter(l => parseRate(l.rate) === maxR) : locs.slice(0, 1);
   };
+  const buildShared = entries => {
+    const best = Object.fromEntries(entries.map(([n, ls]) => [n, getBestLocs(ls)]));
+    const map = {};
+    for (const [n, ls] of Object.entries(best)) {
+      for (const l of ls) {
+        if (!map[l.areaName]) map[l.areaName] = [];
+        map[l.areaName].push(n);
+      }
+    }
+    return { best, map };
+  };
+  const { best: myBest,    map: myShared    } = buildShared(myEntries);
+  const { best: theirBest, map: theirShared } = buildShared(theirEntries);
 
   const rowSty = done => ({
     display:"flex", alignItems:"center", gap:10, padding:"7px 12px", borderRadius:8,
@@ -9623,8 +9638,13 @@ function TradeTab({ version, isMobile }) {
     </div>
   );
 
-  const exRow = (name, locs, done, onToggle) => {
+  const exRow = (name, bestLocs, sharedWith, done, onToggle) => {
     const id = allDexId(name);
+    const locStr = bestLocs.map(l => {
+      const r = parseRate(l.rate);
+      return r > 0 ? `${l.areaName} (${r}%)` : l.areaName;
+    }).join(" · ");
+    const shareStr = sharedWith.length ? ` — also: ${sharedWith.join(", ")}` : "";
     return (
       <div key={name} onClick={onToggle}
         onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
@@ -9634,7 +9654,7 @@ function TradeTab({ version, isMobile }) {
              : <div style={{ width:36, height:36, flexShrink:0 }} />}
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{name}</div>
-          <div style={{ fontSize:10, color:C.muted, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{formatLocs(locs)}</div>
+          <div style={{ fontSize:10, color:C.muted, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{locStr}{shareStr}</div>
         </div>
         <div style={chkSty(done)}>{done && "✓"}</div>
       </div>
@@ -9652,7 +9672,11 @@ function TradeTab({ version, isMobile }) {
             Only catchable in {myLabel}. Catch extras to send to your {theirLabel} partner.
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
-            {myEntries.map(([name, locs]) => exRow(name, locs, !!spares[name], () => toggleSpare(name)))}
+            {myEntries.map(([name]) => {
+              const best = myBest[name] || [];
+              const shared = [...new Set(best.flatMap(l => (myShared[l.areaName]||[]).filter(n => n !== name)))];
+              return exRow(name, best, shared, !!spares[name], () => toggleSpare(name));
+            })}
           </div>
         </div>
 
@@ -9663,18 +9687,22 @@ function TradeTab({ version, isMobile }) {
             Only catchable in {theirLabel}. Check off each one as your partner trades it to you.
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
-            {theirEntries.map(([name, locs]) => exRow(name, locs, !!received[name], () => toggleReceived(name)))}
+            {theirEntries.map(([name]) => {
+              const best = theirBest[name] || [];
+              const shared = [...new Set(best.flatMap(l => (theirShared[l.areaName]||[]).filter(n => n !== name)))];
+              return exRow(name, best, shared, !!received[name], () => toggleReceived(name));
+            })}
           </div>
         </div>
 
         {/* Trade evolutions */}
         <div>
-          {secHead("Trade evolutions", evoDoneCount, TRADE_EVOS.length, C.accent)}
+          {secHead("Trade evolutions", evoDoneCount, johtoTradeEvos.length, C.accent)}
           <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
             Pokémon that only evolve by trading. Check off once you have the evolved form.
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
-            {TRADE_EVOS.map(({ from, to, item, itemSrc }) => {
+            {johtoTradeEvos.map(({ from, to, item, itemSrc }) => {
               const key = `${from}-${to}`;
               const done = !!evoDone[key];
               const fromId = allDexId(from), toId = allDexId(to);

@@ -13740,7 +13740,8 @@ function WalkerPlannerPanel({ walkerAreas }) {
           </div>
           <div style={{ fontSize:11, color:C.muted, marginBottom:10, lineHeight:1.7 }}>
             1 step = 1 EXP · Max 1 level per walk · Adv. type column assumes 25% step reduction.
-            Rows marked <span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned on level-up (Pokéwalker cannot prompt to learn moves — skip these levels).
+            Rows marked <span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned on level-up — skip these levels (Pokéwalker can't prompt to learn moves).
+            <span style={{ color:C.green, fontWeight:700 }}> ★</span> = recommended move.
           </div>
           <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10 }}>
             <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
@@ -13763,8 +13764,18 @@ function WalkerPlannerPanel({ walkerAreas }) {
                       </td>
                       <td style={{ padding:"5px 10px", textAlign:"right", color:C.text, fontFamily:"'JetBrains Mono',monospace" }}>{base.toLocaleString()}</td>
                       <td style={{ padding:"5px 10px", textAlign:"right", color:C.green, fontFamily:"'JetBrains Mono',monospace" }}>{adv.toLocaleString()}</td>
-                      <td style={{ padding:"5px 10px", color: warn ? "#f0a020" : C.muted, fontSize:11 }}>
-                        {warn ? warnMoves.join(", ") : ""}
+                      <td style={{ padding:"5px 10px", fontSize:11 }}>
+                        {warn ? warnMoves.map((mv, i) => {
+                          const good = MOVE_TIERS.good.has(mv);
+                          return (
+                            <span key={mv}>
+                              {i > 0 && <span style={{ color:C.muted }}>, </span>}
+                              {good
+                                ? <span style={{ color:C.green, fontWeight:700 }}>★ {mv}</span>
+                                : <span style={{ color:"#f0a020" }}>{mv}</span>}
+                            </span>
+                          );
+                        }) : ""}
                       </td>
                     </tr>
                   );

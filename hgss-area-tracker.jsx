@@ -180,6 +180,8 @@ const NATIONAL_DEX = [
   {id:313,name:"Volbeat"},{id:314,name:"Illumise"},
   // Safari Zone (also Budew evolution chain)
   {id:315,name:"Roselia"},
+  // SS swarm (Route 35)
+  {id:316,name:"Gulpin"},{id:317,name:"Swalot"},
   // Pokéwalker: Carvanha → Sharpedo
   {id:318,name:"Carvanha"},{id:319,name:"Sharpedo"},
   // Pokéwalker: Wailmer → Wailord
@@ -195,6 +197,10 @@ const NATIONAL_DEX = [
   {id:338,name:"Solrock"},
   {id:339,name:"Barboach"},{id:340,name:"Whiscash"},
   {id:341,name:"Corphish"},{id:342,name:"Crawdaunt"},
+  // HG swarm (Vermilion City area); Museum fossils HG: Claw, SS: Root
+  {id:343,name:"Baltoy"},{id:344,name:"Claydol"},
+  {id:345,name:"Lileep"},{id:346,name:"Cradily"},
+  {id:347,name:"Anorith"},{id:348,name:"Armaldo"},
   // Pokéwalker: Feebas → Milotic
   {id:349,name:"Feebas"},{id:350,name:"Milotic"},
   // Pokéwalker
@@ -212,6 +218,8 @@ const NATIONAL_DEX = [
   {id:361,name:"Snorunt"},{id:362,name:"Glalie"},
   // Safari Zone: Spheal line
   {id:363,name:"Spheal"},{id:364,name:"Sealeo"},{id:365,name:"Walrein"},
+  // Route 19 swarm + evolutions (Deep Sea Tooth → Huntail, Deep Sea Scale → Gorebyss)
+  {id:366,name:"Clamperl"},{id:367,name:"Huntail"},{id:368,name:"Gorebyss"},
   // Safari Zone: Bagon line
   {id:371,name:"Bagon"},{id:372,name:"Shelgon"},{id:373,name:"Salamence"},
   // Pokéwalker: Beldum → Metang → Metagross
@@ -259,8 +267,12 @@ const NATIONAL_DEX = [
   {id:455,name:"Carnivine"},
   // Pokéwalker: Finneon → Lumineon
   {id:456,name:"Finneon"},{id:457,name:"Lumineon"},
+  // Baby Mantine — breed Mantine + Remoraid in party (HG only)
+  {id:458,name:"Mantyke"},
   // Pokéwalker: Snover → Abomasnow
   {id:459,name:"Snover"},{id:460,name:"Abomasnow"},
+  // HG-exclusive evolution (Gligar + Razor Fang at night)
+  {id:472,name:"Gliscor"},
   // Gen III evolutions requiring items available in HGSS
   {id:477,name:"Dusknoir"},   // Dusclops + Reaper Cloth (trade)
   {id:478,name:"Froslass"},   // Snorunt ♀ + Dawn Stone (Pokéathlon)
@@ -3536,13 +3548,13 @@ const AREAS = [
       {name:"Spearow", method:"Headbutt (Common)", levels:"20–22", rate:"50%"},
       {name:"Heracross", method:"Headbutt (Common)", levels:"20–22", rate:"30%"},
       {name:"Exeggcute", method:"Headbutt (Common)", levels:"20–22", rate:"20%"},
-      {name:"Omanyte", method:"Fossil", levels:"20", rate:"One", warn:true, note:"Old Amber/Dome/Helix/Root/Claw/Skull/Armor Fossil from Museum"},
-      {name:"Kabuto", method:"Fossil", levels:"20", rate:"One", warn:true},
-      {name:"Aerodactyl", method:"Fossil", levels:"20", rate:"One", warn:true},
-      {name:"Lileep", method:"Fossil", levels:"20", rate:"One", warn:true},
-      {name:"Anorith", method:"Fossil", levels:"20", rate:"One", warn:true},
-      {name:"Cranidos", method:"Fossil", levels:"20", rate:"One", warn:true},
-      {name:"Shieldon", method:"Fossil", levels:"20", rate:"One", warn:true},
+      {name:"Omanyte",   method:"Fossil", levels:"20", rate:"One", warn:true, hgOnly:true, note:"Helix Fossil — HG only"},
+      {name:"Kabuto",    method:"Fossil", levels:"20", rate:"One", warn:true, ssOnly:true, note:"Dome Fossil — SS only"},
+      {name:"Aerodactyl",method:"Fossil", levels:"20", rate:"One", warn:true, note:"Old Amber — from Museum guide"},
+      {name:"Lileep",    method:"Fossil", levels:"20", rate:"One", warn:true, ssOnly:true, note:"Root Fossil — SS only"},
+      {name:"Anorith",   method:"Fossil", levels:"20", rate:"One", warn:true, hgOnly:true, note:"Claw Fossil — HG only"},
+      {name:"Cranidos",  method:"Fossil", levels:"20", rate:"One", warn:true, note:"Skull Fossil — import from D/P/Pt"},
+      {name:"Shieldon",  method:"Fossil", levels:"20", rate:"One", warn:true, note:"Armor Fossil — import from D/P/Pt"},
     ],
     items:[
       {name:"Max Revive", hidden:true, note:"Pewter City"},
@@ -9491,6 +9503,21 @@ function HGSSTracker() {
 }
 
 // ─── TRADE TAB ───────────────────────────────────────────────────────────────
+// Version-exclusive evolutions/pre-evolutions confirmed by pokemondb but not catchable in AREAS
+const HG_ONLY_SUPP = [
+  {name:"Omastar", locs:[{areaName:"Evolve Omanyte Lv.40 (HG — Helix Fossil)"}]},
+  {name:"Armaldo", locs:[{areaName:"Evolve Anorith Lv.40 (HG — Claw Fossil)"}]},
+  {name:"Claydol", locs:[{areaName:"Evolve Baltoy Lv.36 (HG swarm)"}]},
+  {name:"Gliscor", locs:[{areaName:"Evolve Gligar w/ Razor Fang at night (HG)"}]},
+  {name:"Mantyke", locs:[{areaName:"Breed Mantine + Remoraid in party (HG only)"}]},
+];
+const SS_ONLY_SUPP = [
+  {name:"Ninetales",locs:[{areaName:"Evolve Vulpix w/ Fire Stone (SS only)"}]},
+  {name:"Kabutops", locs:[{areaName:"Evolve Kabuto Lv.40 (SS — Dome Fossil)"}]},
+  {name:"Swalot",   locs:[{areaName:"Evolve Gulpin Lv.26 (SS swarm)"}]},
+  {name:"Cradily",  locs:[{areaName:"Evolve Lileep Lv.40 (SS — Root Fossil)"}]},
+];
+
 const TRADE_EVOS = [
   // plain trades
   { from:"Kadabra",    to:"Alakazam",   item:null,            itemSrc:null },
@@ -9512,6 +9539,9 @@ const TRADE_EVOS = [
   { from:"Dusclops",   to:"Dusknoir",   item:"Reaper Cloth",  itemSrc:"Mt. Mortar B1F" },
   { from:"Electabuzz", to:"Electivire", item:"Electirizer",   itemSrc:"PokéWalker: Yellow Forest (event) or D/P/Pt" },
   { from:"Magmar",     to:"Magmortar",  item:"Magmarizer",    itemSrc:"PokéWalker: Yellow Forest (event) or D/P/Pt" },
+  // Deep Sea items — held by swarm Clamperl on Route 19 (Thief/Covet); or import from D/P/Pt
+  { from:"Clamperl",   to:"Huntail",    item:"Deep Sea Tooth", itemSrc:"Held by swarm Clamperl (Route 19, Thief/Covet) · or D/P/Pt" },
+  { from:"Clamperl",   to:"Gorebyss",   item:"Deep Sea Scale", itemSrc:"Held by swarm Clamperl (Route 19, Thief/Covet) · or D/P/Pt" },
 ];
 
 function TradeTab({ version, isMobile }) {
@@ -9543,8 +9573,14 @@ function TradeTab({ version, isMobile }) {
     return { hg, ss };
   }, []);
 
-  const myExcls    = version === "hg" ? exclusives.hg : exclusives.ss;
-  const theirExcls = version === "hg" ? exclusives.ss : exclusives.hg;
+  const baseMyExcls    = version === "hg" ? exclusives.hg : exclusives.ss;
+  const baseTheirExcls = version === "hg" ? exclusives.ss : exclusives.hg;
+  const suppMy         = version === "hg" ? HG_ONLY_SUPP : SS_ONLY_SUPP;
+  const suppTheir      = version === "hg" ? SS_ONLY_SUPP : HG_ONLY_SUPP;
+  const myExcls    = { ...baseMyExcls };
+  const theirExcls = { ...baseTheirExcls };
+  for (const {name, locs} of suppMy)    if (!myExcls[name])    myExcls[name]    = locs;
+  for (const {name, locs} of suppTheir) if (!theirExcls[name]) theirExcls[name] = locs;
   const myLabel    = version === "hg" ? "HeartGold" : "SoulSilver";
   const theirLabel = version === "hg" ? "SoulSilver" : "HeartGold";
   const myColor    = version === "hg" ? C.hgGold : C.ssSilver;

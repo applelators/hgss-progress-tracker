@@ -13742,7 +13742,7 @@ function WalkerPlannerPanel({ walkerAreas }) {
             1 step = 1 EXP · Max 1 level per walk · Adv. type column assumes 25% step reduction.
             Rows marked <span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned on level-up (Pokéwalker cannot prompt to learn moves — skip these levels).
           </div>
-          <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10, overflow:"hidden" }}>
+          <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10 }}>
             <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
               <thead>
                 <tr style={{ background:C.card, position:"sticky", top:0, zIndex:1 }}>

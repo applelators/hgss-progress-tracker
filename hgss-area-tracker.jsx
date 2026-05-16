@@ -13550,6 +13550,106 @@ const PW_ADV_TYPES = {
   "pw-amity-meadow":      ["Normal","Grass","Flying"],
 };
 
+// Level-up evolutions only. Value: [level, "EvolvesInto"] or [level, ["A","B","C"]] for branching.
+const EVO_LEVELS = {
+  // Johto starters
+  "Chikorita":[16,"Bayleef"],   "Bayleef":[32,"Meganium"],
+  "Cyndaquil":[14,"Quilava"],   "Quilava":[36,"Typhlosion"],
+  "Totodile":[18,"Croconaw"],   "Croconaw":[30,"Feraligatr"],
+  // Kanto starters
+  "Bulbasaur":[16,"Ivysaur"],   "Ivysaur":[32,"Venusaur"],
+  "Charmander":[16,"Charmeleon"],"Charmeleon":[36,"Charizard"],
+  "Squirtle":[16,"Wartortle"],  "Wartortle":[36,"Blastoise"],
+  // Birds & rodents
+  "Pidgey":[18,"Pidgeotto"],    "Pidgeotto":[36,"Pidgeot"],
+  "Spearow":[20,"Fearow"],
+  "Rattata":[20,"Raticate"],
+  "Sentret":[15,"Furret"],
+  "Hoothoot":[20,"Noctowl"],
+  // Bugs
+  "Caterpie":[7,"Metapod"],     "Metapod":[10,"Butterfree"],
+  "Weedle":[7,"Kakuna"],        "Kakuna":[10,"Beedrill"],
+  "Ledyba":[18,"Ledian"],
+  "Spinarak":[22,"Ariados"],
+  // Rock/Cave
+  "Geodude":[25,"Graveler"],    // Graveler → Golem via trade
+  "Sandshrew":[22,"Sandslash"],
+  "Ekans":[22,"Arbok"],
+  // Electric
+  "Magnemite":[30,"Magneton"],  // Magneton → Magnezone via leveling in special magnetic area
+  "Voltorb":[30,"Electrode"],
+  "Mareep":[15,"Flaaffy"],      "Flaaffy":[30,"Ampharos"],
+  // Water
+  "Poliwag":[25,"Poliwhirl"],   // Poliwhirl → Poliwrath (Water Stone) or Politoed (trade)
+  "Magikarp":[20,"Gyarados"],
+  "Goldeen":[33,"Seaking"],
+  "Slowpoke":[37,"Slowbro"],    // also → Slowking via trade
+  "Horsea":[32,"Seadra"],       // Seadra → Kingdra via trade
+  "Tentacool":[30,"Tentacruel"],
+  "Krabby":[28,"Kingler"],
+  "Seel":[34,"Dewgong"],
+  "Remoraid":[25,"Octillery"],
+  "Chinchou":[27,"Lanturn"],
+  "Wooper":[20,"Quagsire"],
+  // Grass/Poison
+  "Bellsprout":[21,"Weepinbell"],  // Weepinbell → Victreebel via Leaf Stone
+  "Oddish":[21,"Gloom"],           // Gloom → Vileplume/Bellossom via Stone
+  "Hoppip":[18,"Skiploom"],        "Skiploom":[27,"Jumpluff"],
+  "Paras":[24,"Parasect"],
+  "Venonat":[31,"Venomoth"],
+  "Nidoran♀":[16,"Nidorina"],      // Nidorina → Nidoqueen via Moon Stone
+  "Nidoran♂":[16,"Nidorino"],      // Nidorino → Nidoking via Moon Stone
+  // Psychic
+  "Abra":[16,"Kadabra"],        // Kadabra → Alakazam via trade
+  "Drowzee":[26,"Hypno"],
+  "Natu":[25,"Xatu"],
+  // Fighting
+  "Machop":[28,"Machoke"],      // Machoke → Machamp via trade
+  "Tyrogue":[20,["Hitmonlee","Hitmonchan","Hitmontop"]], // depends on Attack/Defense
+  "Mankey":[28,"Primeape"],
+  // Ghost/Poison
+  "Gastly":[25,"Haunter"],      // Haunter → Gengar via trade
+  "Koffing":[35,"Weezing"],
+  "Grimer":[38,"Muk"],
+  // Normal
+  "Aipom":[null,"Ambipom"],     // only via Double Hit (no level gate)
+  "Ditto":[null,null],
+  "Lickitung":[null,"Lickilicky"],  // only via Rollout
+  "Marill":[18,"Azumarill"],
+  "Snubbull":[23,"Granbull"],
+  "Meowth":[28,"Persian"],
+  "Psyduck":[33,"Golduck"],
+  "Diglett":[26,"Dugtrio"],
+  // Ice
+  "Swinub":[33,"Piloswine"],    // Piloswine → Mamoswine via AncientPower
+  "Shellder":[null,"Cloyster"], // Water Stone only
+  // Dragon
+  "Dratini":[30,"Dragonair"],   "Dragonair":[55,"Dragonite"],
+  "Larvitar":[30,"Pupitar"],    "Pupitar":[55,"Tyranitar"],
+  // Dark/Flying
+  "Houndour":[24,"Houndoom"],
+  // Fire
+  "Magby":[30,"Magmar"],        // Magmar → Magmortar via trade
+  "Ponyta":[40,"Rapidash"],
+  "Slugma":[38,"Magcargo"],
+  // Rock
+  "Rhyhorn":[42,"Rhydon"],      // Rhydon → Rhyperior via trade
+  "Omanyte":[40,"Omastar"],
+  "Kabuto":[40,"Kabutops"],
+  // Ground
+  "Cubone":[28,"Marowak"],
+  "Phanpy":[25,"Donphan"],
+  "Wobbuffet":[null,null],      // Wynaut → Wobbuffet at 15 but Wobbuffet doesn't evolve
+  "Wynaut":[15,"Wobbuffet"],
+  // Misc
+  "Smoochum":[30,"Jynx"],
+  "Elekid":[30,"Electabuzz"],   // Electabuzz → Electivire via trade
+  "Yanma":[null,"Yanmega"],     // AncientPower known, not by level
+  "Tangela":[null,"Tangrowth"], // AncientPower known
+  "Pineco":[31,"Forretress"],
+  "Teddiursa":[30,"Ursaring"],
+};
+
 function expAtLevel(n, group) {
   const n3 = n*n*n;
   if (group === "erratic") {
@@ -13601,6 +13701,10 @@ function WalkerPlannerPanel({ walkerAreas }) {
     return m;
   }, [learnset]);
 
+  const evoEntry = pkName ? EVO_LEVELS[pkName] : null;
+  const evoLevel = evoEntry?.[0] ?? null;
+  const evoInto  = evoEntry?.[1] ?? null;
+
   const rows = React.useMemo(() => {
     if (!pkName || !expGroup) return [];
     return Array.from({length: 99}, (_, i) => {
@@ -13608,9 +13712,10 @@ function WalkerPlannerPanel({ walkerAreas }) {
       const base = expAtLevel(lv+1, expGroup) - expAtLevel(lv, expGroup);
       const adv  = Math.ceil(base * 0.75);
       const warnMoves = movesByLevel[lv+1] || [];
-      return { lv, base, adv, warnMoves };
+      const evolves = evoLevel !== null && lv + 1 === evoLevel;
+      return { lv, base, adv, warnMoves, evolves };
     });
-  }, [pkName, expGroup, movesByLevel]);
+  }, [pkName, expGroup, movesByLevel, evoLevel]);
 
   const advRoutes = React.useMemo(() => {
     if (!types.length) return [];
@@ -13742,6 +13847,7 @@ function WalkerPlannerPanel({ walkerAreas }) {
             1 step = 1 EXP · Max 1 level per walk · Adv. type column assumes 25% step reduction.
             Rows marked <span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned on level-up — skip these levels (Pokéwalker can't prompt to learn moves).
             <span style={{ color:C.green, fontWeight:700 }}> ★</span> = recommended move.
+            <span style={{ color:"#b080f0", fontWeight:700 }}> ⬆</span> = evolves at this level.
           </div>
           <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10 }}>
             <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
@@ -13754,13 +13860,21 @@ function WalkerPlannerPanel({ walkerAreas }) {
                 </tr>
               </thead>
               <tbody>
-                {rows.map(({lv, base, adv, warnMoves}) => {
+                {rows.map(({lv, base, adv, warnMoves, evolves}) => {
                   const warn = warnMoves.length > 0;
-                  const rowBg = warn ? "rgba(240,160,32,0.08)" : lv % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent";
+                  const rowBg = evolves ? "rgba(160,100,240,0.08)" : warn ? "rgba(240,160,32,0.08)" : lv % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent";
+                  const evoLabel = evolves && evoInto ? (Array.isArray(evoInto) ? evoInto.join("/") : evoInto) : null;
                   return (
                     <tr key={lv} style={{ background:rowBg }}>
-                      <td style={{ padding:"5px 10px", color: warn ? "#f0a020" : C.muted, fontFamily:"'JetBrains Mono',monospace", fontWeight: warn ? 700 : 400 }}>
-                        {warn ? "⚠ " : ""}{lv}→{lv+1}
+                      <td style={{ padding:"5px 10px", fontFamily:"'JetBrains Mono',monospace" }}>
+                        <div style={{ color: warn ? "#f0a020" : C.muted, fontWeight: warn ? 700 : 400 }}>
+                          {warn ? "⚠ " : ""}{lv}→{lv+1}
+                        </div>
+                        {evolves && evoLabel && (
+                          <div style={{ fontSize:10, color:"#b080f0", fontWeight:700, marginTop:1, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
+                            ⬆ {evoLabel}
+                          </div>
+                        )}
                       </td>
                       <td style={{ padding:"5px 10px", textAlign:"right", color:C.text, fontFamily:"'JetBrains Mono',monospace" }}>{base.toLocaleString()}</td>
                       <td style={{ padding:"5px 10px", textAlign:"right", color:C.green, fontFamily:"'JetBrains Mono',monospace" }}>{adv.toLocaleString()}</td>

@@ -108,7 +108,7 @@ const DEX = [
   {johtoId:193,id:207,name:"Gligar",   hgOnly:true},
   {johtoId:194,id:225,name:"Delibird", ssOnly:true},
   {johtoId:195,id:220,name:"Swinub"},    {johtoId:196,id:221,name:"Piloswine"},  {johtoId:197,id:473,name:"Mamoswine"},
-  {johtoId:198,id:216,name:"Teddiursa", hgOnly:true},{johtoId:199,id:217,name:"Ursaring",  hgOnly:true},
+  {johtoId:198,id:216,name:"Teddiursa", ssOnly:true},{johtoId:199,id:217,name:"Ursaring",  ssOnly:true},
   {johtoId:200,id:231,name:"Phanpy",   hgOnly:true}, {johtoId:201,id:232,name:"Donphan",  hgOnly:true},
   {johtoId:202,id:226,name:"Mantine",  hgOnly:true}, {johtoId:203,id:227,name:"Skarmory", ssOnly:true},
   {johtoId:204,id:84, name:"Doduo"},     {johtoId:205,id:85, name:"Dodrio"},
@@ -170,6 +170,8 @@ const NATIONAL_DEX = [
   {id:300,name:"Skitty"},{id:301,name:"Delcatty"},
   // Pokéwalker
   {id:302,name:"Sableye"},
+  // Safari Zone (SS swarm)
+  {id:303,name:"Mawile"},
   // Safari Zone: Aron line
   {id:304,name:"Aron"},{id:305,name:"Lairon"},{id:306,name:"Aggron"},
   // Pokéwalker: Meditite → Medicham
@@ -6581,7 +6583,7 @@ const DT_CANDIDATES = [
   { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:100, spe:30} },
   { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly"], stats:{atk:90, spa:70,  spe:130} },
   { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:10, spa:75,  spe:55} },
-  { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], hgOnly:true, stats:{atk:130,spa:75,  spe:55} },
+  { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], ssOnly:true, stats:{atk:130,spa:75,  spe:55} },
   { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true, stats:{atk:40, spa:80,  spe:70} },
   // ── Good picks ───────────────────────────────────────────────────────────────
   { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },

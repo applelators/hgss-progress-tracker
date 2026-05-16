@@ -9398,7 +9398,7 @@ function HGSSTracker() {
             // Primary — used every play session
             ["areas","Areas","primary"],["dex","Pokédex","primary"],
             ["walker","Pokéwalker","primary"],
-            ["team","Team","primary"],["battle","Battle","primary"],
+            ["team","Team","primary"],["battle","Battle","primary"],["trade","Trade","primary"],
             // Divider
             ["__div1","",null],
             // Secondary — used regularly but less hot
@@ -9454,6 +9454,9 @@ function HGSSTracker() {
 
       {tab === "battle" && <BattleTab />}
 
+      {/* ── Tab: Trade ── */}
+      {tab === "trade" && <TradeTab version={version} isMobile={isMobile} />}
+
       {/* ── Tab: Evolution Planner ── */}
       {tab === "evo" && <EvoTab caught={caught} toggleCaught={toggleCaught} version={version} />}
 
@@ -9483,6 +9486,185 @@ function HGSSTracker() {
 
       {/* Tier-1 ceremony overlay (8th badge / legendary catch) */}
       <CeremonyHost queue={ceremonyQueue} onDone={popCeremony} />
+    </div>
+  );
+}
+
+// ─── TRADE TAB ───────────────────────────────────────────────────────────────
+const TRADE_EVOS = [
+  // plain trades
+  { from:"Kadabra",    to:"Alakazam",   item:null,            itemSrc:null },
+  { from:"Machoke",    to:"Machamp",    item:null,            itemSrc:null },
+  { from:"Graveler",   to:"Golem",      item:null,            itemSrc:null },
+  { from:"Haunter",    to:"Gengar",     item:null,            itemSrc:null },
+  // King's Rock
+  { from:"Poliwhirl",  to:"Politoed",   item:"King's Rock",   itemSrc:"Pokéathlon Mon/Thu/Sun · 3,000 AP" },
+  { from:"Slowpoke",   to:"Slowking",   item:"King's Rock",   itemSrc:"Pokéathlon Mon/Thu/Sun · 3,000 AP" },
+  // Metal Coat
+  { from:"Onix",       to:"Steelix",    item:"Metal Coat",    itemSrc:"Pokéathlon Fri · 2,500 AP" },
+  { from:"Scyther",    to:"Scizor",     item:"Metal Coat",    itemSrc:"Pokéathlon Fri · 2,500 AP" },
+  // Dragon Scale
+  { from:"Seadra",     to:"Kingdra",    item:"Dragon Scale",  itemSrc:"Pokéathlon Fri · 2,500 AP" },
+  // other items
+  { from:"Porygon",    to:"Porygon2",   item:"Up-Grade",      itemSrc:"Silph Co. 5F" },
+  { from:"Porygon2",   to:"Porygon-Z",  item:"Dubious Disc",  itemSrc:"Import from D/P/Pt — not in HGSS base game" },
+  { from:"Rhydon",     to:"Rhyperior",  item:"Protector",     itemSrc:"Route 45 (hidden item)" },
+  { from:"Dusclops",   to:"Dusknoir",   item:"Reaper Cloth",  itemSrc:"Mt. Mortar B1F" },
+  { from:"Electabuzz", to:"Electivire", item:"Electirizer",   itemSrc:"PokéWalker: Yellow Forest (event) or D/P/Pt" },
+  { from:"Magmar",     to:"Magmortar",  item:"Magmarizer",    itemSrc:"PokéWalker: Yellow Forest (event) or D/P/Pt" },
+];
+
+function TradeTab({ version, isMobile }) {
+  const { useMemo, useState } = React;
+
+  const [spares,   setSpares]   = useState(() => { try { return JSON.parse(localStorage.getItem("hgss-trade-spares")   || "{}"); } catch { return {}; } });
+  const [received, setReceived] = useState(() => { try { return JSON.parse(localStorage.getItem("hgss-trade-received") || "{}"); } catch { return {}; } });
+  const [evoDone,  setEvoDone]  = useState(() => { try { return JSON.parse(localStorage.getItem("hgss-trade-evo-done") || "{}"); } catch { return {}; } });
+
+  const persist = (key, next, setter) => { setter(next); localStorage.setItem(key, JSON.stringify(next)); };
+  const toggleSpare    = n => persist("hgss-trade-spares",    { ...spares,   [n]: !spares[n]   }, setSpares);
+  const toggleReceived = n => persist("hgss-trade-received",  { ...received, [n]: !received[n] }, setReceived);
+  const toggleEvo      = k => persist("hgss-trade-evo-done",  { ...evoDone,  [k]: !evoDone[k]  }, setEvoDone);
+
+  // Compute version exclusives from LOCATION_MAP (built at module scope from AREAS).
+  // Filter out non-Pokémon entries (key items like Blue Orb, Clear Bell, etc.)
+  // by checking allDexId — items won't have a sprite ID.
+  const exclusives = useMemo(() => {
+    const hg = {}, ss = {};
+    for (const [name, locs] of Object.entries(LOCATION_MAP)) {
+      if (!allDexId(name)) continue;
+      for (const [target, flag] of [[hg, "hgOnly"], [ss, "ssOnly"]]) {
+        const fl = locs.filter(l => l[flag]);
+        if (!fl.length) continue;
+        const seen = new Set();
+        target[name] = fl.filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
+      }
+    }
+    return { hg, ss };
+  }, []);
+
+  const myExcls    = version === "hg" ? exclusives.hg : exclusives.ss;
+  const theirExcls = version === "hg" ? exclusives.ss : exclusives.hg;
+  const myLabel    = version === "hg" ? "HeartGold" : "SoulSilver";
+  const theirLabel = version === "hg" ? "SoulSilver" : "HeartGold";
+  const myColor    = version === "hg" ? C.hgGold : C.ssSilver;
+  const theirColor = version === "hg" ? C.ssSilver : C.hgGold;
+
+  const sortByDex = ([a], [b]) => (allDexId(a) || 9999) - (allDexId(b) || 9999);
+  const myEntries    = Object.entries(myExcls).sort(sortByDex);
+  const theirEntries = Object.entries(theirExcls).sort(sortByDex);
+
+  const spareCount    = myEntries.filter(([n]) => spares[n]).length;
+  const receivedCount = theirEntries.filter(([n]) => received[n]).length;
+  const evoDoneCount  = TRADE_EVOS.filter(e => evoDone[`${e.from}-${e.to}`]).length;
+
+  const formatLocs = locs => {
+    if (locs.length <= 2) return locs.map(l => l.areaName).join(" · ");
+    return locs.slice(0, 2).map(l => l.areaName).join(" · ") + ` +${locs.length - 2} more`;
+  };
+
+  const rowSty = done => ({
+    display:"flex", alignItems:"center", gap:10, padding:"7px 12px", borderRadius:8,
+    cursor:"pointer", transition:"all 0.12s",
+    background: done ? `${C.green}12` : "rgba(0,0,0,0.2)",
+    border: `1px solid ${done ? C.green + "50" : C.border}`,
+  });
+  const chkSty = done => ({
+    width:20, height:20, borderRadius:5, flexShrink:0, transition:"all 0.12s",
+    border: `2px solid ${done ? C.green : C.border}`,
+    background: done ? C.green : "transparent",
+    display:"flex", alignItems:"center", justifyContent:"center",
+    fontSize:11, fontWeight:"700", color:"#000",
+  });
+
+  const secHead = (label, count, total, color) => (
+    <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+      <div style={{ width:3, height:16, background:color, borderRadius:99, flexShrink:0 }} />
+      <span style={{ fontSize:11, fontWeight:"700", color:C.text, letterSpacing:"0.07em", textTransform:"uppercase" }}>{label}</span>
+      <span style={{ fontSize:11, color:C.muted, marginLeft:"auto" }}>{count} / {total}</span>
+    </div>
+  );
+
+  const exRow = (name, locs, done, onToggle) => {
+    const id = allDexId(name);
+    return (
+      <div key={name} onClick={onToggle}
+        onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+        style={rowSty(done)}>
+        {id ? <img src={pokeSpriteUrl(id)} alt={name} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.6 }} />
+             : <div style={{ width:36, height:36, flexShrink:0 }} />}
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{name}</div>
+          <div style={{ fontSize:10, color:C.muted, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{formatLocs(locs)}</div>
+        </div>
+        <div style={chkSty(done)}>{done && "✓"}</div>
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      <div style={{ maxWidth:700, margin:"0 auto", padding:"20px 16px 40px", display:"flex", flexDirection:"column", gap:24 }}>
+
+        {/* Collect spares to trade away */}
+        <div>
+          {secHead(`${myLabel} exclusives — collect spares`, spareCount, myEntries.length, myColor)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Only catchable in {myLabel}. Catch extras to send to your {theirLabel} partner.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {myEntries.map(([name, locs]) => exRow(name, locs, !!spares[name], () => toggleSpare(name)))}
+          </div>
+        </div>
+
+        {/* Mark when received from partner */}
+        <div>
+          {secHead(`${theirLabel} exclusives — mark when received`, receivedCount, theirEntries.length, theirColor)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Only catchable in {theirLabel}. Check off each one as your partner trades it to you.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {theirEntries.map(([name, locs]) => exRow(name, locs, !!received[name], () => toggleReceived(name)))}
+          </div>
+        </div>
+
+        {/* Trade evolutions */}
+        <div>
+          {secHead("Trade evolutions", evoDoneCount, TRADE_EVOS.length, C.accent)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Pokémon that only evolve by trading. Check off once you have the evolved form.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {TRADE_EVOS.map(({ from, to, item, itemSrc }) => {
+              const key = `${from}-${to}`;
+              const done = !!evoDone[key];
+              const fromId = allDexId(from), toId = allDexId(to);
+              return (
+                <div key={key} onClick={() => toggleEvo(key)}
+                  onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+                  style={rowSty(done)}>
+                  {fromId ? <img src={pokeSpriteUrl(fromId)} alt={from} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.55 }} />
+                           : <div style={{ width:36, height:36, flexShrink:0 }} />}
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                      <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{from}</span>
+                      {item && <span style={{ fontSize:9, fontWeight:"700", padding:"1px 6px", borderRadius:99, whiteSpace:"nowrap", color:"#c8a040", background:"rgba(200,150,40,0.18)", border:"1px solid rgba(200,150,40,0.4)" }}>+ {item}</span>}
+                      <span style={{ color:C.muted, fontSize:14 }}>→</span>
+                      {toId && <img src={pokeSpriteUrl(toId)} alt={to} style={{ width:30, height:30, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.45 }} />}
+                      <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{to}</span>
+                    </div>
+                    {itemSrc && <div style={{ fontSize:10, color:C.muted, marginTop:2 }}>{itemSrc}</div>}
+                  </div>
+                  <div style={chkSty(done)}>{done && "✓"}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

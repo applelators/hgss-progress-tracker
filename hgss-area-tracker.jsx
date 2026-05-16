@@ -12005,10 +12005,1784 @@ function RoamingCard({ roaming, setRoaming, version, badges }) {
   );
 }
 
+const PW_LEARNSETS = {
+  "Chikorita":[
+    [6,"Razor Leaf"],[9,"PoisonPowder"],[12,"Synthesis"],[17,"Reflect"],
+    [20,"Magical Leaf"],[23,"Natural Gift"],[28,"Sweet Scent"],[31,"Light Screen"],
+    [34,"Body Slam"],[39,"Safeguard"],[42,"Aromatherapy"],[45,"SolarBeam"],
+  ],
+  "Bayleef":[
+    [6,"Razor Leaf"],[9,"PoisonPowder"],[12,"Synthesis"],[18,"Reflect"],
+    [22,"Magical Leaf"],[26,"Natural Gift"],[32,"Sweet Scent"],[36,"Light Screen"],
+    [40,"Body Slam"],[46,"Safeguard"],[50,"Aromatherapy"],[54,"SolarBeam"],
+  ],
+  "Meganium":[
+    [6,"Razor Leaf"],[9,"PoisonPowder"],[12,"Synthesis"],[18,"Reflect"],
+    [22,"Magical Leaf"],[26,"Natural Gift"],[32,"Petal Dance"],[34,"Sweet Scent"],
+    [40,"Light Screen"],[46,"Body Slam"],[54,"Safeguard"],[60,"Aromatherapy"],
+    [66,"SolarBeam"],
+  ],
+  "Cyndaquil":[],
+  "Quilava":[],
+  "Typhlosion":[],
+  "Totodile":[],
+  "Croconaw":[],
+  "Feraligatr":[],
+  "Pidgey":[
+    [5,"Sand-Attack"],[9,"Gust"],[13,"Quick Attack"],[17,"Whirlwind"],
+    [21,"Twister"],[25,"FeatherDance"],[29,"Agility"],[33,"Wing Attack"],
+    [37,"Roost"],[41,"Tailwind"],[45,"Mirror Move"],[49,"Air Slash"],
+  ],
+  "Pidgeotto":[
+    [5,"Sand-Attack"],[9,"Gust"],[13,"Quick Attack"],[17,"Whirlwind"],
+    [22,"Twister"],[27,"FeatherDance"],[32,"Agility"],[37,"Wing Attack"],
+    [42,"Roost"],[47,"Tailwind"],[52,"Mirror Move"],[57,"Air Slash"],
+  ],
+  "Pidgeot":[
+    [5,"Sand-Attack"],[9,"Gust"],[13,"Quick Attack"],[17,"Whirlwind"],
+    [22,"Twister"],[27,"FeatherDance"],[32,"Agility"],[38,"Wing Attack"],
+    [44,"Roost"],[50,"Tailwind"],[56,"Mirror Move"],[62,"Air Slash"],
+  ],
+  "Spearow":[
+    [5,"Leer"],[9,"Fury Attack"],[13,"Pursuit"],[17,"Aerial Ace"],
+    [21,"Mirror Move"],[25,"Agility"],[29,"Assurance"],[33,"Roost"],
+    [37,"Drill Peck"],
+  ],
+  "Fearow":[
+    [5,"Leer"],[9,"Fury Attack"],[13,"Pursuit"],[17,"Aerial Ace"],
+    [23,"Mirror Move"],[29,"Agility"],[35,"Assurance"],[41,"Roost"],
+    [47,"Drill Peck"],
+  ],
+  "Hoothoot":[],
+  "Noctowl":[],
+  "Rattata":[
+    [4,"Quick Attack"],[7,"Focus Energy"],[10,"Bite"],[13,"Pursuit"],
+    [16,"Hyper Fang"],[19,"Sucker Punch"],[22,"Crunch"],[25,"Assurance"],
+    [28,"Super Fang"],[31,"Double-Edge"],[34,"Endeavor"],
+  ],
+  "Raticate":[
+    [4,"Quick Attack"],[7,"Focus Energy"],[10,"Bite"],[13,"Pursuit"],
+    [16,"Hyper Fang"],[19,"Sucker Punch"],[20,"Scary Face"],[24,"Crunch"],
+    [29,"Assurance"],[34,"Super Fang"],[39,"Double-Edge"],[44,"Endeavor"],
+  ],
+  "Sentret":[
+    [4,"Defense Curl"],[7,"Quick Attack"],[13,"Fury Swipes"],[16,"Helping Hand"],
+    [19,"Follow Me"],[25,"Slam"],[28,"Rest"],[31,"Sucker Punch"],
+    [36,"Amnesia"],[39,"Baton Pass"],[42,"Me First"],[47,"Hyper Voice"],
+  ],
+  "Furret":[
+    [4,"Defense Curl"],[7,"Quick Attack"],[13,"Fury Swipes"],[17,"Helping Hand"],
+    [21,"Follow Me"],[28,"Slam"],[32,"Rest"],[36,"Sucker Punch"],
+    [42,"Amnesia"],[46,"Baton Pass"],[50,"Me First"],[56,"Hyper Voice"],
+  ],
+  "Pichu":[
+    [5,"Tail Whip"],[10,"Thunder Wave"],[13,"Sweet Kiss"],[18,"Nasty Plot"],
+  ],
+  "Pikachu":[
+    [5,"Tail Whip"],[10,"Thunder Wave"],[13,"Quick Attack"],[18,"Double Team"],
+    [21,"Slam"],[26,"Thunderbolt"],[29,"Feint"],[34,"Agility"],
+    [37,"Discharge"],[42,"Light Screen"],[45,"Thunder"],
+  ],
+  "Raichu":[],
+  "Caterpie":[],
+  "Metapod":[
+    [7,"Harden"],
+  ],
+  "Butterfree":[
+    [10,"Confusion"],[12,"PoisonPowder"],[12,"Stun Spore"],[12,"Sleep Powder"],
+    [16,"Gust"],[18,"Supersonic"],[22,"Whirlwind"],[24,"Psybeam"],
+    [28,"Silver Wind"],[30,"Tailwind"],[34,"Safeguard"],[36,"Captivate"],
+    [40,"Bug Buzz"],
+  ],
+  "Weedle":[],
+  "Kakuna":[
+    [7,"Harden"],
+  ],
+  "Beedrill":[
+    [10,"Fury Attack"],[13,"Focus Energy"],[16,"Twineedle"],[19,"Rage"],
+    [22,"Pursuit"],[25,"Toxic Spikes"],[28,"Pin Missile"],[31,"Agility"],
+    [34,"Assurance"],[37,"Poison Jab"],[40,"Endeavor"],
+  ],
+  "Ledyba":[
+    [6,"Supersonic"],[9,"Comet Punch"],[14,"Light Screen"],[14,"Reflect"],
+    [14,"Safeguard"],[17,"Mach Punch"],[22,"Baton Pass"],[25,"Silver Wind"],
+    [30,"Agility"],[33,"Swift"],[38,"Double-Edge"],[41,"Bug Buzz"],
+  ],
+  "Ledian":[
+    [6,"Supersonic"],[9,"Comet Punch"],[14,"Light Screen"],[14,"Reflect"],
+    [14,"Safeguard"],[17,"Mach Punch"],[24,"Baton Pass"],[29,"Silver Wind"],
+    [36,"Agility"],[41,"Swift"],[48,"Double-Edge"],[53,"Bug Buzz"],
+  ],
+  "Spinarak":[
+    [5,"Scary Face"],[8,"Constrict"],[12,"Leech Life"],[15,"Night Shade"],
+    [19,"Shadow Sneak"],[22,"Fury Swipes"],[26,"Sucker Punch"],[29,"Spider Web"],
+    [33,"Agility"],[36,"Pin Missile"],[40,"Psychic"],[43,"Poison Jab"],
+  ],
+  "Ariados":[
+    [5,"Scary Face"],[8,"Constrict"],[12,"Leech Life"],[15,"Night Shade"],
+    [19,"Shadow Sneak"],[23,"Fury Swipes"],[28,"Sucker Punch"],[32,"Spider Web"],
+    [37,"Agility"],[41,"Pin Missile"],[46,"Psychic"],[50,"Poison Jab"],
+  ],
+  "Geodude":[
+    [4,"Mud Sport"],[8,"Rock Polish"],[11,"Rock Throw"],[15,"Magnitude"],
+    [18,"Selfdestruct"],[22,"Rollout"],[25,"Rock Blast"],[29,"Earthquake"],
+    [32,"Explosion"],[36,"Double-Edge"],[39,"Stone Edge"],
+  ],
+  "Graveler":[
+    [4,"Mud Sport"],[8,"Rock Polish"],[11,"Rock Throw"],[15,"Magnitude"],
+    [18,"Selfdestruct"],[22,"Rollout"],[27,"Rock Blast"],[33,"Earthquake"],
+    [38,"Explosion"],[44,"Double-Edge"],[49,"Stone Edge"],
+  ],
+  "Golem":[
+    [4,"Mud Sport"],[8,"Rock Polish"],[11,"Rock Throw"],[15,"Magnitude"],
+    [18,"Selfdestruct"],[22,"Rollout"],[27,"Rock Blast"],[33,"Earthquake"],
+    [38,"Explosion"],[44,"Double-Edge"],[49,"Stone Edge"],
+  ],
+  "Zubat":[
+    [5,"Supersonic"],[9,"Astonish"],[13,"Bite"],[17,"Wing Attack"],
+    [21,"Confuse Ray"],[25,"Air Cutter"],[29,"Mean Look"],[33,"Poison Fang"],
+    [37,"Haze"],[41,"Air Slash"],
+  ],
+  "Golbat":[
+    [5,"Supersonic"],[9,"Astonish"],[13,"Bite"],[17,"Wing Attack"],
+    [21,"Confuse Ray"],[27,"Air Cutter"],[33,"Mean Look"],[39,"Poison Fang"],
+    [45,"Haze"],[51,"Air Slash"],
+  ],
+  "Crobat":[
+    [5,"Supersonic"],[9,"Astonish"],[13,"Bite"],[17,"Wing Attack"],
+    [21,"Confuse Ray"],[27,"Air Cutter"],[33,"Mean Look"],[39,"Poison Fang"],
+    [45,"Haze"],[51,"Air Slash"],
+  ],
+  "Cleffa":[
+    [4,"Encore"],[7,"Sing"],[10,"Sweet Kiss"],[13,"Copycat"],
+    [16,"Magical Leaf"],
+  ],
+  "Clefairy":[
+    [4,"Encore"],[7,"Sing"],[10,"DoubleSlap"],[13,"Defense Curl"],
+    [16,"Follow Me"],[19,"Minimize"],[22,"Wake-Up Slap"],[25,"Cosmic Power"],
+    [28,"Lucky Chant"],[31,"Metronome"],[34,"Gravity"],[37,"Moonlight"],
+    [40,"Light Screen"],[43,"Meteor Mash"],[46,"Healing Wish"],
+  ],
+  "Clefable":[],
+  "Igglybuff":[
+    [5,"Defense Curl"],[9,"Pound"],[13,"Sweet Kiss"],[17,"Copycat"],
+  ],
+  "Jigglypuff":[
+    [5,"Defense Curl"],[9,"Pound"],[13,"Disable"],[17,"Rollout"],
+    [21,"DoubleSlap"],[25,"Rest"],[29,"Body Slam"],[33,"Gyro Ball"],
+    [37,"Wake-Up Slap"],[41,"Mimic"],[45,"Hyper Voice"],[49,"Double-Edge"],
+  ],
+  "Wigglytuff":[],
+  "Togepi":[
+    [6,"Metronome"],[10,"Sweet Kiss"],[15,"Yawn"],[19,"Encore"],
+    [24,"Follow Me"],[28,"Wish"],[33,"AncientPower"],[37,"Safeguard"],
+    [42,"Baton Pass"],[46,"Double-Edge"],[51,"Last Resort"],
+  ],
+  "Togetic":[
+    [6,"Metronome"],[10,"Sweet Kiss"],[15,"Yawn"],[19,"Encore"],
+    [24,"Follow Me"],[28,"Wish"],[33,"AncientPower"],[37,"Safeguard"],
+    [42,"Baton Pass"],[46,"Double-Edge"],[51,"Last Resort"],
+  ],
+  "Togekiss":[],
+  "Sandshrew":[
+    [3,"Defense Curl"],[7,"Sand-Attack"],[9,"Poison Sting"],[13,"Rapid Spin"],
+    [15,"Swift"],[19,"Fury Swipes"],[21,"Rollout"],[25,"Fury Cutter"],
+    [27,"Sand Tomb"],[31,"Slash"],[33,"Gyro Ball"],[37,"Sandstorm"],
+  ],
+  "Sandslash":[
+    [3,"Defense Curl"],[7,"Sand-Attack"],[9,"Poison Sting"],[13,"Rapid Spin"],
+    [15,"Swift"],[19,"Fury Swipes"],[21,"Rollout"],[22,"Crush Claw"],
+    [28,"Fury Cutter"],[33,"Sand Tomb"],[40,"Slash"],[45,"Gyro Ball"],
+    [52,"Sandstorm"],
+  ],
+  "Ekans":[
+    [4,"Poison Sting"],[9,"Bite"],[12,"Glare"],[17,"Screech"],
+    [20,"Acid"],[25,"Stockpile"],[25,"Swallow"],[25,"Spit Up"],
+    [28,"Mud Bomb"],[33,"Gastro Acid"],[36,"Haze"],[41,"Gunk Shot"],
+  ],
+  "Arbok":[
+    [4,"Poison Sting"],[9,"Bite"],[12,"Glare"],[17,"Screech"],
+    [20,"Acid"],[22,"Crunch"],[28,"Stockpile"],[28,"Swallow"],
+    [28,"Spit Up"],[34,"Mud Bomb"],[42,"Gastro Acid"],[48,"Haze"],
+    [56,"Gunk Shot"],
+  ],
+  "Dunsparce":[
+    [5,"Defense Curl"],[9,"Yawn"],[13,"Glare"],[17,"Rollout"],
+    [21,"Spite"],[25,"Pursuit"],[29,"Screech"],[33,"Roost"],
+    [37,"Take Down"],[41,"AncientPower"],[45,"Dig"],[49,"Endeavor"],
+    [53,"Flail"],
+  ],
+  "Mareep":[
+    [5,"Growl"],[10,"ThunderShock"],[14,"Thunder Wave"],[19,"Cotton Spore"],
+    [23,"Charge"],[28,"Discharge"],[32,"Signal Beam"],[37,"Light Screen"],
+    [41,"Power Gem"],[46,"Thunder"],
+  ],
+  "Flaaffy":[
+    [5,"Growl"],[10,"ThunderShock"],[14,"Thunder Wave"],[20,"Cotton Spore"],
+    [25,"Charge"],[31,"Discharge"],[36,"Signal Beam"],[42,"Light Screen"],
+    [47,"Power Gem"],[53,"Thunder"],
+  ],
+  "Ampharos":[
+    [5,"Growl"],[10,"ThunderShock"],[14,"Thunder Wave"],[20,"Cotton Spore"],
+    [25,"Charge"],[30,"ThunderPunch"],[34,"Discharge"],[42,"Signal Beam"],
+    [51,"Light Screen"],[59,"Power Gem"],[68,"Thunder"],
+  ],
+  "Wooper":[
+    [5,"Mud Sport"],[9,"Mud Shot"],[15,"Slam"],[19,"Mud Bomb"],
+    [23,"Amnesia"],[29,"Yawn"],[33,"Earthquake"],[37,"Rain Dance"],
+    [43,"Mist"],[43,"Haze"],[47,"Muddy Water"],
+  ],
+  "Quagsire":[
+    [5,"Mud Sport"],[9,"Mud Shot"],[15,"Slam"],[19,"Mud Bomb"],
+    [24,"Amnesia"],[31,"Yawn"],[36,"Earthquake"],[41,"Rain Dance"],
+    [48,"Mist"],[48,"Haze"],[53,"Muddy Water"],
+  ],
+  "Gastly":[
+    [5,"Spite"],[8,"Mean Look"],[12,"Curse"],[15,"Night Shade"],
+    [19,"Confuse Ray"],[22,"Sucker Punch"],[26,"Payback"],[29,"Shadow Ball"],
+    [33,"Dream Eater"],[36,"Dark Pulse"],[40,"Destiny Bond"],[43,"Nightmare"],
+  ],
+  "Haunter":[
+    [5,"Spite"],[8,"Mean Look"],[12,"Curse"],[15,"Night Shade"],
+    [19,"Confuse Ray"],[22,"Sucker Punch"],[25,"Shadow Punch"],[28,"Payback"],
+    [33,"Shadow Ball"],[39,"Dream Eater"],[44,"Dark Pulse"],[50,"Destiny Bond"],
+    [55,"Nightmare"],
+  ],
+  "Gengar":[
+    [5,"Spite"],[8,"Mean Look"],[12,"Curse"],[15,"Night Shade"],
+    [19,"Confuse Ray"],[22,"Sucker Punch"],[25,"Shadow Punch"],[28,"Payback"],
+    [33,"Shadow Ball"],[39,"Dream Eater"],[44,"Dark Pulse"],[50,"Destiny Bond"],
+    [55,"Nightmare"],
+  ],
+  "Unown":[],
+  "Onix":[],
+  "Steelix":[],
+  "Bellsprout":[
+    [7,"Growth"],[11,"Wrap"],[13,"Sleep Powder"],[15,"PoisonPowder"],
+    [17,"Stun Spore"],[23,"Acid"],[27,"Knock Off"],[29,"Sweet Scent"],
+    [35,"Gastro Acid"],[39,"Razor Leaf"],[41,"Slam"],[47,"Wring Out"],
+  ],
+  "Weepinbell":[
+    [7,"Growth"],[11,"Wrap"],[13,"Sleep Powder"],[15,"PoisonPowder"],
+    [17,"Stun Spore"],[23,"Acid"],[27,"Knock Off"],[29,"Sweet Scent"],
+    [35,"Gastro Acid"],[39,"Razor Leaf"],[41,"Slam"],[47,"Wring Out"],
+  ],
+  "Victreebel":[],
+  "Hoppip":[
+    [4,"Synthesis"],[7,"Tail Whip"],[10,"Tackle"],[12,"PoisonPowder"],
+    [14,"Stun Spore"],[16,"Sleep Powder"],[19,"Bullet Seed"],[22,"Leech Seed"],
+    [25,"Mega Drain"],[28,"Cotton Spore"],[31,"U-turn"],[34,"Worry Seed"],
+    [37,"Giga Drain"],[40,"Bounce"],[43,"Memento"],
+  ],
+  "Skiploom":[
+    [4,"Synthesis"],[7,"Tail Whip"],[10,"Tackle"],[12,"PoisonPowder"],
+    [14,"Stun Spore"],[16,"Sleep Powder"],[20,"Bullet Seed"],[24,"Leech Seed"],
+    [28,"Mega Drain"],[32,"Cotton Spore"],[36,"U-turn"],[40,"Worry Seed"],
+    [44,"Giga Drain"],[48,"Bounce"],[52,"Memento"],
+  ],
+  "Jumpluff":[
+    [4,"Synthesis"],[7,"Tail Whip"],[10,"Tackle"],[12,"PoisonPowder"],
+    [14,"Stun Spore"],[16,"Sleep Powder"],[20,"Bullet Seed"],[24,"Leech Seed"],
+    [28,"Mega Drain"],[32,"Cotton Spore"],[36,"U-turn"],[40,"Worry Seed"],
+    [44,"Giga Drain"],[48,"Bounce"],[52,"Memento"],
+  ],
+  "Paras":[
+    [6,"Stun Spore"],[6,"PoisonPowder"],[11,"Leech Life"],[17,"Spore"],
+    [22,"Slash"],[27,"Growth"],[33,"Giga Drain"],[38,"Aromatherapy"],
+    [43,"X-Scissor"],
+  ],
+  "Parasect":[
+    [6,"Stun Spore"],[6,"PoisonPowder"],[11,"Leech Life"],[17,"Spore"],
+    [22,"Slash"],[30,"Growth"],[39,"Giga Drain"],[47,"Aromatherapy"],
+    [55,"X-Scissor"],
+  ],
+  "Poliwag":[
+    [5,"Bubble"],[8,"Hypnosis"],[11,"Water Gun"],[15,"DoubleSlap"],
+    [18,"Rain Dance"],[21,"Body Slam"],[25,"BubbleBeam"],[28,"Mud Shot"],
+    [31,"Belly Drum"],[35,"Wake-Up Slap"],[38,"Hydro Pump"],[41,"Mud Bomb"],
+  ],
+  "Poliwhirl":[
+    [5,"Bubble"],[8,"Hypnosis"],[11,"Water Gun"],[15,"DoubleSlap"],
+    [18,"Rain Dance"],[21,"Body Slam"],[27,"BubbleBeam"],[32,"Mud Shot"],
+    [37,"Belly Drum"],[43,"Wake-Up Slap"],[48,"Hydro Pump"],[53,"Mud Bomb"],
+  ],
+  "Poliwrath":[
+    [43,"DynamicPunch"],[53,"Mind Reader"],
+  ],
+  "Politoed":[],
+  "Magikarp":[
+    [15,"Tackle"],[30,"Flail"],
+  ],
+  "Gyarados":[
+    [20,"Bite"],[23,"Dragon Rage"],[26,"Leer"],[29,"Twister"],
+    [32,"Ice Fang"],[35,"Aqua Tail"],[38,"Rain Dance"],[41,"Hydro Pump"],
+    [44,"Dragon Dance"],[47,"Hyper Beam"],
+  ],
+  "Goldeen":[
+    [7,"Supersonic"],[11,"Horn Attack"],[17,"Water Pulse"],[21,"Flail"],
+    [27,"Aqua Ring"],[31,"Fury Attack"],[37,"Waterfall"],[41,"Horn Drill"],
+    [47,"Agility"],[51,"Megahorn"],
+  ],
+  "Seaking":[
+    [7,"Supersonic"],[11,"Horn Attack"],[17,"Water Pulse"],[21,"Flail"],
+    [27,"Aqua Ring"],[31,"Fury Attack"],[40,"Waterfall"],[47,"Horn Drill"],
+    [56,"Agility"],[63,"Megahorn"],
+  ],
+  "Slowpoke":[
+    [6,"Growl"],[11,"Water Gun"],[15,"Confusion"],[20,"Disable"],
+    [25,"Headbutt"],[29,"Water Pulse"],[34,"Zen Headbutt"],[39,"Slack Off"],
+    [43,"Amnesia"],[48,"Psychic"],[53,"Rain Dance"],[57,"Psych Up"],
+  ],
+  "Slowbro":[
+    [6,"Growl"],[11,"Water Gun"],[15,"Confusion"],[20,"Disable"],
+    [25,"Headbutt"],[29,"Water Pulse"],[34,"Zen Headbutt"],[37,"Withdraw"],
+    [41,"Slack Off"],[47,"Amnesia"],[54,"Psychic"],[61,"Rain Dance"],
+    [67,"Psych Up"],
+  ],
+  "Slowking":[],
+  "Oddish":[
+    [5,"Sweet Scent"],[9,"Acid"],[13,"PoisonPowder"],[15,"Stun Spore"],
+    [17,"Sleep Powder"],[21,"Mega Drain"],[25,"Lucky Chant"],[29,"Natural Gift"],
+    [33,"Moonlight"],[37,"Giga Drain"],[41,"Petal Dance"],
+  ],
+  "Gloom":[
+    [5,"Sweet Scent"],[9,"Acid"],[13,"PoisonPowder"],[15,"Stun Spore"],
+    [17,"Sleep Powder"],[23,"Mega Drain"],[29,"Lucky Chant"],[35,"Natural Gift"],
+    [41,"Moonlight"],[47,"Giga Drain"],[53,"Petal Dance"],
+  ],
+  "Vileplume":[
+    [53,"Petal Dance"],[65,"SolarBeam"],
+  ],
+  "Bellossom":[],
+  "Drowzee":[
+    [7,"Disable"],[9,"Confusion"],[15,"Headbutt"],[18,"Poison Gas"],
+    [21,"Meditate"],[26,"Psybeam"],[29,"Psych Up"],[32,"Headbutt"],
+    [37,"Swagger"],[40,"Psychic"],[43,"Nasty Plot"],[50,"Zen Headbutt"],
+    [53,"Future Sight"],
+  ],
+  "Hypno":[
+    [7,"Disable"],[9,"Confusion"],[15,"Headbutt"],[18,"Poison Gas"],
+    [21,"Meditate"],[28,"Psybeam"],[33,"Psych Up"],[38,"Headbutt"],
+    [45,"Swagger"],[50,"Psychic"],[55,"Nasty Plot"],[64,"Zen Headbutt"],
+    [69,"Future Sight"],
+  ],
+  "Abra":[],
+  "Kadabra":[
+    [16,"Confusion"],[18,"Disable"],[22,"Miracle Eye"],[24,"Psybeam"],
+    [28,"Reflect"],[30,"Recover"],[34,"Psycho Cut"],[36,"Role Play"],
+    [40,"Psychic"],[42,"Future Sight"],[46,"Trick"],
+  ],
+  "Alakazam":[
+    [16,"Confusion"],[18,"Disable"],[22,"Miracle Eye"],[24,"Psybeam"],
+    [28,"Reflect"],[30,"Recover"],[34,"Psycho Cut"],[36,"Calm Mind"],
+    [40,"Psychic"],[42,"Future Sight"],[46,"Trick"],
+  ],
+  "Ditto":[],
+  "Pineco":[],
+  "Forretress":[],
+  "Nidoran♀":[
+    [7,"Tail Whip"],[9,"Double Kick"],[13,"Poison Sting"],[19,"Fury Swipes"],
+    [21,"Bite"],[25,"Helping Hand"],[31,"Toxic Spikes"],[33,"Flatter"],
+    [37,"Crunch"],[43,"Captivate"],[45,"Poison Fang"],
+  ],
+  "Nidorina":[
+    [7,"Tail Whip"],[9,"Double Kick"],[13,"Poison Sting"],[20,"Fury Swipes"],
+    [23,"Bite"],[28,"Helping Hand"],[35,"Toxic Spikes"],[38,"Flatter"],
+    [43,"Crunch"],[50,"Captivate"],[58,"Poison Fang"],
+  ],
+  "Nidoqueen":[
+    [23,"Body Slam"],[43,"Earth Power"],[58,"Superpower"],
+  ],
+  "Nidoran♂":[
+    [7,"Focus Energy"],[9,"Double Kick"],[13,"Poison Sting"],[19,"Fury Attack"],
+    [21,"Horn Attack"],[25,"Helping Hand"],[31,"Toxic Spikes"],[33,"Flatter"],
+    [37,"Poison Jab"],[43,"Captivate"],[45,"Horn Drill"],
+  ],
+  "Nidorino":[
+    [7,"Focus Energy"],[9,"Double Kick"],[13,"Poison Sting"],[20,"Fury Attack"],
+    [23,"Horn Attack"],[28,"Helping Hand"],[35,"Toxic Spikes"],[38,"Flatter"],
+    [43,"Poison Jab"],[50,"Captivate"],[58,"Horn Drill"],
+  ],
+  "Nidoking":[
+    [23,"Thrash"],[43,"Earth Power"],[58,"Megahorn"],
+  ],
+  "Yanma":[
+    [6,"Quick Attack"],[11,"Double Team"],[14,"SonicBoom"],[17,"Detect"],
+    [22,"Supersonic"],[27,"Uproar"],[30,"Pursuit"],[33,"AncientPower"],
+    [38,"Hypnosis"],[43,"Wing Attack"],[46,"Screech"],[49,"U-turn"],
+    [54,"Air Slash"],[57,"Bug Buzz"],
+  ],
+  "Yanmega":[],
+  "Sunkern":[
+    [5,"Mega Drain"],[9,"Ingrain"],[13,"GrassWhistle"],[17,"Leech Seed"],
+    [21,"Endeavor"],[25,"Worry Seed"],[29,"Razor Leaf"],[33,"Synthesis"],
+    [37,"Sunny Day"],[41,"Giga Drain"],[45,"Seed Bomb"],
+  ],
+  "Sunflora":[
+    [5,"Mega Drain"],[9,"Ingrain"],[13,"GrassWhistle"],[17,"Leech Seed"],
+    [21,"Bullet Seed"],[25,"Worry Seed"],[29,"Razor Leaf"],[33,"Petal Dance"],
+    [37,"Sunny Day"],[41,"SolarBeam"],[43,"Leaf Storm"],
+  ],
+  "Exeggcute":[
+    [7,"Reflect"],[11,"Leech Seed"],[17,"Bullet Seed"],[19,"Stun Spore"],
+    [21,"PoisonPowder"],[23,"Sleep Powder"],[27,"Confusion"],[33,"Worry Seed"],
+    [37,"Natural Gift"],[43,"SolarBeam"],[47,"Psychic"],
+  ],
+  "Exeggutor":[
+    [17,"Stomp"],[27,"Egg Bomb"],[37,"Wood Hammer"],[47,"Leaf Storm"],
+  ],
+  "Sudowoodo":[
+    [6,"Flail"],[9,"Low Kick"],[14,"Rock Throw"],[17,"Mimic"],
+    [22,"Block"],[25,"Faint Attack"],[30,"Rock Tomb"],[33,"Rock Slide"],
+    [38,"Slam"],[41,"Sucker Punch"],[46,"Double-Edge"],[49,"Hammer Arm"],
+  ],
+  "Wobbuffet":[],
+  "Venonat":[
+    [5,"Supersonic"],[11,"Confusion"],[13,"PoisonPowder"],[17,"Leech Life"],
+    [23,"Stun Spore"],[25,"Psybeam"],[29,"Sleep Powder"],[35,"Signal Beam"],
+    [37,"Zen Headbutt"],[41,"Poison Fang"],[47,"Psychic"],
+  ],
+  "Venomoth":[
+    [5,"Supersonic"],[11,"Confusion"],[13,"PoisonPowder"],[17,"Leech Life"],
+    [23,"Stun Spore"],[25,"Psybeam"],[29,"Sleep Powder"],[31,"Gust"],
+    [37,"Signal Beam"],[41,"Zen Headbutt"],[47,"Poison Fang"],[55,"Psychic"],
+    [59,"Bug Buzz"],
+  ],
+  "Scyther":[],
+  "Scizor":[],
+  "Pinsir":[
+    [4,"Bind"],[8,"Seismic Toss"],[13,"Harden"],[18,"Revenge"],
+    [21,"Brick Break"],[25,"Vital Throw"],[30,"X-Scissor"],[35,"Thrash"],
+    [38,"Swords Dance"],[42,"Submission"],[47,"Guillotine"],[52,"Superpower"],
+  ],
+  "Heracross":[
+    [7,"Fury Attack"],[13,"Aerial Ace"],[19,"Brick Break"],[25,"Counter"],
+    [31,"Take Down"],[37,"Close Combat"],[43,"Reversal"],[49,"Feint"],
+    [55,"Megahorn"],
+  ],
+  "Koffing":[
+    [6,"Smog"],[10,"SmokeScreen"],[15,"Assurance"],[19,"Selfdestruct"],
+    [24,"Sludge"],[28,"Haze"],[33,"Gyro Ball"],[37,"Explosion"],
+    [42,"Sludge Bomb"],[46,"Destiny Bond"],[51,"Memento"],
+  ],
+  "Weezing":[
+    [6,"Smog"],[10,"SmokeScreen"],[15,"Assurance"],[19,"Selfdestruct"],
+    [24,"Sludge"],[28,"Haze"],[33,"Double Hit"],[40,"Explosion"],
+    [48,"Sludge Bomb"],[55,"Destiny Bond"],[63,"Memento"],
+  ],
+  "Grimer":[
+    [4,"Harden"],[7,"Mud-Slap"],[12,"Disable"],[17,"Minimize"],
+    [20,"Sludge"],[23,"Mud Bomb"],[28,"Fling"],[33,"Screech"],
+    [36,"Sludge Bomb"],[39,"Acid Armor"],[44,"Gunk Shot"],[49,"Memento"],
+  ],
+  "Muk":[
+    [4,"Harden"],[7,"Mud-Slap"],[12,"Disable"],[17,"Minimize"],
+    [20,"Sludge"],[23,"Mud Bomb"],[28,"Fling"],[33,"Screech"],
+    [36,"Sludge Bomb"],[44,"Acid Armor"],[54,"Gunk Shot"],[65,"Memento"],
+  ],
+  "Magnemite":[
+    [6,"ThunderShock"],[11,"Supersonic"],[14,"SonicBoom"],[17,"Thunder Wave"],
+    [22,"Spark"],[27,"Lock-On"],[30,"Magnet Bomb"],[33,"Screech"],
+    [38,"Discharge"],[43,"Mirror Shot"],[46,"Magnet Rise"],[49,"Gyro Ball"],
+    [54,"Zap Cannon"],
+  ],
+  "Magneton":[
+    [6,"ThunderShock"],[11,"Supersonic"],[14,"SonicBoom"],[17,"Thunder Wave"],
+    [22,"Spark"],[27,"Lock-On"],[30,"Magnet Bomb"],[34,"Screech"],
+    [40,"Discharge"],[46,"Mirror Shot"],[50,"Magnet Rise"],[54,"Gyro Ball"],
+    [60,"Zap Cannon"],
+  ],
+  "Voltorb":[
+    [5,"Tackle"],[8,"SonicBoom"],[12,"Spark"],[15,"Rollout"],
+    [19,"Screech"],[22,"Light Screen"],[26,"Charge Beam"],[29,"Selfdestruct"],
+    [33,"Swift"],[36,"Magnet Rise"],[40,"Gyro Ball"],[43,"Explosion"],
+    [47,"Mirror Coat"],
+  ],
+  "Electrode":[
+    [5,"Tackle"],[8,"SonicBoom"],[12,"Spark"],[15,"Rollout"],
+    [19,"Screech"],[22,"Light Screen"],[26,"Charge Beam"],[29,"Selfdestruct"],
+    [35,"Swift"],[40,"Magnet Rise"],[46,"Gyro Ball"],[51,"Explosion"],
+    [57,"Mirror Coat"],
+  ],
+  "Aipom":[
+    [4,"Sand-Attack"],[8,"Astonish"],[11,"Baton Pass"],[15,"Tickle"],
+    [18,"Fury Swipes"],[22,"Swift"],[25,"Screech"],[29,"Agility"],
+    [32,"Double Hit"],[36,"Fling"],[39,"Nasty Plot"],[43,"Last Resort"],
+  ],
+  "Ambipom":[
+    [4,"Sand-Attack"],[8,"Astonish"],[11,"Baton Pass"],[15,"Tickle"],
+    [18,"Fury Swipes"],[22,"Swift"],[25,"Screech"],[29,"Agility"],
+    [32,"Double Hit"],[36,"Fling"],[39,"Nasty Plot"],[43,"Last Resort"],
+  ],
+  "Snubbull":[
+    [7,"Bite"],[13,"Lick"],[19,"Headbutt"],[25,"Roar"],
+    [31,"Rage"],[37,"Take Down"],[43,"Payback"],[49,"Crunch"],
+  ],
+  "Granbull":[
+    [7,"Bite"],[13,"Lick"],[19,"Headbutt"],[27,"Roar"],
+    [35,"Rage"],[43,"Take Down"],[51,"Payback"],[59,"Crunch"],
+  ],
+  "Vulpix":[
+    [4,"Tail Whip"],[7,"Roar"],[11,"Quick Attack"],[14,"Will-O-Wisp"],
+    [17,"Confuse Ray"],[21,"Imprison"],[24,"Flamethrower"],[27,"Safeguard"],
+    [31,"Payback"],[34,"Fire Spin"],[37,"Captivate"],[41,"Grudge"],
+    [44,"Extrasensory"],[47,"Fire Blast"],
+  ],
+  "Ninetales":[],
+  "Growlithe":[
+    [6,"Ember"],[9,"Leer"],[14,"Odor Sleuth"],[17,"Helping Hand"],
+    [20,"Flame Wheel"],[25,"Reversal"],[28,"Fire Fang"],[31,"Take Down"],
+    [34,"Flamethrower"],[39,"Agility"],[42,"Crunch"],[45,"Heat Wave"],
+    [48,"Flare Blitz"],
+  ],
+  "Arcanine":[
+    [39,"ExtremeSpeed"],
+  ],
+  "Stantler":[
+    [3,"Leer"],[7,"Astonish"],[10,"Hypnosis"],[13,"Stomp"],
+    [16,"Sand-Attack"],[21,"Take Down"],[23,"Confuse Ray"],[27,"Calm Mind"],
+    [33,"Role Play"],[38,"Zen Headbutt"],[43,"Imprison"],[49,"Captivate"],
+    [53,"Me First"],
+  ],
+  "Marill":[
+    [2,"Defense Curl"],[7,"Tail Whip"],[10,"Water Gun"],[15,"Rollout"],
+    [18,"BubbleBeam"],[23,"Aqua Ring"],[27,"Double-Edge"],[32,"Rain Dance"],
+    [37,"Aqua Tail"],[42,"Hydro Pump"],
+  ],
+  "Azumarill":[
+    [2,"Defense Curl"],[7,"Tail Whip"],[10,"Water Gun"],[15,"Rollout"],
+    [20,"BubbleBeam"],[27,"Aqua Ring"],[33,"Double-Edge"],[40,"Rain Dance"],
+    [47,"Aqua Tail"],[54,"Hydro Pump"],
+  ],
+  "Diglett":[
+    [4,"Growl"],[7,"Astonish"],[12,"Magnitude"],[15,"Mud-Slap"],
+    [18,"Dig"],[23,"Sucker Punch"],[26,"Earth Power"],[29,"Mud Bomb"],
+    [34,"Slash"],[37,"Earthquake"],[40,"Fissure"],
+  ],
+  "Dugtrio":[
+    [4,"Growl"],[7,"Astonish"],[12,"Magnitude"],[15,"Mud-Slap"],
+    [18,"Dig"],[23,"Sucker Punch"],[26,"Sand Tomb"],[28,"Earth Power"],
+    [33,"Mud Bomb"],[40,"Slash"],[45,"Earthquake"],[50,"Fissure"],
+  ],
+  "Mankey":[
+    [9,"Fury Swipes"],[13,"Karate Chop"],[17,"Seismic Toss"],[21,"Screech"],
+    [25,"Assurance"],[33,"Swagger"],[37,"Cross Chop"],[41,"Thrash"],
+    [45,"Punishment"],[49,"Close Combat"],
+  ],
+  "Primeape":[
+    [9,"Fury Swipes"],[13,"Karate Chop"],[17,"Seismic Toss"],[21,"Screech"],
+    [25,"Assurance"],[28,"Rage"],[35,"Swagger"],[41,"Cross Chop"],
+    [47,"Thrash"],[53,"Punishment"],[59,"Close Combat"],
+  ],
+  "Meowth":[],
+  "Persian":[],
+  "Psyduck":[
+    [5,"Tail Whip"],[9,"Water Gun"],[14,"Disable"],[18,"Confusion"],
+    [22,"Water Pulse"],[27,"Fury Swipes"],[31,"Screech"],[35,"Psych Up"],
+    [40,"Zen Headbutt"],[44,"Amnesia"],[48,"Hydro Pump"],
+  ],
+  "Golduck":[],
+  "Machop":[
+    [7,"Focus Energy"],[10,"Karate Chop"],[13,"Foresight"],[19,"Seismic Toss"],
+    [22,"Revenge"],[25,"Vital Throw"],[31,"Submission"],[34,"Wake-Up Slap"],
+    [37,"Cross Chop"],[43,"Scary Face"],[46,"DynamicPunch"],
+  ],
+  "Machoke":[
+    [7,"Focus Energy"],[10,"Karate Chop"],[13,"Foresight"],[19,"Seismic Toss"],
+    [22,"Revenge"],[25,"Vital Throw"],[32,"Submission"],[36,"Wake-Up Slap"],
+    [40,"Cross Chop"],[44,"Scary Face"],[51,"DynamicPunch"],
+  ],
+  "Machamp":[
+    [7,"Focus Energy"],[10,"Karate Chop"],[13,"Foresight"],[19,"Seismic Toss"],
+    [22,"Revenge"],[25,"Vital Throw"],[32,"Submission"],[36,"Wake-Up Slap"],
+    [40,"Cross Chop"],[44,"Scary Face"],[51,"DynamicPunch"],
+  ],
+  "Tyrogue":[],
+  "Hitmonlee":[
+    [5,"Meditate"],[9,"Rolling Kick"],[13,"Jump Kick"],[17,"Brick Break"],
+    [21,"Focus Energy"],[25,"Feint"],[29,"Hi Jump Kick"],[33,"Mind Reader"],
+    [37,"Foresight"],[41,"Blaze Kick"],[45,"Endure"],[49,"Mega Kick"],
+    [53,"Close Combat"],[57,"Reversal"],
+  ],
+  "Hitmonchan":[
+    [6,"Agility"],[11,"Pursuit"],[16,"Bullet Punch"],[16,"Mach Punch"],
+    [21,"Feint"],[26,"Vacuum Wave"],[31,"Fire Punch"],[31,"Ice Punch"],
+    [31,"ThunderPunch"],[36,"Sky Uppercut"],[41,"Mega Punch"],[46,"Detect"],
+    [51,"Counter"],[56,"Close Combat"],
+  ],
+  "Hitmontop":[
+    [6,"Focus Energy"],[10,"Pursuit"],[15,"Quick Attack"],[19,"Triple Kick"],
+    [24,"Rapid Spin"],[28,"Counter"],[33,"Feint"],[37,"Agility"],
+    [42,"Gyro Ball"],[46,"Detect"],[51,"Close Combat"],[55,"Endeavor"],
+  ],
+  "Girafarig":[
+    [5,"Odor Sleuth"],[10,"Stomp"],[14,"Agility"],[19,"Psybeam"],
+    [23,"Baton Pass"],[28,"Assurance"],[32,"Double Hit"],[37,"Psychic"],
+    [41,"Zen Headbutt"],[46,"Crunch"],
+  ],
+  "Tauros":[
+    [3,"Tail Whip"],[5,"Rage"],[8,"Horn Attack"],[11,"Scary Face"],
+    [15,"Pursuit"],[19,"Rest"],[24,"Payback"],[29,"Zen Headbutt"],
+    [35,"Take Down"],[41,"Swagger"],[48,"Thrash"],[55,"Giga Impact"],
+  ],
+  "Miltank":[
+    [3,"Growl"],[5,"Defense Curl"],[8,"Stomp"],[11,"Milk Drink"],
+    [15,"Bide"],[19,"Rollout"],[24,"Body Slam"],[29,"Zen Headbutt"],
+    [35,"Captivate"],[41,"Gyro Ball"],[48,"Heal Bell"],[55,"Wake-Up Slap"],
+  ],
+  "Magby":[
+    [7,"Ember"],[10,"SmokeScreen"],[16,"Faint Attack"],[19,"Fire Spin"],
+    [25,"Confuse Ray"],[28,"Fire Punch"],[34,"Lava Plume"],[37,"Flamethrower"],
+    [43,"Sunny Day"],[46,"Fire Blast"],
+  ],
+  "Magmar":[
+    [7,"Ember"],[10,"SmokeScreen"],[16,"Faint Attack"],[19,"Fire Spin"],
+    [25,"Confuse Ray"],[28,"Fire Punch"],[36,"Lava Plume"],[41,"Flamethrower"],
+    [49,"Sunny Day"],[54,"Fire Blast"],
+  ],
+  "Smoochum":[],
+  "Jynx":[],
+  "Elekid":[],
+  "Electabuzz":[],
+  "Mr. Mime":[],
+  "Smeargle":[],
+  "Farfetch'd":[],
+  "Natu":[],
+  "Xatu":[],
+  "Qwilfish":[],
+  "Tentacool":[],
+  "Tentacruel":[],
+  "Krabby":[],
+  "Kingler":[],
+  "Shuckle":[],
+  "Staryu":[],
+  "Starmie":[],
+  "Shellder":[],
+  "Cloyster":[],
+  "Corsola":[
+    [4,"Harden"],[8,"Bubble"],[13,"Recover"],[16,"Refresh"],
+    [20,"Rock Blast"],[25,"BubbleBeam"],[28,"Lucky Chant"],[32,"AncientPower"],
+    [37,"Aqua Ring"],[40,"Spike Cannon"],[44,"Power Gem"],[48,"Mirror Coat"],
+    [53,"Earth Power"],
+  ],
+  "Remoraid":[
+    [6,"Lock-On"],[10,"Psybeam"],[14,"Aurora Beam"],[19,"BubbleBeam"],
+    [23,"Focus Energy"],[27,"Bullet Seed"],[32,"Water Pulse"],[36,"Signal Beam"],
+    [40,"Ice Beam"],[45,"Hyper Beam"],
+  ],
+  "Octillery":[
+    [6,"Constrict"],[10,"Psybeam"],[14,"Aurora Beam"],[19,"BubbleBeam"],
+    [23,"Focus Energy"],[25,"Octazooka"],[29,"Bullet Seed"],[36,"Wring Out"],
+    [42,"Signal Beam"],[48,"Ice Beam"],[55,"Hyper Beam"],
+  ],
+  "Chinchou":[
+    [6,"Thunder Wave"],[9,"Flail"],[12,"Water Gun"],[17,"Confuse Ray"],
+    [20,"Spark"],[23,"Take Down"],[28,"BubbleBeam"],[31,"Signal Beam"],
+    [34,"Discharge"],[39,"Aqua Ring"],[42,"Hydro Pump"],[45,"Charge"],
+  ],
+  "Lanturn":[
+    [6,"Thunder Wave"],[9,"Flail"],[12,"Water Gun"],[17,"Confuse Ray"],
+    [20,"Spark"],[23,"Take Down"],[27,"Stockpile"],[27,"Swallow"],
+    [27,"Spit Up"],[30,"BubbleBeam"],[35,"Signal Beam"],[40,"Discharge"],
+    [47,"Aqua Ring"],[52,"Hydro Pump"],[57,"Charge"],
+  ],
+  "Seel":[
+    [3,"Growl"],[7,"Water Sport"],[11,"Icy Wind"],[13,"Encore"],
+    [17,"Ice Shard"],[21,"Rest"],[23,"Aqua Ring"],[27,"Aurora Beam"],
+    [31,"Aqua Jet"],[33,"Brine"],[37,"Take Down"],[41,"Dive"],
+    [43,"Aqua Tail"],[47,"Ice Beam"],[51,"Safeguard"],
+  ],
+  "Dewgong":[
+    [3,"Growl"],[7,"Signal Beam"],[11,"Icy Wind"],[13,"Encore"],
+    [17,"Ice Shard"],[21,"Rest"],[23,"Aqua Ring"],[27,"Aurora Beam"],
+    [31,"Aqua Jet"],[33,"Brine"],[34,"Sheer Cold"],[37,"Take Down"],
+    [41,"Dive"],[43,"Aqua Tail"],[47,"Ice Beam"],[51,"Safeguard"],
+  ],
+  "Lickitung":[
+    [5,"Supersonic"],[9,"Defense Curl"],[13,"Knock Off"],[17,"Wrap"],
+    [21,"Stomp"],[25,"Disable"],[29,"Slam"],[33,"Rollout"],
+    [37,"Me First"],[41,"Refresh"],[45,"Screech"],[49,"Power Whip"],
+    [53,"Wring Out"],
+  ],
+  "Lickilicky":[],
+  "Tangela":[
+    [5,"Sleep Powder"],[8,"Absorb"],[12,"Growth"],[15,"PoisonPowder"],
+    [19,"Vine Whip"],[22,"Bind"],[26,"Mega Drain"],[29,"Stun Spore"],
+    [33,"AncientPower"],[36,"Knock Off"],[40,"Natural Gift"],[43,"Slam"],
+    [47,"Tickle"],[50,"Wring Out"],[54,"Power Whip"],
+  ],
+  "Tangrowth":[],
+  "Eevee":[
+    [8,"Sand-Attack"],[15,"Growl"],[22,"Quick Attack"],[29,"Bite"],
+    [36,"Baton Pass"],[43,"Take Down"],[50,"Last Resort"],[57,"Trump Card"],
+  ],
+  "Vaporeon":[],
+  "Jolteon":[],
+  "Flareon":[],
+  "Espeon":[],
+  "Umbreon":[],
+  "Horsea":[
+    [4,"SmokeScreen"],[8,"Leer"],[11,"Water Gun"],[14,"Focus Energy"],
+    [18,"BubbleBeam"],[23,"Agility"],[26,"Twister"],[30,"Brine"],
+    [35,"Hydro Pump"],[38,"Dragon Dance"],[42,"Dragon Pulse"],
+  ],
+  "Seadra":[
+    [4,"SmokeScreen"],[8,"Leer"],[11,"Water Gun"],[14,"Focus Energy"],
+    [18,"BubbleBeam"],[23,"Agility"],[26,"Twister"],[30,"Brine"],
+    [40,"Hydro Pump"],[48,"Dragon Dance"],[57,"Dragon Pulse"],
+  ],
+  "Kingdra":[
+    [4,"SmokeScreen"],[8,"Leer"],[11,"Water Gun"],[14,"Focus Energy"],
+    [18,"BubbleBeam"],[23,"Agility"],[26,"Twister"],[30,"Brine"],
+    [40,"Hydro Pump"],[48,"Dragon Dance"],[57,"Dragon Pulse"],
+  ],
+  "Gligar":[
+    [5,"Sand-Attack"],[9,"Harden"],[12,"Knock Off"],[16,"Quick Attack"],
+    [20,"Fury Cutter"],[23,"Faint Attack"],[27,"Screech"],[31,"Slash"],
+    [34,"Swords Dance"],[38,"U-turn"],[42,"X-Scissor"],[45,"Guillotine"],
+  ],
+  "Gliscor":[],
+  "Delibird":[],
+  "Swinub":[
+    [4,"Mud Sport"],[8,"Powder Snow"],[13,"Mud-Slap"],[16,"Endure"],
+    [20,"Mud Bomb"],[25,"Icy Wind"],[28,"Ice Shard"],[32,"Take Down"],
+    [37,"Earthquake"],[40,"Mist"],[44,"Blizzard"],[49,"Amnesia"],
+  ],
+  "Piloswine":[
+    [4,"Mud Sport"],[8,"Powder Snow"],[13,"Mud-Slap"],[16,"Endure"],
+    [20,"Mud Bomb"],[25,"Icy Wind"],[28,"Ice Fang"],[32,"Take Down"],
+    [33,"Fury Attack"],[40,"Earthquake"],[48,"Mist"],[56,"Blizzard"],
+    [65,"Amnesia"],
+  ],
+  "Mamoswine":[],
+  "Teddiursa":[
+    [8,"Fury Swipes"],[15,"Faint Attack"],[22,"Sweet Scent"],[29,"Slash"],
+    [36,"Charm"],[43,"Rest"],[43,"Snore"],[50,"Thrash"],
+    [57,"Fling"],
+  ],
+  "Ursaring":[
+    [8,"Fury Swipes"],[15,"Faint Attack"],[22,"Sweet Scent"],[29,"Slash"],
+    [38,"Scary Face"],[47,"Rest"],[49,"Snore"],[58,"Thrash"],
+    [67,"Hammer Arm"],
+  ],
+  "Phanpy":[
+    [6,"Flail"],[10,"Take Down"],[15,"Rollout"],[19,"Natural Gift"],
+    [24,"Slam"],[28,"Endure"],[33,"Charm"],[37,"Last Resort"],
+    [42,"Double-Edge"],
+  ],
+  "Donphan":[
+    [6,"Rapid Spin"],[10,"Knock Off"],[15,"Rollout"],[19,"Magnitude"],
+    [24,"Slam"],[25,"Fury Attack"],[31,"Assurance"],[39,"Scary Face"],
+    [46,"Earthquake"],[54,"Giga Impact"],
+  ],
+  "Mantine":[
+    [4,"Supersonic"],[10,"BubbleBeam"],[13,"Headbutt"],[19,"Agility"],
+    [22,"Wing Attack"],[28,"Water Pulse"],[31,"Take Down"],[37,"Confuse Ray"],
+    [40,"Bounce"],[46,"Aqua Ring"],[49,"Hydro Pump"],
+  ],
+  "Mantyke":[],
+  "Skarmory":[],
+  "Doduo":[
+    [5,"Quick Attack"],[10,"Rage"],[14,"Fury Attack"],[19,"Pursuit"],
+    [23,"Uproar"],[28,"Acupressure"],[32,"Double Hit"],[37,"Agility"],
+    [41,"Drill Peck"],[46,"Endeavor"],
+  ],
+  "Dodrio":[
+    [5,"Quick Attack"],[10,"Rage"],[14,"Fury Attack"],[19,"Pursuit"],
+    [23,"Uproar"],[28,"Acupressure"],[34,"Tri Attack"],[41,"Agility"],
+    [47,"Drill Peck"],[54,"Endeavor"],
+  ],
+  "Ponyta":[],
+  "Rapidash":[],
+  "Cubone":[
+    [3,"Tail Whip"],[7,"Bone Club"],[11,"Headbutt"],[13,"Leer"],
+    [17,"Focus Energy"],[21,"Bonemerang"],[23,"Rage"],[27,"False Swipe"],
+    [31,"Thrash"],[33,"Fling"],[37,"Bone Rush"],[41,"Endeavor"],
+    [43,"Double-Edge"],
+  ],
+  "Marowak":[
+    [3,"Tail Whip"],[7,"Bone Club"],[11,"Headbutt"],[13,"Leer"],
+    [17,"Focus Energy"],[21,"Bonemerang"],[23,"Rage"],[27,"False Swipe"],
+    [33,"Thrash"],[37,"Fling"],[43,"Bone Rush"],[49,"Endeavor"],
+    [53,"Double-Edge"],
+  ],
+  "Kangaskhan":[
+    [7,"Fake Out"],[10,"Tail Whip"],[13,"Bite"],[19,"Mega Punch"],
+    [22,"Rage"],[25,"Dizzy Punch"],[31,"Crunch"],[34,"Endure"],
+    [37,"Outrage"],[43,"Double Hit"],[46,"Sucker Punch"],[49,"Reversal"],
+  ],
+  "Rhyhorn":[
+    [9,"Stomp"],[13,"Fury Attack"],[21,"Scary Face"],[25,"Rock Blast"],
+    [33,"Take Down"],[37,"Horn Drill"],[45,"Stone Edge"],[49,"Earthquake"],
+    [57,"Megahorn"],
+  ],
+  "Rhydon":[
+    [9,"Stomp"],[13,"Fury Attack"],[21,"Scary Face"],[25,"Rock Blast"],
+    [33,"Take Down"],[37,"Horn Drill"],[42,"Hammer Arm"],[45,"Stone Edge"],
+    [49,"Earthquake"],[57,"Megahorn"],
+  ],
+  "Murkrow":[
+    [5,"Pursuit"],[11,"Haze"],[15,"Wing Attack"],[21,"Night Shade"],
+    [25,"Assurance"],[31,"Taunt"],[35,"Faint Attack"],[41,"Mean Look"],
+    [45,"Sucker Punch"],
+  ],
+  "Houndour":[
+    [4,"Howl"],[9,"Smog"],[14,"Roar"],[17,"Bite"],
+    [22,"Odor Sleuth"],[27,"Beat Up"],[30,"Fire Fang"],[35,"Faint Attack"],
+    [40,"Embargo"],[43,"Flamethrower"],[48,"Crunch"],[53,"Nasty Plot"],
+  ],
+  "Houndoom":[
+    [4,"Howl"],[9,"Smog"],[14,"Roar"],[17,"Bite"],
+    [22,"Odor Sleuth"],[28,"Beat Up"],[32,"Fire Fang"],[38,"Faint Attack"],
+    [44,"Embargo"],[48,"Flamethrower"],[54,"Crunch"],[60,"Nasty Plot"],
+  ],
+  "Slugma":[
+    [8,"Ember"],[11,"Rock Throw"],[16,"Harden"],[23,"Recover"],
+    [26,"AncientPower"],[31,"Amnesia"],[38,"Lava Plume"],[41,"Rock Slide"],
+    [46,"Body Slam"],[53,"Flamethrower"],[56,"Earth Power"],
+  ],
+  "Magcargo":[
+    [8,"Ember"],[11,"Rock Throw"],[16,"Harden"],[23,"Recover"],
+    [26,"AncientPower"],[31,"Amnesia"],[40,"Lava Plume"],[45,"Rock Slide"],
+    [52,"Body Slam"],[61,"Flamethrower"],[66,"Earth Power"],
+  ],
+  "Sneasel":[
+    [8,"Quick Attack"],[10,"Screech"],[14,"Faint Attack"],[21,"Fury Swipes"],
+    [24,"Agility"],[28,"Icy Wind"],[35,"Slash"],[38,"Beat Up"],
+    [42,"Metal Claw"],[49,"Ice Shard"],
+  ],
+  "Misdreavus":[],
+  "Porygon":[
+    [7,"Psybeam"],[12,"Agility"],[18,"Recover"],[23,"Magnet Rise"],
+    [29,"Signal Beam"],[34,"Recycle"],[40,"Discharge"],[45,"Lock-On"],
+    [51,"Tri Attack"],[56,"Magic Coat"],[62,"Zap Cannon"],
+  ],
+  "Porygon2":[
+    [7,"Psybeam"],[12,"Agility"],[18,"Recover"],[23,"Magnet Rise"],
+    [29,"Signal Beam"],[34,"Recycle"],[40,"Discharge"],[45,"Lock-On"],
+    [51,"Tri Attack"],[56,"Magic Coat"],[62,"Zap Cannon"],[67,"Hyper Beam"],
+  ],
+  "Chansey":[
+    [5,"Tail Whip"],[9,"Refresh"],[12,"Softboiled"],[16,"DoubleSlap"],
+    [20,"Minimize"],[23,"Sing"],[27,"Fling"],[31,"Defense Curl"],
+    [34,"Light Screen"],[38,"Egg Bomb"],[42,"Healing Wish"],[46,"Double-Edge"],
+  ],
+  "Blissey":[
+    [5,"Tail Whip"],[9,"Refresh"],[12,"Softboiled"],[16,"DoubleSlap"],
+    [20,"Minimize"],[23,"Sing"],[27,"Fling"],[31,"Defense Curl"],
+    [34,"Light Screen"],[38,"Egg Bomb"],[42,"Healing Wish"],[46,"Double-Edge"],
+  ],
+  "Lapras":[
+    [4,"Mist"],[7,"Confuse Ray"],[10,"Ice Shard"],[14,"Water Pulse"],
+    [18,"Body Slam"],[22,"Rain Dance"],[27,"Perish Song"],[32,"Ice Beam"],
+    [37,"Brine"],[43,"Safeguard"],[49,"Hydro Pump"],[55,"Sheer Cold"],
+  ],
+  "Omanyte":[
+    [7,"Bite"],[10,"Water Gun"],[16,"Rollout"],[19,"Leer"],
+    [25,"Mud Shot"],[28,"Brine"],[34,"Protect"],[37,"AncientPower"],
+    [43,"Tickle"],[46,"Rock Blast"],[52,"Hydro Pump"],
+  ],
+  "Omastar":[
+    [7,"Bite"],[10,"Water Gun"],[16,"Rollout"],[19,"Leer"],
+    [25,"Mud Shot"],[28,"Brine"],[34,"Protect"],[37,"AncientPower"],
+    [40,"Spike Cannon"],[48,"Tickle"],[56,"Rock Blast"],[67,"Hydro Pump"],
+  ],
+  "Kabuto":[
+    [6,"Absorb"],[11,"Leer"],[16,"Mud Shot"],[21,"Sand-Attack"],
+    [26,"Endure"],[31,"Aqua Jet"],[36,"Mega Drain"],[41,"Metal Sound"],
+    [46,"AncientPower"],[51,"Wring Out"],
+  ],
+  "Kabutops":[],
+  "Aerodactyl":[
+    [9,"Roar"],[17,"Agility"],[25,"AncientPower"],[33,"Crunch"],
+    [41,"Take Down"],[49,"Iron Head"],[57,"Hyper Beam"],[65,"Rock Slide"],
+    [73,"Giga Impact"],
+  ],
+  "Snorlax":[
+    [4,"Defense Curl"],[9,"Amnesia"],[12,"Lick"],[17,"Belly Drum"],
+    [20,"Yawn"],[25,"Rest"],[28,"Snore"],[28,"Sleep Talk"],
+    [33,"Body Slam"],[36,"Block"],[41,"Rollout"],[44,"Crunch"],
+    [49,"Giga Impact"],
+  ],
+  "Bulbasaur":[
+    [3,"Growl"],[7,"Leech Seed"],[9,"Vine Whip"],[13,"PoisonPowder"],
+    [13,"Sleep Powder"],[15,"Take Down"],[19,"Razor Leaf"],[21,"Sweet Scent"],
+    [25,"Growth"],[27,"Double-Edge"],[31,"Worry Seed"],[33,"Synthesis"],
+    [37,"Seed Bomb"],
+  ],
+  "Ivysaur":[
+    [3,"Growl"],[7,"Leech Seed"],[9,"Vine Whip"],[13,"PoisonPowder"],
+    [13,"Sleep Powder"],[15,"Take Down"],[20,"Razor Leaf"],[23,"Sweet Scent"],
+    [28,"Growth"],[31,"Double-Edge"],[36,"Worry Seed"],[39,"Synthesis"],
+    [44,"SolarBeam"],
+  ],
+  "Venusaur":[
+    [3,"Growl"],[7,"Leech Seed"],[9,"Vine Whip"],[13,"PoisonPowder"],
+    [13,"Sleep Powder"],[15,"Take Down"],[20,"Razor Leaf"],[23,"Sweet Scent"],
+    [28,"Growth"],[31,"Double-Edge"],[32,"Petal Dance"],[39,"Worry Seed"],
+    [45,"Synthesis"],[53,"SolarBeam"],
+  ],
+  "Charmander":[
+    [7,"Ember"],[10,"SmokeScreen"],[16,"Dragon Rage"],[19,"Scary Face"],
+    [25,"Fire Fang"],[28,"Slash"],[34,"Flamethrower"],[37,"Fire Spin"],
+  ],
+  "Charmeleon":[
+    [7,"Ember"],[10,"SmokeScreen"],[17,"Dragon Rage"],[21,"Scary Face"],
+    [28,"Fire Fang"],[32,"Slash"],[39,"Flamethrower"],[43,"Fire Spin"],
+  ],
+  "Charizard":[
+    [7,"Ember"],[10,"SmokeScreen"],[17,"Dragon Rage"],[21,"Scary Face"],
+    [28,"Fire Fang"],[32,"Slash"],[36,"Wing Attack"],[42,"Flamethrower"],
+    [49,"Fire Spin"],[59,"Heat Wave"],[66,"Flare Blitz"],
+  ],
+  "Squirtle":[],
+  "Wartortle":[],
+  "Blastoise":[],
+  "Articuno":[
+    [8,"Mist"],[15,"Ice Shard"],[22,"Mind Reader"],[29,"AncientPower"],
+    [36,"Agility"],[43,"Ice Beam"],[50,"Reflect"],[57,"Roost"],
+    [64,"Tailwind"],[71,"Blizzard"],[78,"Sheer Cold"],[85,"Hail"],
+  ],
+  "Zapdos":[
+    [8,"Thunder Wave"],[15,"Detect"],[22,"Pluck"],[29,"AncientPower"],
+    [36,"Charge"],[43,"Agility"],[50,"Discharge"],[57,"Roost"],
+    [64,"Light Screen"],[71,"Drill Peck"],[78,"Thunder"],[85,"Rain Dance"],
+  ],
+  "Moltres":[
+    [8,"Fire Spin"],[15,"Agility"],[22,"Endure"],[29,"AncientPower"],
+    [36,"Flamethrower"],[43,"Safeguard"],[50,"Air Slash"],[57,"Roost"],
+    [64,"Heat Wave"],[71,"SolarBeam"],[78,"Sky Attack"],[85,"Sunny Day"],
+  ],
+  "Raikou":[],
+  "Entei":[],
+  "Suicune":[],
+  "Dratini":[
+    [5,"Thunder Wave"],[11,"Twister"],[15,"Dragon Rage"],[21,"Slam"],
+    [25,"Agility"],[31,"Aqua Tail"],[35,"Dragon Rush"],[41,"Safeguard"],
+    [45,"Dragon Dance"],[51,"Outrage"],[55,"Hyper Beam"],
+  ],
+  "Dragonair":[
+    [5,"Thunder Wave"],[11,"Twister"],[15,"Dragon Rage"],[21,"Slam"],
+    [25,"Agility"],[33,"Aqua Tail"],[39,"Dragon Rush"],[47,"Safeguard"],
+    [53,"Dragon Dance"],[61,"Outrage"],[67,"Hyper Beam"],
+  ],
+  "Dragonite":[
+    [5,"Thunder Wave"],[11,"Twister"],[15,"Dragon Rage"],[21,"Slam"],
+    [25,"Agility"],[33,"Aqua Tail"],[39,"Dragon Rush"],[47,"Safeguard"],
+    [53,"Dragon Dance"],[55,"Wing Attack"],[64,"Outrage"],[73,"Hyper Beam"],
+  ],
+  "Larvitar":[
+    [5,"Sandstorm"],[10,"Screech"],[14,"Rock Slide"],[19,"Scary Face"],
+    [23,"Thrash"],[28,"Dark Pulse"],[32,"Payback"],[37,"Crunch"],
+    [41,"Earthquake"],[46,"Stone Edge"],[50,"Hyper Beam"],
+  ],
+  "Pupitar":[
+    [5,"Sandstorm"],[10,"Screech"],[14,"Rock Slide"],[19,"Scary Face"],
+    [23,"Thrash"],[28,"Dark Pulse"],[34,"Payback"],[41,"Crunch"],
+    [47,"Earthquake"],[54,"Stone Edge"],[60,"Hyper Beam"],
+  ],
+  "Tyranitar":[
+    [5,"Sandstorm"],[10,"Screech"],[14,"Rock Slide"],[19,"Scary Face"],
+    [23,"Thrash"],[28,"Dark Pulse"],[34,"Payback"],[41,"Crunch"],
+    [47,"Earthquake"],[54,"Stone Edge"],[70,"Hyper Beam"],
+  ],
+  "Lugia":[],
+  "Ho-Oh":[],
+  "Mewtwo":[
+    [8,"Barrier"],[15,"Swift"],[22,"Future Sight"],[29,"Psych Up"],
+    [36,"Miracle Eye"],[43,"Mist"],[50,"Psycho Cut"],[57,"Amnesia"],
+    [64,"Power Swap"],[64,"Guard Swap"],[71,"Psychic"],[79,"Me First"],
+    [86,"Recover"],[93,"Safeguard"],[100,"Aura Sphere"],
+  ],
+  "Mew":[
+    [10,"Mega Punch"],[20,"Metronome"],[30,"Psychic"],[40,"Barrier"],
+    [50,"AncientPower"],[60,"Amnesia"],[70,"Me First"],[80,"Baton Pass"],
+    [90,"Nasty Plot"],[100,"Aura Sphere"],
+  ],
+  "Celebi":[
+    [10,"Safeguard"],[19,"Magical Leaf"],[28,"AncientPower"],[37,"Baton Pass"],
+    [46,"Natural Gift"],[55,"Heal Block"],[64,"Future Sight"],[73,"Healing Wish"],
+    [82,"Leaf Storm"],[91,"Perish Song"],
+  ],
+};
+
+const EXP_GROUP = {
+  "Chikorita":"medium_slow",
+  "Bayleef":"medium_slow",
+  "Meganium":"medium_slow",
+  "Cyndaquil":"medium_slow",
+  "Quilava":"medium_slow",
+  "Typhlosion":"medium_slow",
+  "Totodile":"medium_slow",
+  "Croconaw":"medium_slow",
+  "Feraligatr":"medium_slow",
+  "Pidgey":"medium_slow",
+  "Pidgeotto":"medium_slow",
+  "Pidgeot":"medium_slow",
+  "Spearow":"medium_fast",
+  "Fearow":"medium_fast",
+  "Hoothoot":"medium_fast",
+  "Noctowl":"medium_fast",
+  "Rattata":"medium_fast",
+  "Raticate":"medium_fast",
+  "Sentret":"medium_fast",
+  "Furret":"medium_fast",
+  "Pichu":"medium_fast",
+  "Pikachu":"medium_fast",
+  "Raichu":"medium_fast",
+  "Caterpie":"medium_fast",
+  "Metapod":"medium_fast",
+  "Butterfree":"medium_fast",
+  "Weedle":"medium_fast",
+  "Kakuna":"medium_fast",
+  "Beedrill":"medium_fast",
+  "Ledyba":"fast",
+  "Ledian":"fast",
+  "Spinarak":"fast",
+  "Ariados":"fast",
+  "Geodude":"medium_slow",
+  "Graveler":"medium_slow",
+  "Golem":"medium_slow",
+  "Zubat":"medium_fast",
+  "Golbat":"medium_fast",
+  "Crobat":"medium_fast",
+  "Cleffa":"fast",
+  "Clefairy":"fast",
+  "Clefable":"fast",
+  "Igglybuff":"fast",
+  "Jigglypuff":"fast",
+  "Wigglytuff":"fast",
+  "Togepi":"fast",
+  "Togetic":"fast",
+  "Togekiss":"fast",
+  "Sandshrew":"medium_fast",
+  "Sandslash":"medium_fast",
+  "Ekans":"medium_fast",
+  "Arbok":"medium_fast",
+  "Dunsparce":"medium_fast",
+  "Mareep":"medium_slow",
+  "Flaaffy":"medium_slow",
+  "Ampharos":"medium_slow",
+  "Wooper":"medium_fast",
+  "Quagsire":"medium_fast",
+  "Gastly":"medium_slow",
+  "Haunter":"medium_slow",
+  "Gengar":"medium_slow",
+  "Unown":"medium_fast",
+  "Onix":"medium_fast",
+  "Steelix":"medium_fast",
+  "Bellsprout":"medium_slow",
+  "Weepinbell":"medium_slow",
+  "Victreebel":"medium_slow",
+  "Hoppip":"medium_slow",
+  "Skiploom":"medium_slow",
+  "Jumpluff":"medium_slow",
+  "Paras":"medium_fast",
+  "Parasect":"medium_fast",
+  "Poliwag":"medium_slow",
+  "Poliwhirl":"medium_slow",
+  "Poliwrath":"medium_slow",
+  "Politoed":"medium_slow",
+  "Magikarp":"slow",
+  "Gyarados":"slow",
+  "Goldeen":"medium_fast",
+  "Seaking":"medium_fast",
+  "Slowpoke":"medium_fast",
+  "Slowbro":"medium_fast",
+  "Slowking":"medium_fast",
+  "Oddish":"medium_slow",
+  "Gloom":"medium_slow",
+  "Vileplume":"medium_slow",
+  "Bellossom":"medium_slow",
+  "Drowzee":"medium_fast",
+  "Hypno":"medium_fast",
+  "Abra":"medium_slow",
+  "Kadabra":"medium_slow",
+  "Alakazam":"medium_slow",
+  "Ditto":"medium_fast",
+  "Pineco":"medium_fast",
+  "Forretress":"medium_fast",
+  "Nidoran♀":"medium_slow",
+  "Nidorina":"medium_slow",
+  "Nidoqueen":"medium_slow",
+  "Nidoran♂":"medium_slow",
+  "Nidorino":"medium_slow",
+  "Nidoking":"medium_slow",
+  "Yanma":"medium_fast",
+  "Yanmega":"medium_fast",
+  "Sunkern":"medium_slow",
+  "Sunflora":"medium_slow",
+  "Exeggcute":"slow",
+  "Exeggutor":"slow",
+  "Sudowoodo":"medium_fast",
+  "Wobbuffet":"medium_fast",
+  "Venonat":"medium_fast",
+  "Venomoth":"medium_fast",
+  "Scyther":"medium_fast",
+  "Scizor":"medium_fast",
+  "Pinsir":"slow",
+  "Heracross":"slow",
+  "Koffing":"medium_fast",
+  "Weezing":"medium_fast",
+  "Grimer":"medium_fast",
+  "Muk":"medium_fast",
+  "Magnemite":"medium_fast",
+  "Magneton":"medium_fast",
+  "Voltorb":"medium_fast",
+  "Electrode":"medium_fast",
+  "Aipom":"fast",
+  "Ambipom":"fast",
+  "Snubbull":"fast",
+  "Granbull":"fast",
+  "Vulpix":"medium_fast",
+  "Ninetales":"medium_fast",
+  "Growlithe":"slow",
+  "Arcanine":"slow",
+  "Stantler":"slow",
+  "Marill":"fast",
+  "Azumarill":"fast",
+  "Diglett":"medium_fast",
+  "Dugtrio":"medium_fast",
+  "Mankey":"medium_fast",
+  "Primeape":"medium_fast",
+  "Meowth":"medium_fast",
+  "Persian":"medium_fast",
+  "Psyduck":"medium_fast",
+  "Golduck":"medium_fast",
+  "Machop":"medium_slow",
+  "Machoke":"medium_slow",
+  "Machamp":"medium_slow",
+  "Tyrogue":"medium_fast",
+  "Hitmonlee":"medium_fast",
+  "Hitmonchan":"medium_fast",
+  "Hitmontop":"medium_fast",
+  "Girafarig":"medium_fast",
+  "Tauros":"slow",
+  "Miltank":"slow",
+  "Magby":"medium_fast",
+  "Magmar":"medium_fast",
+  "Smoochum":"medium_fast",
+  "Jynx":"medium_fast",
+  "Elekid":"medium_fast",
+  "Electabuzz":"medium_fast",
+  "Mr. Mime":"medium_fast",
+  "Smeargle":"medium_fast",
+  "Farfetch'd":"medium_fast",
+  "Natu":"medium_fast",
+  "Xatu":"medium_fast",
+  "Qwilfish":"medium_fast",
+  "Tentacool":"medium_fast",
+  "Tentacruel":"medium_fast",
+  "Krabby":"medium_fast",
+  "Kingler":"medium_fast",
+  "Shuckle":"medium_fast",
+  "Staryu":"medium_fast",
+  "Starmie":"medium_fast",
+  "Shellder":"medium_fast",
+  "Cloyster":"medium_fast",
+  "Corsola":"fast",
+  "Remoraid":"medium_fast",
+  "Octillery":"medium_fast",
+  "Chinchou":"slow",
+  "Lanturn":"slow",
+  "Seel":"medium_fast",
+  "Dewgong":"medium_fast",
+  "Lickitung":"medium_fast",
+  "Lickilicky":"medium_fast",
+  "Tangela":"medium_fast",
+  "Tangrowth":"medium_fast",
+  "Eevee":"medium_fast",
+  "Vaporeon":"medium_fast",
+  "Jolteon":"medium_fast",
+  "Flareon":"medium_fast",
+  "Espeon":"medium_fast",
+  "Umbreon":"medium_fast",
+  "Horsea":"medium_fast",
+  "Seadra":"medium_fast",
+  "Kingdra":"medium_fast",
+  "Gligar":"medium_slow",
+  "Gliscor":"medium_fast",
+  "Delibird":"fast",
+  "Swinub":"slow",
+  "Piloswine":"slow",
+  "Mamoswine":"slow",
+  "Teddiursa":"medium_fast",
+  "Ursaring":"medium_fast",
+  "Phanpy":"medium_fast",
+  "Donphan":"medium_fast",
+  "Mantine":"slow",
+  "Mantyke":"slow",
+  "Skarmory":"slow",
+  "Doduo":"medium_fast",
+  "Dodrio":"medium_fast",
+  "Ponyta":"medium_fast",
+  "Rapidash":"medium_fast",
+  "Cubone":"medium_fast",
+  "Marowak":"medium_fast",
+  "Kangaskhan":"medium_fast",
+  "Rhyhorn":"slow",
+  "Rhydon":"slow",
+  "Murkrow":"medium_slow",
+  "Houndour":"slow",
+  "Houndoom":"slow",
+  "Slugma":"medium_fast",
+  "Magcargo":"medium_fast",
+  "Sneasel":"medium_slow",
+  "Misdreavus":"fast",
+  "Porygon":"medium_fast",
+  "Porygon2":"medium_fast",
+  "Chansey":"fast",
+  "Blissey":"fast",
+  "Lapras":"slow",
+  "Omanyte":"medium_fast",
+  "Omastar":"medium_fast",
+  "Kabuto":"medium_fast",
+  "Kabutops":"medium_fast",
+  "Aerodactyl":"slow",
+  "Snorlax":"slow",
+  "Bulbasaur":"medium_slow",
+  "Ivysaur":"medium_slow",
+  "Venusaur":"medium_slow",
+  "Charmander":"medium_slow",
+  "Charmeleon":"medium_slow",
+  "Charizard":"medium_slow",
+  "Squirtle":"medium_slow",
+  "Wartortle":"medium_slow",
+  "Blastoise":"medium_slow",
+  "Articuno":"slow",
+  "Zapdos":"slow",
+  "Moltres":"slow",
+  "Raikou":"slow",
+  "Entei":"slow",
+  "Suicune":"slow",
+  "Dratini":"slow",
+  "Dragonair":"slow",
+  "Dragonite":"slow",
+  "Larvitar":"slow",
+  "Pupitar":"slow",
+  "Tyranitar":"slow",
+  "Lugia":"slow",
+  "Ho-Oh":"slow",
+  "Mewtwo":"slow",
+  "Mew":"medium_slow",
+  "Celebi":"medium_slow",
+};
+
+const POKEMON_TYPES_DATA = {
+  "Chikorita":["Grass"],
+  "Bayleef":["Grass"],
+  "Meganium":["Grass"],
+  "Cyndaquil":["Fire"],
+  "Quilava":["Fire"],
+  "Typhlosion":["Fire"],
+  "Totodile":["Water"],
+  "Croconaw":["Water"],
+  "Feraligatr":["Water"],
+  "Pidgey":["Normal","Flying"],
+  "Pidgeotto":["Normal","Flying"],
+  "Pidgeot":["Normal","Flying"],
+  "Spearow":["Normal","Flying"],
+  "Fearow":["Normal","Flying"],
+  "Hoothoot":["Normal","Flying"],
+  "Noctowl":["Normal","Flying"],
+  "Rattata":["Normal"],
+  "Raticate":["Normal"],
+  "Sentret":["Normal"],
+  "Furret":["Normal"],
+  "Pichu":["Electric"],
+  "Pikachu":["Electric"],
+  "Raichu":["Electric"],
+  "Caterpie":["Bug"],
+  "Metapod":["Bug"],
+  "Butterfree":["Bug","Flying"],
+  "Weedle":["Bug","Poison"],
+  "Kakuna":["Bug","Poison"],
+  "Beedrill":["Bug","Poison"],
+  "Ledyba":["Bug","Flying"],
+  "Ledian":["Bug","Flying"],
+  "Spinarak":["Bug","Poison"],
+  "Ariados":["Bug","Poison"],
+  "Geodude":["Rock","Ground"],
+  "Graveler":["Rock","Ground"],
+  "Golem":["Rock","Ground"],
+  "Zubat":["Poison","Flying"],
+  "Golbat":["Poison","Flying"],
+  "Crobat":["Poison","Flying"],
+  "Cleffa":["Fairy"],
+  "Clefairy":["Fairy"],
+  "Clefable":["Fairy"],
+  "Igglybuff":["Normal","Fairy"],
+  "Jigglypuff":["Normal","Fairy"],
+  "Wigglytuff":["Normal","Fairy"],
+  "Togepi":["Fairy"],
+  "Togetic":["Fairy","Flying"],
+  "Togekiss":["Fairy","Flying"],
+  "Sandshrew":["Ground"],
+  "Sandslash":["Ground"],
+  "Ekans":["Poison"],
+  "Arbok":["Poison"],
+  "Dunsparce":["Normal"],
+  "Mareep":["Electric"],
+  "Flaaffy":["Electric"],
+  "Ampharos":["Electric"],
+  "Wooper":["Water","Ground"],
+  "Quagsire":["Water","Ground"],
+  "Gastly":["Ghost","Poison"],
+  "Haunter":["Ghost","Poison"],
+  "Gengar":["Ghost","Poison"],
+  "Unown":["Psychic"],
+  "Onix":["Rock","Ground"],
+  "Steelix":["Steel","Ground"],
+  "Bellsprout":["Grass","Poison"],
+  "Weepinbell":["Grass","Poison"],
+  "Victreebel":["Grass","Poison"],
+  "Hoppip":["Grass","Flying"],
+  "Skiploom":["Grass","Flying"],
+  "Jumpluff":["Grass","Flying"],
+  "Paras":["Bug","Grass"],
+  "Parasect":["Bug","Grass"],
+  "Poliwag":["Water"],
+  "Poliwhirl":["Water"],
+  "Poliwrath":["Water","Fighting"],
+  "Politoed":["Water"],
+  "Magikarp":["Water"],
+  "Gyarados":["Water","Flying"],
+  "Goldeen":["Water"],
+  "Seaking":["Water"],
+  "Slowpoke":["Water","Psychic"],
+  "Slowbro":["Water","Psychic"],
+  "Slowking":["Water","Psychic"],
+  "Oddish":["Grass","Poison"],
+  "Gloom":["Grass","Poison"],
+  "Vileplume":["Grass","Poison"],
+  "Bellossom":["Grass"],
+  "Drowzee":["Psychic"],
+  "Hypno":["Psychic"],
+  "Abra":["Psychic"],
+  "Kadabra":["Psychic"],
+  "Alakazam":["Psychic"],
+  "Ditto":["Normal"],
+  "Pineco":["Bug"],
+  "Forretress":["Bug","Steel"],
+  "Nidoran♀":["Poison"],
+  "Nidorina":["Poison"],
+  "Nidoqueen":["Poison","Ground"],
+  "Nidoran♂":["Poison"],
+  "Nidorino":["Poison"],
+  "Nidoking":["Poison","Ground"],
+  "Yanma":["Bug","Flying"],
+  "Yanmega":["Bug","Flying"],
+  "Sunkern":["Grass"],
+  "Sunflora":["Grass"],
+  "Exeggcute":["Grass","Psychic"],
+  "Exeggutor":["Grass","Psychic"],
+  "Sudowoodo":["Rock"],
+  "Wobbuffet":["Psychic"],
+  "Venonat":["Bug","Poison"],
+  "Venomoth":["Bug","Poison"],
+  "Scyther":["Bug","Flying"],
+  "Scizor":["Bug","Steel"],
+  "Pinsir":["Bug"],
+  "Heracross":["Bug","Fighting"],
+  "Koffing":["Poison"],
+  "Weezing":["Poison"],
+  "Grimer":["Poison"],
+  "Muk":["Poison"],
+  "Magnemite":["Electric","Steel"],
+  "Magneton":["Electric","Steel"],
+  "Voltorb":["Electric"],
+  "Electrode":["Electric"],
+  "Aipom":["Normal"],
+  "Ambipom":["Normal"],
+  "Snubbull":["Fairy"],
+  "Granbull":["Fairy"],
+  "Vulpix":["Fire"],
+  "Ninetales":["Fire"],
+  "Growlithe":["Fire"],
+  "Arcanine":["Fire"],
+  "Stantler":["Normal"],
+  "Marill":["Water","Fairy"],
+  "Azumarill":["Water","Fairy"],
+  "Diglett":["Ground"],
+  "Dugtrio":["Ground"],
+  "Mankey":["Fighting"],
+  "Primeape":["Fighting"],
+  "Meowth":["Normal"],
+  "Persian":["Normal"],
+  "Psyduck":["Water"],
+  "Golduck":["Water"],
+  "Machop":["Fighting"],
+  "Machoke":["Fighting"],
+  "Machamp":["Fighting"],
+  "Tyrogue":["Fighting"],
+  "Hitmonlee":["Fighting"],
+  "Hitmonchan":["Fighting"],
+  "Hitmontop":["Fighting"],
+  "Girafarig":["Normal","Psychic"],
+  "Tauros":["Normal"],
+  "Miltank":["Normal"],
+  "Magby":["Fire"],
+  "Magmar":["Fire"],
+  "Smoochum":["Ice","Psychic"],
+  "Jynx":["Ice","Psychic"],
+  "Elekid":["Electric"],
+  "Electabuzz":["Electric"],
+  "Mr. Mime":["Psychic","Fairy"],
+  "Smeargle":["Normal"],
+  "Farfetch'd":["Normal","Flying"],
+  "Natu":["Psychic","Flying"],
+  "Xatu":["Psychic","Flying"],
+  "Corsola":["Water","Rock"],
+  "Remoraid":["Water"],
+  "Octillery":["Water"],
+  "Chinchou":["Water","Electric"],
+  "Lanturn":["Water","Electric"],
+  "Seel":["Water"],
+  "Dewgong":["Water","Ice"],
+  "Lickitung":["Normal"],
+  "Lickilicky":["Normal"],
+  "Tangela":["Grass"],
+  "Tangrowth":["Grass"],
+  "Eevee":["Normal"],
+  "Vaporeon":["Water"],
+  "Jolteon":["Electric"],
+  "Flareon":["Fire"],
+  "Espeon":["Psychic"],
+  "Umbreon":["Dark"],
+  "Horsea":["Water"],
+  "Seadra":["Water"],
+  "Kingdra":["Water","Dragon"],
+  "Gligar":["Ground","Flying"],
+  "Gliscor":["Ground","Flying"],
+  "Delibird":["Ice","Flying"],
+  "Swinub":["Ice","Ground"],
+  "Piloswine":["Ice","Ground"],
+  "Mamoswine":["Ice","Ground"],
+  "Teddiursa":["Normal"],
+  "Ursaring":["Normal"],
+  "Phanpy":["Ground"],
+  "Donphan":["Ground"],
+  "Mantine":["Water","Flying"],
+  "Mantyke":["Water","Flying"],
+  "Skarmory":["Steel","Flying"],
+  "Doduo":["Normal","Flying"],
+  "Dodrio":["Normal","Flying"],
+  "Ponyta":["Fire"],
+  "Rapidash":["Fire"],
+  "Cubone":["Ground"],
+  "Marowak":["Ground"],
+  "Kangaskhan":["Normal"],
+  "Rhyhorn":["Ground","Rock"],
+  "Rhydon":["Ground","Rock"],
+  "Murkrow":["Dark","Flying"],
+  "Houndour":["Dark","Fire"],
+  "Houndoom":["Dark","Fire"],
+  "Slugma":["Fire"],
+  "Magcargo":["Fire","Rock"],
+  "Sneasel":["Dark","Ice"],
+  "Misdreavus":["Ghost"],
+  "Porygon":["Normal"],
+  "Porygon2":["Normal"],
+  "Chansey":["Normal"],
+  "Blissey":["Normal"],
+  "Lapras":["Water","Ice"],
+  "Omanyte":["Rock","Water"],
+  "Omastar":["Rock","Water"],
+  "Kabuto":["Rock","Water"],
+  "Kabutops":["Rock","Water"],
+  "Aerodactyl":["Rock","Flying"],
+  "Snorlax":["Normal"],
+  "Bulbasaur":["Grass","Poison"],
+  "Ivysaur":["Grass","Poison"],
+  "Venusaur":["Grass","Poison"],
+  "Charmander":["Fire"],
+  "Charmeleon":["Fire"],
+  "Charizard":["Fire","Flying"],
+  "Squirtle":["Water"],
+  "Wartortle":["Water"],
+  "Blastoise":["Water"],
+  "Articuno":["Ice","Flying"],
+  "Zapdos":["Electric","Flying"],
+  "Moltres":["Fire","Flying"],
+  "Raikou":["Electric"],
+  "Entei":["Fire"],
+  "Suicune":["Water"],
+  "Dratini":["Dragon"],
+  "Dragonair":["Dragon"],
+  "Dragonite":["Dragon","Flying"],
+  "Larvitar":["Rock","Ground"],
+  "Pupitar":["Rock","Ground"],
+  "Tyranitar":["Rock","Dark"],
+  "Lugia":["Psychic","Flying"],
+  "Ho-Oh":["Fire","Flying"],
+  "Mewtwo":["Psychic"],
+  "Mew":["Psychic"],
+  "Celebi":["Psychic","Grass"],
+};
+
+const PW_ADV_TYPES = {
+  "pw-refreshing-field":  ["Normal","Fighting","Ground"],
+  "pw-noisy-forest":      ["Bug","Grass","Flying"],
+  "pw-rugged-road":       ["Ground","Rock","Fighting"],
+  "pw-beautiful-beach":   ["Water","Normal","Flying"],
+  "pw-suburban-area":     ["Normal","Poison","Electric"],
+  "pw-dim-cave":          ["Rock","Ground","Dark"],
+  "pw-blue-lake":         ["Water","Ice","Psychic"],
+  "pw-town-outskirts":    ["Normal","Ground","Poison"],
+  "pw-hoenn-field":       ["Fire","Grass","Ground"],
+  "pw-warm-beach":        ["Water","Ground","Flying"],
+  "pw-volcano-path":      ["Fire","Ground","Rock"],
+  "pw-treehouse":         ["Grass","Normal","Flying"],
+  "pw-scary-cave":        ["Ghost","Poison","Psychic"],
+  "pw-sinnoh-field":      ["Normal","Ice","Fire"],
+  "pw-icy-mountain-rd":   ["Ice","Rock","Steel"],
+  "pw-big-forest":        ["Bug","Grass","Flying"],
+  "pw-white-lake":        ["Ice","Psychic","Water"],
+  "pw-stormy-beach":      ["Electric","Water","Flying"],
+  "pw-resort":            ["Normal","Water","Flying"],
+  "pw-quiet-cave":        ["Dark","Ground","Rock"],
+  "pw-beyond-the-sea":    ["Water","Flying","Normal"],
+  "pw-night-skys-edge":   ["Dark","Psychic","Flying"],
+  "pw-yellow-forest":     ["Electric","Grass","Flying"],
+  "pw-rally":             ["Normal","Fighting","Grass"],
+  "pw-sightseeing":       ["Normal","Water","Ground"],
+  "pw-winners-path":      ["Dragon","Psychic","Fighting"],
+  "pw-amity-meadow":      ["Normal","Grass","Flying"],
+};
+
+function expAtLevel(n, group) {
+  const n3 = n*n*n;
+  if (group === "erratic") {
+    if (n <= 50)  return Math.floor(n3 * (100-n) / 50);
+    if (n <= 68)  return Math.floor(n3 * (150-n) / 100);
+    if (n <= 98)  return Math.floor(n3 * Math.floor((1911-10*n)/3) / 500);
+    return Math.floor(n3 * (160-n) / 100);
+  }
+  if (group === "fast")        return Math.floor(4*n3/5);
+  if (group === "medium_fast") return n3;
+  if (group === "medium_slow") return Math.max(0, Math.floor(6*n3/5 - 15*n*n + 100*n - 140));
+  if (group === "slow")        return Math.floor(5*n3/4);
+  if (group === "fluctuating") {
+    if (n <= 15) return Math.floor(n3 * (Math.floor((n+1)/3) + 24) / 50);
+    if (n <= 35) return Math.floor(n3 * (n + 14) / 50);
+    return Math.floor(n3 * (Math.floor(n/2) + 32) / 50);
+  }
+  return n3;
+}
+
+function expGroupLabel(g) {
+  return {erratic:"Erratic",fast:"Fast",medium_fast:"Medium Fast",
+          medium_slow:"Medium Slow",slow:"Slow",fluctuating:"Fluctuating"}[g] || g;
+}
+
+function WalkerPlannerPanel({ walkerAreas }) {
+  const [pkName, setPkName] = React.useState("");
+  const [search, setSearch] = React.useState("");
+  const [showDrop, setShowDrop] = React.useState(false);
+  const inputRef = React.useRef(null);
+
+  const allNames = React.useMemo(() => {
+    const names = new Set();
+    [...DEX, ...NATIONAL_DEX].forEach(p => names.add(p.name));
+    return [...names].sort();
+  }, []);
+
+  const filtered = search.length >= 1
+    ? allNames.filter(n => n.toLowerCase().startsWith(search.toLowerCase())).slice(0, 20)
+    : [];
+
+  const expGroup = pkName ? (EXP_GROUP[pkName] || "medium_fast") : null;
+  const types    = pkName ? (POKEMON_TYPES_DATA[pkName] || []) : [];
+  const learnset = pkName ? (PW_LEARNSETS[pkName] || []) : [];
+
+  const movesByLevel = React.useMemo(() => {
+    const m = {};
+    learnset.forEach(([lv, mv]) => { if (!m[lv]) m[lv] = []; m[lv].push(mv); });
+    return m;
+  }, [learnset]);
+
+  const rows = React.useMemo(() => {
+    if (!pkName || !expGroup) return [];
+    return Array.from({length: 99}, (_, i) => {
+      const lv = i + 1;
+      const base = expAtLevel(lv+1, expGroup) - expAtLevel(lv, expGroup);
+      const adv  = Math.ceil(base * 0.75);
+      const warnMoves = movesByLevel[lv+1] || [];
+      return { lv, base, adv, warnMoves };
+    });
+  }, [pkName, expGroup, movesByLevel]);
+
+  const advRoutes = React.useMemo(() => {
+    if (!types.length) return [];
+    return walkerAreas.filter(a => {
+      const rt = PW_ADV_TYPES[a.id] || [];
+      return types.some(t => rt.includes(t));
+    });
+  }, [types, walkerAreas]);
+
+  const TYPE_COLOR = {
+    Normal:"#a8a8a0",Fire:"#f08040",Water:"#6888f0",Electric:"#f8d030",
+    Grass:"#78c840",Ice:"#98d8d8",Fighting:"#c03028",Poison:"#a040a0",
+    Ground:"#e0c068",Flying:"#a890f0",Psychic:"#f85888",Bug:"#a8b820",
+    Rock:"#b8a038",Ghost:"#705898",Dragon:"#7038f8",Dark:"#705848",
+    Steel:"#b8b8d0",Fairy:"#ee99ac",
+  };
+
+  function TypeBadge({ type }) {
+    const bg = TYPE_COLOR[type] || "#888";
+    return (
+      <span style={{
+        display:"inline-block", fontSize:10, fontWeight:700, padding:"1px 6px",
+        borderRadius:10, background:bg, color:"#fff", marginLeft:4, letterSpacing:0.5,
+        textShadow:"0 1px 2px rgba(0,0,0,0.4)",
+      }}>{type}</span>
+    );
+  }
+
+  const selectPk = (name) => {
+    setPkName(name);
+    setSearch("");
+    setShowDrop(false);
+  };
+
+  const clearPk = () => {
+    setPkName("");
+    setSearch("");
+    setShowDrop(false);
+    setTimeout(() => inputRef.current && inputRef.current.focus(), 0);
+  };
+
+  return (
+    <div style={{ flex:1, overflowY:"auto", padding:"16px 20px 40px", maxWidth:700 }}>
+      {/* Search box */}
+      <div style={{ marginBottom:16, position:"relative" }}>
+        <div style={{ fontSize:11, letterSpacing:1.5, color:C.muted, textTransform:"uppercase", marginBottom:6 }}>
+          Select a Pokemon
+        </div>
+        {pkName ? (
+          <div style={{ display:"flex", alignItems:"center", gap:10, background:C.card, border:`1px solid ${C.border}`, borderRadius:8, padding:"8px 12px" }}>
+            <span style={{ flex:1, fontWeight:700, color:C.text, fontSize:14 }}>{pkName}</span>
+            {types.map(t => <TypeBadge key={t} type={t} />)}
+            <span style={{ fontSize:11, color:C.muted, marginLeft:6 }}>{expGroupLabel(expGroup)}</span>
+            <button onClick={clearPk} style={{ background:"transparent", border:"none", color:C.muted, cursor:"pointer", fontSize:16, lineHeight:1, padding:"0 2px", marginLeft:4 }}>✕</button>
+          </div>
+        ) : (
+          <div style={{ position:"relative" }}>
+            <input
+              ref={inputRef}
+              value={search}
+              onChange={e => { setSearch(e.target.value); setShowDrop(true); }}
+              onFocus={() => setShowDrop(true)}
+              onBlur={() => setTimeout(() => setShowDrop(false), 120)}
+              placeholder="Type a Pokemon name..."
+              style={{
+                width:"100%", boxSizing:"border-box", padding:"9px 12px",
+                background:C.card, border:`1px solid ${C.border}`, borderRadius:8,
+                color:C.text, fontSize:16, outline:"none", fontFamily:"'DM Sans',system-ui,sans-serif",
+              }}
+            />
+            {showDrop && filtered.length > 0 && (
+              <div style={{
+                position:"absolute", top:"100%", left:0, right:0, zIndex:100,
+                background:C.card, border:`1px solid ${C.border}`, borderRadius:"0 0 8px 8px",
+                maxHeight:240, overflowY:"auto", boxShadow:"0 4px 20px rgba(0,0,0,0.4)",
+              }}>
+                {filtered.map(n => (
+                  <div key={n} onMouseDown={() => selectPk(n)}
+                    style={{ padding:"8px 12px", cursor:"pointer", color:C.text, fontSize:13,
+                             borderBottom:`1px solid ${C.border}22` }}
+                    onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,0.05)"}
+                    onMouseLeave={e => e.currentTarget.style.background="transparent"}
+                  >
+                    {n}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {pkName && (<>
+        {/* Advantageous routes */}
+        <div style={{ marginBottom:20, background:C.card, border:`1px solid ${C.border}`, borderRadius:10, padding:"12px 16px" }}>
+          <div style={{ fontSize:12, fontWeight:700, color:C.text, marginBottom:8, letterSpacing:0.5 }}>
+            Advantageous Pokéwalker Routes <span style={{ fontWeight:400, color:C.muted, fontSize:11 }}>(25% step reduction)</span>
+          </div>
+          {advRoutes.length === 0 ? (
+            <div style={{ fontSize:12, color:C.muted }}>
+              No advantageous routes for {types.join("/")} type{types.length>1?"s":""}.
+            </div>
+          ) : (
+            <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+              {advRoutes.map(a => {
+                const rt = PW_ADV_TYPES[a.id] || [];
+                const matchTypes = types.filter(t => rt.includes(t));
+                return (
+                  <div key={a.id} style={{
+                    display:"flex", alignItems:"center", gap:4,
+                    background:"rgba(255,255,255,0.04)", border:`1px solid ${C.border}`,
+                    borderRadius:6, padding:"4px 10px", fontSize:12, color:C.text,
+                  }}>
+                    <span>{a.name}</span>
+                    {matchTypes.map(t => <TypeBadge key={t} type={t} />)}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Steps table */}
+        <div>
+          <div style={{ fontSize:12, fontWeight:700, color:C.text, marginBottom:4, letterSpacing:0.5 }}>
+            Steps to Level Up in Pokéwalker
+          </div>
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10, lineHeight:1.7 }}>
+            1 step = 1 EXP · Max 1 level per walk · Adv. type column assumes 25% step reduction.
+            Rows marked <span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned on level-up (Pokéwalker cannot prompt to learn moves — skip these levels).
+          </div>
+          <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10, overflow:"hidden" }}>
+            <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
+              <thead>
+                <tr style={{ background:C.card, position:"sticky", top:0, zIndex:1 }}>
+                  <th style={{ padding:"7px 10px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}`, width:70 }}>Level</th>
+                  <th style={{ padding:"7px 10px", textAlign:"right", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Steps (base)</th>
+                  <th style={{ padding:"7px 10px", textAlign:"right", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Steps (adv)</th>
+                  <th style={{ padding:"7px 10px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Moves learned</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map(({lv, base, adv, warnMoves}) => {
+                  const warn = warnMoves.length > 0;
+                  const rowBg = warn ? "rgba(240,160,32,0.08)" : lv % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent";
+                  return (
+                    <tr key={lv} style={{ background:rowBg }}>
+                      <td style={{ padding:"5px 10px", color: warn ? "#f0a020" : C.muted, fontFamily:"'JetBrains Mono',monospace", fontWeight: warn ? 700 : 400 }}>
+                        {warn ? "⚠ " : ""}{lv}→{lv+1}
+                      </td>
+                      <td style={{ padding:"5px 10px", textAlign:"right", color:C.text, fontFamily:"'JetBrains Mono',monospace" }}>{base.toLocaleString()}</td>
+                      <td style={{ padding:"5px 10px", textAlign:"right", color:C.green, fontFamily:"'JetBrains Mono',monospace" }}>{adv.toLocaleString()}</td>
+                      <td style={{ padding:"5px 10px", color: warn ? "#f0a020" : C.muted, fontSize:11 }}>
+                        {warn ? warnMoves.join(", ") : ""}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </>)}
+    </div>
+  );
+}
+
 // ─── POKÉWALKER TAB ───────────────────────────────────────────────────────────
 function WalkerTab({ caught, toggleCaught, isMobile, version }) {
   const walkerAreas = React.useMemo(() => AREAS.filter(a => a.part === "Pokéwalker"), []);
   const [walkerAreaId, setWalkerAreaId] = React.useState(null);
+  const [walkerMode, setWalkerMode] = React.useState("courses"); // "courses" | "planner"
   const walkerArea = walkerAreaId ? walkerAreas.find(a => a.id === walkerAreaId) : null;
 
   const showSidebar = !isMobile || !walkerAreaId;
@@ -12019,64 +13793,84 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
     : 0;
   const uniqueCount = walkerArea ? new Set(walkerArea.pokemon.map(p => p.name)).size : 0;
 
+  // Subtab toggle strip styles
+  const tabBtn = (active) => ({
+    flex:1, padding:"7px 0", background: active ? "var(--hgss-accent)" : "transparent",
+    border:"none", borderRadius:6, color: active ? "#fff" : C.muted,
+    fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:12, fontWeight: active ? 700 : 500,
+    cursor:"pointer", transition:"background 0.15s, color 0.15s",
+  });
+
   return (
-    <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection: isMobile ? "column" : "row" }}>
-      {showSidebar && (
-        <div style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, overflowY:"auto", display:"flex", flexDirection:"column", flex: isMobile ? "1" : "unset" }}>
-          <div style={{ padding:"8px 12px 6px", borderBottom:`1px solid ${C.border}`, fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase" }}>
-            <span style={{ color:"var(--hgss-accent)", marginRight:5 }}>◈</span>Pokéwalker Courses
-          </div>
-          {walkerAreas.map(a => {
-            const uniqueNames = [...new Set(a.pokemon.map(p => p.name))];
-            const done = uniqueNames.filter(n => caught[n]).length;
-            const total = uniqueNames.length;
-            const allDone = done === total && total > 0;
-            const isActive = walkerAreaId === a.id;
-            const hasExclusive = a.pokemon.some(p => WALKER_EXCLUSIVE.has(p.name));
-            return (
-              <div key={a.id} onClick={() => setWalkerAreaId(a.id)}
-                style={{ padding:"7px 12px", cursor:"pointer", borderLeft: isActive ? `3px solid var(--hgss-accent)` : "3px solid transparent", background: isActive ? "rgba(255,255,255,0.04)" : "transparent", display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, borderBottom:`1px solid ${C.border}22` }}>
-                <span style={{ fontSize:12, color: allDone ? C.green : isActive ? C.text : C.muted, fontWeight: isActive ? "600" : "400", flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
-                  {allDone ? "✓ " : ""}{a.name}
-                </span>
-                <span style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
-                  {hasExclusive && <span style={{ fontSize:9, color:"#9060d0", fontWeight:"700" }}>★</span>}
-                  <span style={{ fontSize:10, color:C.muted }}>{done}/{total}</span>
-                </span>
+    <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection:"column" }}>
+      {/* Subtab toggle */}
+      <div style={{ display:"flex", gap:4, padding:"8px 12px 6px", borderBottom:`1px solid ${C.border}`, background:C.card, flexShrink:0 }}>
+        <button style={tabBtn(walkerMode==="courses")} onClick={() => setWalkerMode("courses")}>Courses</button>
+        <button style={tabBtn(walkerMode==="planner")} onClick={() => setWalkerMode("planner")}>Planner</button>
+      </div>
+
+      {walkerMode === "planner" ? (
+        <WalkerPlannerPanel walkerAreas={walkerAreas} />
+      ) : (
+        <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection: isMobile ? "column" : "row" }}>
+          {showSidebar && (
+            <div style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, overflowY:"auto", display:"flex", flexDirection:"column", flex: isMobile ? "1" : "unset" }}>
+              <div style={{ padding:"8px 12px 6px", borderBottom:`1px solid ${C.border}`, fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase" }}>
+                <span style={{ color:"var(--hgss-accent)", marginRight:5 }}>◈</span>Pokéwalker Courses
               </div>
-            );
-          })}
-        </div>
-      )}
-      {showMain && (
-        <div style={{ flex:1, overflowY:"auto" }}>
-          {!walkerArea ? (
-            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", height:"100%", color:C.muted, textAlign:"center", gap:12 }}>
-              <div style={{ fontSize:32, opacity:0.4 }}>👟</div>
-              <div style={{ fontSize:14, fontWeight:"600", color:C.text, opacity:0.5 }}>Select a course</div>
-              <div style={{ fontSize:12, maxWidth:280, lineHeight:1.8, color:C.muted }}>27 courses — walk to earn watts and encounter Pokémon. Rarer Pokémon require more watts.</div>
-              <div style={{ fontSize:11, color:"#9060d0" }}><span style={{ fontWeight:"700" }}>★</span> courses have Pokéwalker-exclusive Pokémon (not catchable elsewhere in HGSS)</div>
+              {walkerAreas.map(a => {
+                const uniqueNames = [...new Set(a.pokemon.map(p => p.name))];
+                const done = uniqueNames.filter(n => caught[n]).length;
+                const total = uniqueNames.length;
+                const allDone = done === total && total > 0;
+                const isActive = walkerAreaId === a.id;
+                const hasExclusive = a.pokemon.some(p => WALKER_EXCLUSIVE.has(p.name));
+                return (
+                  <div key={a.id} onClick={() => setWalkerAreaId(a.id)}
+                    style={{ padding:"7px 12px", cursor:"pointer", borderLeft: isActive ? `3px solid var(--hgss-accent)` : "3px solid transparent", background: isActive ? "rgba(255,255,255,0.04)" : "transparent", display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, borderBottom:`1px solid ${C.border}22` }}>
+                    <span style={{ fontSize:12, color: allDone ? C.green : isActive ? C.text : C.muted, fontWeight: isActive ? "600" : "400", flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                      {allDone ? "✓ " : ""}{a.name}
+                    </span>
+                    <span style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
+                      {hasExclusive && <span style={{ fontSize:9, color:"#9060d0", fontWeight:"700" }}>★</span>}
+                      <span style={{ fontSize:10, color:C.muted }}>{done}/{total}</span>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-          ) : (
-            <>
-              {isMobile && (
-                <div style={{ padding:"8px 16px 0" }}>
-                  <button onClick={() => setWalkerAreaId(null)} style={{ background:"transparent", border:"none", color:C.muted, fontSize:13, cursor:"pointer", padding:"0 0 4px", display:"flex", alignItems:"center", gap:5, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
-                    ← Courses
-                  </button>
+          )}
+          {showMain && (
+            <div style={{ flex:1, overflowY:"auto" }}>
+              {!walkerArea ? (
+                <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", height:"100%", color:C.muted, textAlign:"center", gap:12 }}>
+                  <div style={{ fontSize:32, opacity:0.4 }}>👟</div>
+                  <div style={{ fontSize:14, fontWeight:"600", color:C.text, opacity:0.5 }}>Select a course</div>
+                  <div style={{ fontSize:12, maxWidth:280, lineHeight:1.8, color:C.muted }}>27 courses — walk to earn watts and encounter Pokémon. Rarer Pokémon require more watts.</div>
+                  <div style={{ fontSize:11, color:"#9060d0" }}><span style={{ fontWeight:"700" }}>★</span> courses have Pokéwalker-exclusive Pokémon (not catchable elsewhere in HGSS)</div>
                 </div>
+              ) : (
+                <>
+                  {isMobile && (
+                    <div style={{ padding:"8px 16px 0" }}>
+                      <button onClick={() => setWalkerAreaId(null)} style={{ background:"transparent", border:"none", color:C.muted, fontSize:13, cursor:"pointer", padding:"0 0 4px", display:"flex", alignItems:"center", gap:5, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
+                        ← Courses
+                      </button>
+                    </div>
+                  )}
+                  <div style={{ padding:"14px 20px 8px" }}>
+                    <div style={{ fontSize:18, fontWeight:"700", color:C.text, marginBottom:4 }}>{walkerArea.name}</div>
+                    {walkerArea.note && <div style={{ fontSize:12, color:C.muted, lineHeight:1.6 }}>{walkerArea.note}</div>}
+                    <div style={{ fontSize:11, color: caughtCount===uniqueCount && uniqueCount>0 ? C.green : C.muted, marginTop:6 }}>
+                      {caughtCount}/{uniqueCount} unique Pokémon caught
+                    </div>
+                  </div>
+                  <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:4 }}>
+                    {renderPokemonList(walkerArea.pokemon, caught, toggleCaught, version, isMobile, {}, walkerArea.id, {}, () => {})}
+                  </div>
+                </>
               )}
-              <div style={{ padding:"14px 20px 8px" }}>
-                <div style={{ fontSize:18, fontWeight:"700", color:C.text, marginBottom:4 }}>{walkerArea.name}</div>
-                {walkerArea.note && <div style={{ fontSize:12, color:C.muted, lineHeight:1.6 }}>{walkerArea.note}</div>}
-                <div style={{ fontSize:11, color: caughtCount===uniqueCount && uniqueCount>0 ? C.green : C.muted, marginTop:6 }}>
-                  {caughtCount}/{uniqueCount} unique Pokémon caught
-                </div>
-              </div>
-              <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:4 }}>
-                {renderPokemonList(walkerArea.pokemon, caught, toggleCaught, version, isMobile, {}, walkerArea.id, {}, () => {})}
-              </div>
-            </>
+            </div>
           )}
         </div>
       )}

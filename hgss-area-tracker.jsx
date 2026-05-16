@@ -12413,6 +12413,14 @@ function MethodDivider({ label }) {
 }
 
 function renderPokemonList(pokemon, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade) {
+  // A Pokémon is night-only in this area if every encounter slot for it is time:"night"
+  // (no morning, day, or timeless slots exist for the same name).
+  const nightOnlyNames = new Set(
+    pokemon
+      .filter(p => p.time === "night" && !pokemon.some(q => q.name === p.name && q.time !== "night"))
+      .map(p => p.name)
+  );
+
   // Sort within each consecutive method block by effective rate descending.
   // Method block order is preserved; only intra-group ordering changes.
   const getPct = p => {
@@ -12443,11 +12451,11 @@ function renderPokemonList(pokemon, caught, toggleCaught, version, isMobile, cho
   return items.map(item =>
     item.type === "divider"
       ? <MethodDivider key={item.key} label={item.label} />
-      : <PokemonEntry key={item.key} p={item.p} caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} choiceGroups={choiceGroups} areaId={areaId} trades={trades} toggleTrade={toggleTrade} />
+      : <PokemonEntry key={item.key} p={item.p} caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} choiceGroups={choiceGroups} areaId={areaId} trades={trades} toggleTrade={toggleTrade} nightOnly={nightOnlyNames.has(item.p.name)} />
   );
 }
 
-function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade }) {
+function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade, nightOnly }) {
   const isTrade  = p.method === "Trade";
   const tradeKey = isTrade ? `${areaId}|trade|${p.name}` : null;
   const isCaught = isTrade ? !!(trades?.[tradeKey]) : !!caught[p.name];
@@ -12495,8 +12503,8 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
         {hasBetter&&<div style={{ fontSize:9, color:"#7ab4d4", marginTop:2 }}>↑ {best.pct}% in {best.areaName}</div>}
       </div>
       <div style={{ textAlign:"right", flexShrink:0, paddingLeft:8, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
-        {p.time && TIME_COLORS[p.time] && (() => { const tc=TIME_COLORS[p.time]; const label=p.time==="morning"?"Morning":p.time==="day"?"Day":"Night"; return (
-          <span style={{ fontSize:9, fontWeight:"700", color:tc.badge, background:tc.badgeBg, border:`1px solid ${tc.badge}60`, padding:"1px 5px", borderRadius:99, letterSpacing:0.3, whiteSpace:"nowrap", display:"inline-flex", alignItems:"center", gap:3 }}><img src={tc.icon} style={{width:10,height:10,objectFit:"contain",display:"block"}} />{label}</span>
+        {p.time && TIME_COLORS[p.time] && (() => { const tc=TIME_COLORS[p.time]; const isNightOnly = nightOnly && p.time === "night"; const label=p.time==="morning"?"Morning":p.time==="day"?"Day":isNightOnly?"Night only":"Night"; return (
+          <span style={{ fontSize:9, fontWeight:"700", color:tc.badge, background: isNightOnly ? `${tc.badge}28` : tc.badgeBg, border:`1px solid ${isNightOnly ? tc.badge : `${tc.badge}60`}`, padding:"1px 5px", borderRadius:99, letterSpacing:0.3, whiteSpace:"nowrap", display:"inline-flex", alignItems:"center", gap:3 }}><img src={tc.icon} style={{width:10,height:10,objectFit:"contain",display:"block"}} />{label}</span>
         ); })()}
         <RateDisplay rate={p.rate} isMobile={isMobile} version={version} />
         {p.levels&&<div style={{ fontSize:10, color:C.muted }}>Lv.{p.levels}</div>}

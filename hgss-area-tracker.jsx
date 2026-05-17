@@ -9414,7 +9414,7 @@ function HGSSTracker() {
             // Primary — used every play session
             ["areas","Areas","primary"],["dex","Pokédex","primary"],
             ["walker","Pokéwalker","primary"],
-            ["team","Team","primary"],["battle","Battle","primary"],["trade","Trade","primary"],
+            ["team","Team","primary"],["battle","Battle","primary"],["trade","Trade","primary"],["excl","Exclusives","primary"],
             // Divider
             ["__div1","",null],
             // Secondary — used regularly but less hot
@@ -9472,6 +9472,9 @@ function HGSSTracker() {
 
       {/* ── Tab: Trade ── */}
       {tab === "trade" && <TradeTab version={version} isMobile={isMobile} />}
+
+      {/* ── Tab: Exclusives ── */}
+      {tab === "excl" && <ExclusivesTab caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Evolution Planner ── */}
       {tab === "evo" && <EvoTab caught={caught} toggleCaught={toggleCaught} version={version} />}
@@ -9767,6 +9770,88 @@ function TradeTab({ version, isMobile }) {
           </div>
         </div>
 
+      </div>
+    </div>
+  );
+}
+
+// ─── EXCLUSIVES TAB ──────────────────────────────────────────────────────────
+function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
+  const { useMemo } = React;
+
+  const buildData = (serebiiSet, supp) => {
+    const rows = [...serebiiSet]
+      .sort((a, b) => (allDexId(a) || 9999) - (allDexId(b) || 9999))
+      .map(name => ({ name, locs: LOCATION_MAP[name] || [] }));
+    for (const { name, locs } of supp) {
+      if (!serebiiSet.has(name)) rows.push({ name, locs });
+    }
+    return rows;
+  };
+
+  const hgData = useMemo(() => buildData(SEREBII_HG, HG_ONLY_SUPP), []);
+  const ssData = useMemo(() => buildData(SEREBII_SS, SS_ONLY_SUPP), []);
+
+  const hgCaught = hgData.filter(d => !!caught[d.name]).length;
+  const ssCaught = ssData.filter(d => !!caught[d.name]).length;
+
+  const card = ({ name, locs }) => {
+    const done = !!caught[name];
+    const id = allDexId(name);
+    return (
+      <div key={name}
+        onClick={() => toggleCaught(name)}
+        onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+        style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"8px 12px", borderRadius:8,
+          cursor:"pointer", transition:"all 0.12s",
+          background: done ? `${C.green}12` : "rgba(0,0,0,0.2)",
+          border: `1px solid ${done ? C.green + "50" : C.border}` }}>
+        {id
+          ? <img src={pokeSpriteUrl(id)} alt={name} style={{ width:40, height:40, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.6, marginTop:2 }} />
+          : <div style={{ width:40, height:40, flexShrink:0 }} />}
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text, marginBottom:3 }}>{name}</div>
+          {locs.length > 0 ? locs.map((l, i) => (
+            <div key={i} style={{ fontSize:10, color:C.muted, display:"flex", gap:4, flexWrap:"wrap", lineHeight:1.6 }}>
+              <span style={{ color: done ? C.green : C.text, opacity:0.75, fontWeight:"500" }}>{l.areaName}</span>
+              <span>·</span>
+              <span>{l.method}</span>
+              {l.levels && <><span>·</span><span>Lv {l.levels}</span></>}
+              {l.rate && <><span>·</span><span style={{ color:"#a0c8ff" }}>{l.rate}</span></>}
+            </div>
+          )) : (
+            <div style={{ fontSize:10, color:C.muted }}>Evolution only</div>
+          )}
+        </div>
+        <div style={{ width:20, height:20, borderRadius:5, flexShrink:0, transition:"all 0.12s", marginTop:2,
+          border:`2px solid ${done ? C.green : C.border}`, background: done ? C.green : "transparent",
+          display:"flex", alignItems:"center", justifyContent:"center",
+          fontSize:11, fontWeight:"700", color:"#000" }}>{done && "✓"}</div>
+      </div>
+    );
+  };
+
+  const col = (label, color, data, caughtCount) => (
+    <div style={{ flex:1, minWidth:0 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+        <div style={{ width:3, height:16, background:color, borderRadius:99, flexShrink:0 }} />
+        <span style={{ fontSize:11, fontWeight:"700", color, letterSpacing:"0.07em", textTransform:"uppercase" }}>{label}</span>
+        <span style={{ fontSize:11, color:C.muted, marginLeft:"auto" }}>{caughtCount} / {data.length}</span>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+        {data.map(d => card(d))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      <div style={{ maxWidth:900, margin:"0 auto", padding:"20px 16px 40px" }}>
+        <div style={{ display:"flex", gap: isMobile ? 20 : 32, flexDirection: isMobile ? "column" : "row" }}>
+          {col("HeartGold exclusives", C.hgGold, hgData, hgCaught)}
+          {col("SoulSilver exclusives", C.ssSilver, ssData, ssCaught)}
+        </div>
       </div>
     </div>
   );

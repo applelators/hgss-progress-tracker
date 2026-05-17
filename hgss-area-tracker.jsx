@@ -9804,11 +9804,17 @@ function TradeTab({ version, isMobile }) {
 // ─── EXCLUSIVES TAB ──────────────────────────────────────────────────────────
 function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
   const { useMemo } = React;
+  const parseRate = r => { const m = (r||"").match(/(\d+)/); return m ? +m[1] : 0; };
+  const sortedLocs = locs => {
+    const seen = new Set();
+    return [...locs].sort((a, b) => parseRate(b.rate) - parseRate(a.rate))
+      .filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
+  };
 
   const buildData = (serebiiSet, supp) => {
     const rows = [...serebiiSet]
       .sort((a, b) => (allDexId(a) || 9999) - (allDexId(b) || 9999))
-      .map(name => ({ name, locs: LOCATION_MAP[name] || [] }));
+      .map(name => ({ name, locs: sortedLocs(LOCATION_MAP[name] || []) }));
     for (const { name, locs } of supp) {
       if (!serebiiSet.has(name)) rows.push({ name, locs });
     }
@@ -9828,8 +9834,7 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
   const evoLine = (name) => {
     const evo = EXCL_EVO_INFO[name];
     if (!evo) return <div style={{ fontSize:10, color:C.muted }}>Evolution only</div>;
-    const seen = new Set();
-    const preLocs = (LOCATION_MAP[evo.from] || []).filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
+    const preLocs = sortedLocs(LOCATION_MAP[evo.from] || []);
     const itemBadge = item => (
       <span style={{ fontSize:9, fontWeight:"700", padding:"1px 5px", borderRadius:99,
         color:"#c8a040", background:"rgba(200,150,40,0.18)", border:"1px solid rgba(200,150,40,0.4)" }}>

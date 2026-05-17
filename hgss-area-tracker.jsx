@@ -9522,15 +9522,19 @@ const SS_ONLY_SUPP = [
   {name:"Ninetales", locs:[{areaName:"Evolve Vulpix w/ Fire Stone (SS only)"}]},
 ];
 
-// National Dex exclusives — post-game Kanto, swarms, roaming, and Embedded Tower
-const NAT_SEREBII_HG = new Set(["Seedot","Sableye","Baltoy","Kyogre","Latias"]);
-const NAT_SEREBII_SS = new Set(["Shroomish","Mawile","Gulpin","Groudon","Latios"]);
-// Latias/Latios are roaming Pokémon — not in LOCATION_MAP (no fixed encounter entry)
+// National Dex exclusives — per Serebii (post-game Kanto, swarms, Embedded Tower, evolutions)
+// Seedot/Shroomish excluded — available in Safari Zone for both versions
+// Latias/Latios excluded — obtainable in both versions (one roaming, one via Enigma Stone event)
+const NAT_SEREBII_HG = new Set(["Sableye","Baltoy","Kyogre"]);
+const NAT_SEREBII_SS = new Set(["Mawile","Gulpin","Groudon"]);
+// Evolution-only exclusives not in LOCATION_MAP
 const NAT_HG_SUPP = [
-  {name:"Latias", locs:[{areaName:"Roaming Kanto — after defeating Red", method:"Roaming", levels:"35"}]},
+  {name:"Claydol", locs:[{areaName:"Evolve Baltoy at Lv 36 (HG only)"}]},
+  {name:"Mantyke", locs:[{areaName:"Breed Mantine (HG only)"}]},
+  {name:"Gliscor", locs:[{areaName:"Evolve Gligar with Razor Fang at night (HG only)"}]},
 ];
 const NAT_SS_SUPP = [
-  {name:"Latios", locs:[{areaName:"Roaming Kanto — after defeating Red", method:"Roaming", levels:"35"}]},
+  {name:"Swalot", locs:[{areaName:"Evolve Gulpin at Lv 26 (SS only)"}]},
 ];
 
 const TRADE_EVOS = [

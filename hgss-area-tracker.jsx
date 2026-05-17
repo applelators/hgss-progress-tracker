@@ -9828,6 +9828,8 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
   const evoLine = (name) => {
     const evo = EXCL_EVO_INFO[name];
     if (!evo) return <div style={{ fontSize:10, color:C.muted }}>Evolution only</div>;
+    const seen = new Set();
+    const preLocs = (LOCATION_MAP[evo.from] || []).filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
     const itemBadge = item => (
       <span style={{ fontSize:9, fontWeight:"700", padding:"1px 5px", borderRadius:99,
         color:"#c8a040", background:"rgba(200,150,40,0.18)", border:"1px solid rgba(200,150,40,0.4)" }}>
@@ -9852,6 +9854,19 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
       <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
         {mainLine}
         {evo.itemSrc && <div style={{ fontSize:9, color:C.muted, opacity:0.8 }}>{evo.itemSrc}</div>}
+        {preLocs.length > 0 && (
+          <div style={{ marginTop:3 }}>
+            <div style={{ fontSize:9, color:C.muted, fontWeight:"700", letterSpacing:"0.07em", textTransform:"uppercase", marginBottom:2 }}>Find {evo.from}</div>
+            {preLocs.map((l, i) => (
+              <div key={i} style={{ fontSize:10, color:C.muted, display:"flex", gap:4, flexWrap:"wrap", lineHeight:1.6 }}>
+                <span style={{ color:C.text, opacity:0.7, fontWeight:"500" }}>{l.areaName}</span>
+                <span>·</span><span>{l.method}</span>
+                {l.levels && <><span>·</span><span>Lv {l.levels}</span></>}
+                {l.rate && <><span>·</span><span style={{ color:"#a0c8ff" }}>{l.rate}</span></>}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   };

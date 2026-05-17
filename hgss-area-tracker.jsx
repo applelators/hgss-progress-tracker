@@ -9522,6 +9522,17 @@ const SS_ONLY_SUPP = [
   {name:"Ninetales", locs:[{areaName:"Evolve Vulpix w/ Fire Stone (SS only)"}]},
 ];
 
+// National Dex exclusives — post-game Kanto, swarms, roaming, and Embedded Tower
+const NAT_SEREBII_HG = new Set(["Seedot","Sableye","Baltoy","Kyogre","Latias"]);
+const NAT_SEREBII_SS = new Set(["Shroomish","Mawile","Gulpin","Groudon","Latios"]);
+// Latias/Latios are roaming Pokémon — not in LOCATION_MAP (no fixed encounter entry)
+const NAT_HG_SUPP = [
+  {name:"Latias", locs:[{areaName:"Roaming Kanto — after defeating Red", method:"Roaming", levels:"35"}]},
+];
+const NAT_SS_SUPP = [
+  {name:"Latios", locs:[{areaName:"Roaming Kanto — after defeating Red", method:"Roaming", levels:"35"}]},
+];
+
 const TRADE_EVOS = [
   // plain trades
   { from:"Kadabra",    to:"Alakazam",   item:null,            itemSrc:null },
@@ -9789,11 +9800,15 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
     return rows;
   };
 
-  const hgData = useMemo(() => buildData(SEREBII_HG, HG_ONLY_SUPP), []);
-  const ssData = useMemo(() => buildData(SEREBII_SS, SS_ONLY_SUPP), []);
+  const hgData    = useMemo(() => buildData(SEREBII_HG,     HG_ONLY_SUPP), []);
+  const ssData    = useMemo(() => buildData(SEREBII_SS,     SS_ONLY_SUPP), []);
+  const natHgData = useMemo(() => buildData(NAT_SEREBII_HG, NAT_HG_SUPP),  []);
+  const natSsData = useMemo(() => buildData(NAT_SEREBII_SS, NAT_SS_SUPP),  []);
 
-  const hgCaught = hgData.filter(d => !!caught[d.name]).length;
-  const ssCaught = ssData.filter(d => !!caught[d.name]).length;
+  const hgCaught    = hgData.filter(d => !!caught[d.name]).length;
+  const ssCaught    = ssData.filter(d => !!caught[d.name]).length;
+  const natHgCaught = natHgData.filter(d => !!caught[d.name]).length;
+  const natSsCaught = natSsData.filter(d => !!caught[d.name]).length;
 
   const card = ({ name, locs }) => {
     const done = !!caught[name];
@@ -9845,13 +9860,36 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
     </div>
   );
 
+  const sectionHead = (label) => (
+    <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
+      <div style={{ flex:1, height:1, background:C.border }} />
+      <span style={{ fontSize:10, fontWeight:"700", color:C.muted, letterSpacing:"0.1em", textTransform:"uppercase", whiteSpace:"nowrap" }}>{label}</span>
+      <div style={{ flex:1, height:1, background:C.border }} />
+    </div>
+  );
+
+  const flexDir = isMobile ? "column" : "row";
+
   return (
     <div style={{ flex:1, overflowY:"auto" }}>
-      <div style={{ maxWidth:900, margin:"0 auto", padding:"20px 16px 40px" }}>
-        <div style={{ display:"flex", gap: isMobile ? 20 : 32, flexDirection: isMobile ? "column" : "row" }}>
-          {col("HeartGold exclusives", C.hgGold, hgData, hgCaught)}
-          {col("SoulSilver exclusives", C.ssSilver, ssData, ssCaught)}
+      <div style={{ maxWidth:900, margin:"0 auto", padding:"20px 16px 40px", display:"flex", flexDirection:"column", gap:32 }}>
+
+        <div>
+          {sectionHead("Johto Regional Dex")}
+          <div style={{ display:"flex", gap: isMobile ? 20 : 32, flexDirection: flexDir }}>
+            {col("HeartGold exclusives", C.hgGold, hgData, hgCaught)}
+            {col("SoulSilver exclusives", C.ssSilver, ssData, ssCaught)}
+          </div>
         </div>
+
+        <div>
+          {sectionHead("National Dex — post-game Kanto, swarms & roaming")}
+          <div style={{ display:"flex", gap: isMobile ? 20 : 32, flexDirection: flexDir }}>
+            {col("HeartGold exclusives", C.hgGold, natHgData, natHgCaught)}
+            {col("SoulSilver exclusives", C.ssSilver, natSsData, natSsCaught)}
+          </div>
+        </div>
+
       </div>
     </div>
   );

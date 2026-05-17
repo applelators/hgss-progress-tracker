@@ -9534,7 +9534,7 @@ const EXCL_EVO_INFO = {
   "Arcanine":  { from:"Growlithe", how:"with Fire Stone" },
   "Ninetales": { from:"Vulpix",    how:"with Fire Stone" },
   "Claydol":   { from:"Baltoy",    how:"at Lv 36" },
-  "Mantyke":   { from:"Mantine",   breed:true, how:"hold Wave Incense" },
+  "Mantyke":   { from:"Mantine",   breed:true, how:"hold Wave Incense", itemSrc:"Wave Incense — Route 47 (Surf + Rock Climb)" },
   "Gliscor":   { from:"Gligar",    how:"with Razor Fang at night" },
   "Swalot":    { from:"Gulpin",    how:"at Lv 26" },
 };
@@ -9834,19 +9834,26 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
         + {item}
       </span>
     );
-    if (evo.trade) return (
-      <div style={{ fontSize:10, display:"flex", gap:5, alignItems:"center", flexWrap:"wrap" }}>
-        <span style={{ color:"#9b6fd4", fontWeight:"600" }}>Trade</span>
-        <span style={{ color:C.muted }}>{evo.from}</span>
-        {evo.item && itemBadge(evo.item)}
+    let mainLine;
+    if (evo.trade) {
+      mainLine = (
+        <div style={{ fontSize:10, display:"flex", gap:5, alignItems:"center", flexWrap:"wrap" }}>
+          <span style={{ color:"#9b6fd4", fontWeight:"600" }}>Trade</span>
+          <span style={{ color:C.muted }}>{evo.from}</span>
+          {evo.item && itemBadge(evo.item)}
+        </div>
+      );
+    } else if (evo.breed) {
+      mainLine = <div style={{ fontSize:10, color:C.muted }}>Breed {evo.from}{evo.how ? ` (${evo.how})` : ""}</div>;
+    } else {
+      mainLine = <div style={{ fontSize:10, color:C.muted }}>Evolve {evo.from} {evo.how}</div>;
+    }
+    return (
+      <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+        {mainLine}
+        {evo.itemSrc && <div style={{ fontSize:9, color:C.muted, opacity:0.8 }}>{evo.itemSrc}</div>}
       </div>
     );
-    if (evo.breed) return (
-      <div style={{ fontSize:10, color:C.muted }}>
-        Breed {evo.from}{evo.how ? ` (${evo.how})` : ""}
-      </div>
-    );
-    return <div style={{ fontSize:10, color:C.muted }}>Evolve {evo.from} {evo.how}</div>;
   };
 
   const card = ({ name, locs }) => {

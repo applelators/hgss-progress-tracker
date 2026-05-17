@@ -9414,7 +9414,7 @@ function HGSSTracker() {
             // Primary — used every play session
             ["areas","Areas","primary"],["dex","Pokédex","primary"],
             ["walker","Pokéwalker","primary"],
-            ["team","Team","primary"],["battle","Battle","primary"],["trade","Trade","primary"],["excl","Exclusives","primary"],
+            ["team","Team","primary"],["battle","Battle","primary"],["trade","Trade","primary"],["excl","Excl","primary"],
             // Divider
             ["__div1","",null],
             // Secondary — used regularly but less hot

@@ -13863,54 +13863,93 @@ function expGroupLabel(g) {
 }
 
 function WalkerPlannerPanel({ walkerAreas }) {
-  const [pkName, setPkName] = React.useState("");
-  const [search, setSearch] = React.useState("");
-  const [showDrop, setShowDrop] = React.useState(false);
-  const inputRef = React.useRef(null);
+  const { useMemo, useState, useRef } = React;
 
-  const allNames = React.useMemo(() => {
+  // Planned list persisted to localStorage
+  const [planned, setPlanned] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("hgss-walker-planned") || "[]"); } catch { return []; }
+  });
+  const [activePk, setActivePk] = useState(null);
+  const [search, setSearch] = useState("");
+  const [showDrop, setShowDrop] = useState(false);
+  const inputRef = useRef(null);
+
+  // Keep activePk valid; fall back to first planned if stale
+  const currentPk = planned.includes(activePk) ? activePk : (planned[0] || null);
+
+  const allNames = useMemo(() => {
     const names = new Set();
     [...DEX, ...NATIONAL_DEX].forEach(p => names.add(p.name));
     return [...names].sort();
   }, []);
 
+  // Exclude already-planned names from dropdown
   const filtered = search.length >= 1
-    ? allNames.filter(n => n.toLowerCase().startsWith(search.toLowerCase())).slice(0, 20)
+    ? allNames.filter(n => n.toLowerCase().startsWith(search.toLowerCase()) && !planned.includes(n)).slice(0, 20)
     : [];
 
-  const expGroup = pkName ? (EXP_GROUP[pkName] || "medium_fast") : null;
-  const types    = pkName ? (POKEMON_TYPES_DATA[pkName] || []) : [];
-  const learnset = pkName ? (PW_LEARNSETS[pkName] || []) : [];
+  const addPk = (name) => {
+    if (planned.includes(name)) return;
+    const next = [...planned, name];
+    setPlanned(next);
+    try { localStorage.setItem("hgss-walker-planned", JSON.stringify(next)); } catch {}
+    setActivePk(name);
+    setSearch("");
+    setShowDrop(false);
+  };
 
-  const movesByLevel = React.useMemo(() => {
-    const m = {};
-    learnset.forEach(([lv, mv]) => { if (!m[lv]) m[lv] = []; m[lv].push(mv); });
-    return m;
-  }, [learnset]);
+  const removePk = (name) => {
+    const next = planned.filter(n => n !== name);
+    setPlanned(next);
+    try { localStorage.setItem("hgss-walker-planned", JSON.stringify(next)); } catch {}
+    if (activePk === name) setActivePk(next[0] || null);
+  };
 
-  const evoEntry = pkName ? EVO_LEVELS[pkName] : null;
-  const evoLevel = evoEntry?.[0] ?? null;
-  const evoInto  = evoEntry?.[1] ?? null;
-
-  const rows = React.useMemo(() => {
-    if (!pkName || !expGroup) return [];
-    return Array.from({length: 99}, (_, i) => {
-      const lv = i + 1;
-      const base = expAtLevel(lv+1, expGroup) - expAtLevel(lv, expGroup);
-      const adv  = Math.ceil(base * 0.75);
-      const warnMoves = movesByLevel[lv+1] || [];
-      const evolves = evoLevel !== null && lv + 1 === evoLevel;
-      return { lv, base, adv, warnMoves, evolves };
+  // Per-Pokémon computed data (all in one pass)
+  const pkData = useMemo(() => {
+    const result = {};
+    planned.forEach(name => {
+      const expGroup = EXP_GROUP[name] || "medium_fast";
+      const types    = POKEMON_TYPES_DATA[name] || [];
+      const learnset = PW_LEARNSETS[name] || [];
+      const evoEntry = EVO_LEVELS[name];
+      const evoLevel = evoEntry?.[0] ?? null;
+      const evoInto  = evoEntry?.[1] ?? null;
+      const movesByLevel = {};
+      learnset.forEach(([lv, mv]) => { if (!movesByLevel[lv]) movesByLevel[lv] = []; movesByLevel[lv].push(mv); });
+      const rows = Array.from({length: 99}, (_, i) => {
+        const lv = i + 1;
+        const base = expAtLevel(lv+1, expGroup) - expAtLevel(lv, expGroup);
+        const adv  = Math.ceil(base * 0.75);
+        const warnMoves = movesByLevel[lv+1] || [];
+        const evolves   = evoLevel !== null && lv + 1 === evoLevel;
+        return { lv, base, adv, warnMoves, evolves };
+      });
+      result[name] = { expGroup, types, evoInto, rows };
     });
-  }, [pkName, expGroup, movesByLevel, evoLevel]);
+    return result;
+  }, [planned]);
 
-  const advRoutes = React.useMemo(() => {
-    if (!types.length) return [];
-    return walkerAreas.filter(a => {
-      const rt = PW_ADV_TYPES[a.id] || [];
-      return types.some(t => rt.includes(t));
-    });
-  }, [types, walkerAreas]);
+  // Union of all planned types for route matching
+  const allPlannedTypes = useMemo(() => {
+    const s = new Set();
+    planned.forEach(name => (POKEMON_TYPES_DATA[name] || []).forEach(t => s.add(t)));
+    return s;
+  }, [planned]);
+
+  // Routes advantageous for any planned Pokémon, with per-Pokémon breakdown
+  const advRoutes = useMemo(() => {
+    if (!planned.length) return [];
+    return walkerAreas
+      .filter(a => (PW_ADV_TYPES[a.id] || []).some(t => allPlannedTypes.has(t)))
+      .map(a => {
+        const rt = PW_ADV_TYPES[a.id] || [];
+        const benefiting = planned.filter(name =>
+          (POKEMON_TYPES_DATA[name] || []).some(t => rt.includes(t))
+        );
+        return { area: a, benefiting, rt };
+      });
+  }, [planned, allPlannedTypes, walkerAreas]);
 
   const TYPE_COLOR = {
     Normal:"#a8a8a0",Fire:"#f08040",Water:"#6888f0",Electric:"#f8d030",
@@ -13921,170 +13960,207 @@ function WalkerPlannerPanel({ walkerAreas }) {
   };
 
   function TypeBadge({ type }) {
-    const bg = TYPE_COLOR[type] || "#888";
     return (
       <span style={{
-        display:"inline-block", fontSize:10, fontWeight:700, padding:"1px 6px",
-        borderRadius:10, background:bg, color:"#fff", marginLeft:4, letterSpacing:0.5,
-        textShadow:"0 1px 2px rgba(0,0,0,0.4)",
+        display:"inline-block", fontSize:9, fontWeight:700, padding:"1px 5px",
+        borderRadius:10, background:TYPE_COLOR[type]||"#888", color:"#fff",
+        letterSpacing:0.5, textShadow:"0 1px 2px rgba(0,0,0,0.4)",
       }}>{type}</span>
     );
   }
 
-  const selectPk = (name) => {
-    setPkName(name);
-    setSearch("");
-    setShowDrop(false);
-  };
-
-  const clearPk = () => {
-    setPkName("");
-    setSearch("");
-    setShowDrop(false);
-    setTimeout(() => inputRef.current && inputRef.current.focus(), 0);
-  };
+  const activeData = currentPk ? pkData[currentPk] : null;
 
   return (
     <div style={{ flex:1, overflowY:"auto", padding:"16px 20px 40px", maxWidth:700 }}>
-      {/* Search box */}
-      <div style={{ marginBottom:16, position:"relative" }}>
-        <div style={{ fontSize:11, letterSpacing:1.5, color:C.muted, textTransform:"uppercase", marginBottom:6 }}>
-          Select a Pokemon
+
+      {/* ── Planned Pokémon ────────────────────────────────────────── */}
+      <div style={{ marginBottom:16 }}>
+        <div style={{ fontSize:11, letterSpacing:1.5, color:C.muted, textTransform:"uppercase", marginBottom:8 }}>
+          Planned Pokémon
         </div>
-        {pkName ? (
-          <div style={{ display:"flex", alignItems:"center", gap:10, background:C.card, border:`1px solid ${C.border}`, borderRadius:8, padding:"8px 12px" }}>
-            <span style={{ flex:1, fontWeight:700, color:C.text, fontSize:14 }}>{pkName}</span>
-            {types.map(t => <TypeBadge key={t} type={t} />)}
-            <span style={{ fontSize:11, color:C.muted, marginLeft:6 }}>{expGroupLabel(expGroup)}</span>
-            <button onClick={clearPk} style={{ background:"transparent", border:"none", color:C.muted, cursor:"pointer", fontSize:16, lineHeight:1, padding:"0 2px", marginLeft:4 }}>✕</button>
-          </div>
-        ) : (
-          <div style={{ position:"relative" }}>
-            <input
-              ref={inputRef}
-              value={search}
-              onChange={e => { setSearch(e.target.value); setShowDrop(true); }}
-              onFocus={() => setShowDrop(true)}
-              onBlur={() => setTimeout(() => setShowDrop(false), 120)}
-              placeholder="Type a Pokemon name..."
-              style={{
-                width:"100%", boxSizing:"border-box", padding:"9px 12px",
-                background:C.card, border:`1px solid ${C.border}`, borderRadius:8,
-                color:C.text, fontSize:16, outline:"none", fontFamily:"'DM Sans',system-ui,sans-serif",
-              }}
-            />
-            {showDrop && filtered.length > 0 && (
-              <div style={{
-                position:"absolute", top:"100%", left:0, right:0, zIndex:100,
-                background:C.card, border:`1px solid ${C.border}`, borderRadius:"0 0 8px 8px",
-                maxHeight:240, overflowY:"auto", boxShadow:"0 4px 20px rgba(0,0,0,0.4)",
-              }}>
-                {filtered.map(n => (
-                  <div key={n} onMouseDown={() => selectPk(n)}
-                    style={{ padding:"8px 12px", cursor:"pointer", color:C.text, fontSize:13,
-                             borderBottom:`1px solid ${C.border}22` }}
-                    onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,0.05)"}
-                    onMouseLeave={e => e.currentTarget.style.background="transparent"}
-                  >
-                    {n}
-                  </div>
-                ))}
-              </div>
-            )}
+
+        {/* Chips — click to select for steps table, ✕ to remove */}
+        {planned.length > 0 && (
+          <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginBottom:10 }}>
+            {planned.map(name => {
+              const d = pkData[name];
+              const isActive = name === currentPk;
+              return (
+                <div key={name} onClick={() => setActivePk(name)} style={{
+                  display:"flex", alignItems:"center", gap:5, cursor:"pointer",
+                  background: isActive ? "var(--hgss-accent)" : C.card,
+                  border:`1px solid ${isActive ? "var(--hgss-accent)" : C.border}`,
+                  borderRadius:20, padding:"4px 8px 4px 10px",
+                  transition:"background 0.15s, border-color 0.15s",
+                }}>
+                  <span style={{ fontSize:12, fontWeight:700, color: isActive ? "#fff" : C.text }}>{name}</span>
+                  {d && d.types.map(t => <TypeBadge key={t} type={t} />)}
+                  <button onClick={e => { e.stopPropagation(); removePk(name); }}
+                    style={{ background:"transparent", border:"none", cursor:"pointer", fontSize:13,
+                      lineHeight:1, padding:"0 0 0 2px", marginLeft:2,
+                      color: isActive ? "rgba(255,255,255,0.7)" : C.muted }}>✕</button>
+                </div>
+              );
+            })}
           </div>
         )}
+
+        {/* Add search */}
+        <div style={{ position:"relative" }}>
+          <input
+            ref={inputRef}
+            value={search}
+            onChange={e => { setSearch(e.target.value); setShowDrop(true); }}
+            onFocus={() => setShowDrop(true)}
+            onBlur={() => setTimeout(() => setShowDrop(false), 120)}
+            placeholder={planned.length ? "Add another Pokémon…" : "Type a Pokémon name…"}
+            style={{
+              width:"100%", boxSizing:"border-box", padding:"9px 12px",
+              background:C.card, border:`1px solid ${C.border}`, borderRadius:8,
+              color:C.text, fontSize:16, outline:"none", fontFamily:"'DM Sans',system-ui,sans-serif",
+            }}
+          />
+          {showDrop && filtered.length > 0 && (
+            <div style={{
+              position:"absolute", top:"100%", left:0, right:0, zIndex:100,
+              background:C.card, border:`1px solid ${C.border}`, borderRadius:"0 0 8px 8px",
+              maxHeight:240, overflowY:"auto", boxShadow:"0 4px 20px rgba(0,0,0,0.4)",
+            }}>
+              {filtered.map(n => (
+                <div key={n} onMouseDown={() => addPk(n)}
+                  style={{ padding:"8px 12px", cursor:"pointer", color:C.text, fontSize:13,
+                    borderBottom:`1px solid ${C.border}22` }}
+                  onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,0.05)"}
+                  onMouseLeave={e => e.currentTarget.style.background="transparent"}
+                >{n}</div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {pkName && (<>
-        {/* Advantageous routes */}
+      {planned.length > 0 && (<>
+
+        {/* ── Advantageous Routes ────────────────────────────────────── */}
         <div style={{ marginBottom:20, background:C.card, border:`1px solid ${C.border}`, borderRadius:10, padding:"12px 16px" }}>
           <div style={{ fontSize:12, fontWeight:700, color:C.text, marginBottom:8, letterSpacing:0.5 }}>
             Advantageous Pokéwalker Routes <span style={{ fontWeight:400, color:C.muted, fontSize:11 }}>(25% step reduction)</span>
           </div>
           {advRoutes.length === 0 ? (
-            <div style={{ fontSize:12, color:C.muted }}>
-              No advantageous routes for {types.join("/")} type{types.length>1?"s":""}.
-            </div>
+            <div style={{ fontSize:12, color:C.muted }}>No advantageous routes for the selected Pokémon.</div>
           ) : (
-            <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-              {advRoutes.map(a => {
-                const rt = PW_ADV_TYPES[a.id] || [];
-                const matchTypes = types.filter(t => rt.includes(t));
-                return (
-                  <div key={a.id} style={{
-                    display:"flex", alignItems:"center", gap:4,
-                    background:"rgba(255,255,255,0.04)", border:`1px solid ${C.border}`,
-                    borderRadius:6, padding:"4px 10px", fontSize:12, color:C.text,
-                  }}>
-                    <span>{a.name}</span>
-                    {matchTypes.map(t => <TypeBadge key={t} type={t} />)}
+            <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+              {advRoutes.map(({ area, benefiting, rt }) => (
+                <div key={area.id} style={{
+                  display:"flex", alignItems:"center", gap:8, flexWrap:"wrap",
+                  background:"rgba(255,255,255,0.03)", border:`1px solid ${C.border}`,
+                  borderRadius:6, padding:"6px 10px",
+                }}>
+                  <span style={{ fontSize:12, color:C.text, minWidth:120 }}>{area.name}</span>
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+                    {benefiting.map(name => {
+                      const matchTypes = (POKEMON_TYPES_DATA[name] || []).filter(t => rt.includes(t));
+                      return (
+                        <span key={name} style={{ display:"flex", alignItems:"center", gap:3,
+                          background:"rgba(255,255,255,0.05)", borderRadius:4, padding:"1px 6px" }}>
+                          <span style={{ fontSize:10, color:C.muted }}>{name}</span>
+                          {matchTypes.map(t => <TypeBadge key={t} type={t} />)}
+                        </span>
+                      );
+                    })}
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           )}
         </div>
 
-        {/* Steps table */}
+        {/* ── Steps Table ────────────────────────────────────────────── */}
         <div>
-          <div style={{ fontSize:12, fontWeight:700, color:C.text, marginBottom:4, letterSpacing:0.5 }}>
+          <div style={{ fontSize:12, fontWeight:700, color:C.text, marginBottom:6, letterSpacing:0.5 }}>
             Steps to Level Up in Pokéwalker
           </div>
-          <div style={{ fontSize:11, color:C.muted, marginBottom:10, lineHeight:1.7 }}>
-            1 step = 1 EXP · Max 1 level per walk · Adv. type column assumes 25% step reduction.
-            Rows marked <span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned on level-up — skip these levels (Pokéwalker can't prompt to learn moves).
-            <span style={{ color:C.green, fontWeight:700 }}> ★</span> = recommended move.
-            <span style={{ color:"#b080f0", fontWeight:700 }}> ⬆</span> = evolves at this level.
-          </div>
-          <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10 }}>
-            <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
-              <thead>
-                <tr style={{ background:C.card, position:"sticky", top:0, zIndex:1 }}>
-                  <th style={{ padding:"7px 10px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}`, width:70 }}>Level</th>
-                  <th style={{ padding:"7px 10px", textAlign:"right", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Steps (base)</th>
-                  <th style={{ padding:"7px 10px", textAlign:"right", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Steps (adv)</th>
-                  <th style={{ padding:"7px 10px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Moves learned</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map(({lv, base, adv, warnMoves, evolves}) => {
-                  const warn = warnMoves.length > 0;
-                  const rowBg = evolves ? "rgba(160,100,240,0.08)" : warn ? "rgba(240,160,32,0.08)" : lv % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent";
-                  const evoLabel = evolves && evoInto ? (Array.isArray(evoInto) ? evoInto.join("/") : evoInto) : null;
-                  return (
-                    <tr key={lv} style={{ background:rowBg }}>
-                      <td style={{ padding:"5px 10px", fontFamily:"'JetBrains Mono',monospace" }}>
-                        <div style={{ color: warn ? "#f0a020" : C.muted, fontWeight: warn ? 700 : 400 }}>
-                          {warn ? "⚠ " : ""}{lv}→{lv+1}
-                        </div>
-                        {evolves && evoLabel && (
-                          <div style={{ fontSize:10, color:"#b080f0", fontWeight:700, marginTop:1, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
-                            ⬆ {evoLabel}
+
+          {/* Tabs — one per planned Pokémon */}
+          {planned.length > 1 && (
+            <div style={{ display:"flex", gap:4, marginBottom:8, flexWrap:"wrap" }}>
+              {planned.map(name => {
+                const isActive = name === currentPk;
+                return (
+                  <button key={name} onClick={() => setActivePk(name)} style={{
+                    padding:"4px 12px", borderRadius:6, cursor:"pointer",
+                    border:`1px solid ${isActive ? "var(--hgss-accent)" : C.border}`,
+                    background: isActive ? "var(--hgss-accent)" : "transparent",
+                    color: isActive ? "#fff" : C.muted, fontSize:11,
+                    fontWeight: isActive ? 700 : 400,
+                    fontFamily:"'DM Sans',system-ui,sans-serif",
+                  }}>{name}</button>
+                );
+              })}
+            </div>
+          )}
+
+          {activeData && (<>
+            <div style={{ fontSize:11, color:C.muted, marginBottom:10, lineHeight:1.7 }}>
+              1 step = 1 EXP · Max 1 level per walk · Adv. column assumes 25% step reduction.
+              {" "}<span style={{ color:"#f0a020", fontWeight:700 }}>⚠</span> = move learned — skip (Pokéwalker can't prompt).
+              {" "}<span style={{ color:C.green, fontWeight:700 }}>★</span> = recommended.
+              {" "}<span style={{ color:"#b080f0", fontWeight:700 }}>⬆</span> = evolves.
+              {" "}Exp group: <strong style={{ color:C.text }}>{expGroupLabel(activeData.expGroup)}</strong>
+            </div>
+            <div style={{ maxHeight:480, overflowY:"auto", border:`1px solid ${C.border}`, borderRadius:10 }}>
+              <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
+                <thead>
+                  <tr style={{ background:C.card, position:"sticky", top:0, zIndex:1 }}>
+                    <th style={{ padding:"7px 10px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}`, width:70 }}>Level</th>
+                    <th style={{ padding:"7px 10px", textAlign:"right", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Steps (base)</th>
+                    <th style={{ padding:"7px 10px", textAlign:"right", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Steps (adv)</th>
+                    <th style={{ padding:"7px 10px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Moves learned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activeData.rows.map(({lv, base, adv, warnMoves, evolves}) => {
+                    const warn = warnMoves.length > 0;
+                    const evoLabel = evolves && activeData.evoInto
+                      ? (Array.isArray(activeData.evoInto) ? activeData.evoInto.join("/") : activeData.evoInto) : null;
+                    const rowBg = evolves ? "rgba(160,100,240,0.08)" : warn ? "rgba(240,160,32,0.08)" : lv%2===0 ? "rgba(255,255,255,0.02)" : "transparent";
+                    return (
+                      <tr key={lv} style={{ background:rowBg }}>
+                        <td style={{ padding:"5px 10px", fontFamily:"'JetBrains Mono',monospace" }}>
+                          <div style={{ color: warn ? "#f0a020" : C.muted, fontWeight: warn ? 700 : 400 }}>
+                            {warn ? "⚠ " : ""}{lv}→{lv+1}
                           </div>
-                        )}
-                      </td>
-                      <td style={{ padding:"5px 10px", textAlign:"right", color:C.text, fontFamily:"'JetBrains Mono',monospace" }}>{base.toLocaleString()}</td>
-                      <td style={{ padding:"5px 10px", textAlign:"right", color:C.green, fontFamily:"'JetBrains Mono',monospace" }}>{adv.toLocaleString()}</td>
-                      <td style={{ padding:"5px 10px", fontSize:11 }}>
-                        {warn ? warnMoves.map((mv, i) => {
-                          const good = MOVE_TIERS.good.has(mv);
-                          return (
-                            <span key={mv}>
-                              {i > 0 && <span style={{ color:C.muted }}>, </span>}
-                              {good
-                                ? <span style={{ color:C.green, fontWeight:700 }}>★ {mv}</span>
-                                : <span style={{ color:"#f0a020" }}>{mv}</span>}
-                            </span>
-                          );
-                        }) : ""}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                          {evolves && evoLabel && (
+                            <div style={{ fontSize:10, color:"#b080f0", fontWeight:700, marginTop:1, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
+                              ⬆ {evoLabel}
+                            </div>
+                          )}
+                        </td>
+                        <td style={{ padding:"5px 10px", textAlign:"right", color:C.text, fontFamily:"'JetBrains Mono',monospace" }}>{base.toLocaleString()}</td>
+                        <td style={{ padding:"5px 10px", textAlign:"right", color:C.green, fontFamily:"'JetBrains Mono',monospace" }}>{adv.toLocaleString()}</td>
+                        <td style={{ padding:"5px 10px", fontSize:11 }}>
+                          {warn ? warnMoves.map((mv, i) => {
+                            const good = MOVE_TIERS.good.has(mv);
+                            return (
+                              <span key={mv}>
+                                {i > 0 && <span style={{ color:C.muted }}>, </span>}
+                                {good
+                                  ? <span style={{ color:C.green, fontWeight:700 }}>★ {mv}</span>
+                                  : <span style={{ color:"#f0a020" }}>{mv}</span>}
+                              </span>
+                            );
+                          }) : ""}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>)}
         </div>
+
       </>)}
     </div>
   );

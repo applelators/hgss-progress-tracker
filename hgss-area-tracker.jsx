@@ -14012,6 +14012,7 @@ function WalkerPlannerPanel({ walkerAreas }) {
             ref={inputRef}
             value={search}
             onChange={e => { setSearch(e.target.value); setShowDrop(true); }}
+            onKeyDown={e => { if (e.key === "Enter" && filtered.length > 0) addPk(filtered[0]); }}
             onFocus={() => setShowDrop(true)}
             onBlur={() => setTimeout(() => setShowDrop(false), 120)}
             placeholder={planned.length ? "Add another Pokémon…" : "Type a Pokémon name…"}

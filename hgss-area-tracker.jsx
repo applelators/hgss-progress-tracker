@@ -10001,6 +10001,7 @@ function DreamTeamTab({ isMobile, version }) {
   const [expandedPhAlt,   setExpandedPhAlt]   = React.useState(null);
   const [phPins,          setPhPins]          = React.useState({});
   const [hmPerPokemon,    setHmPerPokemon]    = React.useState(3);
+  const [copiedDT,        setCopiedDT]        = React.useState(false);
 
   React.useEffect(() => {
     try {
@@ -10184,6 +10185,77 @@ function DreamTeamTab({ isMobile, version }) {
   const swapAlternative = (slotIdx, name) => { setPins(prev => ({ ...prev, [slotIdx]: name })); setExpandedAltSlot(null); };
   const resetPins = () => { setPins({}); setExpandedAltSlot(null); };
 
+  const buildClipboardText = () => {
+    if (!team) return "";
+    const lines = ["=== HGSS Dream Team ===", ""];
+    team.forEach((name, idx) => {
+      const finalForm   = DT_FINAL_FORM[name] || name;
+      const candInfo    = DT_CANDIDATES.find(c => c.name === finalForm);
+      const assignedHMs = Object.entries(hmAssignments).filter(([,w]) => w === name).map(([hm]) => hm);
+      const suppressed  = new Set(Object.entries(tmWinners).filter(([,w]) => w !== name).map(([mv]) => mv));
+      const moves       = getDreamMoves(name, suppressed, assignedHMs);
+      const acq         = getDreamAcquisition(name);
+      const evoNote     = EVO_DELAY[name];
+      const isFav       = idx === 0;
+      const ab          = DT_ABILITIES[finalForm];
+      const typeStr     = candInfo ? candInfo.types.join("/") : "";
+      const statsStr    = candInfo?.stats ? `Atk ${candInfo.stats.atk} / SpA ${candInfo.stats.spa} / Spe ${candInfo.stats.spe}` : "";
+      const flags       = [isFav ? "★ FAV" : null, candInfo?.hgOnly ? "HG only" : candInfo?.ssOnly ? "SS only" : null, (candInfo?.tradeOnly || (!isFav && candInfo && ((version==="hg"&&candInfo.ssOnly)||(version==="ss"&&candInfo.hgOnly)))) ? "needs trade" : null].filter(Boolean);
+      const chain = getDTEvoChain(name);
+      const chainStr = chain.length > 1 ? chain.map((s,i) => i===0?s.name:`lv.${s.level} ${s.name}`).join(" → ") : "";
+
+      const header = `${idx+1}. ${name}${flags.length?` [${flags.join(", ")}]`:""}${typeStr?` — ${typeStr}`:""}${statsStr?` · ${statsStr}`:""}`;
+      lines.push(header);
+      if (chainStr) lines.push(`   Evolution: ${chainStr}`);
+      if (ab) lines.push(`   Ability: ${ab.name} — ${ab.desc}`);
+      if (moves.length) {
+        lines.push("   Moves:");
+        moves.forEach(m => {
+          const cat = MOVE_CATEGORY[m.move];
+          const catStr = cat === "P" ? "[Physical]" : cat === "S" ? "[Special]" : "";
+          const srcStr = m.src ? ` — ${m.src}` : "";
+          const oneTime = m.oneTime ? " (1× only)" : "";
+          lines.push(`     • ${m.move}${catStr?" "+catStr:""}${srcStr}${oneTime}`);
+        });
+      }
+      if (assignedHMs.length) lines.push(`   HMs: ${assignedHMs.join(", ")}`);
+      lines.push(`   Where to get: ${acq}`);
+      if (evoNote) lines.push(`   Note: ${evoNote}`);
+      lines.push("");
+    });
+
+    if (placeholderSlots.length > 0) {
+      lines.push("=== Temporary Slots ===", "");
+      placeholderSlots.forEach(({ teamName, teamPart, active }) => {
+        const phName  = active.c.name;
+        const phFinal = DT_FINAL_FORM[phName] || phName;
+        const phCand  = active.c;
+        const phAb    = DT_ABILITIES[phFinal] || DT_ABILITIES[phName];
+        const phSup   = new Set(Object.entries(tmWinners).filter(([,w]) => w !== teamName).map(([mv]) => mv));
+        const phMoves = getDreamMoves(phName, phSup, [], true);
+        const phAcq   = getDreamAcquisition(phName);
+        const phEvo   = EVO_DELAY[phName];
+        const typeStr = phCand.types.join("/");
+        lines.push(`• ${phName} (temp until ${teamName}, ${teamPart}) — ${typeStr}`);
+        if (phAb) lines.push(`   Ability: ${phAb.name} — ${phAb.desc}`);
+        if (phMoves.length) {
+          lines.push("   Moves:");
+          phMoves.forEach(m => {
+            const cat = MOVE_CATEGORY[m.move];
+            const catStr = cat === "P" ? "[Physical]" : cat === "S" ? "[Special]" : "";
+            const srcStr = m.src ? ` — ${m.src}` : "";
+            lines.push(`     • ${m.move}${catStr?" "+catStr:""}${srcStr}`);
+          });
+        }
+        lines.push(`   Where to get: ${phAcq}`);
+        if (phEvo) lines.push(`   Note: ${phEvo}`);
+        lines.push("");
+      });
+    }
+
+    return lines.join("\n");
+  };
+
   const versionLabel = cand => cand.hgOnly ? "HG" : cand.ssOnly ? "SS" : null;
   const needsTrade   = cand => cand && (cand.tradeOnly || (version === "hg" && cand.ssOnly) || (version === "ss" && cand.hgOnly));
 
@@ -10234,6 +10306,10 @@ function DreamTeamTab({ isMobile, version }) {
             Reset pins
           </button>
         )}
+        <button onClick={() => { navigator.clipboard.writeText(buildClipboardText()).then(() => { setCopiedDT(true); setTimeout(() => setCopiedDT(false), 2000); }); }}
+          style={{ padding:"8px 12px", background: copiedDT?"rgba(74,175,116,0.15)":"rgba(0,0,0,0.2)", border:`1px solid ${copiedDT?"rgba(74,175,116,0.5)":C.border}`, borderRadius:6, cursor:"pointer", fontSize:11, color: copiedDT?"#4aaf74":C.muted, fontFamily:"'DM Sans',system-ui,sans-serif", whiteSpace:"nowrap", transition:"color 0.2s, border-color 0.2s, background 0.2s" }}>
+          {copiedDT ? "✓ Copied!" : "Copy team"}
+        </button>
         <div style={{ display:"flex", alignItems:"center", gap:6, marginLeft:"auto" }}>
           <span style={{ fontSize:10, color:C.muted, whiteSpace:"nowrap" }}>Max HMs/member:</span>
           <div style={{ display:"flex", border:`1px solid ${C.border}`, borderRadius:6, overflow:"hidden" }}>

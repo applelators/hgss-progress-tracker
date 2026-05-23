@@ -592,8 +592,14 @@ const AREAS = [
 
   // ─── PART 5 ────────────────────────────────────────────────────────────────
   { part:"Part 5", id:"azalea-town", name:"Azalea Town",
-    note:"Team Rocket is in Slowpoke Well. Kurt makes Apricorn Balls — give him Apricorns.",
-    pokemon:[],
+    note:"Team Rocket is in Slowpoke Well. Kurt makes Apricorn Balls — give him Apricorns. Headbutt trees are available once you learn Headbutt in Ilex Forest — the second tree from the left above Slowpoke Well is the best spot for Heracross.",
+    pokemon:[
+      {name:"Spearow",   method:"Headbutt", levels:"3–5", rate:"50%", note:"Group A trees"},
+      {name:"Heracross", method:"Headbutt", levels:"2–5", rate:"30%", note:"Group A trees — learn Headbutt in Ilex Forest first"},
+      {name:"Aipom",     method:"Headbutt", levels:"3–5", rate:"20%", note:"Group A trees"},
+      {name:"Spearow",   method:"Headbutt", levels:"6–8", rate:"80%", note:"Group B trees"},
+      {name:"Aipom",     method:"Headbutt", levels:"6–8", rate:"20%", note:"Group B trees"},
+    ],
     items:[
       {name:"Full Heal",    hidden:true,  note:"On pile of logs in front of Charcoal Kiln"},
       {name:"Wht Apricorn", hidden:false, note:"Behind Kurt's house NW tree (daily)"},

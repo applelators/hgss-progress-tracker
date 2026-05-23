@@ -6664,26 +6664,25 @@ const DT_TM_TIPS = {
   "Lanturn":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Jolteon":    [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
-  "Electabuzz": [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
-                 {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
+  "Electabuzz": [{move:"Thunderbolt",src:"Level 43 / TM24 — Goldenrod Game Corner (4,000 coins)"},
+                 {move:"ThunderPunch",src:"Level 28 / Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   "Magneton":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
   "Electrode":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"}],
-  "Raichu":     [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
+  "Raichu":     [{move:"Thunderbolt",src:"Level 1 / TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   // Starters — coverage TMs
-  "Meganium":   [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
+  "Meganium":   [{move:"SolarBeam",  src:"Level 66 / TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
                  {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
   // Ice — Ice Beam via Game Corner; physical attackers prefer Ice Punch via Move Tutor
   "Feraligatr": [{move:"Ice Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000) — preferred: 105 Atk > 79 SpA"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins) — alternative if Ice Punch unavailable"}],
-  "Lapras":     [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Dewgong":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Lapras":     [{move:"Ice Beam",   src:"Level 32 / TM13 — Goldenrod Game Corner (4,000 coins)"}],
+  "Dewgong":    [{move:"Ice Beam",   src:"Level 47 / TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Cloyster":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Jynx":       [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Piloswine":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Punch",  src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   "Slowbro":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Slowking":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Gyarados":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Starmie":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Kingdra":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
@@ -6692,26 +6691,24 @@ const DT_TM_TIPS = {
   "Dragonite":  [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   // Fire — Flamethrower via Game Corner
-  "Typhlosion": [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"},
+  "Typhlosion": [{move:"Flamethrower",src:"Level 42 / TM35 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Focus Blast", src:"TM52 — Goldenrod Dept. Store 5F (₽3,500) — covers Rock/Dark/Steel that resist Fire"}],
   "Arcanine":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Ninetales":  [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
-  "Houndoom":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
-  "Magmar":     [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"},
+  "Houndoom":   [{move:"Flamethrower",src:"Level 48 / TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Magmar":     [{move:"Flamethrower",src:"Level 41 / TM35 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"ThunderPunch",src:"Move Tutor — Goldenrod Dept. Store B1F (₽4,000)"}],
   "Flareon":    [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
-  "Magcargo":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
+  "Magcargo":   [{move:"Flamethrower",src:"Level 61 / TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Rapidash":   [{move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   // Psychic — TM29 from Goldenrod Dept. Store; Morty's TM30 gives Shadow Ball
-  "Espeon":     [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
-  "Alakazam":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
-  "Hypno":      [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
-  "Xatu":       [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+  "Alakazam":   [{move:"Psychic",     src:"Level 40 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Hypno":      [{move:"Psychic",     src:"Level 50 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+  "Xatu":       [{move:"Psychic",     src:"Level 59 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
                  {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"},
-                 {move:"Confuse Ray", src:"Level 29 — natural level-up (Future Sight avoided: 2-turn delay rarely lands in-game)"}],
-  "Mr. Mime":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
+                 {move:"Confuse Ray", src:"Level 23 — natural level-up (Future Sight avoided: 2-turn delay rarely lands in-game)"}],
+  "Mr. Mime":   [{move:"Psychic",     src:"Level 39 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Exeggutor":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
-  "Girafarig":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   // Fighting — moveset is full: Megahorn + Close Combat (level-up) + Cut + Headbutt (HMs)
   // No TM tips needed; Stone Edge has no room and Close Combat already outclasses it with STAB.
   // Nidoran lines — coverage via Thunderbolt + Ice Beam (both special-stat Pokémon)
@@ -6719,9 +6716,10 @@ const DT_TM_TIPS = {
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Nidoqueen":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   // Ground STAB — Earthquake is Quagsire's only real battle move alongside the water HMs
-  "Quagsire":   [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"}],
+  "Quagsire":   [{move:"Earthquake", src:"Level 36 / TM26 — Victory Road (Johto)"}],
   // Eevee evolutions
-  "Espeon":     [{move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym) — covers Dark/Ghost, Espeon's main blind spots"}],
+  "Espeon":     [{move:"Psychic",     src:"Level 64 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym) — covers Dark/Ghost, Espeon's main blind spots"}],
   "Umbreon":    [{move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym) — only move that hits Ghost types (immune to Dark STAB)"},
                  {move:"Toxic",       src:"TM06 — defeat Janine (Fuchsia City Gym, Kanto) — enables Umbreon's stall role"}],
   // Crobat: all key moves come from level-up
@@ -6734,25 +6732,29 @@ const DT_TM_TIPS = {
                  {move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
   "Gligar":     [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"},
                  {move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  // Tyranitar — Hyper Beam (lv70) would rank first in level-desc sort but is Special in Gen IV (useless on 134 Atk)
+  "Tyranitar":  [{move:"Crunch",     src:"Level 41 — STAB Dark, 100% acc; preferred over Hyper Beam (Special in Gen IV + recharge turn)"},
+                 {move:"Earthquake", src:"Level 47 / TM26 — Victory Road (Johto) — Ground coverage with 134 Atk"},
+                 {move:"Stone Edge", src:"Level 54 / TM71 — Victory Road (Kanto) — STAB Rock + max SE coverage", oneTime:true}],
   // Normal attackers
   "Furret":     [{move:"Dig",        src:"TM28 — National Park area or buy — Ground coverage"}],
   "Blissey":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   // Grass types needing SolarBeam
   "Jumpluff":   [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
-                 {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
-  "Sunflora":   [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
+                 {move:"Giga Drain", src:"Level 44 / TM19 — National Park area (prize)"}],
+  "Sunflora":   [{move:"SolarBeam",  src:"Level 41 / TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
                  {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
   "Bellossom":  [{move:"SolarBeam",  src:"TM22 — Goldenrod Dept. Store 5F (₽3,000)"},
                  {move:"Giga Drain", src:"TM19 — National Park area (prize)"}],
   // Ghost — Shadow Ball from Morty is the key
   "Misdreavus": [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
-                 {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
+                 {move:"Shadow Ball", src:"Level 37 / TM30 — defeat Morty (Ecruteak City Gym)"}],
   // Mixed attackers needing coverage
-  "Girafarig":  [{move:"Psychic",    src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+  "Girafarig":  [{move:"Psychic",    src:"Level 37 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
                  {move:"Shadow Ball", src:"TM30 — defeat Morty (Ecruteak City Gym)"}],
   "Stantler":   [{move:"Psychic",    src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
-  "Octillery":  [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"},
+  "Octillery":  [{move:"Ice Beam",   src:"Level 48 / TM13 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Flamethrower",src:"TM35 — Goldenrod Game Corner (4,000 coins)"}],
   "Corsola":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   // Dark/Niche types
@@ -6761,15 +6763,15 @@ const DT_TM_TIPS = {
   // Trade-only
   "Kingdra":    [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Politoed":   [{move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
-  "Slowking":   [{move:"Psychic",    src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
+  "Slowking":   [{move:"Psychic",    src:"Level 48 / TM29 — Goldenrod Dept. Store 5F (₽3,500)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   "Porygon2":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],
   // Bug/Steel
-  "Scizor":     [{move:"Swords Dance",src:"TM75 — available mid-game — sets up devastating X-Scissor sweeps"},
-                 {move:"X-Scissor",  src:"TM81 — Cianwood City area"}],
+  "Scizor":     [{move:"Swords Dance",src:"Level 57 / TM75 — available mid-game — sets up devastating X-Scissor sweeps"},
+                 {move:"X-Scissor",  src:"Level 41 / TM81 — Cianwood City area"}],
   "Steelix":    [{move:"Earthquake", src:"TM26 — Victory Road (Johto)"},
-                 {move:"Stone Edge", src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+                 {move:"Stone Edge", src:"Level 54 / TM71 — Victory Road (Kanto)", oneTime:true}],
   // Mantine: all key moves come from level-up
   // Skarmory: Spikes and Steel Wing from level-up are sufficient
   // Azumarill: Aqua Tail and Superpower come from level-up (lv52 and lv62)
@@ -10337,6 +10339,20 @@ function DreamTeamTab({ isMobile, version }) {
                     {candInfo ? ` · ${candInfo.types.join("/")}` : (finalForm !== name ? ` · → ${finalForm}` : "")}
                     {candInfo?.stats ? ` · Atk ${candInfo.stats.atk} / SpA ${candInfo.stats.spa} / Spe ${candInfo.stats.spe}` : ""}
                   </div>
+                  {(() => {
+                    const chain = getDTEvoChain(name);
+                    if (chain.length <= 1) return null;
+                    return (
+                      <div style={{ fontSize:9, color:C.muted, marginTop:2, display:"flex", flexWrap:"wrap", gap:2, alignItems:"center" }}>
+                        {chain.map((step, i) => (
+                          <React.Fragment key={i}>
+                            {i > 0 && <span style={{ color:C.muted }}>{`→ lv.${step.level ?? "?"} `}</span>}
+                            <span style={{ color: step.name === name ? C.text : C.muted, fontWeight: step.name === name ? "600" : "400" }}>{step.name}</span>
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </div>
                 {!hardLocked && (
                   <button onClick={() => togglePin(idx)} title={userPinned ? "Unpin slot" : "Pin this Pokémon"}
@@ -13862,6 +13878,34 @@ const EVO_LEVELS = {
   "Pineco":[31,"Forretress"],
   "Teddiursa":[30,"Ursaring"],
 };
+
+// Reverse map: child → parent (for walking back to base form)
+const EVO_PREV = {};
+for (const [from, [, to]] of Object.entries(EVO_LEVELS)) {
+  if (!to) continue;
+  if (Array.isArray(to)) { for (const t of to) EVO_PREV[t] = from; }
+  else EVO_PREV[to] = from;
+}
+
+// Returns the full evo chain from base form, e.g. [{name:"Cyndaquil",level:null},{name:"Quilava",level:14},{name:"Typhlosion",level:36}]
+function getDTEvoChain(name) {
+  let base = name;
+  while (EVO_PREV[base]) base = EVO_PREV[base];
+  const chain = [{ name: base, level: null }];
+  let cur = base;
+  while (EVO_LEVELS[cur]) {
+    const [lv, next] = EVO_LEVELS[cur];
+    if (!next) break;
+    if (Array.isArray(next)) {
+      const target = next.find(n => n === name || DT_FINAL_FORM[n] === (DT_FINAL_FORM[name] || name));
+      chain.push({ name: target || next[0], level: lv });
+      break;
+    }
+    chain.push({ name: next, level: lv });
+    cur = next;
+  }
+  return chain;
+}
 
 function expAtLevel(n, group) {
   const n3 = n*n*n;

@@ -321,6 +321,41 @@
     .rate-cell.active-time[data-time="night"] .time-icon { color: var(--time-night); filter: drop-shadow(0 0 3px rgba(144,184,216,0.60)); }
     .rate-cell.active-time[data-time="night"] .rate-num  { color: #d8e8f4; }
 
+    /* ── Section separators (Wild / Headbutt / Surf / Fishing) ─── */
+    .section-sep {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 4px 2px;
+    }
+    .section-sep-line {
+      flex: 1;
+      height: 1px;
+      background: var(--area-border);
+      opacity: 0.45;
+    }
+    .section-sep-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Rod labels for the Fishing section (replaces time-icon) */
+    .rod-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .rate-cell.has-rate .rod-label { color: #c8d8e8; }
+
     /* ── Placeholder / status states ─────────────────────────────── */
     .placeholder {
       padding: 120px 50px;
@@ -622,8 +657,99 @@
     }
 
     // ──────────────────────────────────────────────────────────────
+    // SECTION CATEGORISATION
+    // Split the raw Pokémon list into wild / headbutt / surf / fish
+    // buckets, group each, and return a flat tagged-items array used
+    // by doRender.  Seps are injected at render time (not stored here)
+    // so pagination is always based on Pokémon count only.
+    // ──────────────────────────────────────────────────────────────
+    var SECTION_LABELS = { headbutt:'Headbutt', surf:'Surf', fishing:'Fishing' };
+
+    function groupFishPokemon(rawList, version) {
+      var map = new Map();
+      rawList.forEach(function(p) {
+        if (!map.has(p.name)) {
+          map.set(p.name, { name:p.name, oldRod:null, goodRod:null, superRod:null,
+                            hgOnly:!!p.hgOnly, ssOnly:!!p.ssOnly });
+        }
+        var e = map.get(p.name);
+        var rate = resolveRate(p.rate, version);
+        var m = (p.method || '').toLowerCase();
+        if (m === 'old rod')   e.oldRod   = rate;
+        if (m === 'good rod')  e.goodRod  = rate;
+        if (m === 'super rod') e.superRod = rate;
+      });
+      return Array.from(map.values());
+    }
+
+    function buildItems(area, version, tod) {
+      var raw = getRawPokemon(area);
+      var wildRaw = [], headbuttRaw = [], surfRaw = [], fishRaw = [];
+      raw.forEach(function(p) {
+        if (version === 'hg' && p.ssOnly) return;
+        if (version === 'ss' && p.hgOnly) return;
+        var m = (p.method || '').toLowerCase();
+        if (m === 'gift' || m === 'trade' || m === 'event')              return;
+        if (m === 'headbutt')                                            { headbuttRaw.push(p); return; }
+        if (m === 'surf')                                                { surfRaw.push(p);     return; }
+        if (m === 'old rod' || m === 'good rod' || m === 'super rod')   { fishRaw.push(p);     return; }
+        wildRaw.push(p);
+      });
+
+      var items = [];
+      function addTimedSection(rawList, section) {
+        var grouped = groupPokemon(rawList, version);
+        var sorted  = sortByActiveTime(grouped, tod);
+        sorted.forEach(function(p) { items.push({ type:'timed', section:section, p:p }); });
+      }
+      addTimedSection(wildRaw,     'wild');
+      addTimedSection(headbuttRaw, 'headbutt');
+      addTimedSection(surfRaw,     'surf');
+      if (fishRaw.length > 0) {
+        groupFishPokemon(fishRaw, version).forEach(function(p) {
+          items.push({ type:'fish', section:'fishing', p:p });
+        });
+      }
+      return items;
+    }
+
+    // ──────────────────────────────────────────────────────────────
     // RENDER HELPERS
     // ──────────────────────────────────────────────────────────────
+    function sectionSepHTML(label) {
+      return '<div class="section-sep">'
+        + '<span class="section-sep-line"></span>'
+        + '<span class="section-sep-label">' + label + '</span>'
+        + '<span class="section-sep-line"></span>'
+        + '</div>';
+    }
+
+    function fishRodCellHTML(rate, label, dropNum) {
+      var zero = !rate || rate === '0%';
+      var dropCls = dropNum === 1 ? ' drop-1' : dropNum === 2 ? ' drop-2' : '';
+      return '<span class="rate-cell' + (zero ? ' zero' : ' has-rate') + dropCls + '">'
+        + '<span class="rate-num">' + (rate || '0%') + '</span>'
+        + '<span class="rod-label">' + label + '</span>'
+        + '</span>';
+    }
+
+    function fishRowHTML(p, i, caught) {
+      var nameCls = 'poke-name' + (p.hgOnly ? ' hg' : p.ssOnly ? ' ss' : '');
+      var rowCls  = 'poke-row' + (i % 2 === 1 ? ' alt' : '') + (caught ? ' caught' : '');
+      var sprite  = spriteUrl(p.name);
+      return '<div class="' + rowCls + '" style="--row-i:' + i + '">'
+        + (sprite
+            ? '<img class="sprite" src="' + sprite + '" alt="' + p.name + '" onerror="this.style.visibility=\'hidden\'">'
+            : '<span class="sprite"></span>')
+        + '<span class="' + nameCls + '">' + p.name + '</span>'
+        + '<div class="rates">'
+            + fishRodCellHTML(p.oldRod,   'OLD',   1)
+            + fishRodCellHTML(p.goodRod,  'GOOD',  2)
+            + fishRodCellHTML(p.superRod, 'SUPER', 0)
+        + '</div>'
+        + '</div>';
+    }
+
     function rateCellHTML(rate, time, tod) {
       var zero = !rate || rate === '0%';
       var active = (time === tod) && !zero;
@@ -704,33 +830,43 @@
       var areaType = inferAreaType(area);
       var tod      = currentTimeOfDay();
 
-      var grouped  = groupPokemon(getRawPokemon(area), version);
-      var sorted   = sortByActiveTime(grouped, tod);
+      var items = buildItems(area, version, tod);
 
-      // Completed state — every visible Pokemon is caught.
-      var completed = sorted.length > 0 && sorted.every(function(p) { return caught[p.name]; });
+      // Completed state — every visible Pokémon is caught.
+      var completed = items.length > 0 && items.every(function(it) { return caught[it.p.name]; });
 
-      // Pagination
-      var pages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+      // Pagination (seps rendered inline; pagination based on Pokémon count only)
+      var pages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
       if (currentPage >= pages) currentPage = 0;
-      var start = currentPage * PAGE_SIZE;
-      var pageItems = sorted.slice(start, start + PAGE_SIZE);
+      var pageItems = items.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
 
       var rowsHTML = '';
-      if (sorted.length === 0) {
+      if (items.length === 0) {
         rowsHTML = '<div class="poke-row pad" style="--row-i:0"></div>'
-          + '<div class="placeholder" style="border:none; padding: 20px 0; background:transparent; grid-column: 1 / -1;">'
-          +   '<strong>No wild Pok&eacute;mon</strong>'
-          + '</div>';
+          + '<div class="placeholder" style="border:none;padding:20px 0;background:transparent">'
+          + '<strong>No wild Pok&eacute;mon</strong></div>';
       } else {
+        var lastSection = null;
+        var rowIdx = 0;
         for (var k = 0; k < pageItems.length; k++) {
-          var p = pageItems[k];
-          var globalIdx = start + k;
-          var isCaught = !!caught[p.name];
-          rowsHTML += rowHTML(p, k, isCaught);
+          var item = pageItems[k];
+          // Inject section separator on every section boundary (except wild — it's the default).
+          if (item.section !== lastSection) {
+            if (item.section !== 'wild') {
+              rowsHTML += sectionSepHTML(SECTION_LABELS[item.section] || item.section);
+            }
+            lastSection = item.section;
+          }
+          var isCaught = !!caught[item.p.name];
+          if (item.type === 'fish') {
+            rowsHTML += fishRowHTML(item.p, rowIdx, isCaught);
+          } else {
+            rowsHTML += rowHTML(item.p, rowIdx, isCaught);
+          }
+          rowIdx++;
         }
         // Pad to PAGE_SIZE so the rows-card height stays fixed across pages.
-        for (var j = pageItems.length; j < PAGE_SIZE; j++) {
+        for (var j = rowIdx; j < PAGE_SIZE; j++) {
           rowsHTML += padRowHTML(j);
         }
       }

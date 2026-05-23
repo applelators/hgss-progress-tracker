@@ -6712,8 +6712,8 @@ const DT_TM_TIPS = {
   "Mr. Mime":   [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Exeggutor":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
   "Girafarig":  [{move:"Psychic",     src:"TM29 — Goldenrod Dept. Store 5F (₽3,500)"}],
-  // Fighting — Close Combat and Megahorn come from level-up (see LEARNSETS); Stone Edge is a one-time TM
-  "Heracross":  [{move:"Stone Edge",  src:"TM71 — Victory Road (Kanto)", oneTime:true}],
+  // Fighting — moveset is full: Megahorn + Close Combat (level-up) + Cut + Headbutt (HMs)
+  // No TM tips needed; Stone Edge has no room and Close Combat already outclasses it with STAB.
   // Nidoran lines — coverage via Thunderbolt + Ice Beam (both special-stat Pokémon)
   "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Goldenrod Game Corner (4,000 coins)"},
                  {move:"Ice Beam",   src:"TM13 — Goldenrod Game Corner (4,000 coins)"}],

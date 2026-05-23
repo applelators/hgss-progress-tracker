@@ -7060,7 +7060,7 @@ function getDreamHMs(name) {
 //    (d) Team order (later = considered more utility-oriented)
 function assignHMs(team, maxPerPokemon) {
   const max = maxPerPokemon || 3;
-  const ALL_HMs = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash","Rock Climb"];
+  const ALL_HMs = ["Fly","Surf","Waterfall","Whirlpool","Headbutt","Strength","Cut","Rock Smash","Rock Climb"];
   const canLearn = {};
   team.forEach(name => { canLearn[name] = new Set(getDreamHMs(name)); });
 
@@ -7098,7 +7098,7 @@ function assignHMs(team, maxPerPokemon) {
 
   // HMs with BP < 50 aren't worth using offensively — skip STAB preference for them
   // so low-power HMs (Rock Smash 20 BP) don't land on wrong Pokémon via STAB shortcut.
-  const HM_BP = { Fly:90, Surf:95, Strength:80, Cut:50, Waterfall:80, Whirlpool:35, "Rock Smash":20, "Rock Climb":90 };
+  const HM_BP = { Fly:90, Surf:95, Strength:80, Cut:50, Waterfall:80, Whirlpool:35, "Rock Smash":20, "Rock Climb":90, Headbutt:70 };
 
   for (const hm of sorted) {
     const avail = candidates[hm].filter(n => load[n] < max);

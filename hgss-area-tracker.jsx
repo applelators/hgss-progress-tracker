@@ -505,7 +505,7 @@ const AREAS = [
   { part:"Part 4", id:"ruins-of-alph", name:"Ruins of Alph",
     note:"4 tile puzzles unlock all 28 Unown forms. North chamber accessible on first visit; other chambers require HMs.",
     pokemon:[
-      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%", note:"Requires Surf to access the pond area"},
+      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%", note:"Requires Surf — catchable in the Part 8 Surf return visit"},
       {name:"Smeargle",method:"Grass",   levels:"20,22", rate:"10%"},
       {name:"Unown",   method:"Cave",    levels:"5",     rate:"100%", note:"After solving puzzles; 26 letters + ? and !"},
       {name:"Poliwag", method:"Old Rod", levels:"10",    rate:"15%"},
@@ -1243,7 +1243,10 @@ const AREAS = [
 
   { part:"Part 8", id:"ruins-of-alph-surf-return", name:"Ruins of Alph (Return — Surf)",
     note:"Return with Surf to reach the SE and W chambers. Trainer Nathan is also accessible via Union Cave.",
-    pokemon:[],
+    pokemon:[
+      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%"},
+      {name:"Smeargle",method:"Grass",   levels:"20,22", rate:"10%"},
+    ],
     items:[
       {name:"Sitrus Berry", hidden:false, note:"SE chamber"},
       {name:"Moon Stone",   hidden:false, note:"SE chamber"},

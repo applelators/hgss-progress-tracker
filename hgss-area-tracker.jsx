@@ -4809,6 +4809,7 @@ for (const [name, locs] of Object.entries(LOCATION_MAP)) {
   for (const ver of ["hg","ss"]) {
     let best = null;
     for (const loc of locs) {
+      if (loc.part === "Pokéwalker") continue;
       if (ver === "hg" && loc.ssOnly) continue;
       if (ver === "ss" && loc.hgOnly) continue;
       const pct = _locPct(loc, ver);

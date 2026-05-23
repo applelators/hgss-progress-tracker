@@ -505,7 +505,7 @@ const AREAS = [
   { part:"Part 4", id:"ruins-of-alph", name:"Ruins of Alph",
     note:"4 tile puzzles unlock all 28 Unown forms. North chamber accessible on first visit; other chambers require HMs.",
     pokemon:[
-      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%", note:"Requires Surf — catchable in the Part 8 Surf return visit"},
+      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%", locked:true, note:"Requires Surf — catchable in the Part 8 Surf return visit"},
       {name:"Smeargle",method:"Grass",   levels:"20,22", rate:"10%"},
       {name:"Unown",   method:"Cave",    levels:"5",     rate:"100%", note:"After solving puzzles; 26 letters + ? and !"},
       {name:"Poliwag", method:"Old Rod", levels:"10",    rate:"15%"},
@@ -10027,6 +10027,7 @@ function DreamTeamTab({ isMobile, version }) {
         for (const searchName of searchNames) {
           const matches = _allPokemon(area).filter(p =>
             p.name === searchName &&
+            !p.locked &&
             !(version === "hg" && p.ssOnly) &&
             !(version === "ss" && p.hgOnly)
           );
@@ -10064,7 +10065,7 @@ function DreamTeamTab({ isMobile, version }) {
         if (area.part === "Pokéwalker") continue;
         for (const sn of searchNames) {
           if (_allPokemon(area).some(p => p.name === sn &&
-              !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly))) {
+              !p.locked && !(version === "hg" && p.ssOnly) && !(version === "ss" && p.hgOnly))) {
             found = parseInt(area.part?.match(/\d+/)?.[0] || 999);
             break outer;
           }
@@ -10119,6 +10120,7 @@ function DreamTeamTab({ isMobile, version }) {
         for (const searchName of searchNames) {
           const matches = _allPokemon(area).filter(p =>
             p.name === searchName &&
+            !p.locked &&
             !(version === "hg" && p.ssOnly) &&
             !(version === "ss" && p.hgOnly)
           );

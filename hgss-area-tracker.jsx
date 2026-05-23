@@ -505,7 +505,7 @@ const AREAS = [
   { part:"Part 4", id:"ruins-of-alph", name:"Ruins of Alph",
     note:"4 tile puzzles unlock all 28 Unown forms. North chamber accessible on first visit; other chambers require HMs.",
     pokemon:[
-      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%"},
+      {name:"Natu",    method:"Grass",   levels:"18–24", rate:"90%", note:"Requires Surf to access the pond area"},
       {name:"Smeargle",method:"Grass",   levels:"20,22", rate:"10%"},
       {name:"Unown",   method:"Cave",    levels:"5",     rate:"100%", note:"After solving puzzles; 26 letters + ? and !"},
       {name:"Poliwag", method:"Old Rod", levels:"10",    rate:"15%"},

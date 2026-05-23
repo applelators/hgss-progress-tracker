@@ -7138,21 +7138,29 @@ function assignHMs(team, maxPerPokemon) {
 }
 
 function getDreamAcquisition(name) {
-  const direct = LOCATION_MAP[name];
-  if (direct && direct.length > 0) {
-    const l = direct[0];
-    return `${l.areaName}${l.levels ? ` — ${l.method}, Lv. ${l.levels}` : ` — ${l.method}`}`;
-  }
+  const partNum = (part) => parseInt(part?.match(/\d+/)?.[0] || 999);
+  const sortLocs = (locs) => [...(locs || [])]
+    .filter(l => l.part !== "Pokéwalker")
+    .sort((a, b) => partNum(a.part) - partNum(b.part));
+
+  const direct = sortLocs(LOCATION_MAP[name]);
+
   const preEvos = [
     ...Object.entries(DT_FINAL_FORM).filter(([,f]) => f === name).map(([b]) => b),
     ...(BRANCH_PRE_EVO[name] ? [BRANCH_PRE_EVO[name]] : []),
   ];
-  for (const base of preEvos) {
-    const baseLocs = LOCATION_MAP[base];
-    if (baseLocs && baseLocs.length > 0) {
-      const l = baseLocs[0];
-      return `Catch ${base} at ${l.areaName}${l.levels ? ` (${l.method}, Lv. ${l.levels})` : ` (${l.method})`} → evolve to ${name}`;
-    }
+  const bestPreEvo = preEvos
+    .map(base => { const locs = sortLocs(LOCATION_MAP[base]); return locs.length ? { base, loc: locs[0] } : null; })
+    .filter(Boolean)
+    .sort((a, b) => partNum(a.loc.part) - partNum(b.loc.part))[0];
+
+  if (direct.length > 0 && (!bestPreEvo || partNum(direct[0].part) <= partNum(bestPreEvo.loc.part))) {
+    const l = direct[0];
+    return `${l.areaName}${l.levels ? ` — ${l.method}, Lv. ${l.levels}` : ` — ${l.method}`}`;
+  }
+  if (bestPreEvo) {
+    const { base, loc: l } = bestPreEvo;
+    return `Catch ${base} at ${l.areaName}${l.levels ? ` (${l.method}, Lv. ${l.levels})` : ` (${l.method})`} → evolve to ${name}`;
   }
   return "See Pokédex for location details";
 }

@@ -6566,52 +6566,52 @@ const EVO_DELAY = {}; // TODO: Add Johto evolution delay notes
 // Tyranitar (pseudo-legendary) is always locked into slot 1 unless it's the favorite.
 const DT_CANDIDATES = [
   // ── Starters ─────────────────────────────────────────────────────────────────
-  { name:"Typhlosion",  types:["Fire"],            hms:["Cut","Strength","Rock Smash","Rock Climb"], stats:{atk:84,  spa:109, spe:100} },
-  { name:"Feraligatr",  types:["Water"],            hms:["Cut","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:105, spa:79,  spe:78} },
-  { name:"Meganium",    types:["Grass"],            hms:["Cut","Strength","Rock Smash","Rock Climb"], stats:{atk:82,  spa:83,  spe:80} },
+  { name:"Typhlosion",  types:["Fire"],            hms:["Cut","Headbutt","Strength","Rock Smash","Rock Climb"], stats:{atk:84,  spa:109, spe:100} },
+  { name:"Feraligatr",  types:["Water"],            hms:["Cut","Headbutt","Surf","Strength","Waterfall","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:105, spa:79,  spe:78} },
+  { name:"Meganium",    types:["Grass"],            hms:["Cut","Headbutt","Strength","Rock Smash","Rock Climb"], stats:{atk:82,  spa:83,  spe:80} },
   // ── Top picks ────────────────────────────────────────────────────────────────
-  { name:"Ampharos",    types:["Electric"],         hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:45,  spa:115, spe:55} },
-  { name:"Heracross",   types:["Bug","Fighting"],   hms:["Cut","Strength","Rock Smash"], stats:{atk:125, spa:35,  spe:85} },
-  { name:"Espeon",      types:["Psychic"],          hms:["Cut"], stats:{atk:65,  spa:130, spe:110} },
-  { name:"Umbreon",     types:["Dark"],             hms:["Cut"], stats:{atk:65,  spa:60,  spe:65} },
-  { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Strength","Rock Smash","Rock Climb"], tradeOnly:true, stats:{atk:85,  spa:30,  spe:30} },
-  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Strength","Rock Smash"], tradeOnly:true, stats:{atk:130, spa:55,  spe:65} },
-  { name:"Donphan",     types:["Ground"],           hms:["Strength","Rock Smash"], hgOnly:true, stats:{atk:120, spa:60,  spe:50} },
-  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Strength","Rock Smash"], stats:{atk:90,  spa:110, spe:95} },
+  { name:"Ampharos",    types:["Electric"],         hms:["Headbutt","Strength","Rock Smash","Rock Climb"], stats:{atk:45,  spa:115, spe:55} },
+  { name:"Heracross",   types:["Bug","Fighting"],   hms:["Cut","Headbutt","Strength","Rock Smash"], stats:{atk:125, spa:35,  spe:85} },
+  { name:"Espeon",      types:["Psychic"],          hms:["Cut","Headbutt"], stats:{atk:65,  spa:130, spe:110} },
+  { name:"Umbreon",     types:["Dark"],             hms:["Cut","Headbutt"], stats:{atk:65,  spa:60,  spe:65} },
+  { name:"Steelix",     types:["Steel","Ground"],   hms:["Cut","Headbutt","Strength","Rock Smash","Rock Climb"], tradeOnly:true, stats:{atk:85,  spa:30,  spe:30} },
+  { name:"Scizor",      types:["Bug","Steel"],      hms:["Cut","Headbutt","Strength","Rock Smash"], tradeOnly:true, stats:{atk:130, spa:55,  spe:65} },
+  { name:"Donphan",     types:["Ground"],           hms:["Headbutt","Strength","Rock Smash"], hgOnly:true, stats:{atk:120, spa:60,  spe:50} },
+  { name:"Houndoom",    types:["Dark","Fire"],      hms:["Headbutt","Strength","Rock Smash"], stats:{atk:90,  spa:110, spe:95} },
   { name:"Skarmory",    types:["Steel","Flying"],   hms:["Cut","Fly","Rock Smash"], ssOnly:true, stats:{atk:80,  spa:40,  spe:70} },
-  { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:134, spa:95,  spe:61} },
+  { name:"Tyranitar",   types:["Rock","Dark"],      hms:["Cut","Headbutt","Surf","Strength","Whirlpool","Rock Smash","Rock Climb"], stats:{atk:134, spa:95,  spe:61} },
   { name:"Kingdra",     types:["Water","Dragon"],   hms:["Surf","Waterfall","Whirlpool"], tradeOnly:true, stats:{atk:95, spa:95,  spe:85} },
-  { name:"Politoed",    types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:90,  spe:70} },
-  { name:"Slowking",    types:["Water","Psychic"],  hms:["Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:100, spe:30} },
+  { name:"Politoed",    types:["Water"],            hms:["Headbutt","Surf","Strength","Waterfall","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:90,  spe:70} },
+  { name:"Slowking",    types:["Water","Psychic"],  hms:["Headbutt","Surf","Strength","Whirlpool","Rock Smash"], tradeOnly:true, stats:{atk:75, spa:100, spe:30} },
   { name:"Crobat",      types:["Poison","Flying"],  hms:["Fly"], stats:{atk:90, spa:70,  spe:130} },
-  { name:"Blissey",     types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:10, spa:75,  spe:55} },
-  { name:"Ursaring",    types:["Normal"],           hms:["Cut","Strength","Rock Smash","Rock Climb"], ssOnly:true, stats:{atk:130,spa:75,  spe:55} },
+  { name:"Blissey",     types:["Normal"],           hms:["Headbutt","Strength","Rock Smash","Rock Climb"], stats:{atk:10, spa:75,  spe:55} },
+  { name:"Ursaring",    types:["Normal"],           hms:["Cut","Headbutt","Strength","Rock Smash","Rock Climb"], ssOnly:true, stats:{atk:130,spa:75,  spe:55} },
   { name:"Mantine",     types:["Water","Flying"],   hms:["Surf","Waterfall","Whirlpool"], hgOnly:true, stats:{atk:40, spa:80,  spe:70} },
   // ── Good picks ───────────────────────────────────────────────────────────────
   { name:"Xatu",        types:["Psychic","Flying"], hms:["Fly"], bonus: 3, stats:{atk:65,  spa:95,  spe:95} },
   { name:"Lanturn",     types:["Water","Electric"], hms:["Surf","Waterfall","Whirlpool"], bonus: 4, stats:{atk:58,  spa:76,  spe:67} },
-  { name:"Azumarill",   types:["Water"],            hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:50,  spa:50,  spe:50} },
-  { name:"Quagsire",    types:["Water","Ground"],   hms:["Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:85,  spa:65,  spe:35} },
+  { name:"Azumarill",   types:["Water"],            hms:["Headbutt","Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:50,  spa:50,  spe:50} },
+  { name:"Quagsire",    types:["Water","Ground"],   hms:["Headbutt","Surf","Strength","Waterfall","Whirlpool","Rock Smash"], stats:{atk:85,  spa:65,  spe:35} },
   { name:"Forretress",  types:["Bug","Steel"],      hms:["Strength","Rock Smash"], stats:{atk:90,  spa:30,  spe:40} },
-  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly"], stats:{atk:50,  spa:76,  spe:70} },
-  { name:"Granbull",    types:["Normal"],           hms:["Strength","Rock Smash","Rock Climb"], stats:{atk:120,spa:45,  spe:45} },
-  { name:"Miltank",     types:["Normal"],           hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:80, spa:40,  spe:100} },
-  { name:"Hitmontop",   types:["Fighting"],         hms:["Strength","Rock Smash"], stats:{atk:95, spa:35,  spe:70} },
-  { name:"Porygon2",    types:["Normal"],           hms:[], tradeOnly:true, stats:{atk:80, spa:105, spe:60} },
+  { name:"Noctowl",     types:["Normal","Flying"],  hms:["Fly","Headbutt"], stats:{atk:50,  spa:76,  spe:70} },
+  { name:"Granbull",    types:["Normal"],           hms:["Headbutt","Strength","Rock Smash","Rock Climb"], stats:{atk:120,spa:45,  spe:45} },
+  { name:"Miltank",     types:["Normal"],           hms:["Headbutt","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:80, spa:40,  spe:100} },
+  { name:"Hitmontop",   types:["Fighting"],         hms:["Headbutt","Strength","Rock Smash"], stats:{atk:95, spa:35,  spe:70} },
+  { name:"Porygon2",    types:["Normal"],           hms:["Headbutt"], tradeOnly:true, stats:{atk:80, spa:105, spe:60} },
   { name:"Bellossom",   types:["Grass"],            hms:["Cut"], stats:{atk:80, spa:90,  spe:50} },
   { name:"Jumpluff",    types:["Grass","Flying"],   hms:[], stats:{atk:55, spa:55,  spe:110} },
-  { name:"Sudowoodo",   types:["Rock"],             hms:["Strength","Rock Smash"], stats:{atk:100,spa:30,  spe:30} },
-  { name:"Girafarig",   types:["Normal","Psychic"], hms:["Strength","Rock Smash"], stats:{atk:80, spa:90,  spe:85} },
+  { name:"Sudowoodo",   types:["Rock"],             hms:["Headbutt","Strength","Rock Smash"], stats:{atk:100,spa:30,  spe:30} },
+  { name:"Girafarig",   types:["Normal","Psychic"], hms:["Headbutt","Strength","Rock Smash"], stats:{atk:80, spa:90,  spe:85} },
   { name:"Magcargo",    types:["Fire","Rock"],      hms:["Strength","Rock Smash"], stats:{atk:50, spa:80,  spe:30} },
-  { name:"Piloswine",   types:["Ice","Ground"],     hms:["Strength","Rock Smash"], stats:{atk:100,spa:60,  spe:50} },
+  { name:"Piloswine",   types:["Ice","Ground"],     hms:["Headbutt","Strength","Rock Smash"], stats:{atk:100,spa:60,  spe:50} },
   { name:"Octillery",   types:["Water"],            hms:["Surf","Waterfall","Whirlpool"], stats:{atk:105,spa:105, spe:45} },
-  { name:"Corsola",     types:["Water","Rock"],     hms:["Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:55, spa:65,  spe:35} },
-  { name:"Furret",      types:["Normal"],           hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:76, spa:56,  spe:90} },
+  { name:"Corsola",     types:["Water","Rock"],     hms:["Headbutt","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:55, spa:65,  spe:35} },
+  { name:"Furret",      types:["Normal"],           hms:["Cut","Headbutt","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:76, spa:56,  spe:90} },
   { name:"Sunflora",    types:["Grass"],            hms:["Cut"], stats:{atk:75, spa:105, spe:30} },
   // ── Niche picks ──────────────────────────────────────────────────────────────
   { name:"Ariados",     types:["Bug","Poison"],     hms:[], stats:{atk:90, spa:60,  spe:40} },
   { name:"Ledian",      types:["Bug","Flying"],     hms:["Strength","Rock Smash"], stats:{atk:35, spa:35,  spe:85} },
-  { name:"Sneasel",     types:["Dark","Ice"],       hms:["Cut","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:95, spa:35,  spe:115} },
+  { name:"Sneasel",     types:["Dark","Ice"],       hms:["Cut","Headbutt","Surf","Strength","Whirlpool","Rock Smash"], stats:{atk:95, spa:35,  spe:115} },
   { name:"Misdreavus",  types:["Ghost"],            hms:[], stats:{atk:60, spa:85,  spe:85} },
   { name:"Murkrow",     types:["Dark","Flying"],    hms:["Fly"], stats:{atk:85, spa:42,  spe:91} },
   { name:"Shuckle",     types:["Bug","Rock"],       hms:["Strength","Rock Smash"], stats:{atk:10, spa:10,  spe:5} },
@@ -6635,6 +6635,7 @@ const DT_HM_COMPAT = {
   "Rock Smash": new Set(["Heracross","Tyranitar","Pupitar","Larvitar","Sudowoodo","Donphan","Phanpy","Ursaring","Teddiursa","Steelix","Onix","Hitmontop","Hitmonlee","Hitmonchan","Tyrogue","Machamp","Machoke","Machop","Politoed","Poliwrath","Poliwhirl","Quagsire","Wooper","Forretress","Pineco","Corsola","Nidoking","Nidorino","Nidoran♂","Nidoqueen","Nidorina","Nidoran♀","Shuckle","Granbull","Snubbull","Marowak","Cubone","Feraligatr","Croconaw","Totodile","Ampharos","Flaaffy","Lickilicky","Lickitung","Omastar","Omanyte","Aerodactyl","Rhydon","Rhyhorn","Kangaskhan","Snorlax","Tauros","Primeape","Mankey","Magcargo","Slugma","Miltank","Pinsir","Blissey","Chansey","Gligar","Scizor","Houndoom","Skarmory","Dunsparce","Girafarig","Sneasel","Ledian","Azumarill"]),
   "Waterfall":  new Set(["Feraligatr","Croconaw","Totodile","Lanturn","Chinchou","Azumarill","Marill","Politoed","Poliwrath","Poliwhirl","Poliwag","Quagsire","Wooper","Remoraid","Octillery","Mantine","Kingdra","Seadra","Horsea","Slowbro","Slowpoke","Gyarados","Lapras","Starmie","Staryu","Psyduck","Golduck","Dewgong","Seel","Cloyster","Vaporeon","Dragonite","Dragonair","Dratini","Rhydon","Qwilfish","Seaking","Goldeen"]),
   "Rock Climb": new Set(["Tyranitar","Pupitar","Larvitar","Steelix","Onix","Ursaring","Teddiursa","Snorlax","Machamp","Machoke","Nidoking","Nidoqueen","Dragonite","Kangaskhan","Aerodactyl","Primeape","Mankey","Rhydon","Rhyhorn","Typhlosion","Quilava","Cyndaquil","Meganium","Bayleef","Chikorita","Feraligatr","Croconaw","Totodile","Ampharos","Flaaffy","Blissey","Chansey","Granbull","Snubbull"]),
+  "Headbutt":   new Set(["Typhlosion","Quilava","Cyndaquil","Feraligatr","Croconaw","Totodile","Meganium","Bayleef","Chikorita","Ampharos","Flaaffy","Heracross","Espeon","Umbreon","Steelix","Onix","Scizor","Scyther","Donphan","Phanpy","Houndoom","Houndour","Tyranitar","Pupitar","Larvitar","Politoed","Poliwrath","Poliwhirl","Poliwag","Slowking","Slowbro","Slowpoke","Blissey","Chansey","Ursaring","Teddiursa","Quagsire","Wooper","Azumarill","Marill","Granbull","Snubbull","Miltank","Tauros","Hitmontop","Hitmonlee","Hitmonchan","Tyrogue","Porygon2","Porygon","Sudowoodo","Girafarig","Piloswine","Swinub","Corsola","Furret","Sentret","Sneasel","Noctowl","Hoothoot","Snorlax","Kangaskhan","Rhydon","Rhyhorn","Primeape","Mankey","Machamp","Machoke","Machop","Dragonite","Dragonair","Dratini","Dugtrio","Diglett","Persian","Meowth","Arcanine","Growlithe","Vaporeon","Jolteon","Flareon","Eevee","Golduck","Psyduck","Gyarados","Aerodactyl","Omastar","Omanyte","Kabutops","Kabuto","Kingler","Krabby","Magmar","Magby","Electabuzz","Elekid","Pinsir","Exeggutor","Exeggcute","Lickitung","Lickilicky","Tangela","Tangrowth","Nidoking","Nidorino","Nidoqueen","Nidorina","Seaking","Goldeen","Starmie","Staryu","Lapras","Wigglytuff","Jigglypuff","Clefable","Clefairy","Raichu","Pikachu","Pichu"]),
 };
 
 // Neutral Pokémon are listed first so they always outrank version-exclusive picks
@@ -10182,7 +10183,7 @@ function DreamTeamTab({ isMobile, version }) {
   const teamCoverage = getTeamCoverage(team);
   const missingTypes = TYPES_17.filter(t => !teamCoverage.has(t));
   const hmsCovered   = new Set(team.flatMap(n => { const f = DT_FINAL_FORM[n]||n; return Object.entries(DT_HM_COMPAT).filter(([,s])=>s.has(f)).map(([h])=>h); }));
-  const hmsMissing   = ["Fly","Surf","Waterfall","Whirlpool","Strength","Cut","Rock Smash","Rock Climb"].filter(h => !hmsCovered.has(h));
+  const hmsMissing   = ["Fly","Surf","Waterfall","Whirlpool","Headbutt","Strength","Cut","Rock Smash","Rock Climb"].filter(h => !hmsCovered.has(h));
 
   const TypePill = ({type, bg}) => (
     <span style={{ fontSize:8, color:"#fff", background: bg||TYPE_COLORS[type]||"#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3 }}>{type}</span>

@@ -7091,6 +7091,19 @@ function assignHMs(team, maxPerPokemon) {
     }
   }
 
+  // Phase 1b: Physical-chore bundling — if Heracross is on the team, give it Cut + Headbutt.
+  // Heracross's battle role only needs Close Combat + Megahorn, so it has two free slots.
+  // Absorbing both utility Normal moves here keeps them off heavy hitters that have better uses.
+  const heracrossSlot = team.find(n => (DT_FINAL_FORM[n] || n) === "Heracross");
+  if (heracrossSlot) {
+    for (const hm of ["Cut", "Headbutt"]) {
+      if (!assignments[hm] && canLearn[heracrossSlot].has(hm) && load[heracrossSlot] < max) {
+        assignments[hm] = heracrossSlot;
+        load[heracrossSlot]++;
+      }
+    }
+  }
+
   // Phase 2: Remaining HMs — fewest carriers first so rarest HMs are assigned first.
   const sorted = ALL_HMs
     .filter(hm => !assignments[hm] && candidates[hm] && candidates[hm].length > 0)

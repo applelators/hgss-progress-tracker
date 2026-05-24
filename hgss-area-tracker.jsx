@@ -139,6 +139,8 @@ const DEX = [
   {johtoId:255,id:151,name:"Mew",     warn:true,event:true},
   {johtoId:256,id:251,name:"Celebi",  warn:true,event:true},
 ];
+// Names in the Johto regional dex — used to flag wild encounters as NAT
+const JOHTO_DEX_NAMES = new Set(DEX.map(d => d.name));
 
 // ─── NATIONAL DEX (Gen III/IV obtainable in HGSS) ────────────────────────────
 const NATIONAL_DEX = [
@@ -15101,6 +15103,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               <div style={{ fontSize:11, color:C.muted, marginBottom:12, display:"flex", gap:16, flexWrap:"wrap" }}>
                 <span><span style={{ color:C.hgGold, fontWeight:"600" }}>HG</span> = HeartGold exclusive</span>
                 <span><span style={{ color:C.ssSilver, fontWeight:"600" }}>SS</span> = SoulSilver exclusive</span>
+                <span><span style={{ color:"#5b9bd5", fontWeight:"600" }}>NAT</span> = National Dex only</span>
                 <span><span style={{ color:C.gold }}>★</span> = Hidden (Itemfinder)</span>
                 {getAreaType(area) === 'safari' && <span><span style={{ color:"#38c88a", fontWeight:"600" }}>ZONE</span> = Safari Zone exclusive</span>}
               </div>
@@ -15409,8 +15412,9 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
   }, [isCaught]);
   if ((version === "hg" && p.ssOnly) || (version === "ss" && p.hgOnly)) return null;
 
-  const isPassed     = !!(p.choiceGroup && choiceGroups?.[p.choiceGroup] && choiceGroups[p.choiceGroup] !== p.choiceId);
+  const isPassed      = !!(p.choiceGroup && choiceGroups?.[p.choiceGroup] && choiceGroups[p.choiceGroup] !== p.choiceId);
   const isSZExclusive = areaId?.startsWith('safari-zone-') && SAFARI_ZONE_EXCLUSIVES.has(p.name);
+  const isNatDex      = !JOHTO_DEX_NAMES.has(p.name);
 
   // Determine if a better-rate area exists for this Pokémon
   const hgssMatch  = p.rate && p.rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
@@ -15432,7 +15436,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
       {allDexId(p.name) && <img key={wobbleNonce} src={pokeSpriteUrl(allDexId(p.name))} alt={p.name} className={wobbleNonce && isCaught ? "hgss-wobble" : ""} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.65, filter:isCaught?"none":"brightness(0)", transition:"opacity 0.25s, filter 0.25s" }} />}
       <div style={{ flex:1 }}>
         <span style={{ color:isCaught?C.green:p.ssOnly?C.ssSilver:p.hgOnly?C.hgGold:C.text, fontWeight:"600", fontSize:12 }}>
-          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}{WALKER_EXCLUSIVE.has(p.name)&&<Tag color="#9060d0">PW ★</Tag>}{isSZExclusive&&<Tag color="#38c88a">ZONE</Tag>}
+          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}{WALKER_EXCLUSIVE.has(p.name)&&<Tag color="#9060d0">PW ★</Tag>}{isSZExclusive&&<Tag color="#38c88a">ZONE</Tag>}{isNatDex&&<Tag color="#5b9bd5">NAT</Tag>}
         </span>
         {METHOD_SPRITE_URL[p.method]
           ? <span style={{ display:"inline-flex", alignItems:"center", gap:3, marginLeft:6 }}>

@@ -8401,6 +8401,7 @@ const METHOD_SPRITE_URL = {
   "Old Rod":   itemSpriteUrl("Old Rod"),
   "Good Rod":  itemSpriteUrl("Good Rod"),
   "Super Rod": itemSpriteUrl("Super Rod"),
+  "Headbutt":  pokeSpriteUrl(204),  // Pineco — iconic tree encounter
 };
 
 const TRAINER_CLASS_SPRITE = {
@@ -15141,12 +15142,12 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, ver
 
 
 const METHOD_GROUP = m => {
-  if (m === "Surf" || m === "Old Rod" || m === "Good Rod" || m === "Super Rod") return m;
+  if (m === "Surf" || m === "Old Rod" || m === "Good Rod" || m === "Super Rod" || m === "Headbutt") return m;
   return null;
 };
 
 function MethodDivider({ label }) {
-  const color = label === "Surf" ? "#4a8fc4" : "#4a9fa0";
+  const color = label === "Surf" ? "#4a8fc4" : label === "Headbutt" ? "#6a9a50" : "#4a9fa0";
   const sprite = METHOD_SPRITE_URL[label];
   return (
     <div style={{ display:"flex", alignItems:"center", gap:7, margin:"6px 0 2px" }}>

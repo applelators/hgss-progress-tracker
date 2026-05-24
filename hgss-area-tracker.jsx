@@ -7172,6 +7172,41 @@ const _NO_POKEBALL_METHODS = new Set(["Gift","Trade","Fossil","Event","Game Corn
 const _WILD_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod"]);
 const _RATE_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod","Headbutt","Bug Contest"]);
 
+// Precompute per-area best-chance Pokémon (no higher rate in any later area), per version.
+// Stored as { areaId → { hg: [{name,rate}], ss: [{name,rate}] } }
+const AREA_BEST_CHANCE = {};
+for (const _bcArea of AREAS) {
+  if (_bcArea.part === "Pokéwalker") continue;
+  const _bcPartNum = parseInt(_bcArea.part?.match(/\d+/)?.[0] || 999);
+  for (const _bcVer of ["hg","ss"]) {
+    const _bcByName = new Map();
+    for (const _bcp of _allPokemon(_bcArea)) {
+      if (!_RATE_METHODS.has(_bcp.method)) continue;
+      if (_bcVer === "hg" && _bcp.ssOnly) continue;
+      if (_bcVer === "ss" && _bcp.hgOnly) continue;
+      const _bcR = _locPct(_bcp, _bcVer) || 0;
+      if (_bcR <= 0) continue;
+      if (!_bcByName.has(_bcp.name) || _bcR > _bcByName.get(_bcp.name)) _bcByName.set(_bcp.name, _bcR);
+    }
+    const _bcBest = [..._bcByName.entries()].filter(([_bcName, _bcMyRate]) => {
+      const _bcFutureBest = (LOCATION_MAP[_bcName] || []).reduce((_bcMx, _bcL) => {
+        if (_bcL.areaId === _bcArea.id) return _bcMx;
+        if (_bcL.part === "Pokéwalker") return _bcMx;
+        if (!_RATE_METHODS.has(_bcL.method)) return _bcMx;
+        if (_bcVer === "hg" && _bcL.ssOnly) return _bcMx;
+        if (_bcVer === "ss" && _bcL.hgOnly) return _bcMx;
+        if (parseInt(_bcL.part?.match(/\d+/)?.[0] || 999) <= _bcPartNum) return _bcMx;
+        return Math.max(_bcMx, _locPct(_bcL, _bcVer) || 0);
+      }, 0);
+      return _bcFutureBest <= _bcMyRate;
+    });
+    if (_bcBest.length > 0) {
+      if (!AREA_BEST_CHANCE[_bcArea.id]) AREA_BEST_CHANCE[_bcArea.id] = {};
+      AREA_BEST_CHANCE[_bcArea.id][_bcVer] = _bcBest.map(([n, r]) => ({ name: n, rate: r }));
+    }
+  }
+}
+
 const _catchFlags = {};
 for (const area of AREAS) {
   for (const p of _allPokemon(area)) {
@@ -8419,7 +8454,13 @@ function TickNumber({ value, style, color }) {
 }
 function groupByPart(arr) { return arr.reduce((a, x) => { (a[x.part] = a[x.part]||[]).push(x); return a; }, {}); }
 function sortedGroupEntries(groups) { return Object.entries(groups).sort((a, b) => (parseInt(a[0].match(/\d+/)?.[0]||0) - parseInt(b[0].match(/\d+/)?.[0]||0))); }
-function fmtHours(h) { return h < 1 ? `${Math.round(h * 60)}m` : `${h.toFixed(1)}h`; }
+function fmtHours(h) {
+  const tot = Math.round(h * 60);
+  const hrs = Math.floor(tot / 60), min = tot % 60;
+  if (hrs === 0) return `${min}m`;
+  if (min === 0) return `${hrs}h`;
+  return `${hrs}h ${min}m`;
+}
 
 // ─── BADGE SVG ───────────────────────────────────────────────────────────────
 function BadgeSVG({ shape, color, earned, size=24 }) {
@@ -14640,6 +14681,23 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       .map(([name, rate]) => ({ name, rate }));
   }, [area, caught, version]);
 
+  // Past areas with uncaught best-chance Pokémon (need to backtrack)
+  const backtracks = React.useMemo(() => {
+    if (!area) return [];
+    const curPartNum = parseInt(area.part?.match(/\d+/)?.[0] || 999);
+    const result = [];
+    for (const pastArea of AREAS) {
+      if (pastArea.part === "Pokéwalker") continue;
+      if (!AUDITED_PARTS.has(pastArea.part)) continue;
+      const pn = parseInt(pastArea.part?.match(/\d+/)?.[0] || 999);
+      if (pn >= curPartNum) continue;
+      const bestChance = AREA_BEST_CHANCE[pastArea.id]?.[version] || [];
+      const uncaught = bestChance.filter(({ name }) => !caught[name]);
+      if (uncaught.length > 0) result.push({ areaId: pastArea.id, areaName: pastArea.name, pokemon: uncaught });
+    }
+    return result;
+  }, [area, caught, version]);
+
   // Prev / Next navigation
   const currentIdx = areaId ? visibleAreas.findIndex(a => a.id === areaId) : -1;
   const prevArea = currentIdx > 0 ? visibleAreas[currentIdx - 1] : null;
@@ -14669,7 +14727,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
         {hoursPerArea != null && (
           <div style={{ padding:"5px 12px 7px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}` }}>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:5 }}>
-              <span>⏱ <b style={{ color:C.text }}>{totalLogged.toFixed(1)}h</b> logged</span>
+              <span>⏱ <b style={{ color:C.text }}>{fmtHours(totalLogged)}</b> logged</span>
               <span>est. remaining: <b style={{ color:C.gold }}>{fmtHours(totalEstimated)}</b></span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:5 }}>
@@ -14703,16 +14761,17 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                         const logged = partTimes[part];
                         const est = !logged && hoursPerArea ? Math.round(hoursPerArea * (partSizes[part] || 1) * 10) / 10 : null;
                         return editingPartTime === part ? (
-                          <input autoFocus type="number" min="0" step="0.5" defaultValue={logged || ""}
-                            style={{ width:46, fontSize:10, background:"rgba(0,0,0,0.5)", border:`1px solid ${C.border}`, color:C.text, borderRadius:3, padding:"1px 4px", textAlign:"center", fontFamily:"inherit", textTransform:"none", letterSpacing:0 }}
+                          <input autoFocus type="number" min="0" step="10" placeholder="min"
+                            defaultValue={logged ? Math.round(logged * 60) : ""}
+                            style={{ width:52, fontSize:10, background:"rgba(0,0,0,0.5)", border:`1px solid ${C.border}`, color:C.text, borderRadius:3, padding:"1px 4px", textAlign:"center", fontFamily:"inherit", textTransform:"none", letterSpacing:0 }}
                             onClick={e => e.stopPropagation()}
-                            onBlur={e => { setPartTime(part, e.target.value); setEditingPartTime(null); }}
-                            onKeyDown={e => { if (e.key === "Enter") { setPartTime(part, e.target.value); setEditingPartTime(null); } if (e.key === "Escape") setEditingPartTime(null); }} />
+                            onBlur={e => { const m = parseFloat(e.target.value); setPartTime(part, isNaN(m) ? 0 : m / 60); setEditingPartTime(null); }}
+                            onKeyDown={e => { if (e.key === "Enter") { const m = parseFloat(e.target.value); setPartTime(part, isNaN(m) ? 0 : m / 60); setEditingPartTime(null); } if (e.key === "Escape") setEditingPartTime(null); }} />
                         ) : (
                           <span onClick={e => { e.stopPropagation(); setEditingPartTime(part); }}
                             style={{ color: logged ? C.green : C.muted, opacity: logged ? 1 : 0.5, cursor:"text", letterSpacing:0, textTransform:"none", fontSize:10, minWidth:24, textAlign:"right" }}
-                            title={logged ? `${logged}h — click to edit` : est ? `~${fmtHours(est)} estimated — click to log` : "Click to log time"}>
-                            {logged ? `${logged}h` : est ? `~${fmtHours(est)}` : "⏱"}
+                            title={logged ? `${fmtHours(logged)} — click to edit (enter minutes)` : est ? `~${fmtHours(est)} estimated — click to log` : "Click to log time (minutes)"}>
+                            {logged ? fmtHours(logged) : est ? `~${fmtHours(est)}` : "⏱"}
                           </span>
                         );
                       })()}
@@ -14809,6 +14868,26 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               {area.note && (
                 <div style={{ background:"rgba(200,150,10,0.07)", border:`1px solid rgba(200,150,10,0.2)`, borderRadius:8, padding:"10px 14px", fontSize:12, color:"#c8b070", marginBottom:14, lineHeight:1.7 }}>
                   {area.note}
+                </div>
+              )}
+
+              {backtracks.length > 0 && (
+                <div style={{ background:"rgba(200,60,60,0.07)", border:"1px solid rgba(200,60,60,0.25)", borderRadius:8, padding:"10px 14px", marginBottom:14 }}>
+                  <div style={{ fontSize:10, fontWeight:"700", color:"#e06868", letterSpacing:1.5, textTransform:"uppercase", marginBottom:7 }}>↩ Backtrack needed</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                    {backtracks.map(({ areaId: bid, areaName: bn, pokemon: bpoks }) => (
+                      <div key={bid} style={{ display:"flex", alignItems:"baseline", gap:8, flexWrap:"wrap" }}>
+                        <button onClick={() => setAreaId(bid)}
+                          style={{ background:"none", border:"none", cursor:"pointer", padding:0, fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:11, fontWeight:"700", color:"#e09090", textDecoration:"underline", textDecorationColor:"rgba(224,144,144,0.35)", flexShrink:0 }}>
+                          {bn}
+                        </button>
+                        <span style={{ fontSize:10, color:"#a06060" }}>
+                          {bpoks.map(({ name, rate }) => `${name} (${rate}%)`).join(", ")}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ fontSize:9, color:"#804848", marginTop:7 }}>No higher encounter rate in any later area</div>
                 </div>
               )}
 

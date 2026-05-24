@@ -10865,6 +10865,88 @@ function DreamTeamTab({ isMobile, version }) {
           })}
         </div>
       </div>
+
+      {/* ── Smeargle Catcher Card ──────────────────────────────────────────────── */}
+      <div style={{ marginTop:24, borderTop:`1px dashed ${C.border}`, paddingTop:20 }}>
+        <div style={{ fontSize:9, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:10, fontWeight:"700" }}>
+          Dedicated Catcher
+        </div>
+        <div style={{ background:C.card, border:"1px dashed rgba(74,175,116,0.4)", borderRadius:10, overflow:"hidden" }}>
+          {/* Header */}
+          <div style={{ padding:"12px 14px", display:"flex", alignItems:"center", gap:10 }}>
+            <img src={pokeSpriteUrl(235)} alt="Smeargle" style={{ width:48, height:48, imageRendering:"pixelated", flexShrink:0 }} />
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:2 }}>
+                <span style={{ fontSize:14, fontWeight:"700" }}>Smeargle</span>
+                <span style={{ fontSize:8, color:"#4aaf74", background:"rgba(74,175,116,0.12)", border:"1px solid rgba(74,175,116,0.4)", padding:"1px 5px", borderRadius:99, fontWeight:"700" }}>CATCHER</span>
+              </div>
+              <div style={{ fontSize:9, color:C.muted }}>#235 · Normal · Not counted in team synergy or HM coverage</div>
+              <div style={{ fontSize:9, color:C.muted, marginTop:1 }}>Catch at Ruins of Alph · Part 4 · Grass, Lv. 20–22</div>
+            </div>
+          </div>
+
+          <div style={{ padding:"0 14px 14px", display:"flex", flexDirection:"column", gap:12 }}>
+            {/* Ability */}
+            <div>
+              <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Ability</div>
+              <div style={{ fontSize:10, lineHeight:1.5 }}>
+                <span style={{ fontWeight:"700", color:C.text }}>Own Tempo</span>
+                <span style={{ color:C.muted }}> — Cannot be confused (only ability available in Gen IV HGSS)</span>
+              </div>
+            </div>
+
+            {/* Moves */}
+            <div>
+              <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:6 }}>Moveset</div>
+              <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                {[
+                  { move:"False Swipe",  note:"Leaves foe at 1 HP",           src:"TM54 — Dark Cave (Part 13, requires Surf to reach)" },
+                  { move:"Spore",        note:"100% sleep — hold Lum Berry to auto-cure on Smeargle", src:"Sketch from Paras lv. 17+ (Bug Contest Tue/Thu/Sat; or catch Ilex Forest Paras lv. 5–6 and train to lv. 17)" },
+                  { move:"Mean Look",    note:"Prevents foe from fleeing",     src:"Sketch from Gastly lv. 8+ (Sprout Tower Gastly go to lv. 3–6 — train one to lv. 8; or let Ecruteak Gym trainer's Gastly lv. 16 use it on Smeargle)" },
+                  { move:"Sweet Scent",  note:"Forces a wild encounter — optional quality-of-life", src:"Sketch from Ilex Forest Oddish (Part 5, lv. 5–6, night only — Oddish knows Sweet Scent from lv. 5)" },
+                ].map(({ move, src, note }) => (
+                  <div key={move} style={{ background:"rgba(0,0,0,0.15)", borderRadius:6, padding:"6px 10px" }}>
+                    <div style={{ display:"flex", alignItems:"baseline", gap:6, flexWrap:"wrap" }}>
+                      <span style={{ fontSize:11, fontWeight:"700", color:C.text, minWidth:88, flexShrink:0 }}>{move}</span>
+                      <span style={{ fontSize:9, color:C.muted, flex:1, minWidth:0 }}>{src}</span>
+                    </div>
+                    <div style={{ fontSize:9, color:"rgba(255,255,255,0.35)", marginTop:2 }}>{note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sketch order */}
+            <div style={{ background:"rgba(74,175,116,0.05)", border:"1px solid rgba(74,175,116,0.15)", borderRadius:7, padding:"10px 12px" }}>
+              <div style={{ fontSize:9, color:"#4aaf74", letterSpacing:1.5, textTransform:"uppercase", marginBottom:6, fontWeight:"700" }}>Sketch Order — No Move Reminder</div>
+              <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+                {[
+                  "Catch lv. 20 Smeargle at Ruins of Alph (Part 4) — has 1 Sketch ready",
+                  "Use Sketch → copy Sweet Scent from Ilex Forest Oddish (night, Part 5)",
+                  "Level up to 21 → Smeargle relearns Sketch",
+                  "Use Sketch → copy Mean Look from Gastly lv. 8+",
+                  "Level up to 31 → Smeargle relearns Sketch again",
+                  "Use Sketch → copy Spore from Paras lv. 17",
+                  "Teach TM54 False Swipe (Dark Cave, Part 13 — requires Surf)",
+                ].map((step, i) => (
+                  <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
+                    <span style={{ fontSize:9, color:"#4aaf74", fontWeight:"700", minWidth:14, flexShrink:0 }}>{i + 1}.</span>
+                    <span style={{ fontSize:9, color:C.muted, lineHeight:1.5 }}>{step}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Ditto method */}
+            <div style={{ background:"rgba(0,0,0,0.12)", border:`1px solid ${C.border}`, borderRadius:7, padding:"8px 12px" }}>
+              <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:4, fontWeight:"700" }}>Optional: Ditto Method</div>
+              <div style={{ fontSize:9, color:C.muted, lineHeight:1.6 }}>
+                Put the move-source Pokémon as your lead → find wild Ditto on Route 34/35 (Part 5/6, lv. 10) → Ditto transforms into your lead and can use its moves → switch in Smeargle → Sketch the target move. Useful for Mean Look: a lv. 8 Gastly has 4 moves, so Ditto picks randomly — wait for Mean Look, then Sketch. Oddish at lv. 5–6 only has 2 moves (Absorb + Sweet Scent), making it 50/50 with or without Ditto.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

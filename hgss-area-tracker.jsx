@@ -6614,6 +6614,30 @@ const DT_ABILITIES = {
   "Delibird":   { name:"Vital Spirit",  desc:"Cannot be put to sleep" },
 };
 
+// ─── DREAM TEAM LEVEL CAPS ────────────────────────────────────────────────────
+// "Bench at" level — stop specifically grinding this Pokémon once it hits this
+// level so the rest of the team can keep pace through natural EXP. Calibrated
+// against the Johto E4 (Lance's Dragonite Lv 50) and the Kanto gauntlet.
+const DT_LEVEL_CAP = {
+  // Starters — available from the start; cap early so mid-game catches can catch up
+  "Typhlosion":40, "Feraligatr":40, "Meganium":40,
+  // Top picks
+  "Ampharos":42, "Heracross":38, "Espeon":36, "Umbreon":36,
+  "Steelix":42, "Scizor":42, "Donphan":40, "Houndoom":42,
+  "Skarmory":42, "Tyranitar":55, "Kingdra":48, "Politoed":44,
+  "Slowking":44, "Crobat":40, "Blissey":44, "Ursaring":40, "Mantine":42,
+  // Good picks
+  "Xatu":40, "Lanturn":42, "Azumarill":40, "Quagsire":40,
+  "Forretress":42, "Noctowl":30, "Granbull":40, "Miltank":42,
+  "Hitmontop":42, "Porygon2":48, "Bellossom":40, "Jumpluff":38,
+  "Sudowoodo":38, "Girafarig":40, "Magcargo":40, "Piloswine":40,
+  "Octillery":44, "Corsola":38, "Furret":25, "Sunflora":40,
+  // Niche picks
+  "Ariados":30, "Ledian":28, "Sneasel":42, "Misdreavus":40,
+  "Murkrow":40, "Shuckle":38, "Qwilfish":40, "Dunsparce":38,
+  "Gligar":40, "Smeargle":35, "Wobbuffet":40, "Stantler":35, "Delibird":40,
+};
+
 // ─── MOVE TIERS ──────────────────────────────────────────────────────────────
 // Advisory color-coding for the learnset display in DexDetail.
 // "good"  → worth keeping / strong in a playthrough context (shown in green)
@@ -10164,6 +10188,7 @@ function DreamTeamTab({ isMobile, version }) {
   const [phPins,          setPhPins]          = React.useState({});
   const [hmPerPokemon,    setHmPerPokemon]    = React.useState(3);
   const [copiedDT,        setCopiedDT]        = React.useState(false);
+  const [showTempSlots,   setShowTempSlots]   = React.useState(true);
 
   React.useEffect(() => {
     try {
@@ -10174,14 +10199,15 @@ function DreamTeamTab({ isMobile, version }) {
         if (d.pins) setPins(d.pins);
         if (d.phPins) setPhPins(d.phPins);
         if (d.hmPerPokemon) setHmPerPokemon(d.hmPerPokemon);
+        if (d.showTempSlots !== undefined) setShowTempSlots(d.showTempSlots);
       }
     } catch {}
   }, []);
 
   React.useEffect(() => {
     if (!favorite) return;
-    try { localStorage.setItem("hgss-dream-team-v1", JSON.stringify({ favorite, pins, phPins, version, hmPerPokemon })); } catch {}
-  }, [favorite, pins, phPins, version, hmPerPokemon]);
+    try { localStorage.setItem("hgss-dream-team-v1", JSON.stringify({ favorite, pins, phPins, version, hmPerPokemon, showTempSlots })); } catch {}
+  }, [favorite, pins, phPins, version, hmPerPokemon, showTempSlots]);
 
   // Drop version-conflicting pins when version changes
   React.useEffect(() => {
@@ -10366,9 +10392,11 @@ function DreamTeamTab({ isMobile, version }) {
       const chain = getDTEvoChain(name);
       const chainStr = chain.length > 1 ? chain.map((s,i) => i===0?s.name:`lv.${s.level} ${s.name}`).join(" → ") : "";
 
+      const benchLv = DT_LEVEL_CAP[finalForm];
       const header = `${idx+1}. ${name}${flags.length?` [${flags.join(", ")}]`:""}${typeStr?` — ${typeStr}`:""}${statsStr?` · ${statsStr}`:""}`;
       lines.push(header);
       if (chainStr) lines.push(`   Evolution: ${chainStr}`);
+      if (benchLv) lines.push(`   Level cap: bench at Lv ${benchLv}`);
       if (ab) lines.push(`   Ability: ${ab.name} — ${ab.desc}`);
       if (moves.length) {
         lines.push("   Moves:");
@@ -10398,7 +10426,9 @@ function DreamTeamTab({ isMobile, version }) {
         const phAcq   = getDreamAcquisition(phName);
         const phEvo   = EVO_DELAY[phName];
         const typeStr = phCand.types.join("/");
+        const phBenchLv = DT_LEVEL_CAP[phFinal];
         lines.push(`• ${phName} (temp until ${teamName}, ${teamPart}) — ${typeStr}`);
+        if (phBenchLv) lines.push(`   Level cap: bench at Lv ${phBenchLv}`);
         if (phAb) lines.push(`   Ability: ${phAb.name} — ${phAb.desc}`);
         if (phMoves.length) {
           lines.push("   Moves:");
@@ -10599,6 +10629,13 @@ function DreamTeamTab({ isMobile, version }) {
                       </div>
                     );
                   })()}
+                  {DT_LEVEL_CAP[finalForm] && (
+                    <div style={{ marginTop:3 }}>
+                      <span style={{ fontSize:8, color:"#5ba87a", background:"rgba(91,168,122,0.12)", border:"1px solid rgba(91,168,122,0.35)", padding:"1px 6px", borderRadius:99, fontWeight:"700" }}>
+                        bench at Lv {DT_LEVEL_CAP[finalForm]}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 {!hardLocked && (
                   <button onClick={() => togglePin(idx)} title={userPinned ? "Unpin slot" : "Pin this Pokémon"}
@@ -10767,10 +10804,16 @@ function DreamTeamTab({ isMobile, version }) {
       {/* Placeholder slots — full cards for late-game team members */}
       {placeholderSlots.length > 0 && (
         <div style={{ marginTop:20 }}>
-          <div style={{ fontSize:9, color:C.gold, letterSpacing:2, textTransform:"uppercase", fontWeight:"700", marginBottom:10 }}>
-            Temporary Slot{placeholderSlots.length > 1 ? "s" : ""}
+          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
+            <span style={{ fontSize:9, color:C.gold, letterSpacing:2, textTransform:"uppercase", fontWeight:"700" }}>
+              Temporary Slot{placeholderSlots.length > 1 ? "s" : ""}
+            </span>
+            <button onClick={() => setShowTempSlots(v => !v)}
+              style={{ fontSize:8, padding:"1px 8px", borderRadius:99, border:`1px solid rgba(200,150,10,0.4)`, background: showTempSlots?"rgba(200,150,10,0.12)":"rgba(0,0,0,0.15)", color: showTempSlots?C.gold:C.muted, cursor:"pointer", fontWeight:"700", lineHeight:1.6 }}>
+              {showTempSlots ? "Hide" : "Show"}
+            </button>
           </div>
-          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:14 }}>
+          {showTempSlots && <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:14 }}>
             {placeholderSlots.map(({ slotIdx, teamName, teamPart, active, available }) => {
               const phName     = active.c.name;
               const phFinal    = DT_FINAL_FORM[phName] || phName;
@@ -10812,6 +10855,13 @@ function DreamTeamTab({ isMobile, version }) {
                         {phCand.stats ? ` · Atk ${phCand.stats.atk} / SpA ${phCand.stats.spa} / Spe ${phCand.stats.spe}` : ""}
                         {` · avail. Part ${candidatePartNums[phName]}`}
                       </div>
+                      {DT_LEVEL_CAP[phFinal] && (
+                        <div style={{ marginTop:3 }}>
+                          <span style={{ fontSize:8, color:"#5ba87a", background:"rgba(91,168,122,0.12)", border:"1px solid rgba(91,168,122,0.35)", padding:"1px 6px", borderRadius:99, fontWeight:"700" }}>
+                            bench at Lv {DT_LEVEL_CAP[phFinal]}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div style={{ padding:"0 14px 14px", display:"flex", flexDirection:"column", gap:12, flex:1 }}>
@@ -10943,7 +10993,7 @@ function DreamTeamTab({ isMobile, version }) {
                 </div>
               );
             })}
-          </div>
+          </div>}
         </div>
       )}
 

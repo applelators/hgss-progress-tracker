@@ -4910,6 +4910,8 @@ for (const [name, locs] of Object.entries(LOCATION_MAP)) {
       if (loc.part === "Pokéwalker") continue;
       if (ver === "hg" && loc.ssOnly) continue;
       if (ver === "ss" && loc.hgOnly) continue;
+      // Safari Zone excluded for regional dex Pokémon — different catch mechanics
+      if (loc.areaId?.startsWith("safari-zone-") && JOHTO_DEX_NAMES.has(name)) continue;
       const pct = _locPct(loc, ver);
       if (pct && (!best || pct > best.pct)) best = { pct, areaName: loc.areaName };
     }
@@ -7300,6 +7302,8 @@ for (const _bcArea of AREAS) {
         if (_bcVer === "hg" && _bcL.ssOnly) return _bcMx;
         if (_bcVer === "ss" && _bcL.hgOnly) return _bcMx;
         if (parseInt(_bcL.part?.match(/\d+/)?.[0] || 999) <= _bcPartNum) return _bcMx;
+        // Safari Zone excluded for regional dex Pokémon — different catch mechanics
+        if (_bcL.areaId?.startsWith("safari-zone-") && JOHTO_DEX_NAMES.has(_bcName)) return _bcMx;
         return Math.max(_bcMx, _locPct(_bcL, _bcVer) || 0);
       }, 0);
       return _bcFutureBest <= _bcMyRate;

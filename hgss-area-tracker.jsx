@@ -15312,12 +15312,10 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, ver
       onMouseEnter={e => { if (!isSel) e.currentTarget.style.background = allDone ? "rgba(74,175,116,0.14)" : "rgba(255,255,255,0.04)"; }}
       onMouseLeave={e => { if (!isSel) e.currentTarget.style.background = allDone ? "rgba(74,175,116,0.08)" : tint.bg; }}>
       <div style={{ display:"flex", alignItems:"center", gap:5 }}>
-        <div style={{ flex:1, minWidth:0 }}>
-          <div style={{ fontSize:12, fontWeight: isSel ? "700" : "400", color: allDone ? C.green : isSel ? "var(--hgss-accent)" : "#c4a888", lineHeight:1.4 }}>{allDone ? "✓ " : ""}{area.name.replace(/ \(Return[^)]*\)/, "")}</div>
-          {area.id.endsWith('-return') && (() => { const ctx = area.name.match(/ \(Return(?:\s*—\s*([^)]+))?\)/)?.[1]; return (
-            <div style={{ fontSize:10, color:"#a887d0", opacity:0.75, lineHeight:1.2, marginTop:1 }}>↩{ctx ? ` ${ctx}` : " Return"}</div>
-          ); })()}
-        </div>
+        <span style={{ fontSize:12, fontWeight: isSel ? "700" : "400", color: allDone ? C.green : isSel ? "var(--hgss-accent)" : "#c4a888", lineHeight:1.4, flex:1 }}>{allDone ? "✓ " : ""}{area.name.replace(/ \(Return[^)]*\)/, "")}</span>
+        {area.id.endsWith('-return') && (() => { const ctx = area.name.match(/ \(Return(?:\s*—\s*([^)]+))?\)/)?.[1]; return (
+          <span title="Return visit" style={{ fontSize:9, color:"#a887d0", background:"rgba(168,135,208,0.15)", border:"1px solid rgba(168,135,208,0.4)", padding:"1px 5px", borderRadius:99, fontWeight:"700", flexShrink:0, whiteSpace:"nowrap" }}>↩{ctx ? ` ${ctx}` : ""}</span>
+        ); })()}
         {pendingTimes.map(t => (
           <img key={t} src={TIME_COLORS[t].icon} title={t.charAt(0).toUpperCase()+t.slice(1)} style={{ width:14, height:14, objectFit:"contain", flexShrink:0, display:"block", opacity:0.85 }} />
         ))}

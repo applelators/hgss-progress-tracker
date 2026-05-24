@@ -7170,6 +7170,7 @@ const CATCH_CONSTRAINT_MAP = {}; // TODO: Add one-time capture constraints
 const SAFARI_BALL_AREA_IDS = new Set(["safari-zone"]);
 const _NO_POKEBALL_METHODS = new Set(["Gift","Trade","Fossil","Event","Game Corner"]);
 const _WILD_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod"]);
+const _RATE_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod","Headbutt","Bug Contest"]);
 
 const _catchFlags = {};
 for (const area of AREAS) {
@@ -14608,6 +14609,37 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     : area?.floors?.reduce((n,f) => n+(f.items||[]).reduce((m,it,i) => { if (!it.recurring||isPassedItem(it)) return m; return m+(!!items[floorItemKey(areaId,f.label,i)]?1:0); },0),0) ?? 0;
   const trainerDone     = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
 
+  // Uncaught Pokémon in this area with no higher encounter rate in any later area
+  const missedBestChance = React.useMemo(() => {
+    if (!area) return [];
+    const areaPartNum = parseInt(area.part?.match(/\d+/)?.[0] || 999);
+    const byName = new Map();
+    for (const p of flattenPokemon(area)) {
+      if (!_RATE_METHODS.has(p.method)) continue;
+      if (caught[p.name]) continue;
+      if (version === "hg" && p.ssOnly) continue;
+      if (version === "ss" && p.hgOnly) continue;
+      const r = _locPct(p, version) || 0;
+      if (r <= 0) continue;
+      if (!byName.has(p.name) || r > byName.get(p.name)) byName.set(p.name, r);
+    }
+    return [...byName.entries()]
+      .filter(([name, myRate]) => {
+        const bestFuture = (LOCATION_MAP[name] || []).reduce((mx, l) => {
+          if (l.areaId === area.id) return mx;
+          if (l.part === "Pokéwalker") return mx;
+          if (!_RATE_METHODS.has(l.method)) return mx;
+          if (version === "hg" && l.ssOnly) return mx;
+          if (version === "ss" && l.hgOnly) return mx;
+          const pn = parseInt(l.part?.match(/\d+/)?.[0] || 999);
+          if (pn <= areaPartNum) return mx;
+          return Math.max(mx, _locPct(l, version) || 0);
+        }, 0);
+        return bestFuture <= myRate;
+      })
+      .map(([name, rate]) => ({ name, rate }));
+  }, [area, caught, version]);
+
   // Prev / Next navigation
   const currentIdx = areaId ? visibleAreas.findIndex(a => a.id === areaId) : -1;
   const prevArea = currentIdx > 0 ? visibleAreas[currentIdx - 1] : null;
@@ -14777,6 +14809,21 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               {area.note && (
                 <div style={{ background:"rgba(200,150,10,0.07)", border:`1px solid rgba(200,150,10,0.2)`, borderRadius:8, padding:"10px 14px", fontSize:12, color:"#c8b070", marginBottom:14, lineHeight:1.7 }}>
                   {area.note}
+                </div>
+              )}
+
+              {missedBestChance.length > 0 && (
+                <div style={{ background:"rgba(224,123,58,0.08)", border:"1px solid rgba(224,123,58,0.28)", borderRadius:8, padding:"10px 14px", marginBottom:14 }}>
+                  <div style={{ fontSize:10, fontWeight:"700", color:"#e07b3a", letterSpacing:1.5, textTransform:"uppercase", marginBottom:6 }}>⚠ Best rate here — catch before moving on</div>
+                  <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:5 }}>
+                    {missedBestChance.map(({ name, rate }) => (
+                      <span key={name} style={{ display:"inline-flex", alignItems:"center", gap:3, background:"rgba(224,123,58,0.10)", border:"1px solid rgba(224,123,58,0.22)", borderRadius:5, padding:"2px 8px" }}>
+                        <span style={{ fontSize:11, fontWeight:"600", color:"#e8c0a8" }}>{name}</span>
+                        <span style={{ fontSize:9, color:"#b07858" }}>{rate}%</span>
+                      </span>
+                    ))}
+                  </div>
+                  <div style={{ fontSize:9, color:"#906050" }}>No higher encounter rate in any later area</div>
                 </div>
               )}
 

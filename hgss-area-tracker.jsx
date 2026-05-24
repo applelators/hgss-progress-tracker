@@ -7262,6 +7262,14 @@ const SAFARI_BALL_AREA_IDS = new Set([
   "safari-zone-forest","safari-zone-swamp","safari-zone-marshland","safari-zone-mountain",
   "safari-zone-rocky-beach","safari-zone-wasteland","safari-zone-savannah","safari-zone-wetland",
 ]);
+// Pokémon obtainable ONLY in the Johto Safari Zone (no other in-game location, including Pokéwalker)
+const SAFARI_ZONE_EXCLUSIVES = new Set([
+  "Aron","Bagon","Banette","Barboach","Breloom","Bronzong","Cacnea","Cacturne","Carnivine",
+  "Chimecho","Corphish","Dusclops","Floatzel","Gible","Hippopotas","Lairon","Lombre","Lotad",
+  "Lunatone","Luxio","Manectric","Masquerain","Medicham","Metang","Nosepass","Nuzleaf",
+  "Riolu","Roselia","Sealeo","Seviper","Shelgon","Shuppet","Skorupi","Solrock","Spheal",
+  "Spinda","Surskit","Torkoal","Trapinch","Vibrava","Vigoroth","Zangoose",
+]);
 const _NO_POKEBALL_METHODS = new Set(["Gift","Trade","Fossil","Event","Game Corner"]);
 const _WILD_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod"]);
 const _RATE_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod","Headbutt","Bug Contest"]);
@@ -15094,6 +15102,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                 <span><span style={{ color:C.hgGold, fontWeight:"600" }}>HG</span> = HeartGold exclusive</span>
                 <span><span style={{ color:C.ssSilver, fontWeight:"600" }}>SS</span> = SoulSilver exclusive</span>
                 <span><span style={{ color:C.gold }}>★</span> = Hidden (Itemfinder)</span>
+                {getAreaType(area) === 'safari' && <span><span style={{ color:"#38c88a", fontWeight:"600" }}>ZONE</span> = Safari Zone exclusive</span>}
               </div>
 
               {area.floors ? (
@@ -15400,7 +15409,8 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
   }, [isCaught]);
   if ((version === "hg" && p.ssOnly) || (version === "ss" && p.hgOnly)) return null;
 
-  const isPassed = !!(p.choiceGroup && choiceGroups?.[p.choiceGroup] && choiceGroups[p.choiceGroup] !== p.choiceId);
+  const isPassed     = !!(p.choiceGroup && choiceGroups?.[p.choiceGroup] && choiceGroups[p.choiceGroup] !== p.choiceId);
+  const isSZExclusive = areaId?.startsWith('safari-zone-') && SAFARI_ZONE_EXCLUSIVES.has(p.name);
 
   // Determine if a better-rate area exists for this Pokémon
   const hgssMatch  = p.rate && p.rate.match(/^HG\s+(\S+)\/SS\s+(\S+)/);
@@ -15422,7 +15432,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
       {allDexId(p.name) && <img key={wobbleNonce} src={pokeSpriteUrl(allDexId(p.name))} alt={p.name} className={wobbleNonce && isCaught ? "hgss-wobble" : ""} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.65, filter:isCaught?"none":"brightness(0)", transition:"opacity 0.25s, filter 0.25s" }} />}
       <div style={{ flex:1 }}>
         <span style={{ color:isCaught?C.green:p.ssOnly?C.ssSilver:p.hgOnly?C.hgGold:C.text, fontWeight:"600", fontSize:12 }}>
-          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}{WALKER_EXCLUSIVE.has(p.name)&&<Tag color="#9060d0">PW ★</Tag>}
+          {p.name}{p.hgOnly&&<Tag color={C.hgGold}>HG</Tag>}{p.ssOnly&&<Tag color={C.ssSilver}>SS</Tag>}{WALKER_EXCLUSIVE.has(p.name)&&<Tag color="#9060d0">PW ★</Tag>}{isSZExclusive&&<Tag color="#38c88a">ZONE</Tag>}
         </span>
         {METHOD_SPRITE_URL[p.method]
           ? <span style={{ display:"inline-flex", alignItems:"center", gap:3, marginLeft:6 }}>

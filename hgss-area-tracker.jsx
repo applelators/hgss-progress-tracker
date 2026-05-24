@@ -14921,31 +14921,35 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       {/* Sidebar */}
       {showSidebar && (
       <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
-        <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, background:C.card, zIndex:1 }}>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
-            style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
-        </div>
-        {(() => {
-          const sib = WEEK_SIBLINGS[new Date().getDay()];
-          if (!sib) return null;
-          const sibArea = AREAS.find(a => a.id === sib.areaId);
-          const sibIdx  = sibArea ? (sibArea.items||[]).findIndex(it => it.name === sib.item) : -1;
-          const sibDone = sibIdx >= 0 && !!items[flatItemKey(sib.areaId, sibIdx)];
-          if (sibDone) return null;
-          return (
-            <div onClick={() => setAreaId(sib.areaId)}
-              style={{ padding:"8px 12px", borderBottom:`1px solid ${C.border}`,
-                       background:"rgba(168,135,208,0.08)", cursor:"pointer", transition:"background 0.1s" }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(168,135,208,0.15)"}
-              onMouseLeave={e => e.currentTarget.style.background = "rgba(168,135,208,0.08)"}>
-              <div style={{ fontSize:9, color:"#a887d0", fontWeight:"700", letterSpacing:0.6, textTransform:"uppercase", marginBottom:3 }}>Week Sibling · Today</div>
-              <div style={{ fontSize:11, color:C.text, lineHeight:1.5 }}>
-                <span style={{ fontWeight:"600", color:"#a887d0" }}>{sib.name}</span> is on <span style={{ fontWeight:"600" }}>{sib.areaName}</span>
+        {/* ── Sticky info block: search + daily reminders ── */}
+        <div style={{ position:"sticky", top:0, zIndex:2, background:C.card, boxShadow:"0 2px 6px rgba(0,0,0,0.25)" }}>
+          <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}` }}>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
+              style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
+          </div>
+          {(() => {
+            const sib = WEEK_SIBLINGS[new Date().getDay()];
+            if (!sib) return null;
+            const sibArea = AREAS.find(a => a.id === sib.areaId);
+            const sibIdx  = sibArea ? (sibArea.items||[]).findIndex(it => it.name === sib.item) : -1;
+            const sibDone = sibIdx >= 0 && !!items[flatItemKey(sib.areaId, sibIdx)];
+            if (sibDone) return null;
+            return (
+              <div onClick={() => setAreaId(sib.areaId)}
+                style={{ padding:"8px 12px", borderBottom:`1px solid ${C.border}`,
+                         background:"rgba(168,135,208,0.08)", cursor:"pointer", transition:"background 0.1s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(168,135,208,0.15)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(168,135,208,0.08)"}>
+                <div style={{ fontSize:9, color:"#a887d0", fontWeight:"700", letterSpacing:0.6, textTransform:"uppercase", marginBottom:3 }}>Week Sibling · Today</div>
+                <div style={{ fontSize:11, color:C.text, lineHeight:1.5 }}>
+                  <span style={{ fontWeight:"600", color:"#a887d0" }}>{sib.name}</span> is on <span style={{ fontWeight:"600" }}>{sib.areaName}</span>
+                </div>
+                <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>Collect: <span style={{ color:C.gold }}>{sib.item}</span></div>
               </div>
-              <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>Collect: <span style={{ color:C.gold }}>{sib.item}</span></div>
-            </div>
-          );
-        })()}
+            );
+          })()}
+          {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
+        </div>
         {hoursPerArea != null && (
           <div style={{ padding:"5px 12px 7px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}` }}>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:5 }}>
@@ -14966,7 +14970,6 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
             </div>
           </div>
         )}
-        {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
         {filtered
           ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)
           : sortedGroupEntries(groups).map(([part, list]) => {

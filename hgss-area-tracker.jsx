@@ -14680,6 +14680,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     try { localStorage.setItem("hgss-area-notes", JSON.stringify(next)); } catch {}
     return next;
   });
+  const [stickyCollapsed, setStickyCollapsed] = useState(() => { try { return localStorage.getItem("hgss-sticky-collapsed") === "1"; } catch { return false; } });
+  const toggleStickyCollapsed = () => setStickyCollapsed(v => { const next = !v; try { localStorage.setItem("hgss-sticky-collapsed", next ? "1" : "0"); } catch {} return next; });
   const [collapsedFloors, setCollapsedFloors] = useState(() => {
     try { const r = localStorage.getItem("hgss-collapsed-floors"); return r ? new Set(Object.keys(JSON.parse(r))) : new Set(); } catch { return new Set(); }
   });
@@ -14923,11 +14925,17 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
         {/* ── Sticky info block: search + daily reminders ── */}
         <div style={{ position:"sticky", top:0, zIndex:2, background:C.card, boxShadow:"0 2px 6px rgba(0,0,0,0.25)" }}>
-          <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}` }}>
+          <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, display:"flex", alignItems:"center", gap:8 }}>
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
-              style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
+              style={{ flex:1, background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
+            <button onClick={toggleStickyCollapsed} title={stickyCollapsed ? "Expand info" : "Collapse info"}
+              style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:5, width:28, height:28, cursor:"pointer", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, transition:"color 0.15s" }}
+              onMouseEnter={e => e.currentTarget.style.color = C.text}
+              onMouseLeave={e => e.currentTarget.style.color = C.muted}>
+              {stickyCollapsed ? "▼" : "▲"}
+            </button>
           </div>
-          {(() => {
+          {!stickyCollapsed && (() => {
             const sib = WEEK_SIBLINGS[new Date().getDay()];
             if (!sib) return null;
             const sibArea = AREAS.find(a => a.id === sib.areaId);
@@ -14948,7 +14956,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               </div>
             );
           })()}
-          {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
+          {!stickyCollapsed && roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
         </div>
         {hoursPerArea != null && (
           <div style={{ padding:"5px 12px 7px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}` }}>

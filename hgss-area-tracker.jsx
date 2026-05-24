@@ -4802,14 +4802,14 @@ const AREAS = [
     items:[], trainers:[] },
 
   { part:"Pokéwalker", id:"pw-yellow-forest", name:"Yellow Forest",
-    note:"Wi-Fi Event course. All encounters are Pikachu — each holds a different Berry.",
+    note:"Wi-Fi Event course. All encounters are Pikachu — each is unique, knowing event-exclusive moves (Surf, Fly, Volt Tackle) that cannot be learned normally.",
     pokemon:[
-      {name:"Pikachu",    method:"Pokéwalker", levels:"10", rate:"100%", note:"♂ · holds TinyMushroom"},
-      {name:"Pikachu",    method:"Pokéwalker", levels:"10", rate:"100%", note:"♀ · holds Oran Berry"},
-      {name:"Pikachu",    method:"Pokéwalker", levels:"13", rate:"35%",  note:"♂ · ≥2000W · holds Leppa Berry"},
-      {name:"Pikachu",    method:"Pokéwalker", levels:"12", rate:"8%",   note:"♀ · ≥5000W · holds Sitrus Berry"},
-      {name:"Pikachu",    method:"Pokéwalker", levels:"15", rate:"2%",   note:"♂ · ≥10000W · holds Shuca Berry"},
-      {name:"Pikachu",    method:"Pokéwalker", levels:"14", rate:"3%",   note:"♀ · ≥9500W · holds Lum Berry"},
+      {name:"Pikachu", method:"Pokéwalker", levels:"10", rate:"100%", unique:true, note:"♂ · knows Surf · holds TinyMushroom"},
+      {name:"Pikachu", method:"Pokéwalker", levels:"10", rate:"100%", unique:true, note:"♀ · knows Fly · holds Oran Berry"},
+      {name:"Pikachu", method:"Pokéwalker", levels:"13", rate:"35%",  unique:true, note:"♂ · ≥2000W · knows Surf+Fly · holds Leppa Berry"},
+      {name:"Pikachu", method:"Pokéwalker", levels:"12", rate:"8%",   unique:true, note:"♀ · ≥5000W · knows Surf+Fly · holds Sitrus Berry"},
+      {name:"Pikachu", method:"Pokéwalker", levels:"15", rate:"2%",   unique:true, note:"♂ · ≥10000W · knows Surf+Fly+Volt Tackle · holds Shuca Berry"},
+      {name:"Pikachu", method:"Pokéwalker", levels:"14", rate:"3%",   unique:true, note:"♀ · ≥9500W · knows Volt Tackle+Fly+Surf · holds Lum Berry"},
     ],
     items:[], trainers:[] },
 
@@ -8317,12 +8317,10 @@ const ROAMING_POKEMON = [
 // Excludes: Wurmple (headbutt), Combee (headbutt), Torchic (Steven gift),
 //           Kricketot/Buneary (swarm), Beldum (Saffron trade), Mime Jr./Budew (breeding).
 const WALKER_EXCLUSIVE = new Set([
-  // Hoenn Pokémon — no wild encounter in HGSS base game
-  "Zigzagoon","Linoone","Volbeat","Illumise","Skitty",
-  "Carvanha","Wailmer","Castform","Kecleon","Tropius","Snorunt","Pelipper",
-  // Sinnoh Pokémon — no wild encounter in HGSS base game
-  "Bidoof","Bibarel","Shinx","Bronzor","Snover",
-  "Shellos","Finneon","Pachirisu","Chingling","Spiritomb","Croagunk","Chatot",
+  // Hoenn Pokémon — Pokéwalker-only (not available as Safari Zone blocks or otherwise)
+  "Skitty","Carvanha","Wailmer","Castform","Kecleon","Tropius","Snorunt","Pelipper",
+  // Sinnoh Pokémon — Pokéwalker-only
+  "Bibarel","Snover","Shellos","Finneon","Spiritomb","Chatot",
 ]);
 // ─── CATCH RATE DATA ──────────────────────────────────────────────────────────
 // Base catch rates by national dex ID (Gen I–IV, all HGSS-obtainable Pokémon)
@@ -15429,7 +15427,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
     ? parseRatePct(version === "hg" ? splitMatch[1] : splitMatch[2])
     : parseRatePct(p.rate);
   const best = BEST_AREA_MAP[version][p.name];
-  const hasBetter = !isCaught && currentPct && best && best.pct > currentPct;
+  const hasBetter = !isCaught && !p.unique && currentPct && best && best.pct > currentPct;
 
   const handleClick = isPassed ? undefined
     : isTrade ? () => toggleTrade(tradeKey)
@@ -15745,7 +15743,7 @@ function RateDisplay({ rate, isMobile, version }) {
         style={{ cursor: hasMath ? "help" : "default", display:"inline-flex" }}>
         {badge}
       </span>
-      {pos && hasMath && (
+      {pos && hasMath && ReactDOM.createPortal(
         <div style={{ position:"fixed", left:pos.x, top:pos.y - 8,
                       transform:"translate(-50%,calc(-100% - 4px))", zIndex:400,
                       background:C.card, border:`1px solid ${C.border}`, borderRadius:8,
@@ -15766,7 +15764,8 @@ function RateDisplay({ rate, isMobile, version }) {
             </div>
           )}
           <div style={{ fontSize:10, color:C.muted, marginTop:4 }}>encounters to see this Pokémon</div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

@@ -8322,6 +8322,18 @@ const WALKER_EXCLUSIVE = new Set([
   // Sinnoh Pokémon — Pokéwalker-only
   "Bibarel","Snover","Shellos","Finneon","Spiritomb","Chatot",
 ]);
+// ─── WEEK SIBLINGS ────────────────────────────────────────────────────────────
+// Keyed by getDay() value (0=Sun). Items verified against tracker area data.
+const WEEK_SIBLINGS = {
+  1: { name:"Monica",  item:"Sharp Beak",   areaId:"route-40",        areaName:"Route 40" },
+  2: { name:"Tuscany", item:"Twisted Spoon", areaId:"route-29",       areaName:"Route 29" },
+  3: { name:"Wesley",  item:"Black Belt",   areaId:"lake-of-rage",    areaName:"Lake of Rage" },
+  4: { name:"Arthur",  item:"Hard Stone",   areaId:"route-36",        areaName:"Route 36" },
+  5: { name:"Frieda",  item:"Poison Barb",  areaId:"route-32",        areaName:"Route 32" },
+  6: { name:"Santos",  item:"Soft Sand",    areaId:"blackthorn-city", areaName:"Blackthorn City" },
+  0: { name:"Sunny",   item:"Magnet",       areaId:"route-37",        areaName:"Route 37" },
+};
+
 // ─── CATCH RATE DATA ──────────────────────────────────────────────────────────
 // Base catch rates by national dex ID (Gen I–IV, all HGSS-obtainable Pokémon)
 const CATCH_RATE_BY_NATID = {
@@ -14913,6 +14925,27 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
+        {(() => {
+          const sib = WEEK_SIBLINGS[new Date().getDay()];
+          if (!sib) return null;
+          const sibArea = AREAS.find(a => a.id === sib.areaId);
+          const sibIdx  = sibArea ? (sibArea.items||[]).findIndex(it => it.name === sib.item) : -1;
+          const sibDone = sibIdx >= 0 && !!items[flatItemKey(sib.areaId, sibIdx)];
+          if (sibDone) return null;
+          return (
+            <div onClick={() => setAreaId(sib.areaId)}
+              style={{ padding:"8px 12px", borderBottom:`1px solid ${C.border}`,
+                       background:"rgba(168,135,208,0.08)", cursor:"pointer", transition:"background 0.1s" }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(168,135,208,0.15)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(168,135,208,0.08)"}>
+              <div style={{ fontSize:9, color:"#a887d0", fontWeight:"700", letterSpacing:0.6, textTransform:"uppercase", marginBottom:3 }}>Week Sibling · Today</div>
+              <div style={{ fontSize:11, color:C.text, lineHeight:1.5 }}>
+                <span style={{ fontWeight:"600", color:"#a887d0" }}>{sib.name}</span> is on <span style={{ fontWeight:"600" }}>{sib.areaName}</span>
+              </div>
+              <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>Collect: <span style={{ color:C.gold }}>{sib.item}</span></div>
+            </div>
+          );
+        })()}
         {hoursPerArea != null && (
           <div style={{ padding:"5px 12px 7px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}` }}>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:5 }}>

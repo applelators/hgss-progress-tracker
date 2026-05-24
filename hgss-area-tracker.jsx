@@ -6619,23 +6619,116 @@ const DT_ABILITIES = {
 // level so the rest of the team can keep pace through natural EXP. Calibrated
 // against the Johto E4 (Lance's Dragonite Lv 50) and the Kanto gauntlet.
 const DT_LEVEL_CAP = {
-  // Starters — available from the start; cap early so mid-game catches can catch up
-  "Typhlosion":40, "Feraligatr":40, "Meganium":40,
+  // Starters
+  "Typhlosion": { cap:40, reason:"has Lava Plume (lv35, 80BP Fire) — bench before Flamethrower; use TM35 Flamethrower instead of waiting for lv42",
+    higher:[{cap:42,reason:"+Flamethrower from level-up (90BP, reliable)"},{cap:57,reason:"+Eruption (150BP at full HP — peak Fire power)"}] },
+  "Feraligatr": { cap:40, reason:"has Crunch (lv32, Dark coverage) and Slash (lv37) — bench before Aqua Tail; use HM Waterfall for Water STAB",
+    higher:[{cap:58,reason:"+Aqua Tail (90BP physical Water — stronger than Waterfall)"},{cap:71,reason:"+Hydro Pump (120BP special nuke)"}] },
+  "Meganium":   { cap:40, reason:"has Petal Dance (lv32, 120BP Grass) and Light Screen (lv40) — bench here once the support kit is online",
+    higher:[{cap:46,reason:"+Body Slam (Normal coverage, 30% paralysis)"},{cap:66,reason:"+SolarBeam (high-power Grass — pair with Sunny Day)"}] },
   // Top picks
-  "Ampharos":42, "Heracross":38, "Espeon":36, "Umbreon":36,
-  "Steelix":42, "Scizor":42, "Donphan":40, "Houndoom":42,
-  "Skarmory":42, "Tyranitar":55, "Kingdra":48, "Politoed":44,
-  "Slowking":44, "Crobat":40, "Blissey":44, "Ursaring":40, "Mantine":42,
+  "Ampharos":   { cap:42, reason:"has Discharge (lv34, main Electric STAB) and Signal Beam (lv42, Bug coverage) — bench right after Signal Beam",
+    higher:[{cap:51,reason:"+Light Screen (halves special damage for your team)"},{cap:68,reason:"+Thunder (110BP — pair with Rain Dance for 100% accuracy)"}] },
+  "Heracross":  { cap:38, reason:"just got Close Combat (lv37) — 120BP Fighting STAB, the move you were waiting for",
+    higher:[{cap:43,reason:"+Reversal (escalating power — devastating at low HP)"},{cap:55,reason:"+Megahorn (120BP Bug STAB — perfect dual-STAB coverage with Close Combat)"}] },
+  "Espeon":     { cap:36, reason:"just evolved; get Psychic via TM29 rather than waiting for lv64 — bench here to let others catch up",
+    higher:[{cap:64,reason:"+Psychic from level-up (if TM29 is unavailable)"},{cap:71,reason:"+Morning Sun (self-heal — fills a recovery role)"}] },
+  "Umbreon":    { cap:36, reason:"just evolved; already a durable special wall — bench here, use Toxic/Confuse Ray from pre-evo levels",
+    higher:[{cap:57,reason:"+Mean Look (trap foes — useful for hunting legendaries)"},{cap:71,reason:"+Moonlight (reliable self-heal, superior to Rest)"}] },
+  "Steelix":    { cap:42, reason:"has Iron Tail (lv41, 100BP Steel STAB) and Earthquake via TM26 — full physical coverage achieved",
+    higher:[{cap:46,reason:"+Crunch (Dark coverage for Ghost/Psychic types)"},{cap:54,reason:"+Stone Edge (Rock coverage, high crit rate)"}] },
+  "Scizor":     { cap:42, reason:"just got X-Scissor (lv41, 80BP Bug STAB) — bench before Iron Head",
+    higher:[{cap:53,reason:"+Iron Head (80BP Steel STAB, 30% flinch — completes dual-STAB coverage)"},{cap:57,reason:"+Swords Dance (doubles Attack — devastating lategame setup)"}] },
+  "Donphan":    { cap:40, reason:"use TM26 Earthquake rather than waiting for lv46 — bench here once it has Rollout and Assurance",
+    higher:[{cap:46,reason:"+Earthquake from level-up (if TM26 was given to another Pokémon)"}] },
+  "Houndoom":   { cap:42, reason:"has Fire Fang (lv32) and Faint Attack (lv38) — bench here; get Flamethrower via TM35 for the special fire role",
+    higher:[{cap:48,reason:"+Flamethrower from level-up (90BP Special — switches role to special attacker)"},{cap:60,reason:"+Nasty Plot (doubles Sp. Atk — powerful lategame setup)"}] },
+  "Skarmory":   { cap:42, reason:"has Air Slash (lv39, 75BP Flying with flinch) — Skarmory's best offensive move; mainly used as defensive wall + HM Fly",
+    higher:[{cap:45,reason:"+Night Slash (Dark coverage, high crit — minor upgrade)"}] },
+  "Tyranitar":  { cap:55, reason:"just got Stone Edge (lv54) — has the complete coverage set: Crunch + Earthquake + Stone Edge",
+    higher:[{cap:70,reason:"+Hyper Beam (once-per-fight nuke — rarely worth the cooldown turn)"}] },
+  "Kingdra":    { cap:48, reason:"just got Dragon Dance (lv48) — pairs with Hydro Pump (lv40) for a sweeper setup",
+    higher:[{cap:57,reason:"+Dragon Pulse (85BP Dragon STAB — replaces Twister for Dragon coverage)"}] },
+  "Politoed":   { cap:44, reason:"has Perish Song and Bounce (lv37) — main attacks are Surf + Ice Beam via TM, no better level-up moves until lv48",
+    higher:[{cap:48,reason:"+Hyper Voice (Normal coverage, HGSS-only level-up)"}] },
+  "Slowking":   { cap:44, reason:"has Nasty Plot (lv39, doubles Sp. Atk) and Zen Headbutt (lv34) — bench before Psychic level-up; use TM29",
+    higher:[{cap:48,reason:"+Psychic from level-up (if TM29 is unavailable)"}] },
+  "Crobat":     { cap:40, reason:"has Poison Fang (lv39) and Wing Attack — bench here; mainly used for HM Fly + top Speed tier",
+    higher:[{cap:45,reason:"+Haze (resets opponent stat boosts — situational utility)"},{cap:51,reason:"+Air Slash (75BP Flying with flinch — major upgrade over Wing Attack)"}] },
+  "Blissey":    { cap:44, reason:"has Healing Wish (lv42, sacrifices self to fully heal a teammate) — bench here since Blissey's role is defensive wall",
+    higher:[{cap:46,reason:"+Double-Edge (recoil Normal STAB — rarely needed on a support wall)"}] },
+  "Ursaring":   { cap:40, reason:"best moves (Return, Earthquake) come from TMs — bench here since level-up moves after Scary Face (lv38) add little value",
+    higher:[{cap:47,reason:"+Rest (recovery — synergizes with Guts + Flame Orb for a powerful status-absorbing set)"}] },
+  "Mantine":    { cap:42, reason:"has Confuse Ray (lv37) and Bounce (lv40) — bench before Hydro Pump; use HM Surf as main Water STAB",
+    higher:[{cap:49,reason:"+Hydro Pump (120BP Water — nuke option if Surf BP isn't enough)"}] },
   // Good picks
-  "Xatu":40, "Lanturn":42, "Azumarill":40, "Quagsire":40,
-  "Forretress":42, "Noctowl":30, "Granbull":40, "Miltank":42,
-  "Hitmontop":42, "Porygon2":48, "Bellossom":40, "Jumpluff":38,
-  "Sudowoodo":38, "Girafarig":40, "Magcargo":40, "Piloswine":40,
-  "Octillery":44, "Corsola":38, "Furret":25, "Sunflora":40,
+  "Xatu":       { cap:40, reason:"has Confuse Ray, Tailwind (lv25, boosts team Speed 2 turns), and Wish (lv29) — bench here; get Psychic via TM29",
+    higher:[{cap:41,reason:"+Air Slash (75BP Flying STAB with flinch chance)"},{cap:53,reason:"+Psychic from level-up (if TM29 unavailable)"}] },
+  "Lanturn":    { cap:42, reason:"has Signal Beam (lv35, Bug coverage) and Discharge (lv40, main Electric STAB) — bench right after Discharge",
+    higher:[{cap:47,reason:"+Aqua Ring (passive healing each turn — nice on a bulky Lanturn)"},{cap:52,reason:"+Hydro Pump (120BP Water — finishing nuke over Surf)"}] },
+  "Azumarill":  { cap:40, reason:"has Double-Edge (lv33) and Rain Dance (lv40) — bench before Aqua Tail; use HM Surf for Water coverage",
+    higher:[{cap:47,reason:"+Aqua Tail (90BP physical Water STAB — complements Huge Power for massive damage)"},{cap:54,reason:"+Hydro Pump (120BP special option)"}] },
+  "Quagsire":   { cap:40, reason:"has Earthquake (lv36) and Yawn (lv31) for disruption — Ground STAB + Water Absorb makes it a solid tank",
+    higher:[{cap:41,reason:"+Rain Dance (sets up Water-boosted Surf for your team)"},{cap:53,reason:"+Muddy Water (95BP Water STAB, may lower accuracy)"}] },
+  "Forretress": { cap:42, reason:"has Explosion (lv38, sacrificial nuke) and Mirror Shot (lv31, Steel STAB) — main utility is Spikes + Rapid Spin",
+    higher:[{cap:45,reason:"+Iron Defense (doubles Defense — makes Forretress nearly unkillable)"},{cap:50,reason:"+Gyro Ball (Steel STAB; stronger the slower Forretress is — typically excellent)"}] },
+  "Noctowl":    { cap:30, reason:"used primarily as HM Fly carrier — bench early to save exp for main team members",
+    higher:[{cap:32,reason:"+Air Slash (75BP Flying STAB with flinch — the reason to invest in Noctowl)"},{cap:42,reason:"+Extrasensory (Psychic coverage, 10% flinch)"},{cap:52,reason:"+Roost (self-heal — makes Noctowl surprisingly durable)"}] },
+  "Granbull":   { cap:40, reason:"best Normal/Fairy attacks come from TMs (Return, Strength) — bench here since level-up moves don't improve much until Crunch",
+    higher:[{cap:51,reason:"+Payback (Dark coverage — doubles power if Granbull moves second)"},{cap:59,reason:"+Crunch (80BP Dark — adds Dark coverage to the moveset)"}] },
+  "Miltank":    { cap:42, reason:"just got Gyro Ball (lv41, Steel STAB — stronger the slower Miltank is) — bench right after",
+    higher:[{cap:48,reason:"+Heal Bell (cures all team status — makes Miltank a full cleric support Pokémon)"}] },
+  "Hitmontop":  { cap:42, reason:"has Triple Kick (signature Fighting STAB) and Agility (lv37) — bench when Gyro Ball (lv42) adds Steel coverage",
+    higher:[{cap:46,reason:"+Detect (block incoming moves — situational)"},{cap:51,reason:"+Close Combat (120BP Fighting STAB — replaces Triple Kick as the primary Fighting move)"}] },
+  "Porygon2":   { cap:48, reason:"has Discharge (lv40, Electric) and Lock-On (lv45, ensures next move hits 100%) — bench before Tri Attack",
+    higher:[{cap:51,reason:"+Tri Attack (80BP Normal, 20% chance to burn/freeze/paralyze — strong utility)"},{cap:62,reason:"+Zap Cannon (after Lock-On guarantees paralysis — powerful status combo)"}] },
+  "Bellossom":  { cap:40, reason:"has Petal Dance (pre-evo move, 120BP Grass) and Magical Leaf (never misses) — bench here; level-up power moves come very late",
+    higher:[{cap:53,reason:"+Leaf Storm (140BP Grass with -2 Sp. Atk — massive one-hit power; use with Nasty Plot TM)"}] },
+  "Jumpluff":   { cap:38, reason:"has U-turn (lv36) for momentum and Cotton Spore (lv32, -2 Speed) — bench here; Jumpluff is a support/pivot Pokémon",
+    higher:[{cap:44,reason:"+Giga Drain (75BP Grass with HP recovery — replaces Mega Drain)"},{cap:48,reason:"+Bounce (Flying coverage, 30% paralysis)"}] },
+  "Sudowoodo":  { cap:38, reason:"has Rock Slide (lv33) and Sucker Punch (lv41)... bench before Slam; get Earthquake via TM26 for full coverage",
+    higher:[{cap:41,reason:"+Sucker Punch (priority Dark — surprise revenge against Ghost/Psychic)"},{cap:46,reason:"+Double-Edge (120BP recoil Normal STAB)"}] },
+  "Girafarig":  { cap:40, reason:"has Psychic (lv37) and Double Hit (lv32, 2-hit Normal) — bench here once the core attacking moves are learned",
+    higher:[{cap:41,reason:"+Zen Headbutt (physical Psychic option for mixed attackers)"},{cap:46,reason:"+Crunch (Dark coverage for Ghost/Psychic types)"}] },
+  "Magcargo":   { cap:40, reason:"just got Lava Plume (lv40, 80BP Fire, may burn) — bench right after; Rock + Fire coverage via TM",
+    higher:[{cap:45,reason:"+Rock Slide (Rock coverage, 30% flinch)"},{cap:61,reason:"+Flamethrower (90BP reliable Fire STAB — upgrade over Lava Plume)"}] },
+  "Piloswine":  { cap:40, reason:"just got Earthquake (lv40, 100BP Ground STAB) — the key move; bench right after",
+    higher:[{cap:56,reason:"+Blizzard (120BP Ice — pairs with Rain Dance or used as a finishing move)"}] },
+  "Octillery":  { cap:44, reason:"has Signal Beam (lv42, Bug coverage) and Surf via TM — bench before Ice Beam level-up; save TM13 for another Pokémon if needed",
+    higher:[{cap:48,reason:"+Ice Beam from level-up (90BP Ice — essential Ice/Dragon coverage if TM13 used elsewhere)"}] },
+  "Corsola":    { cap:38, reason:"has AncientPower (lv32, Rock STAB) and Aqua Ring (lv37, passive healing) — bench here",
+    higher:[{cap:44,reason:"+Power Gem (70BP Rock STAB, 100% accuracy — more reliable than AncientPower)"},{cap:53,reason:"+Earth Power (90BP Ground coverage, may lower Sp. Def)"}] },
+  "Furret":     { cap:25, reason:"early HM mule and exp fodder only — bench immediately; stats don't scale for lategame",
+    higher:[{cap:36,reason:"+Sucker Punch (priority Dark — only reason to invest further in Furret)"}] },
+  "Sunflora":   { cap:40, reason:"has Sunny Day (lv37) for SolarBeam setup — bench before SolarBeam level-up; use TM22 SolarBeam instead",
+    higher:[{cap:41,reason:"+SolarBeam from level-up (if TM22 given elsewhere)"},{cap:43,reason:"+Leaf Storm (140BP Grass — massive one-turn nuke with -2 Sp. Atk)"}] },
   // Niche picks
-  "Ariados":30, "Ledian":28, "Sneasel":42, "Misdreavus":40,
-  "Murkrow":40, "Shuckle":38, "Qwilfish":40, "Dunsparce":38,
-  "Gligar":40, "Smeargle":35, "Wobbuffet":40, "Stantler":35, "Delibird":40,
+  "Ariados":    { cap:30, reason:"low base stats — bench early; mainly a novelty pick for living dex coverage",
+    higher:[{cap:41,reason:"+Pin Missile (Bug STAB multi-hit)"},{cap:50,reason:"+Poison Jab (80BP Poison STAB, 30% poison — the main reason to invest in Ariados)"}] },
+  "Ledian":     { cap:28, reason:"very weak attacking stats — bench here early; only useful for HM coverage or living dex",
+    higher:[{cap:53,reason:"+Bug Buzz (90BP Special Bug STAB — only payoff for leveling Ledian)"}] },
+  "Sneasel":    { cap:42, reason:"has Night Slash (pre-evo) and Slash (lv35) — bench when Metal Claw (lv42) adds Steel coverage",
+    higher:[{cap:49,reason:"+Ice Shard (priority Ice — great for finishing Dragon/Flying opponents)"}] },
+  "Misdreavus": { cap:40, reason:"has Shadow Ball (lv37, main Ghost STAB) — bench here",
+    higher:[{cap:41,reason:"+Perish Song (3-turn KO — use with Mean Look to trap foes)"},{cap:50,reason:"+Power Gem (HGSS-only, Rock coverage)"}] },
+  "Murkrow":    { cap:40, reason:"has Faint Attack (lv35, Dark STAB) and Taunt (lv31) — bench here; fringe pick",
+    higher:[{cap:41,reason:"+Mean Look (trapping utility — useful for hunting legendaries)"},{cap:45,reason:"+Sucker Punch (priority Dark — conditional but strong)"}] },
+  "Shuckle":    { cap:38, reason:"almost no attacking power — bench after Gastro Acid (lv36, negates opponent's ability)",
+    higher:[{cap:45,reason:"+Rest (full HP recovery — lets Shuckle wall indefinitely with Berry Juice)"}] },
+  "Qwilfish":   { cap:40, reason:"has Aqua Tail (lv31, Water coverage) and Poison Jab (lv37, 80BP Poison STAB) — bench here",
+    higher:[{cap:43,reason:"+Assurance (Dark coverage, doubles power if opponent was hit this turn)"},{cap:61,reason:"+Hydro Pump (120BP Water nuke)"}] },
+  "Dunsparce":  { cap:38, reason:"has Roost (lv33) for recovery and Take Down (lv37) — bench here; Dunsparce is a novelty/living-dex pick",
+    higher:[{cap:41,reason:"+AncientPower (Rock coverage, 10% chance to boost all stats)"},{cap:49,reason:"+Endeavor (reduces foe to Dunsparce's HP — use at low HP with Focus Sash)"}] },
+  "Gligar":     { cap:40, reason:"has Swords Dance (lv34) for offense setup and U-turn (lv38) for momentum — bench here",
+    higher:[{cap:42,reason:"+X-Scissor (80BP Bug STAB — stronger direct damage than U-turn)"}] },
+  "Smeargle":   { cap:35, reason:"full moveset complete after 4th Sketch at lv31 (Sweet Scent → Mean Look → Spore → False Swipe) — bench here",
+    higher:[{cap:41,reason:"+5th Sketch at lv41 (if you need to swap one move out later)"}] },
+  "Wobbuffet":  { cap:40, reason:"knows all 4 moves at lv1 (Counter, Mirror Coat, Safeguard, Destiny Bond) — no new level-up moves ever; bench to avoid outleveling its utility window",
+    higher:[] },
+  "Stantler":   { cap:35, reason:"bench early; Stantler is mainly a HM mule or coverage filler — best moves are TM-based",
+    higher:[{cap:38,reason:"+Zen Headbutt (Psychic coverage, 20% flinch — if keeping Stantler longer)"}] },
+  "Delibird":   { cap:40, reason:"only level-up move is Present (lv1) — all attacking power comes from TMs (Ice Beam, Aerial Ace); bench here",
+    higher:[] },
 };
 
 // ─── MOVE TIERS ──────────────────────────────────────────────────────────────
@@ -10392,11 +10485,14 @@ function DreamTeamTab({ isMobile, version }) {
       const chain = getDTEvoChain(name);
       const chainStr = chain.length > 1 ? chain.map((s,i) => i===0?s.name:`lv.${s.level} ${s.name}`).join(" → ") : "";
 
-      const benchLv = DT_LEVEL_CAP[finalForm];
+      const capInfo = DT_LEVEL_CAP[finalForm];
       const header = `${idx+1}. ${name}${flags.length?` [${flags.join(", ")}]`:""}${typeStr?` — ${typeStr}`:""}${statsStr?` · ${statsStr}`:""}`;
       lines.push(header);
       if (chainStr) lines.push(`   Evolution: ${chainStr}`);
-      if (benchLv) lines.push(`   Level cap: bench at Lv ${benchLv}`);
+      if (capInfo) {
+        lines.push(`   Level cap: bench at Lv ${capInfo.cap} — ${capInfo.reason}`);
+        capInfo.higher?.forEach(h => lines.push(`     (or Lv ${h.cap}: ${h.reason})`));
+      }
       if (ab) lines.push(`   Ability: ${ab.name} — ${ab.desc}`);
       if (moves.length) {
         lines.push("   Moves:");
@@ -10426,9 +10522,12 @@ function DreamTeamTab({ isMobile, version }) {
         const phAcq   = getDreamAcquisition(phName);
         const phEvo   = EVO_DELAY[phName];
         const typeStr = phCand.types.join("/");
-        const phBenchLv = DT_LEVEL_CAP[phFinal];
+        const phCapInfo = DT_LEVEL_CAP[phFinal];
         lines.push(`• ${phName} (temp until ${teamName}, ${teamPart}) — ${typeStr}`);
-        if (phBenchLv) lines.push(`   Level cap: bench at Lv ${phBenchLv}`);
+        if (phCapInfo) {
+          lines.push(`   Level cap: bench at Lv ${phCapInfo.cap} — ${phCapInfo.reason}`);
+          phCapInfo.higher?.forEach(h => lines.push(`     (or Lv ${h.cap}: ${h.reason})`));
+        }
         if (phAb) lines.push(`   Ability: ${phAb.name} — ${phAb.desc}`);
         if (phMoves.length) {
           lines.push("   Moves:");
@@ -10632,7 +10731,7 @@ function DreamTeamTab({ isMobile, version }) {
                   {DT_LEVEL_CAP[finalForm] && (
                     <div style={{ marginTop:3 }}>
                       <span style={{ fontSize:8, color:"#5ba87a", background:"rgba(91,168,122,0.12)", border:"1px solid rgba(91,168,122,0.35)", padding:"1px 6px", borderRadius:99, fontWeight:"700" }}>
-                        bench at Lv {DT_LEVEL_CAP[finalForm]}
+                        bench at Lv {DT_LEVEL_CAP[finalForm].cap}
                       </span>
                     </div>
                   )}
@@ -10664,6 +10763,26 @@ function DreamTeamTab({ isMobile, version }) {
                         <span style={{ fontWeight:"700", color:C.text }}>{ab.name}</span>
                         <span style={{ color:C.muted }}> — {ab.desc}</span>
                       </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Level Guidance */}
+                {DT_LEVEL_CAP[finalForm] && (() => {
+                  const ci = DT_LEVEL_CAP[finalForm];
+                  return (
+                    <div>
+                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:4 }}>Level Guidance</div>
+                      <div style={{ fontSize:9, lineHeight:1.6 }}>
+                        <span style={{ color:"#5ba87a", fontWeight:"700" }}>Lv {ci.cap}: </span>
+                        <span style={{ color:C.muted }}>{ci.reason}</span>
+                      </div>
+                      {ci.higher?.map(h => (
+                        <div key={h.cap} style={{ fontSize:9, lineHeight:1.6, color:C.muted }}>
+                          <span style={{ color:"rgba(91,168,122,0.6)", fontWeight:"700" }}>Lv {h.cap}: </span>
+                          {h.reason}
+                        </div>
+                      ))}
                     </div>
                   );
                 })()}
@@ -10858,7 +10977,7 @@ function DreamTeamTab({ isMobile, version }) {
                       {DT_LEVEL_CAP[phFinal] && (
                         <div style={{ marginTop:3 }}>
                           <span style={{ fontSize:8, color:"#5ba87a", background:"rgba(91,168,122,0.12)", border:"1px solid rgba(91,168,122,0.35)", padding:"1px 6px", borderRadius:99, fontWeight:"700" }}>
-                            bench at Lv {DT_LEVEL_CAP[phFinal]}
+                            bench at Lv {DT_LEVEL_CAP[phFinal].cap}
                           </span>
                         </div>
                       )}
@@ -10875,6 +10994,26 @@ function DreamTeamTab({ isMobile, version }) {
                         </div>
                       </div>
                     )}
+                    {/* Level Guidance */}
+                    {DT_LEVEL_CAP[phFinal] && (() => {
+                      const ci = DT_LEVEL_CAP[phFinal];
+                      return (
+                        <div>
+                          <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:4 }}>Level Guidance</div>
+                          <div style={{ fontSize:9, lineHeight:1.6 }}>
+                            <span style={{ color:"#5ba87a", fontWeight:"700" }}>Lv {ci.cap}: </span>
+                            <span style={{ color:C.muted }}>{ci.reason}</span>
+                          </div>
+                          {ci.higher?.map(h => (
+                            <div key={h.cap} style={{ fontSize:9, lineHeight:1.6, color:C.muted }}>
+                              <span style={{ color:"rgba(91,168,122,0.6)", fontWeight:"700" }}>Lv {h.cap}: </span>
+                              {h.reason}
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })()}
+
                     {/* Moveset */}
                     <div>
                       <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:5 }}>Moveset</div>

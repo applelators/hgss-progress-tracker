@@ -14682,6 +14682,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   });
   const [stickyCollapsed, setStickyCollapsed] = useState(() => { try { return localStorage.getItem("hgss-sticky-collapsed") === "1"; } catch { return false; } });
   const toggleStickyCollapsed = () => setStickyCollapsed(v => { const next = !v; try { localStorage.setItem("hgss-sticky-collapsed", next ? "1" : "0"); } catch {} return next; });
+  const [bccDoneDate, setBccDoneDate] = useState(() => { try { return localStorage.getItem("hgss-bcc-done") || ""; } catch { return ""; } });
+  const markBccDone = () => { const d = new Date().toISOString().slice(0,10); setBccDoneDate(d); try { localStorage.setItem("hgss-bcc-done", d); } catch {} };
   const [collapsedFloors, setCollapsedFloors] = useState(() => {
     try { const r = localStorage.getItem("hgss-collapsed-floors"); return r ? new Set(Object.keys(JSON.parse(r))) : new Set(); } catch { return new Set(); }
   });
@@ -14918,6 +14920,18 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const showSidebar = !isMobile || !areaId;
   const showMain    = !isMobile || !!areaId;
 
+  // ── Daily reminder computations ──
+  const _today      = new Date();
+  const _todayDay   = _today.getDay();
+  const _todayStr   = _today.toISOString().slice(0,10);
+  const _sib        = WEEK_SIBLINGS[_todayDay];
+  const _sibArea    = _sib ? AREAS.find(a => a.id === _sib.areaId) : null;
+  const _sibIdx     = _sibArea ? (_sibArea.items||[]).findIndex(it => it.name === _sib.item) : -1;
+  const _sibPending = !!_sib && !(_sibIdx >= 0 && !!items[flatItemKey(_sib.areaId, _sibIdx)]);
+  const _bccAvail   = new Set([2,4,6]).has(_todayDay); // Tue/Thu/Sat
+  const _bccPending = _bccAvail && bccDoneDate !== _todayStr;
+  const _anyPending = _sibPending || _bccPending;
+
   return (
     <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection: isMobile ? "column" : "row" }}>
       {/* Sidebar */}
@@ -14925,38 +14939,71 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
         {/* ── Sticky info block: search + daily reminders ── */}
         <div style={{ position:"sticky", top:0, zIndex:2, background:C.card, boxShadow:"0 2px 6px rgba(0,0,0,0.25)" }}>
-          <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, position:"relative" }}>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
-              style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 32px 8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
-            <button onClick={toggleStickyCollapsed} title={stickyCollapsed ? "Expand info" : "Collapse info"}
-              style={{ position:"absolute", right:18, top:"50%", transform:"translateY(-50%)", background:"transparent", border:"none", color:C.muted, cursor:"pointer", padding:2, fontSize:10, lineHeight:1, transition:"color 0.15s" }}
-              onMouseEnter={e => e.currentTarget.style.color = C.text}
-              onMouseLeave={e => e.currentTarget.style.color = C.muted}>
-              {stickyCollapsed ? "▼" : "▲"}
-            </button>
-          </div>
-          {!stickyCollapsed && (() => {
-            const sib = WEEK_SIBLINGS[new Date().getDay()];
-            if (!sib) return null;
-            const sibArea = AREAS.find(a => a.id === sib.areaId);
-            const sibIdx  = sibArea ? (sibArea.items||[]).findIndex(it => it.name === sib.item) : -1;
-            const sibDone = sibIdx >= 0 && !!items[flatItemKey(sib.areaId, sibIdx)];
-            if (sibDone) return null;
-            return (
-              <div onClick={() => setAreaId(sib.areaId)}
-                style={{ padding:"8px 12px", borderBottom:`1px solid ${C.border}`,
-                         background:"rgba(168,135,208,0.08)", cursor:"pointer", transition:"background 0.1s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(168,135,208,0.15)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(168,135,208,0.08)"}>
-                <div style={{ fontSize:9, color:"#a887d0", fontWeight:"700", letterSpacing:0.6, textTransform:"uppercase", marginBottom:3 }}>Week Sibling · Today</div>
-                <div style={{ fontSize:11, color:C.text, lineHeight:1.5 }}>
-                  <span style={{ fontWeight:"600", color:"#a887d0" }}>{sib.name}</span> is on <span style={{ fontWeight:"600" }}>{sib.areaName}</span>
-                </div>
-                <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>Collect: <span style={{ color:C.gold }}>{sib.item}</span></div>
+          {stickyCollapsed ? (
+            /* Collapsed: slim strip with toggle + pending-reminder pills */
+            <div style={{ padding:"5px 10px", borderBottom:`1px solid ${C.border}`, display:"flex", alignItems:"center", gap:6 }}>
+              <button onClick={toggleStickyCollapsed} title="Expand"
+                style={{ background:"transparent", border:"none", color:C.muted, cursor:"pointer", padding:"2px 4px", fontSize:10, lineHeight:1, flexShrink:0, transition:"color 0.15s" }}
+                onMouseEnter={e => e.currentTarget.style.color = C.text}
+                onMouseLeave={e => e.currentTarget.style.color = C.muted}>▼</button>
+              {_sibPending && (
+                <span onClick={() => setAreaId(_sib.areaId)} title={`Week Sibling: collect ${_sib.item} from ${_sib.name} (${_sib.areaName})`}
+                  style={{ fontSize:9, color:"#a887d0", background:"rgba(168,135,208,0.15)", border:"1px solid rgba(168,135,208,0.4)", padding:"2px 7px", borderRadius:99, fontWeight:"700", cursor:"pointer", whiteSpace:"nowrap" }}>
+                  ↩ {_sib.name}
+                </span>
+              )}
+              {_bccPending && (
+                <span onClick={markBccDone} title="Bug-Catching Contest available — click to mark done"
+                  style={{ fontSize:9, color:"#c8960a", background:"rgba(200,150,10,0.12)", border:"1px solid rgba(200,150,10,0.4)", padding:"2px 7px", borderRadius:99, fontWeight:"700", cursor:"pointer", whiteSpace:"nowrap" }}>
+                  🏆 Contest
+                </span>
+              )}
+              {!_anyPending && <span style={{ fontSize:9, color:C.muted, fontStyle:"italic" }}>All clear today</span>}
+            </div>
+          ) : (
+            /* Expanded: search + reminders */
+            <>
+              <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, position:"relative" }}>
+                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
+                  style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 32px 8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
+                <button onClick={toggleStickyCollapsed} title="Collapse"
+                  style={{ position:"absolute", right:18, top:"50%", transform:"translateY(-50%)", background:"transparent", border:"none", color:C.muted, cursor:"pointer", padding:2, fontSize:10, lineHeight:1, transition:"color 0.15s" }}
+                  onMouseEnter={e => e.currentTarget.style.color = C.text}
+                  onMouseLeave={e => e.currentTarget.style.color = C.muted}>▲</button>
               </div>
-            );
-          })()}
-          {!stickyCollapsed && roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
+              {_sibPending && (
+                <div onClick={() => setAreaId(_sib.areaId)}
+                  style={{ padding:"8px 12px", borderBottom:`1px solid ${C.border}`, background:"rgba(168,135,208,0.08)", cursor:"pointer", transition:"background 0.1s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(168,135,208,0.15)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(168,135,208,0.08)"}>
+                  <div style={{ fontSize:9, color:"#a887d0", fontWeight:"700", letterSpacing:0.6, textTransform:"uppercase", marginBottom:3 }}>Week Sibling · Today</div>
+                  <div style={{ fontSize:11, color:C.text, lineHeight:1.5 }}>
+                    <span style={{ fontWeight:"600", color:"#a887d0" }}>{_sib.name}</span> is on <span style={{ fontWeight:"600" }}>{_sib.areaName}</span>
+                  </div>
+                  <div style={{ fontSize:10, color:C.muted, marginTop:1 }}>Collect: <span style={{ color:C.gold }}>{_sib.item}</span></div>
+                </div>
+              )}
+              {_bccPending && (
+                <div style={{ padding:"8px 12px", borderBottom:`1px solid ${C.border}`, background:"rgba(200,150,10,0.06)" }}>
+                  <div style={{ fontSize:9, color:"#c8960a", fontWeight:"700", letterSpacing:0.6, textTransform:"uppercase", marginBottom:3 }}>Bug-Catching Contest · Today</div>
+                  <div style={{ fontSize:11, color:C.text, lineHeight:1.5, marginBottom:5 }}>
+                    Contest is open — <span style={{ color:C.muted }}>National Park, 10am–3:30pm</span>
+                  </div>
+                  <div style={{ display:"flex", gap:6 }}>
+                    <button onClick={() => setAreaId("bug-catching-contest")}
+                      style={{ fontSize:10, background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:4, padding:"2px 8px", cursor:"pointer", fontFamily:"inherit" }}>
+                      View area
+                    </button>
+                    <button onClick={markBccDone}
+                      style={{ fontSize:10, background:"rgba(200,150,10,0.15)", border:"1px solid rgba(200,150,10,0.4)", color:"#c8960a", borderRadius:4, padding:"2px 8px", cursor:"pointer", fontFamily:"inherit", fontWeight:"700" }}>
+                      ✓ Mark done
+                    </button>
+                  </div>
+                </div>
+              )}
+              {roaming && setRoaming && badges && <RoamingCard roaming={roaming} setRoaming={setRoaming} version={version} badges={badges} />}
+            </>
+          )}
         </div>
         {hoursPerArea != null && (
           <div style={{ padding:"5px 12px 7px", fontSize:10, color:C.muted, borderBottom:`1px solid ${C.border}` }}>

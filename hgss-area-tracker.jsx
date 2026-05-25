@@ -7394,7 +7394,7 @@ const SAFARI_ZONE_EXCLUSIVES = new Set([
 ]);
 const _NO_POKEBALL_METHODS = new Set(["Gift","Trade","Fossil","Event","Game Corner"]);
 const _WILD_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod"]);
-const _RATE_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod","Headbutt","Bug Contest"]);
+const _RATE_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod","Headbutt","Headbutt (Common)","Headbutt (Rare)","Bug Contest"]);
 
 // Precompute per-area best-chance Pokémon (no higher rate in any later area), per version.
 // Stored as { areaId → { hg: [{name,rate}], ss: [{name,rate}] } }
@@ -15064,6 +15064,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
         const bestFuture = (LOCATION_MAP[name] || []).reduce((mx, l) => {
           if (l.areaId === area.id) return mx;
           if (l.part === "Pokéwalker") return mx;
+          if (l.areaId?.startsWith("safari-zone-")) return mx;
           if (!_RATE_METHODS.has(l.method)) return mx;
           if (version === "hg" && l.ssOnly) return mx;
           if (version === "ss" && l.hgOnly) return mx;
@@ -15084,6 +15085,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     for (const pastArea of AREAS) {
       if (pastArea.part === "Pokéwalker") continue;
       if (!AUDITED_PARTS.has(pastArea.part)) continue;
+      if (pastArea.id?.startsWith("safari-zone-")) continue;
       const pn = parseInt(pastArea.part?.match(/\d+/)?.[0] || 999);
       if (pn >= curPartNum) continue;
       const bestChance = AREA_BEST_CHANCE[pastArea.id]?.[version] || [];

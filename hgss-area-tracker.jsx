@@ -8718,7 +8718,7 @@ function BadgeSVG({ shape, color, earned, size=24 }) {
   }
 }
 
-function GymBadgeStrip({ earned, toggleBadge }) {
+function GymBadgeStrip({ earned, toggleBadge, mobile }) {
   const earnedCount = BADGES.filter(b => earned[b.id]).length;
   // Track badges that JUST flipped earned — spotlight them once.
   const prevRef = React.useRef(earned);
@@ -8755,6 +8755,14 @@ function GymBadgeStrip({ earned, toggleBadge }) {
           </button>
         );
       })}
+    </div>
+  );
+  if (mobile) return (
+    <div style={{ display:"flex", alignItems:"center", gap:6, padding:"6px 10px", borderBottom:`1px solid ${C.border}`, flexWrap:"wrap" }}>
+      <BadgeRow badges={JOHTO_BADGES} label="J" />
+      <div style={{ width:1, alignSelf:"stretch", background:C.border, flexShrink:0 }} />
+      <BadgeRow badges={KANTO_BADGES} label="K" />
+      <span style={{ fontSize:9, color:C.muted, marginLeft:"auto" }}>{earnedCount}/16</span>
     </div>
   );
   return (
@@ -9647,6 +9655,7 @@ function HGSSTracker() {
   }, [caught, items, trainers, version]);
 
   const accent = version === "ss" ? C.ssSilver : C.hgGold;
+  const [headerCollapsed, setHeaderCollapsed] = React.useState(true);
 
   if (!booted) return <div style={{ background:C.bg, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.text, fontFamily:"'DM Sans',system-ui,sans-serif" }}>Loading…</div>;
 
@@ -9660,66 +9669,127 @@ function HGSSTracker() {
         borderBottom:`1px solid ${C.border}`, padding:"12px 20px 0", flexShrink:0,
         boxShadow:"0 2px 12px rgba(0,0,0,0.5)", transition:"background 0.4s"
       }}>
-        {/* Title row */}
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, flexWrap:"wrap" }}>
-          <div>
-            <div style={{ fontSize:10, letterSpacing:2.5, textTransform:"uppercase", marginBottom:3, display:"flex", gap:6, alignItems:"center", fontFamily:"'JetBrains Mono',ui-monospace,monospace" }}>
-              <span style={{ color:C.hgGold, fontWeight:"700", opacity: version==="hg" ? 1 : 0.4, transition:"opacity 0.2s" }}>HeartGold</span>
-              <span style={{ color:C.muted }}>·</span>
-              <span style={{ color:C.ssSilver, fontWeight:"700", opacity: version==="ss" ? 1 : 0.4, transition:"opacity 0.2s" }}>SoulSilver</span>
-            </div>
-            <div style={{ fontSize:20, fontWeight:"700", letterSpacing:-0.5, color:C.text, fontFamily:"'Space Grotesk',system-ui,sans-serif", display:"flex", alignItems:"center", gap:8 }}>
-              HGSS Tracker
-              <span title="Auto-saved" aria-label="Auto-saved" className="hgss-pulse-dot" style={{
-                width:7, height:7, borderRadius:"50%", background:C.green,
-                boxShadow:`0 0 6px ${C.green}88`, display:"inline-block"
-              }} />
-            </div>
-          </div>
-          <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:7 }}>
-            {/* HG / SS version toggle */}
-            <div style={{ display:"flex", gap:0, background:"rgba(0,0,0,0.45)", borderRadius:6, padding:1, border:`1px solid ${C.border}` }}>
-              {[["hg","HG",C.hgGold],["ss","SS",C.ssSilver]].map(([v,label,col]) => (
-                <button key={v} onClick={() => handleSetVersion(v)} style={{
-                  padding:"3px 10px", border:"none", borderRadius:4, cursor:"pointer",
-                  fontFamily:"'DM Sans',sans-serif", fontSize:10, fontWeight:"700", letterSpacing:0.5,
-                  background: version===v ? col : "transparent",
-                  color: version===v ? "#fff" : C.muted,
-                  transition:"background 0.18s, color 0.18s",
-                }}>{label}</button>
-              ))}
-            </div>
-            {/* Stats */}
-            <div style={{ display:"flex", gap:18, fontSize:11, alignItems:"center" }}>
-              <span><span style={{ color:C.green, fontWeight:"700", fontSize:13 }}>{globalStats.caughtPok}/{globalStats.totalPok}</span><span style={{ color:C.muted }}> caught</span></span>
-              <span><span style={{ color:C.gold, fontWeight:"700", fontSize:13 }}>{pct(globalStats.doneItems,globalStats.totalItems)}%</span><span style={{ color:C.muted }}> items</span></span>
-              <span><span style={{ color:"#a87acc", fontWeight:"700", fontSize:13 }}>{pct(globalStats.doneTrainers,globalStats.totalTrainers)}%</span><span style={{ color:C.muted }}> trainers</span></span>
-              <span onClick={() => setTabAndSave("completion")}
-                title="View 100% checklist"
-                style={{ cursor:"pointer" }}>
-                <span style={{ color:"var(--hgss-accent)", fontWeight:"700", fontSize:13 }}>{completionDone}/{completionTotal}</span>
-                <span style={{ color:C.muted }}> goals</span>
-              </span>
-              <div style={{ display:"flex", gap:4 }}>
-                {[["↓ Export", handleExport, "Export save data to a JSON file"],
-                  ["↑ Import", handleImport, "Import save data from a JSON file"]].map(([label, fn, title]) => (
-                  <button key={label} onClick={fn} title={title} style={{
-                    padding:"2px 8px", fontSize:10, fontWeight:"600", cursor:"pointer",
-                    background:"rgba(0,0,0,0.3)", color:C.muted,
-                    border:`1px solid ${C.border}`, borderRadius:4,
-                    fontFamily:"'DM Sans',sans-serif", transition:"all 0.15s",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.color=C.text; e.currentTarget.style.borderColor="var(--hgss-accent)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.color=C.muted; e.currentTarget.style.borderColor=C.border; }}
-                  >{label}</button>
-                ))}
+        {isMobile ? (
+          /* ── Mobile header: slim always-visible row + collapsible stats ── */
+          <>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:8, paddingBottom:6 }}>
+              {/* Left: version toggle + title */}
+              <div style={{ display:"flex", alignItems:"center", gap:8, minWidth:0 }}>
+                <div style={{ display:"flex", gap:0, background:"rgba(0,0,0,0.45)", borderRadius:6, padding:1, border:`1px solid ${C.border}`, flexShrink:0 }}>
+                  {[["hg","HG",C.hgGold],["ss","SS",C.ssSilver]].map(([v,label,col]) => (
+                    <button key={v} onClick={() => handleSetVersion(v)} style={{
+                      padding:"3px 10px", border:"none", borderRadius:4, cursor:"pointer",
+                      fontFamily:"'DM Sans',sans-serif", fontSize:10, fontWeight:"700", letterSpacing:0.5,
+                      background: version===v ? col : "transparent",
+                      color: version===v ? "#fff" : C.muted,
+                      transition:"background 0.18s, color 0.18s",
+                    }}>{label}</button>
+                  ))}
+                </div>
+                <span style={{ fontSize:16, fontWeight:"700", letterSpacing:-0.3, color:C.text, fontFamily:"'Space Grotesk',system-ui,sans-serif", display:"flex", alignItems:"center", gap:6 }}>
+                  HGSS Tracker
+                  <span className="hgss-pulse-dot" style={{ width:6, height:6, borderRadius:"50%", background:C.green, boxShadow:`0 0 5px ${C.green}88`, display:"inline-block", flexShrink:0 }} />
+                </span>
+              </div>
+              {/* Right: caught stat + expand chevron */}
+              <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
+                <span style={{ fontSize:11 }}>
+                  <span style={{ color:C.green, fontWeight:"700" }}>{globalStats.caughtPok}/{globalStats.totalPok}</span>
+                  <span style={{ color:C.muted }}> caught</span>
+                </span>
+                <button onClick={() => setHeaderCollapsed(v => !v)}
+                  style={{ background:"none", border:"none", cursor:"pointer", color:C.muted, fontSize:11, padding:"2px 4px", lineHeight:1, transition:"color 0.15s" }}
+                  title={headerCollapsed ? "Expand stats" : "Collapse stats"}>
+                  {headerCollapsed ? "▼" : "▲"}
+                </button>
               </div>
             </div>
-          </div>
-        </div>
+            {!headerCollapsed && (
+              <div style={{ display:"flex", flexWrap:"wrap", gap:10, fontSize:11, alignItems:"center", paddingBottom:8, borderTop:`1px solid ${C.border}`, paddingTop:8 }}>
+                <span><span style={{ color:C.gold, fontWeight:"700" }}>{pct(globalStats.doneItems,globalStats.totalItems)}%</span><span style={{ color:C.muted }}> items</span></span>
+                <span><span style={{ color:"#a87acc", fontWeight:"700" }}>{pct(globalStats.doneTrainers,globalStats.totalTrainers)}%</span><span style={{ color:C.muted }}> trainers</span></span>
+                <span onClick={() => setTabAndSave("completion")} style={{ cursor:"pointer" }}>
+                  <span style={{ color:"var(--hgss-accent)", fontWeight:"700" }}>{completionDone}/{completionTotal}</span>
+                  <span style={{ color:C.muted }}> goals</span>
+                </span>
+                <div style={{ display:"flex", gap:4, marginLeft:"auto" }}>
+                  {[["↓ Export", handleExport],["↑ Import", handleImport]].map(([label, fn]) => (
+                    <button key={label} onClick={fn} style={{
+                      padding:"2px 8px", fontSize:10, fontWeight:"600", cursor:"pointer",
+                      background:"rgba(0,0,0,0.3)", color:C.muted,
+                      border:`1px solid ${C.border}`, borderRadius:4,
+                      fontFamily:"'DM Sans',sans-serif",
+                    }}>{label}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          /* ── Desktop header: full layout ── */
+          <>
+            {/* Title row */}
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, flexWrap:"wrap" }}>
+              <div>
+                <div style={{ fontSize:10, letterSpacing:2.5, textTransform:"uppercase", marginBottom:3, display:"flex", gap:6, alignItems:"center", fontFamily:"'JetBrains Mono',ui-monospace,monospace" }}>
+                  <span style={{ color:C.hgGold, fontWeight:"700", opacity: version==="hg" ? 1 : 0.4, transition:"opacity 0.2s" }}>HeartGold</span>
+                  <span style={{ color:C.muted }}>·</span>
+                  <span style={{ color:C.ssSilver, fontWeight:"700", opacity: version==="ss" ? 1 : 0.4, transition:"opacity 0.2s" }}>SoulSilver</span>
+                </div>
+                <div style={{ fontSize:20, fontWeight:"700", letterSpacing:-0.5, color:C.text, fontFamily:"'Space Grotesk',system-ui,sans-serif", display:"flex", alignItems:"center", gap:8 }}>
+                  HGSS Tracker
+                  <span title="Auto-saved" aria-label="Auto-saved" className="hgss-pulse-dot" style={{
+                    width:7, height:7, borderRadius:"50%", background:C.green,
+                    boxShadow:`0 0 6px ${C.green}88`, display:"inline-block"
+                  }} />
+                </div>
+              </div>
+              <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:7 }}>
+                {/* HG / SS version toggle */}
+                <div style={{ display:"flex", gap:0, background:"rgba(0,0,0,0.45)", borderRadius:6, padding:1, border:`1px solid ${C.border}` }}>
+                  {[["hg","HG",C.hgGold],["ss","SS",C.ssSilver]].map(([v,label,col]) => (
+                    <button key={v} onClick={() => handleSetVersion(v)} style={{
+                      padding:"3px 10px", border:"none", borderRadius:4, cursor:"pointer",
+                      fontFamily:"'DM Sans',sans-serif", fontSize:10, fontWeight:"700", letterSpacing:0.5,
+                      background: version===v ? col : "transparent",
+                      color: version===v ? "#fff" : C.muted,
+                      transition:"background 0.18s, color 0.18s",
+                    }}>{label}</button>
+                  ))}
+                </div>
+                {/* Stats */}
+                <div style={{ display:"flex", gap:18, fontSize:11, alignItems:"center" }}>
+                  <span><span style={{ color:C.green, fontWeight:"700", fontSize:13 }}>{globalStats.caughtPok}/{globalStats.totalPok}</span><span style={{ color:C.muted }}> caught</span></span>
+                  <span><span style={{ color:C.gold, fontWeight:"700", fontSize:13 }}>{pct(globalStats.doneItems,globalStats.totalItems)}%</span><span style={{ color:C.muted }}> items</span></span>
+                  <span><span style={{ color:"#a87acc", fontWeight:"700", fontSize:13 }}>{pct(globalStats.doneTrainers,globalStats.totalTrainers)}%</span><span style={{ color:C.muted }}> trainers</span></span>
+                  <span onClick={() => setTabAndSave("completion")}
+                    title="View 100% checklist"
+                    style={{ cursor:"pointer" }}>
+                    <span style={{ color:"var(--hgss-accent)", fontWeight:"700", fontSize:13 }}>{completionDone}/{completionTotal}</span>
+                    <span style={{ color:C.muted }}> goals</span>
+                  </span>
+                  <div style={{ display:"flex", gap:4 }}>
+                    {[["↓ Export", handleExport, "Export save data to a JSON file"],
+                      ["↑ Import", handleImport, "Import save data from a JSON file"]].map(([label, fn, title]) => (
+                      <button key={label} onClick={fn} title={title} style={{
+                        padding:"2px 8px", fontSize:10, fontWeight:"600", cursor:"pointer",
+                        background:"rgba(0,0,0,0.3)", color:C.muted,
+                        border:`1px solid ${C.border}`, borderRadius:4,
+                        fontFamily:"'DM Sans',sans-serif", transition:"all 0.15s",
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.color=C.text; e.currentTarget.style.borderColor="var(--hgss-accent)"; }}
+                      onMouseLeave={e => { e.currentTarget.style.color=C.muted; e.currentTarget.style.borderColor=C.border; }}
+                      >{label}</button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        {/* Gym badge strip */}
-        <GymBadgeStrip earned={badges} toggleBadge={toggleBadge} />
+            {/* Gym badge strip (desktop only — mobile badges live in Areas sidebar) */}
+            <GymBadgeStrip earned={badges} toggleBadge={toggleBadge} />
+          </>
+        )}
 
         {/* Tabs — v4: primary (run-tracking) | reference (lookup tools) */}
         <div style={{ display:"flex", gap:2, marginTop:10, overflowX:"auto", WebkitOverflowScrolling:"touch", flexWrap:"nowrap", alignItems:"flex-end" }}>
@@ -9770,7 +9840,7 @@ function HGSSTracker() {
       {tab === "dex" && <DexTab caught={caught} toggleCaught={toggleCaught} dexFilter={dexFilter} setDexFilter={setDexFilter} dexSelected={dexSelected} setDexSelected={setDexSelected} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Areas ── */}
-      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} trades={trades} toggleTrade={toggleTrade} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} timeFilter={timeFilter} setTime={setTime} roaming={roaming} setRoaming={setRoaming} badges={badges} />}
+      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} trades={trades} toggleTrade={toggleTrade} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} timeFilter={timeFilter} setTime={setTime} roaming={roaming} setRoaming={setRoaming} badges={badges} toggleBadge={toggleBadge} />}
 
       {/* ── Tab: Pokéwalker ── */}
       {tab === "walker" && <WalkerTab caught={caught} toggleCaught={toggleCaught} isMobile={isMobile} version={version} />}
@@ -14855,7 +14925,7 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
 }
 
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
-function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, trades, toggleTrade, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups, timeFilter, setTime, roaming, setRoaming, badges }) {
+function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, trades, toggleTrade, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups, timeFilter, setTime, roaming, setRoaming, badges, toggleBadge }) {
   const isPassedPokemon = p  => !!(p.choiceGroup  && choiceGroups?.[p.choiceGroup]  && choiceGroups[p.choiceGroup]  !== p.choiceId);
   const isPassedItem    = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
@@ -15129,6 +15199,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       {/* Sidebar */}
       {showSidebar && (
       <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
+        {/* ── Mobile badge strip (desktop badges are in the top bar) ── */}
+        {isMobile && <GymBadgeStrip earned={badges} toggleBadge={toggleBadge} mobile />}
         {/* ── Sticky info block: search + daily reminders ── */}
         <div style={{ position:"sticky", top:0, zIndex:2, background:C.card, boxShadow:"0 2px 6px rgba(0,0,0,0.25)" }}>
           {stickyCollapsed ? (

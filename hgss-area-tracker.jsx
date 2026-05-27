@@ -14336,6 +14336,37 @@ const POKEMON_TYPES_DATA = {
   "Celebi":["Psychic","Grass"],
 };
 
+// unlock: human-readable label; watts: number for sorting (null = non-watt); natdex: requires NatDex; special: event/GTS/Jirachi
+const PW_UNLOCK = {
+  "pw-refreshing-field":  { unlock:"Default",                          watts:null,   natdex:false, special:false },
+  "pw-noisy-forest":      { unlock:"Default",                          watts:null,   natdex:false, special:false },
+  "pw-rugged-road":       { unlock:"50W",                              watts:50,     natdex:false, special:false },
+  "pw-beautiful-beach":   { unlock:"200W",                             watts:200,    natdex:false, special:false },
+  "pw-suburban-area":     { unlock:"500W",                             watts:500,    natdex:false, special:false },
+  "pw-dim-cave":          { unlock:"1,000W",                           watts:1000,   natdex:false, special:false },
+  "pw-blue-lake":         { unlock:"2,000W",                           watts:2000,   natdex:false, special:false },
+  "pw-town-outskirts":    { unlock:"3,000W",                           watts:3000,   natdex:false, special:false },
+  "pw-hoenn-field":       { unlock:"5,000W (post-Nat Dex)",            watts:5000,   natdex:true,  special:false },
+  "pw-warm-beach":        { unlock:"7,500W (post-Nat Dex)",            watts:7500,   natdex:true,  special:false },
+  "pw-volcano-path":      { unlock:"10,000W (post-Nat Dex)",           watts:10000,  natdex:true,  special:false },
+  "pw-treehouse":         { unlock:"15,000W (post-Nat Dex)",           watts:15000,  natdex:true,  special:false },
+  "pw-scary-cave":        { unlock:"20,000W (post-Nat Dex)",           watts:20000,  natdex:true,  special:false },
+  "pw-sinnoh-field":      { unlock:"25,000W (post-Nat Dex)",           watts:25000,  natdex:true,  special:false },
+  "pw-icy-mountain-rd":   { unlock:"30,000W (post-Nat Dex)",           watts:30000,  natdex:true,  special:false },
+  "pw-big-forest":        { unlock:"40,000W (post-Nat Dex)",           watts:40000,  natdex:true,  special:false },
+  "pw-white-lake":        { unlock:"50,000W (post-Nat Dex)",           watts:50000,  natdex:true,  special:false },
+  "pw-stormy-beach":      { unlock:"65,000W (post-Nat Dex)",           watts:65000,  natdex:true,  special:false },
+  "pw-resort":            { unlock:"80,000W (post-Nat Dex)",           watts:80000,  natdex:true,  special:false },
+  "pw-quiet-cave":        { unlock:"100,000W (post-Nat Dex)",          watts:100000, natdex:true,  special:false },
+  "pw-beyond-the-sea":    { unlock:"Receive a foreign Pokémon via GTS", watts:null,  natdex:false, special:true  },
+  "pw-night-skys-edge":   { unlock:"Transfer any Jirachi to HG/SS",    watts:null,  natdex:false, special:true  },
+  "pw-yellow-forest":     { unlock:"Event download",                    watts:null,  natdex:false, special:true  },
+  "pw-rally":             { unlock:"Event download",                    watts:null,  natdex:false, special:true  },
+  "pw-sightseeing":       { unlock:"Event download",                    watts:null,  natdex:false, special:true  },
+  "pw-winners-path":      { unlock:"Event download",                    watts:null,  natdex:false, special:true  },
+  "pw-amity-meadow":      { unlock:"Event download",                    watts:null,  natdex:false, special:true  },
+};
+
 const PW_ADV_TYPES = {
   "pw-refreshing-field":  ["Normal","Fighting","Ground"],
   "pw-noisy-forest":      ["Bug","Grass","Flying"],
@@ -14828,7 +14859,7 @@ function WalkerPlannerPanel({ walkerAreas }) {
 function WalkerTab({ caught, toggleCaught, isMobile, version }) {
   const walkerAreas = React.useMemo(() => AREAS.filter(a => a.part === "Pokéwalker"), []);
   const [walkerAreaId, setWalkerAreaId] = React.useState(null);
-  const [walkerMode, setWalkerMode] = React.useState("courses"); // "courses" | "planner"
+  const [walkerMode, setWalkerMode] = React.useState("courses"); // "courses" | "planner" | "guide"
   const walkerArea = walkerAreaId ? walkerAreas.find(a => a.id === walkerAreaId) : null;
 
   const showSidebar = !isMobile || !walkerAreaId;
@@ -14839,7 +14870,6 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
     : 0;
   const uniqueCount = walkerArea ? new Set(walkerArea.pokemon.map(p => p.name)).size : 0;
 
-  // Subtab toggle strip styles
   const tabBtn = (active) => ({
     flex:1, padding:"7px 0", background: active ? "var(--hgss-accent)" : "transparent",
     border:"none", borderRadius:6, color: active ? "#fff" : C.muted,
@@ -14847,20 +14877,162 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
     cursor:"pointer", transition:"background 0.15s, color 0.15s",
   });
 
+  const TYPE_COLOR = {
+    Normal:"#a8a8a0",Fire:"#f08040",Water:"#6888f0",Electric:"#f8d030",Grass:"#78c840",
+    Ice:"#98d8d8",Fighting:"#c03028",Poison:"#a040a0",Ground:"#e0c068",Flying:"#a890f0",
+    Psychic:"#f85888",Bug:"#a8b820",Rock:"#b8a038",Ghost:"#705898",Dragon:"#7038f8",
+    Dark:"#705848",Steel:"#b8b8d0",Fairy:"#ee99ac",
+  };
+  const TypeBadge = ({ type }) => (
+    <span style={{ display:"inline-block", fontSize:8, fontWeight:700, padding:"1px 4px", borderRadius:3,
+      background:TYPE_COLOR[type]||"#888", color:"#fff", letterSpacing:0.3 }}>{type}</span>
+  );
+  const MechCard = ({ title, children }) => (
+    <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:10, padding:"12px 16px", marginBottom:12 }}>
+      <div style={{ fontSize:11, fontWeight:700, color:C.text, marginBottom:8, letterSpacing:0.5, textTransform:"uppercase" }}>{title}</div>
+      {children}
+    </div>
+  );
+  const MechRow = ({ label, value, note }) => (
+    <div style={{ display:"flex", gap:8, alignItems:"baseline", marginBottom:5, fontSize:12 }}>
+      <span style={{ color:C.muted, minWidth:130, flexShrink:0 }}>{label}</span>
+      <span style={{ color:C.text, fontWeight:600 }}>{value}</span>
+      {note && <span style={{ color:C.muted, fontSize:10, lineHeight:1.5 }}>{note}</span>}
+    </div>
+  );
+
   return (
     <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection:"column" }}>
       {/* Subtab toggle */}
       <div style={{ display:"flex", gap:4, padding:"8px 12px 6px", borderBottom:`1px solid ${C.border}`, background:C.card, flexShrink:0 }}>
         <button style={tabBtn(walkerMode==="courses")} onClick={() => setWalkerMode("courses")}>Courses</button>
         <button style={tabBtn(walkerMode==="planner")} onClick={() => setWalkerMode("planner")}>Planner</button>
+        <button style={tabBtn(walkerMode==="guide")}   onClick={() => setWalkerMode("guide")}>Guide</button>
       </div>
 
       {walkerMode === "planner" ? (
         <WalkerPlannerPanel walkerAreas={walkerAreas} />
+      ) : walkerMode === "guide" ? (
+        <div style={{ flex:1, overflowY:"auto", padding:"16px 20px 40px", maxWidth:680 }}>
+
+          <MechCard title="Watts &amp; Steps">
+            <MechRow label="Steps per watt" value="20 steps = 1W" note="Steps reset at midnight" />
+            <MechRow label="Pokémon bonus" value="+10 / +20 / +50W" note="Your walker Pokémon can randomly find these during the stroll" />
+            <MechRow label="Storage cap" value="3 Pokémon · 3 items" note="After the cap is reached you must replace to make room for new finds" />
+            <MechRow label="Level limit" value="Max +1 level per stroll" note="No moves learned and no evolutions via Pokéwalker leveling" />
+          </MechCard>
+
+          <MechCard title="Poké Radar — 10W per use">
+            <div style={{ fontSize:12, color:C.muted, marginBottom:10, lineHeight:1.7 }}>
+              Four grass patches appear. Exclamation marks reveal which patch to tap — higher marks unlock rarer groups.
+              Missing the correct patch after the first mark causes the Pokémon to flee.
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:5, marginBottom:8 }}>
+              {[
+                { marks:"!",    group:"Group C",          color:"#78c840", note:"Most common — always triggers on first mark" },
+                { marks:"! →!", group:"Group C or B",     color:"#f8d030", note:"Second mark — may upgrade to Group B" },
+                { marks:"!!",   group:"Group B or A",     color:"#f08040", note:"Third mark — may upgrade to Group A" },
+                { marks:"!!!",  group:"Group A (rare)",   color:"#e05050", note:"Fourth mark — guaranteed rare encounter" },
+              ].map(r => (
+                <div key={r.marks} style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(255,255,255,0.03)", borderRadius:6, padding:"6px 10px" }}>
+                  <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:13, fontWeight:700, color:r.color, minWidth:50 }}>{r.marks}</span>
+                  <span style={{ fontSize:12, fontWeight:600, color:C.text, minWidth:120 }}>{r.group}</span>
+                  <span style={{ fontSize:11, color:C.muted }}>{r.note}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ fontSize:11, color:C.muted, lineHeight:1.6 }}>
+              The three Pokémon for a stroll (one per group) are fixed when you send your Pokémon to the walker.
+              To change the selection, return to your game card and start the stroll again.
+              Caught Pokémon are in standard Poké Balls, receive a random Nature (no Synchronize), and cannot be Shiny.
+            </div>
+          </MechCard>
+
+          <MechCard title="Dowsing Machine — 3W per use">
+            <div style={{ fontSize:12, color:C.muted, marginBottom:8, lineHeight:1.7 }}>
+              Six grass patches; one hides an item. You get two guesses. After a miss, the machine tells you if the item is
+              <span style={{ color:C.text, fontWeight:600 }}> near</span> (directly adjacent — left or right of your pick) or
+              <span style={{ color:C.text, fontWeight:600 }}> far</span> (at least two spots away).
+              Using the hint correctly gives a <span style={{ color:C.green, fontWeight:700 }}>50% success rate</span> overall.
+            </div>
+            <MechRow label="Cost" value="3W per attempt" />
+            <MechRow label="Guesses" value="2 chances" note="Hint after first miss narrows the location" />
+            <MechRow label="Success rate" value="50%" note="Assuming hints are followed correctly" />
+            <div style={{ fontSize:11, color:C.muted, marginTop:4, lineHeight:1.6 }}>
+              Bringing a Pokémon of an advantageous type to a course slightly increases the chance of finding better items.
+            </div>
+          </MechCard>
+
+          <MechCard title="Battle System">
+            <div style={{ fontSize:12, color:C.muted, marginBottom:8, lineHeight:1.7 }}>
+              Each Pokémon has 4 HP. Stats and type matchups are ignored — all attacks deal exactly 1 damage (or 2 on a crit).
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:4, marginBottom:8 }}>
+              {[
+                { action:"Attack",    result:"1 dmg to foe (crit: +1 extra); if foe evades, foe counter-attacks instead" },
+                { action:"Evade",     result:"If foe attacks: block + deal 1 dmg back. If both evade: Stare-down (nothing happens)" },
+                { action:"Catch",     result:"Success → Pokémon caught. Failure → Pokémon flees (wastes 10W from Radar use)" },
+                { action:"Wild Runs", result:"You lose up to 10W (like losing money after a KO in the main series)" },
+              ].map(r => (
+                <div key={r.action} style={{ display:"flex", gap:8, alignItems:"baseline", fontSize:12, background:"rgba(255,255,255,0.03)", borderRadius:5, padding:"5px 8px" }}>
+                  <span style={{ color:C.text, fontWeight:700, minWidth:80, flexShrink:0 }}>{r.action}</span>
+                  <span style={{ color:C.muted }}>{r.result}</span>
+                </div>
+              ))}
+            </div>
+          </MechCard>
+
+          <MechCard title="Advantageous Types (per course)">
+            <div style={{ fontSize:12, color:C.muted, marginBottom:10, lineHeight:1.7 }}>
+              Each course has 3 advantageous types. Bringing a Pokémon of a matching type gives a
+              <span style={{ color:C.green, fontWeight:700 }}> 25% step reduction</span> for encountering rarer Pokémon via Radar, plus slightly improves item finds.
+            </div>
+            <div style={{ overflowX:"auto" }}>
+              <table style={{ width:"100%", borderCollapse:"collapse", fontSize:11 }}>
+                <thead>
+                  <tr style={{ background:"rgba(255,255,255,0.04)" }}>
+                    <th style={{ padding:"6px 8px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Course</th>
+                    <th style={{ padding:"6px 8px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Advantageous Types</th>
+                    <th style={{ padding:"6px 8px", textAlign:"left", color:C.muted, fontWeight:600, borderBottom:`1px solid ${C.border}` }}>Unlock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {walkerAreas.map((a, i) => {
+                    const advTypes = PW_ADV_TYPES[a.id] || [];
+                    const unlockInfo = PW_UNLOCK[a.id];
+                    const unlockColor = unlockInfo?.special ? "#9060d0" : unlockInfo?.natdex ? "#5b9bd5" : C.muted;
+                    return (
+                      <tr key={a.id} style={{ background: i%2===0 ? "transparent" : "rgba(255,255,255,0.02)" }}>
+                        <td style={{ padding:"5px 8px", color:C.text, borderBottom:`1px solid ${C.border}18` }}>
+                          {a.pokemon.some(p => WALKER_EXCLUSIVE.has(p.name)) && <span style={{ color:"#9060d0", fontWeight:700, marginRight:4 }}>★</span>}
+                          {a.name}
+                        </td>
+                        <td style={{ padding:"5px 8px", borderBottom:`1px solid ${C.border}18` }}>
+                          <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
+                            {advTypes.map(t => <TypeBadge key={t} type={t} />)}
+                          </div>
+                        </td>
+                        <td style={{ padding:"5px 8px", color:unlockColor, fontSize:10, borderBottom:`1px solid ${C.border}18` }}>
+                          {unlockInfo?.unlock || "—"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div style={{ marginTop:8, fontSize:10, color:C.muted }}>
+              <span style={{ color:"#9060d0", fontWeight:700 }}>★</span> = has Pokéwalker-exclusive Pokémon ·
+              <span style={{ color:"#5b9bd5", fontWeight:700 }}> Blue</span> = post-National Pokédex ·
+              <span style={{ color:"#9060d0", fontWeight:700 }}> Purple</span> = special/event
+            </div>
+          </MechCard>
+
+        </div>
       ) : (
         <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection: isMobile ? "column" : "row" }}>
           {showSidebar && (
-            <div style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, overflowY:"auto", display:"flex", flexDirection:"column", flex: isMobile ? "1" : "unset" }}>
+            <div style={{ width: isMobile ? "100%" : 220, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, overflowY:"auto", display:"flex", flexDirection:"column", flex: isMobile ? "1" : "unset" }}>
               <div style={{ padding:"8px 12px 6px", borderBottom:`1px solid ${C.border}`, fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase" }}>
                 <span style={{ color:"var(--hgss-accent)", marginRight:5 }}>◈</span>Pokéwalker Courses
               </div>
@@ -14871,16 +15043,30 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
                 const allDone = done === total && total > 0;
                 const isActive = walkerAreaId === a.id;
                 const hasExclusive = a.pokemon.some(p => WALKER_EXCLUSIVE.has(p.name));
+                const advTypes = PW_ADV_TYPES[a.id] || [];
+                const unlockInfo = PW_UNLOCK[a.id];
                 return (
                   <div key={a.id} onClick={() => setWalkerAreaId(a.id)}
-                    style={{ padding:"7px 12px", cursor:"pointer", borderLeft: isActive ? `3px solid var(--hgss-accent)` : "3px solid transparent", background: isActive ? "rgba(255,255,255,0.04)" : "transparent", display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, borderBottom:`1px solid ${C.border}22` }}>
-                    <span style={{ fontSize:12, color: allDone ? C.green : isActive ? C.text : C.muted, fontWeight: isActive ? "600" : "400", flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
-                      {allDone ? "✓ " : ""}{a.name}
-                    </span>
-                    <span style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
-                      {hasExclusive && <span style={{ fontSize:9, color:"#9060d0", fontWeight:"700" }}>★</span>}
-                      <span style={{ fontSize:10, color:C.muted }}>{done}/{total}</span>
-                    </span>
+                    style={{ padding:"7px 12px", cursor:"pointer", borderLeft: isActive ? `3px solid var(--hgss-accent)` : "3px solid transparent", background: isActive ? "rgba(255,255,255,0.04)" : "transparent", borderBottom:`1px solid ${C.border}22` }}>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6 }}>
+                      <span style={{ fontSize:12, color: allDone ? C.green : isActive ? C.text : C.muted, fontWeight: isActive ? "600" : "400", flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                        {allDone ? "✓ " : ""}{a.name}
+                      </span>
+                      <span style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
+                        {hasExclusive && <span style={{ fontSize:9, color:"#9060d0", fontWeight:"700" }}>★</span>}
+                        <span style={{ fontSize:10, color:C.muted }}>{done}/{total}</span>
+                      </span>
+                    </div>
+                    {isActive && (
+                      <div style={{ marginTop:4, display:"flex", gap:3, flexWrap:"wrap" }}>
+                        {advTypes.map(t => <TypeBadge key={t} type={t} />)}
+                        {unlockInfo && unlockInfo.unlock !== "Default" && (
+                          <span style={{ fontSize:8, color: unlockInfo.special?"#9060d0":unlockInfo.natdex?"#5b9bd5":C.muted, fontWeight:600, padding:"1px 4px", border:`1px solid ${unlockInfo.special?"#9060d080":unlockInfo.natdex?"#5b9bd580":C.border}`, borderRadius:3, marginLeft:2 }}>
+                            {unlockInfo.watts ? `${unlockInfo.watts.toLocaleString()}W` : unlockInfo.special ? "Event/Special" : unlockInfo.unlock}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -14892,7 +15078,7 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
                 <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", height:"100%", color:C.muted, textAlign:"center", gap:12 }}>
                   <div style={{ fontSize:32, opacity:0.4 }}>👟</div>
                   <div style={{ fontSize:14, fontWeight:"600", color:C.text, opacity:0.5 }}>Select a course</div>
-                  <div style={{ fontSize:12, maxWidth:280, lineHeight:1.8, color:C.muted }}>27 courses — walk to earn watts and encounter Pokémon. Rarer Pokémon require more watts.</div>
+                  <div style={{ fontSize:12, maxWidth:280, lineHeight:1.8, color:C.muted }}>27 courses — walk to earn watts and encounter Pokémon. Rarer Pokémon require more watts (Group A = rarest).</div>
                   <div style={{ fontSize:11, color:"#9060d0" }}><span style={{ fontWeight:"700" }}>★</span> courses have Pokéwalker-exclusive Pokémon (not catchable elsewhere in HGSS)</div>
                 </div>
               ) : (
@@ -14906,10 +15092,38 @@ function WalkerTab({ caught, toggleCaught, isMobile, version }) {
                   )}
                   <div style={{ padding:"14px 20px 8px" }}>
                     <div style={{ fontSize:18, fontWeight:"700", color:C.text, marginBottom:4 }}>{walkerArea.name}</div>
+                    {/* Advantageous types */}
+                    {(() => {
+                      const advTypes = PW_ADV_TYPES[walkerArea.id] || [];
+                      const unlockInfo = PW_UNLOCK[walkerArea.id];
+                      return (
+                        <div style={{ display:"flex", gap:8, flexWrap:"wrap", alignItems:"center", marginBottom:6 }}>
+                          <div style={{ display:"flex", gap:3, alignItems:"center" }}>
+                            <span style={{ fontSize:10, color:C.muted, marginRight:2 }}>Adv. types:</span>
+                            {advTypes.map(t => <TypeBadge key={t} type={t} />)}
+                          </div>
+                          {unlockInfo && (
+                            <span style={{ fontSize:10, color: unlockInfo.special?"#9060d0":unlockInfo.natdex?"#5b9bd5":C.muted }}>
+                              Unlock: {unlockInfo.unlock}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })()}
                     {walkerArea.note && <div style={{ fontSize:12, color:C.muted, lineHeight:1.6 }}>{walkerArea.note}</div>}
                     <div style={{ fontSize:11, color: caughtCount===uniqueCount && uniqueCount>0 ? C.green : C.muted, marginTop:6 }}>
                       {caughtCount}/{uniqueCount} unique Pokémon caught
                     </div>
+                  </div>
+                  {/* Radar group legend */}
+                  <div style={{ margin:"0 20px 8px", display:"flex", gap:6, flexWrap:"wrap" }}>
+                    {[["!","C — common"],["!!","B — uncommon"],["!!!","A — rare"]].map(([marks, label]) => (
+                      <span key={marks} style={{ fontSize:10, color:C.muted, background:"rgba(255,255,255,0.04)", border:`1px solid ${C.border}`, borderRadius:4, padding:"2px 7px" }}>
+                        <span style={{ fontFamily:"'JetBrains Mono',monospace", color:C.text, fontWeight:700 }}>{marks}</span>
+                        {" → "}{label}
+                      </span>
+                    ))}
+                    <span style={{ fontSize:10, color:C.muted, fontStyle:"italic" }}>· note field = min watts for Radar</span>
                   </div>
                   <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:4 }}>
                     {renderPokemonList(walkerArea.pokemon, caught, toggleCaught, version, isMobile, {}, walkerArea.id, {}, () => {})}
